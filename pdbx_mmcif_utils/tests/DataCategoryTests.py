@@ -41,6 +41,23 @@ except Exception as e:
 from pdbx_mmcif_utils.api.DataCategory import DataCategory
 from pdbx_mmcif_utils.api.DataCategoryBase import DataCategoryBase
 
+from itertools import chain, repeat, islice
+
+def window(seq, size=2, fill=0, fill_left=False, fill_right=False):
+    """ Returns a sliding window (of width n) over data from the iterable:
+      s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...
+    """
+    ssize = size - 1
+    it = chain(
+      repeat(fill, ssize * fill_left),
+      iter(seq),
+      repeat(fill, ssize * fill_right))
+    result = tuple(islice(it, size))
+    if len(result) == size:  # `<=` if okay to return seq if len(seq) < size
+        yield result
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield result
 
 class DataCategoryTests(unittest.TestCase):
 
@@ -300,7 +317,6 @@ class DataCategoryTests(unittest.TestCase):
             logger.exception("Failing with %s" % str(e))
             self.fail()
 
-
     def testEditExtend(self):
         """Test case -  category extension methods
         """
@@ -314,7 +330,6 @@ class DataCategoryTests(unittest.TestCase):
         except Exception as e:
             logger.exception("Failing with %s" % str(e))
             self.fail()
-
 
     def testGetValues(self):
         """Test case -  value getters
@@ -339,7 +354,6 @@ class DataCategoryTests(unittest.TestCase):
         except Exception as e:
             logger.exception("Failing with %s" % str(e))
             self.fail()
-
 
     def testGetSelectValues(self):
         """Test case -  value selectors
@@ -387,7 +401,7 @@ class DataCategoryTests(unittest.TestCase):
             curV = self.__testRowUnicodeMiss[5]
             self.assertEqual(dcU.replaceValue(curV, 'newVal', at), dcU.getRowCount())
 
-            for ii in range(3,7):
+            for ii in range(3, 7):
                 at = self.__attributeListMiss[ii]
                 self.assertEqual(dcU.replaceSubstring('newVal', 'nextVal', at), dcU.getRowCount())
 
@@ -402,11 +416,11 @@ class DataCategoryTests(unittest.TestCase):
             dcU = DataCategory('A', self.__attributeList, self.__rowListUnicode)
             dcM = DataCategory('A', self.__attributeListMiss, self.__rowListUnicodeMiss)
             na = len(dcU.getAttributeList())
-            t1,t2,t3 = dcU.cmpAttributeNames(dcU)
+            t1, t2, t3 = dcU.cmpAttributeNames(dcU)
             self.assertEqual(len(t1), 0)
             self.assertEqual(len(t3), 0)
             self.assertEqual(len(t2), na)
-            t1,t2,t3 = dcU.cmpAttributeNames(dcM)
+            t1, t2, t3 = dcU.cmpAttributeNames(dcM)
             self.assertEqual(len(t1), 0)
             self.assertEqual(len(t3), 3)
             self.assertEqual(len(t2), na)
@@ -433,7 +447,7 @@ class DataCategoryTests(unittest.TestCase):
                     self.assertEqual(tup[1], True)
             #
             dcX = DataCategory('A', self.__attributeList, self.__rowListUnicode)
-            self.assertTrue(dcX.setValue(u'134ĆćĈĉĊċČčĎďĐđĒēĠġĢģĤĥĦħĨxyz', attributeName='colD', rowIndex=dcX.getRowCount() -2))
+            self.assertTrue(dcX.setValue(u'134ĆćĈĉĊċČčĎďĐđĒēĠġĢģĤĥĦħĨxyz', attributeName='colD', rowIndex=dcX.getRowCount() - 2))
             tupL = dcU.cmpAttributeValues(dcX)
             for tup in tupL:
                 if tup[0] in ['colD']:
@@ -445,6 +459,32 @@ class DataCategoryTests(unittest.TestCase):
             logger.exception("Failing with %s" % str(e))
             self.fail()
     #
+
+    def testCondSelectValues(self):
+        """Test case - value selections -
+        """
+        try:
+            dcM = DataCategory('A', self.__attributeListMiss, self.__rowListUnicodeMiss)
+            # self.__testRowUnicodeMiss = [u'someData', 100222, None, '?', '.', u'abcdĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨxyz', 234.2345]
+            # self.__attributeListMiss
+            atL = dcM.getAttributeList()
+            for ii, at in enumerate(atL[1:]):
+                self.assertEqual(len(dcM.selectIndices(self.__testRowUnicodeMiss[ii], at)), dcM.getRowCount())
+            #
+            logger.debug("Window %r" % [tt for tt in window(atL)])
+            for atW in window(atL, size=1):
+                self.assertEqual(len(dcM.selectValueListWhere(atW, self.__testRowUnicodeMiss[-1], self.__attributeListMiss[-1])), dcM.getRowCount())
+            for atW in window(atL, size=2):
+                self.assertEqual(len(dcM.selectValueListWhere(atW, self.__testRowUnicodeMiss[-1], self.__attributeListMiss[-1])), dcM.getRowCount())
+            for atW in window(atL, size=3):
+                self.assertEqual(len(dcM.selectValueListWhere(atW, self.__testRowUnicodeMiss[-1], self.__attributeListMiss[-1])), dcM.getRowCount())
+            for atW in window(atL, size=4):
+                self.assertEqual(len(dcM.selectValueListWhere(atW, self.__testRowUnicodeMiss[-1], self.__attributeListMiss[-1])), dcM.getRowCount())
+
+        except Exception as e:
+            logger.exception("Failing with %s" % str(e))
+            self.fail()
+
 
 def suiteBase():
     suiteSelect = unittest.TestSuite()
@@ -471,6 +511,7 @@ def suiteSubclass():
     suiteSelect.addTest(DataCategoryTests("testReplaceValues"))
     suiteSelect.addTest(DataCategoryTests("testCompareAttributes"))
     suiteSelect.addTest(DataCategoryTests("testCompareValues"))
+    suiteSelect.addTest(DataCategoryTests("testCondSelectValues"))
     #
     return suiteSelect
 
