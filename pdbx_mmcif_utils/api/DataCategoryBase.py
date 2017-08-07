@@ -30,7 +30,8 @@ from six.moves import zip
 
 
 from six.moves import UserList
-
+import sys
+import copy
 import logging
 logger = logging.getLogger(__name__)
 
@@ -44,12 +45,18 @@ class DataCategoryBase(UserList):
 
     """
 
-    def __init__(self, name, attributeNameList=None, rowList=None):
+    def __init__(self, name, attributeNameList=None, rowList=None, raiseExceptions=True, copyInputData=True):
         self._name = name
-        self._attributeNameList = attributeNameList if attributeNameList is not None else []
-        self.data = rowList if rowList is not None else []
+        if copyInputData:
+            self._attributeNameList = copy.deepcopy(attributeNameList) if attributeNameList is not None else []
+            self.data = copy.deepcopy(rowList) if rowList is not None else []
+        else:
+            self._attributeNameList = attributeNameList if attributeNameList is not None else []
+            self.data = rowList if rowList is not None else []
         self._itemNameList = []
         self.__mappingType = "DATA"
+        self._raiseExceptions = raiseExceptions
+        self._copyInputData = copyInputData
         #
         super(DataCategoryBase, self).__init__(self.data)
         #
@@ -58,6 +65,11 @@ class DataCategoryBase(UserList):
         self._catalog = {}
         self._numAttributes = 0
         #
+        self._isPy3 = sys.version_info[0] == 3
+        if self._isPy3:
+            self._string_types = str
+        else:
+            self._string_types = basestring
         self.__setup()
 
     def __setup(self):
@@ -74,10 +86,16 @@ class DataCategoryBase(UserList):
         self._name = name
 
     def setRowList(self, rowList):
-        self.data = rowList
+        if self._copyInputData:
+            self.data = copy.deepcopy(rowList)
+        else:
+            self.data = rowList
 
     def setAttributeNameList(self, attributeNameList):
-        self._attributeNameList = attributeNameList
+        if self._copyInputData:
+            self._attributeNameList = copy.deepcopy(attributeNameList)
+        else:
+            self._attributeNameList = attributeNameList
         self.__setup()
 
     def appendAttribute(self, attributeName):
@@ -91,6 +109,7 @@ class DataCategoryBase(UserList):
             self._catalog[attributeNameLC] = attributeName
             #
         self._numAttributes = len(self._attributeNameList)
+        return self._numAttributes
 
     ##
     # Getters
@@ -110,8 +129,9 @@ class DataCategoryBase(UserList):
     def getAttributeIndex(self, attributeName):
         try:
             return self._attributeNameList.index(attributeName)
-        except:
-            return -1
+        except Exception as e:
+            pass
+        return -1
 
     def getAttributeIndexDict(self):
         rD = {}
@@ -137,8 +157,10 @@ class DataCategoryBase(UserList):
     def getRow(self, index):
         try:
             return self.data[index]
-        except:
-            return []
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
+        return []
 
     def getRowAttributeDict(self, index):
         rD = {}
@@ -146,8 +168,11 @@ class DataCategoryBase(UserList):
             for ii, v in enumerate(self.data[index]):
                 rD[self._attributeNameList[ii]] = v
             return rD
-        except:
-            return rD
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
+
+        return rD
 
     def getRowItemDict(self, index):
         rD = {}
@@ -156,16 +181,29 @@ class DataCategoryBase(UserList):
             for ii, v in enumerate(self.data[index]):
                 rD[self._itemNameList[ii]] = v
             return rD
-        except:
-            logger.exception("Item access failure at index %r" % index)
-            return rD
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
+
+        return rD
+
+    def getAttributeValueList(self, attributeName):
+        """ Return a list of
+        """
+        try:
+            idx = self.getAttributeIndex(attributeName)
+            rL = [row[idx] for row in self.data]
+            return rL
+        except Exception as e:
+            raise e
 
     def removeRow(self, index):
         try:
             del self.data[index]
             return True
-        except:
-            pass
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
 
         return False
 
@@ -203,7 +241,7 @@ class DataCategoryBase(UserList):
     def __alignLabels(self, row):
         """  Internal method which aligns the list of input attributes with row data.
 
-             If there are fewer labels that data elements in a row, then placeholder labels
+             If there are fewer labels than data elements in a row, then placeholder labels
              are creeated (e.g. "unlabeled_#")
 
         """
@@ -275,3 +313,59 @@ class DataCategoryBase(UserList):
                 return rL
         except:
             raise IndexError
+
+    def cmpAttributeNames(self, dcObj):
+        """ Compare the attributeNameList in current data category (dca) and input data category .
+
+            Return: (current attributes not in dcObj), (attributes common to both), (attributes in dcObj not in current data category)
+        """
+        sa = set(self.getAttributeList())
+        sb = set(dcObj.getAttributeList())
+        return tuple(sa - sb), tuple(sa & sb), tuple(sb - sa)
+
+    def cmpAttributeValues(self, dcObj):
+        """ Compare the values by attribute for current data category (dca) and input data category.
+            The comparison is performed independently for the values of corresponding attributes.
+            Length differences are treated inequality out of hand.
+
+            Return: [(attributeName, values equal flag (bool)), (attributeName, values equal flag (bool), ...]
+
+
+            Note on slower alternative
+            >>> import collections
+            >>> compare = lambda x, y: collections.Counter(x) == collections.Counter(y)
+        """
+        try:
+            rL = []
+            sa = set(self.getAttributeList())
+            sb = set(dcObj.getAttributeList())
+            atComList = list(sa & sb)
+            #
+            lenEq = self.getRowCount() == dcObj.getRowCount()
+            for at in atComList:
+                if lenEq:
+                    same = sorted(self.getAttributeValueList(at)) == sorted(dcObj.getAttributeValueList(at))
+                else:
+                    same = False
+                rL.append((at, same))
+            return rL
+        except Exception as e:
+            raise e
+
+    def __eq__(self, other):
+        """Override the default Equals behavior"""
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return NotImplemented
+
+    def __ne__(self, other):
+        """Define a non-equality test"""
+        if isinstance(other, self.__class__):
+            return not self.__eq__(other)
+        return NotImplemented
+
+    def __hash__(self):
+        """Override the default hash behavior (that returns the id or the object)"""
+        return hash(tuple(sorted(self.__dict__.items())))
+
+    #

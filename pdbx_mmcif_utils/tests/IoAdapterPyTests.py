@@ -71,7 +71,7 @@ class IoAdapterTests(unittest.TestCase):
 
     def tearDown(self):
         endTime = time.time()
-        logger.info("Completed %s at %s (%.4f seconds)\n" % (self.id(),
+        logger.debug("Completed %s at %s (%.4f seconds)\n" % (self.id(),
                                                              time.strftime("%Y %m %d %H:%M:%S", time.localtime()),
                                                              endTime - self.__startTime))
 
@@ -150,10 +150,10 @@ class IoAdapterTests(unittest.TestCase):
             containerList = io.readFile(fp, enforceAscii=enforceAscii)
             #
         except SyntaxError as e:
-            logger.info("Expected syntax failure")
+            logger.debug("Expected syntax failure")
             self.assertTrue(True)
         except PdbxError as e:
-            logger.info("Expected character encoding failure")
+            logger.debug("Expected character encoding failure")
             self.assertTrue(True)
         except Exception as e:
             logger.exception("Unexpected exception %s " % type(e).__name__)
@@ -186,17 +186,6 @@ class IoAdapterTests(unittest.TestCase):
             logger.debug("Read %d data blocks" % len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, **kwargs)
             self.assertTrue(ok)
-        except Exception as e:
-            logger.exception("Failing with %s" % str(e))
-            self.fail()
-
-    def XtestFileReaderSelect(self):
-        """Test case -  read selected categories from PDBx file  - NOT CURRENTLY SUPPORTED by the Python Parser -
-        """
-        try:
-            io = IoAdapter()
-            containerList = io.readFile(self.__pathBigPdbxDataFile, selectList=['entity', 'pdbx_database_status'], logFilePath='logfile1.log')
-            logger.debug("Read %d data blocks" % len(containerList))
         except Exception as e:
             logger.exception("Failing with %s" % str(e))
             self.fail()
@@ -253,24 +242,24 @@ if __name__ == '__main__':
     #
     if (True):
         mySuite = suiteFileReader()
-        unittest.TextTestRunner(verbosity=1, descriptions=False).run(mySuite)
+        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
     if (True):
         mySuite = suiteDictReader()
-        unittest.TextTestRunner(verbosity=1, descriptions=False).run(mySuite)
+        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
     if (True):
         mySuite = suiteFileReaderExceptions()
-        unittest.TextTestRunner(verbosity=1, descriptions=False).run(mySuite)
+        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
     if (True):
         mySuite = suiteReaderUnicode()
-        unittest.TextTestRunner(verbosity=1, descriptions=False).run(mySuite)
+        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
     if (True):
         mySuite = suiteReaderWriter()
-        unittest.TextTestRunner(verbosity=1, descriptions=False).run(mySuite)
+        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
     if (True):
         mySuite = suiteReaderWriterUnicode()
-        unittest.TextTestRunner(verbosity=1, descriptions=False).run(mySuite)
+        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)

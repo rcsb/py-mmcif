@@ -38,8 +38,8 @@ class DataCategory(DataCategoryBase):
     """  Methods for creating, accessing, and formatting PDBx/mmCif data categories.
     """
 
-    def __init__(self, name, attributeNameList=None, rowList=None):
-        super(DataCategory, self).__init__(name, attributeNameList, rowList)
+    def __init__(self, name, attributeNameList=None, rowList=None, raiseExceptions=True):
+        super(DataCategory, self).__init__(name, attributeNameList, rowList, raiseExceptions=raiseExceptions)
         #
         self.__verbose = False
         self._currentRowIndex = 0
@@ -56,7 +56,7 @@ class DataCategory(DataCategoryBase):
         return self._currentRowIndex
 
     def getFullRow(self, index):
-        """ Return a full row based on the length of the the attribute list.
+        """ Return a full row based on the length of the the attribute list or a row initialized with missing values
         """
         try:
             if (len(self.data[index]) < self._numAttributes):
@@ -72,7 +72,7 @@ class DataCategory(DataCategoryBase):
             oL.append((att, ii))
         return oL
 
-    def appendAttributeExtendRows(self, attributeName):
+    def appendAttributeExtendRows(self, attributeName, defaultValue="?"):
         attributeNameLC = attributeName.lower()
         if attributeNameLC in self._catalog:
             i = self._attributeNameList.index(self._catalog[attributeNameLC])
@@ -85,9 +85,10 @@ class DataCategory(DataCategoryBase):
             # add a placeholder to any existing rows for the new attribute.
             if (len(self.data) > 0):
                 for row in self.data:
-                    row.append("?")
+                    row.append(defaultValue)
             #
         self._numAttributes = len(self._attributeNameList)
+        return self._numAttributes
 
     def getValue(self, attributeName=None, rowIndex=None):
         if attributeName is None:
@@ -109,7 +110,9 @@ class DataCategory(DataCategoryBase):
     def getValueOrDefault(self, attributeName=None, rowIndex=None, defaultValue=''):
         """  Within the current category return the value of input attribute in the input rowIndex [0-based].
 
-             On error or if the value is missing or null return the default value.
+             On error or if the value missing or null return the default value. Empty values returned as is.
+
+             Exceptions on for unknown attributeNames and out-of-range indices.
         """
         if attributeName is None:
             attribute = self.__currentAttribute
@@ -120,36 +123,42 @@ class DataCategory(DataCategoryBase):
         else:
             rowI = rowIndex
 
-        if isinstance(attribute, str) and isinstance(rowI, int):
+        if isinstance(attribute, self._string_types) and isinstance(rowI, int):
             try:
                 tV = self.data[rowI][self._attributeNameList.index(attribute)]
-                if ((tV is None) or (len(tV) < 1) or (tV in ['.', '?'])):
+                if ((tV is None) or (tV in ['.', '?'])):
                     return defaultValue
                 else:
                     return tV
             except Exception as e:
-                pass
+                # logger.exception("Failing attributeName %s rowIndex %r defaultValue %r" % (attributeName, rowIndex, defaultValue))
+                raise e
+        else:
+            raise ValueError
         #
         return defaultValue
 
     def getFirstValueOrDefault(self, attributeNameList, rowIndex=0, defaultValue=''):
-        """ Return the value from the first non null attribute found in the input attribute list
-            from the current category object with input rowIndex.
+        """ Return the value from the first non-null attribute found in the input attribute list
+            from the row (rowIndex) in the current category object.
         """
         try:
             for at in attributeNameList:
                 if self.hasAttribute(at):
                     tV = self.getValue(at, rowIndex)
-                    if ((tV is None) or (len(tV) < 1) or (tV in ['.', '?'])):
+                    if ((tV is None) or (tV in ['', '.', '?'])):
                         continue
                     else:
                         return tV
         except Exception as e:
-            pass
+            raise e
 
         return defaultValue
 
     def setValue(self, value, attributeName=None, rowIndex=None):
+        """ Set the value of an existing attribute.  rowIndex values >=0, where
+            the category will be extended in length as needed.
+        """
         if attributeName is None:
             attribute = self.__currentAttribute
         else:
@@ -160,7 +169,7 @@ class DataCategory(DataCategoryBase):
         else:
             rowI = rowIndex
 
-        if isinstance(attribute, str) and isinstance(rowI, int):
+        if isinstance(attribute, self._string_types) and isinstance(rowI, int) and (rowI >= 0):
             try:
                 ind = -2
                 # if row index is out of range - add the rows -
@@ -177,54 +186,66 @@ class DataCategory(DataCategoryBase):
                 self.data[rowI][ind] = value
                 return True
             except (IndexError):
-                logger.exception("DataCategory(setvalue) index error category %s attribute %s row index %d col %d rowlen %d value %r\n" %
-                                 (self._name, attribute, rowI, ind, len(self.data[rowI]), value))
                 if self.__verbose:
+                    logger.exception("DataCategory(setvalue) index error category %s attribute %s row index %d col %d rowlen %d value %r\n" %
+                                     (self._name, attribute, rowI, ind, len(self.data[rowI]), value))
                     logger.debug("DataCategory(setvalue) attribute %r length attribute list %d \n" % (attribute, len(self._attributeNameList)))
                     for ii, a in enumerate(self._attributeNameList):
                         logger.debug("DataCategory(setvalue) %d attributeName %r\n" % (ii, a))
 
                 raise IndexError
             except (ValueError):
-                logger.exception("DataCategory(setvalue) value error category %s attribute %s row index %d value %r\n" %
-                                 (self._name, attribute, rowI, value))
+                if self.__verbose:
+                    logger.exception("DataCategory(setvalue) value error category %s attribute %s row index %d value %r\n" %
+                                     (self._name, attribute, rowI, value))
                 raise ValueError
+        else:
+            raise ValueError
 
     def __emptyRow(self):
         return [None for ii in range(len(self._attributeNameList))]
 
     def replaceValue(self, oldValue, newValue, attributeName):
-        numReplace = 0
-        if attributeName not in self._attributeNameList:
+        try:
+            numReplace = 0
+            if attributeName not in self._attributeNameList:
+                return numReplace
+            ind = self._attributeNameList.index(attributeName)
+            for row in self.data:
+                if row[ind] == oldValue:
+                    row[ind] = newValue
+                    numReplace += 1
             return numReplace
-        ind = self._attributeNameList.index(attributeName)
-        for row in self.data:
-            if row[ind] == oldValue:
-                row[ind] = newValue
-                numReplace += 1
-        return numReplace
+        except Exception as e:
+            raise e
 
     def replaceSubstring(self, oldValue, newValue, attributeName):
-        ok = False
-        if attributeName not in self._attributeNameList:
-            return ok
-        ind = self._attributeNameList.index(attributeName)
-        for row in self.data:
-            val = row[ind]
-            row[ind] = val.replace(oldValue, newValue)
-            if val != row[ind]:
-                ok = True
-        return ok
+        try:
+            numReplace = 0
+            if attributeName not in self._attributeNameList:
+                return numReplace
+            ind = self._attributeNameList.index(attributeName)
+            for row in self.data:
+                val = row[ind]
+                row[ind] = val.replace(oldValue, newValue)
+                if val != row[ind]:
+                    numReplace += 1
+            return numReplace
+        except Exception as e:
+            raise e
 
     def selectIndices(self, attributeValue, attributeName):
-        rL = []
-        if attributeName not in self._attributeNameList:
+        try:
+            rL = []
+            if attributeName not in self._attributeNameList:
+                return rL
+            ind = self._attributeNameList.index(attributeName)
+            for ii, row in enumerate(self.data):
+                if attributeValue == row[ind]:
+                    rL.append(ii)
             return rL
-        ind = self._attributeNameList.index(attributeName)
-        for ii, row in enumerate(self.data):
-            if attributeValue == row[ind]:
-                rL.append(ii)
-        return rL
+        except Exception as e:
+            raise e
 
     def selectIndicesFromList(self, attributeValueList, attributeNameList):
         rL = []
@@ -245,6 +266,8 @@ class DataCategory(DataCategoryBase):
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection/index failure for values %r" % attributeValueList)
+            raise e
+
         return rL
 
     def selectValuesWhere(self, attributeName, attributeValueWhere, attributeNameWhere):
@@ -258,6 +281,7 @@ class DataCategory(DataCategoryBase):
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")
+            raise e
         return rL
 
     def selectValueListWhere(self, attributeNameList, attributeValueWhere, attributeNameWhere):
@@ -276,9 +300,9 @@ class DataCategory(DataCategoryBase):
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")
-
+            raise e
         return rL
-
+    #
     def invokeAttributeMethod(self, attributeName, type, method, db):
         self._currentRowIndex = 0
         self.__currentAttribute = attributeName
