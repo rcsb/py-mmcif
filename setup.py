@@ -23,9 +23,9 @@ if not version:
 
 
 setup(
-    name='pdbx_mmcif_utils',
+    name='mmcif',
     version=version,
-    description='PDBx/mmCIF Utilities',
+    description='PDBx/mmCIF Core Access Library',
     long_description="See:  README.md",
     author='John Westbrook',
     author_email='john.westbrook@rcsb.org',
@@ -55,7 +55,7 @@ setup(
     #},
     #
     install_requires=['requests', 'six'],
-    packages=find_packages(exclude=['pdbx_mmcif_utils.tests', 'tests.*']),
+    packages=find_packages(exclude=['mmcif.tests', 'tests.*']),
     package_data={
         # If any package contains *.md or *.rst files, include them:
         '': ['*.md', '*.rst'],
