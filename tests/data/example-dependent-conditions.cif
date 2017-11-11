@@ -1,0 +1,175 @@
+loop_
+    _pdbx_item_enumeration.name
+    _pdbx_item_enumeration.value
+    _pdbx_item_enumeration.detail
+      "_diffrn_detector.type"  "ADSC HF-4M"                      PIXEL
+      "_diffrn_detector.type"  "ADSC QUANTUM 1"                  CCD
+      "_diffrn_detector.type"  "ADSC QUANTUM 210"                CCD
+      "_diffrn_detector.type"  "ADSC QUANTUM 210r"               CCD
+      "_diffrn_detector.type"  "ADSC QUANTUM 270"                CCD
+      "_diffrn_detector.type"  "ADSC QUANTUM 315"                CCD
+      "_diffrn_detector.type"  "ADSC QUANTUM 315r"               CCD
+      "_diffrn_detector.type"  "ADSC QUANTUM 4"                  CCD
+      "_diffrn_detector.type"  "ADSC QUANTUM 4r"                 CCD
+      "_diffrn_detector.type"  "AGILENT ATLAS CCD"               CCD
+      "_diffrn_detector.type"  "AGILENT EOS CCD"                 CCD
+      "_diffrn_detector.type"  "AGILENT TITAN CCD"               CCD
+      "_diffrn_detector.type"  "APEX II CCD"                     CCD
+      "_diffrn_detector.type"  BIODIFF                           "IMAGE PLATE"
+      "_diffrn_detector.type"  "Brandeis B4"                     CCD
+      "_diffrn_detector.type"  "Bruker AXIOM 200"                CCD
+      "_diffrn_detector.type"  "Bruker PHOTON II"                .
+      "_diffrn_detector.type"  "Bruker DIP-6040"                 .
+      "_diffrn_detector.type"  "BRUKER PHOTON 100"               .
+      "_diffrn_detector.type"  "BRUKER SMART 2000"               CCD
+      "_diffrn_detector.type"  "BRUKER SMART 6000"               CCD
+      "_diffrn_detector.type"  "BRUKER SMART 6500"               CCD
+      "_diffrn_detector.type"  "Bruker Platinum 135"             CCD
+      "_diffrn_detector.type"  CUSTOM-MADE                       .
+      "_diffrn_detector.type"  "CS-PAD CXI-1"                    .
+      "_diffrn_detector.type"  "CS-PAD CXI-2"                    .
+      "_diffrn_detector.type"  "CS-PAD XPP"                      .
+      "_diffrn_detector.type"  "DECTRIS EIGER R 1M"              PIXEL
+      "_diffrn_detector.type"  "DECTRIS EIGER R 4M"              PIXEL
+      "_diffrn_detector.type"  "DECTRIS EIGER X 500K"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS EIGER X 1M"              PIXEL
+      "_diffrn_detector.type"  "DECTRIS EIGER X 4M"              PIXEL
+      "_diffrn_detector.type"  "DECTRIS EIGER X 9M"              PIXEL
+      "_diffrn_detector.type"  "DECTRIS EIGER X 16M"             PIXEL
+      "_diffrn_detector.type"  "DECTRIS MYTHEN2 R 1K"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS MYTHEN2 R 1D"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS MYTHEN2 X 1K"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS MYTHEN2 X 1D"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS 200K"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS 300K"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS 2M"              PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS 2M-F"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS 6M"              PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS 6M-F"            PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS 12M"             PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 2M"             PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 6M"             PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 R 100K-A"       PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 R 200K-A"       PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 R 300K"         PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 R 300K-W"       PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 R 1M"           PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 R CdTe 300K"    PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 R CdTe 300K-W"  PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 S 1M"           PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 S 2M"           PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 S 6M"           PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X 100K-A"       PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X 200K-A"       PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X 300K"         PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X 300K-W"       PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X 1M"           PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X 2M"           PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X 6M"           PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X CdTe 300K"    PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X CdTe 300K-W"  PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X CdTe 1M"      PIXEL
+      "_diffrn_detector.type"  "DECTRIS PILATUS3 X CdTe 2M"      PIXEL
+      "_diffrn_detector.type"  ENRAF-NONIUS                      .
+      "_diffrn_detector.type"  "ENRAF-NONIUS CAD4"               DIFFRACTOMETER
+      "_diffrn_detector.type"  "ENRAF-NONIUS FAST"               DIFFRACTOMETER
+      "_diffrn_detector.type"  "ESRF FreLoN"                     CCD
+      "_diffrn_detector.type"  FUJI                              "IMAGE PLATE"
+      "_diffrn_detector.type"  HENDRIX-LENTFER                   .
+      "_diffrn_detector.type"  "Hamamatsu C10158DK"              .
+      "_diffrn_detector.type"  KODAK                             .
+      "_diffrn_detector.type"  "LADI III"                        .
+      "_diffrn_detector.type"  "MAATEL BIODIFF"                  .
+      "_diffrn_detector.type"  "MAATEL IMAGINE"                  .
+      "_diffrn_detector.type"  "MAC Science DIP-2000"            "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAC Science DIP-2030"            "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAC Science DIP-3000"            "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAC Science DIP-320"             "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAC Science DIP-420 scanner"     "IMAGE PLATE"
+      "_diffrn_detector.type"  MACSCIENCE                        .
+      "_diffrn_detector.type"  "MACSCIENCE DIP100"               "IMAGE PLATE"
+      "_diffrn_detector.type"  "MACSCIENCE DIP100S"              "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAR CCD 130 mm"                  CCD
+      "_diffrn_detector.type"  "MAR CCD 165 mm"                  CCD
+      "_diffrn_detector.type"  "MAR scanner 180 mm plate"        "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAR scanner 300 mm plate"        "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAR scanner 345 mm plate"        "IMAGE PLATE"
+      "_diffrn_detector.type"  "MAR555 FLAT PANEL"               "IMAGE PLATE"
+      "_diffrn_detector.type"  "MARMOSAIC 225 mm CCD"            CCD
+      "_diffrn_detector.type"  "MARMOSAIC 300 mm CCD"            CCD
+      "_diffrn_detector.type"  "MARMOSAIC 325 mm CCD"            CCD
+      "_diffrn_detector.type"  MARRESEARCH                       .
+      "_diffrn_detector.type"  MPCCD                             CCD
+      "_diffrn_detector.type"  NICOLET                           .
+      "_diffrn_detector.type"  "NICOLET P3"                      .
+      "_diffrn_detector.type"  "NICOLET P3X"                     .
+      "_diffrn_detector.type"  NOIR-1                            .
+      "_diffrn_detector.type"  "NONIUS CAD4"                     CCD
+      "_diffrn_detector.type"  "Nonius Kappa CCD"                CCD
+      "_diffrn_detector.type"  "ORNL ANGER CAMERA"               .
+      "_diffrn_detector.type"  "OXFORD ONYX CCD"                 CCD
+      "_diffrn_detector.type"  "OXFORD RUBY CCD"                 CCD
+      "_diffrn_detector.type"  "OXFORD SAPPHIRE CCD"             CCD
+      "_diffrn_detector.type"  "OXFORD TITAN CCD"                CCD
+      "_diffrn_detector.type"  PHILLIPS                          .
+      "_diffrn_detector.type"  "PRINCETON 2K"                    .
+      "_diffrn_detector.type"  "PSI PILATUS 6M"                  PIXEL
+      "_diffrn_detector.type"  "RAYONIX MX-225"                  CCD
+      "_diffrn_detector.type"  "RAYONIX MX-300"                  CCD
+      "_diffrn_detector.type"  "RAYONIX MX-325"                  CCD
+      "_diffrn_detector.type"  "RAYONIX MX170-HS"                CCD
+      "_diffrn_detector.type"  "RAYONIX MX225-HS"                CCD
+      "_diffrn_detector.type"  "RAYONIX MX300-HS"                CCD
+      "_diffrn_detector.type"  "RAYONIX MX340-HS"                CCD
+      "_diffrn_detector.type"  "RAYONIX MX425-HS"                CCD
+      "_diffrn_detector.type"  "RAYONIX MX225HE"                 CCD
+      "_diffrn_detector.type"  "RAYONIX MX300HE"                 CCD
+      "_diffrn_detector.type"  "RAYONIX MX325HE"                 CCD
+      "_diffrn_detector.type"  "RAYONIX SX-165mm"                CCD
+      "_diffrn_detector.type"  "RDI CMOS_8M"                     CMOS
+      "_diffrn_detector.type"  RIGAKU                            .
+      "_diffrn_detector.type"  "RIGAKU AFC-5R"                   .
+      "_diffrn_detector.type"  "RIGAKU AFC-6R"                   .
+      "_diffrn_detector.type"  "RIGAKU AFC-6S"                   .
+      "_diffrn_detector.type"  "RIGAKU AFC11"                    .
+      "_diffrn_detector.type"  "RIGAKU AFC11-KAPPA"              .
+      "_diffrn_detector.type"  "RIGAKU AFC9"                     .
+      "_diffrn_detector.type"  "RIGAKU JUPITER 140"              CCD
+      "_diffrn_detector.type"  "RIGAKU JUPITER 210"              CCD
+      "_diffrn_detector.type"  "RIGAKU MERCURY"                  CCD
+      "_diffrn_detector.type"  "RIGAKU RAXIS"                    "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS HR"                 "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS HTC"                "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS II"                 "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS IIC"                "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS IV"                 "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS IV++"               "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS V"                  "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU RAXIS VII"                "IMAGE PLATE"
+      "_diffrn_detector.type"  "RIGAKU SATURN 70"                CCD
+      "_diffrn_detector.type"  "RIGAKU SATURN 724"               CCD
+      "_diffrn_detector.type"  "RIGAKU SATURN 92"                CCD
+      "_diffrn_detector.type"  "RIGAKU SATURN 944"               CCD
+      "_diffrn_detector.type"  "RIGAKU SATURN 944+"              CCD
+      "_diffrn_detector.type"  "RIGAKU SATURN A200"              CCD
+      "_diffrn_detector.type"  SBC-2                             .
+      "_diffrn_detector.type"  SBC-3                             .
+      "_diffrn_detector.type"  SDMS                              .
+      "_diffrn_detector.type"  SIEMENS                           .
+      "_diffrn_detector.type"  "SIEMENS 2-D"                     .
+      "_diffrn_detector.type"  "SIEMENS AED2"                    .
+      "_diffrn_detector.type"  "SIEMENS FOUR-CIRCLE"             .
+      "_diffrn_detector.type"  "SIEMENS HI-STAR"                 .
+      "_diffrn_detector.type"  "SIEMENS P4"                      .
+      "_diffrn_detector.type"  SIEMENS-NICOLET                   .
+      "_diffrn_detector.type"  "SIEMENS-NICOLET X100"            .
+      "_diffrn_detector.type"  SIEMENS-XENTRONICS                .
+      "_diffrn_detector.type"  STOE                              .
+      "_diffrn_detector.type"  "STOE-SIEMENS AED2"               .
+      "_diffrn_detector.type"  SYNTEX                            .
+      "_diffrn_detector.type"  "TVIPS TEMCAM-F416"               .
+      "_diffrn_detector.type"  "UCSD MARK II"                    .
+      "_diffrn_detector.type"  "UCSD MARK III"                   .
+      "_diffrn_detector.type"  WEISSENBERG                       .
+      "_diffrn_detector.type"  XENTRONICS                        .
+     save_

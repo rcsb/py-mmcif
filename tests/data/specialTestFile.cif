@@ -1,0 +1,81 @@
+
+data_SPECIAL
+# 
+loop_
+_audit_author.name 
+'Fields, B.A.'   
+'Poljak, R.J.'   
+'Mariuzza, R.A.'
+.
+? 
+'embedded"quote'
+"'embedded'quote'"
+" double quoted string with embedded single quotes 'y' 'n' "
+' single quoted string with embedded double quotes "y" "y" '
+"' embedded quotes and whitespace'''"
+
+;1"'"quotes and spaces """
+2"'"quotes and spaces """
+3"'"quotes and spaces """
+; 
+
+;abcd
+;  extra1 extra2 extra3
+o5* o5' o5'  o5" 'o5"' o5'o5'o5'
+
+
+
+# 
+_cell.entry_id           1KIP 
+_cell.length_a           129.230 
+_cell.length_b           60.440 
+_cell.length_c           56.630 
+_cell.angle_alpha        90.00 
+_cell.angle_beta         119.05 
+_cell.angle_gamma        90.00 
+_cell.Z_PDB              4 
+_cell.pdbx_unique_axis   myAxis'  
+# 
+_database_PDB_matrix.entry_id          1KIP 
+_database_PDB_matrix.origx[1][1]       1.000000 
+_database_PDB_matrix.origx[1][2]       0.000000 
+_database_PDB_matrix.origx[1][3]       0.000000 
+_database_PDB_matrix.origx[2][1]       0.000000 
+_database_PDB_matrix.origx[2][2]       1.000000 
+_database_PDB_matrix.origx[2][3]       0.000000 
+_database_PDB_matrix.origx[3][1]       0.000000 
+_database_PDB_matrix.origx[3][2]       0.000000 
+_database_PDB_matrix.origx[3][3]       1.000000 
+_database_PDB_matrix.origx_vector[1]   0.00000 
+_database_PDB_matrix.origx_vector[2]   0.00000 
+_database_PDB_matrix.origx_vector[3]   0.00000 
+# 
+loop_
+_database_PDB_remark.id 
+_database_PDB_remark.text 
+2   
+;LINE1:RESOLUTION. 2.1  ANGSTROMS.
+LINE2:RESOLUTION. 2.1  ANGSTROMS.
+LINE3:RESOLUTION. 2.1  ANGSTROMS.
+;
+# 
+loop_
+_struct_ref_seq.align_id 
+_struct_ref_seq.ref_id 
+_struct_ref_seq.pdbx_PDB_id_code 
+_struct_ref_seq.pdbx_strand_id 
+_struct_ref_seq.seq_align_beg 
+_struct_ref_seq.pdbx_seq_align_beg_ins_code 
+_struct_ref_seq.seq_align_end 
+_struct_ref_seq.pdbx_seq_align_end_ins_code 
+_struct_ref_seq.pdbx_db_accession 
+_struct_ref_seq.db_align_beg 
+_struct_ref_seq.pdbx_db_align_beg_ins_code 
+_struct_ref_seq.db_align_end 
+_struct_ref_seq.pdbx_db_align_end_ins_code 
+_struct_ref_seq.pdbx_auth_seq_align_beg 
+_struct_ref_seq.pdbx_auth_seq_align_end 
+1 1 1KIP A 1 ? 107 ? 545862 1   ? 108 ? 1 [107] 
+2 2 1KIP B 1 ? 116 ? 896294 133 ? 248 ? 1 ]116] 
+3 3 1KIP C 1 ? 129 ? P00698 19  ? 147 ? 1 [129[ 
+

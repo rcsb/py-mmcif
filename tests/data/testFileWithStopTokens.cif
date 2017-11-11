@@ -1,0 +1,53 @@
+data_FAM_000001
+# 
+_pdbx_reference_molecule_family.family_prd_id    FAM_000001 
+_pdbx_reference_molecule_family.name             ACTINOMYCIN 
+_pdbx_reference_molecule_family.release_status   REL 
+_pdbx_reference_molecule_family.replaces         ? 
+_pdbx_reference_molecule_family.replaced_by      
+;  Multi-line string 
+   Multi-line string 
+;
+# 
+loop_
+_pdbx_reference_molecule_list.family_prd_id 
+_pdbx_reference_molecule_list.prd_id 
+FAM_000001 PRD_000001 
+FAM_000001 PRD_000002 
+stop_
+# 
+loop_
+_pdbx_reference_molecule_related_structures.family_prd_id 
+_pdbx_reference_molecule_related_structures.ordinal 
+_pdbx_reference_molecule_related_structures.citation_id 
+_pdbx_reference_molecule_related_structures.db_name 
+_pdbx_reference_molecule_related_structures.db_accession 
+_pdbx_reference_molecule_related_structures.db_code 
+_pdbx_reference_molecule_related_structures.name 
+_pdbx_reference_molecule_related_structures.formula 
+FAM_000001 1  1  CCDC 144860 POHMUU   
+;2,2'-D-bis(O-Methyltyrosinyl)-actinomycin D ethyl acetate hydrate
+;
+"C72 H90 N12 O18"                       
+FAM_000001 2  2  CCDC 140332 ZZZGQM   Actinomycin                                                         ?                                       
+FAM_000001 3  2  CCDC 140333 ZZZGQM01 Actinomycin                                                         ?                                       
+FAM_000001 4  3  CCDC 36676  BEJXET   
+;bis(Deoxyguanylyl-(3'-5')-deoxycytidine) actinomycin D hydrate
+;
+;C72 H90 N12 O18
+;
+stop_
+loop_
+_pdbx_reference_molecule_synonyms.family_prd_id 
+_pdbx_reference_molecule_synonyms.prd_id 
+_pdbx_reference_molecule_synonyms.ordinal 
+_pdbx_reference_molecule_synonyms.source 
+_pdbx_reference_molecule_synonyms.name 
+FAM_000001 PRD_000001 1   PDB        ACTINOMYCIN 
+FAM_000001 PRD_000001 2   SciFinder  
+; 3H-Phenoxazine-1,9-dicarboxamide, 2-amino-N,N'-bis(hexadecahydro-6,13-diisopropyl-2,5,9-trimethyl-1,4,7,11,14-pentaoxo-
+ 1H-pyrrolo[2,1-i][1,4,7,10,13]oxatetraazacyclohexadecin-10-yl)-4,6-dimethyl-3-oxo-(7CI)
+;
+stop_
+_pdbx_reference_molecule_family1.family_prd_id    FAM_000001 
+_pdbx_reference_molecule_family1.name             ACTINOMYCIN 

@@ -1,0 +1,6 @@
+# PDBX_MMCIF_UTILS HISTORY
+
+1-Aug-2017  - Initial GitHub Migration
+
+
+
