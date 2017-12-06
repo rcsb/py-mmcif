@@ -39,6 +39,14 @@ class DataCategory(DataCategoryBase):
     """
 
     def __init__(self, name, attributeNameList=None, rowList=None, raiseExceptions=True):
+        """Summary
+
+        Args:
+            name (TYPE): Description
+            attributeNameList (None, optional): Description
+            rowList (None, optional): Description
+            raiseExceptions (bool, optional): Description
+        """
         super(DataCategory, self).__init__(name, attributeNameList, rowList, raiseExceptions=raiseExceptions)
         #
         self.__verbose = False

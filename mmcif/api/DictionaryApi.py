@@ -1386,7 +1386,7 @@ class DictionaryApi(object):
                             ob.remove('item_linked')
 
     def __consolidateDefinitions(self):
-        """ Consolidate definitions into a singe save_ section per definition.
+        """ Consolidate definitions into a single save frame section per definition.
         """
         fullIndex = {}
         for d in self.__containerList:

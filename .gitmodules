@@ -1,0 +1,24 @@
+[submodule "modules/cc-regex"]
+	path = modules/cc-regex
+	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cc-regex.git
+[submodule "modules/cpp-cif-file"]
+	path = modules/cpp-cif-file
+	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cpp-cif-file.git
+[submodule "modules/cpp-cif-file-util"]
+	path = modules/cpp-cif-file-util
+	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cpp-cif-file-util.git
+[submodule "modules/cpp-cif-parser"]
+	path = modules/cpp-cif-parser
+	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cpp-cif-parser.git
+[submodule "modules/cpp-common"]
+	path = modules/cpp-common
+	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cpp-common.git
+[submodule "modules/cpp-dict-obj-file"]
+	path = modules/cpp-dict-obj-file
+	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cpp-dict-obj-file.git
+[submodule "modules/cpp-tables"]
+	path = modules/cpp-tables
+	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cpp-tables.git
+[submodule "modules/pybind11"]
+	path = modules/pybind11
+	url = https://github.com/RosettaCommons/pybind11.git

@@ -108,18 +108,19 @@ class PdbxReader(object):
         raise SyntaxError(msg)
 
     def __getContainerName(self, inWord):
-        """ Returns the name of the data_ or save_ container
+        """ Returns the name of the data block or saveframe container
         """
         return str(inWord[5:]).strip()
 
     def __getState(self, inWord):
         """Identifies reserved syntax elements and assigns an associated state.
 
-           Returns: (reserved word, state)
+           on return: (reserved word, state)
            where -
               reserved word -  is one of CIF syntax elements:
-                               data_, loop_, global_, save_, stop_
+                               data, loop, global, save, or stop
               state - the parser state required to process this next section.
+
         """
         i = inWord.find("_")
         if i == -1:
@@ -318,7 +319,7 @@ class PdbxReader(object):
                 continue
 
             elif state == "ST_DEFINITION":
-                # Ignore trailing unnamed saveframe delimiters e.g. 'save_'
+                # Ignore trailing unnamed saveframe delimiters e.g. 'save'
                 sName = self.__getContainerName(curWord)
                 if (len(sName) > 0):
                     curContainer = DefinitionContainer(sName)

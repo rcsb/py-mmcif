@@ -1010,7 +1010,7 @@ class PdbxBuild(object):
         return self.dApi
 
     def __consolidateDefinitions(self):
-        """ Consolidate definitions into a singe save_ section per definition.
+        """ Consolidate definitions into a single saveframe section per definition.
         """
         # preserve the original order of sections -
         nList = []
