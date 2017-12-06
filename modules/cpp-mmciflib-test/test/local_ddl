@@ -1,0 +1,264 @@
+###########################################################################
+#
+#
+#              NDB Supplement to the V 2.1 DDL Core Dictionary
+#
+#
+#
+###########################################################################
+
+#
+#  File: ndb_ddl_supplement
+#  Date: Oct 2, 1997 J. Westbrook
+#
+
+
+# --------------------------------------------------------------------------
+
+save_NDB_CATEGORY_DESCRIPTION
+
+    _category.description
+;
+     NDB description of data items in this category.
+;
+    _category.id                         ndb_category_description
+    _category.mandatory_code             no
+     loop_
+    _category_key.name                  '_ndb_category_description.id'
+
+'_ndb_category_description.description'
+     save_
+
+save__ndb_category_description.id
+    _item.name                        '_ndb_category_description.id'
+    _item.category_id                   ndb_category_description
+    _item.mandatory_code                implicit
+    _item_type.code                     idname
+    _item_linked.child_name           '_ndb_category_description.id'
+    _item_linked.parent_name          '_category.id'
+     save_
+
+save__ndb_category_description.description
+
+    _item_description.description
+;
+     NDB text description of a category.
+;
+    _item.name
+'_ndb_category_description.description'
+    _item.category_id                    ndb_category_description
+    _item.mandatory_code                 yes
+    _item_type.code                      text
+     save_
+
+
+
+# --------------------------------------------------------------------------
+
+save_NDB_CATEGORY_EXAMPLES
+
+    _category.description
+;
+     NDB example applications and descriptions of data items in this
+category.
+;
+    _category.id                         ndb_category_examples
+    _category.mandatory_code             no
+     loop_
+    _category_key.name                '_ndb_category_examples.id'
+                                      '_ndb_category_examples.case'
+     save_
+
+save__ndb_category_examples.id
+    _item.name                        '_ndb_category_examples.id'
+    _item.category_id                   ndb_category_examples
+    _item.mandatory_code                implicit
+    _item_type.code                     idname
+    _item_linked.child_name           '_ndb_category_examples.id'
+    _item_linked.parent_name          '_category.id'
+
+     save_
+
+save__ndb_category_examples.case
+
+    _item_description.description
+;
+     NDB case of examples involving items in this category.
+;
+    _item.name                         '_ndb_category_examples.case'
+    _item.category_id                    ndb_category_examples
+    _item.mandatory_code                 yes
+    _item_type.code                      text
+     save_
+
+
+save__ndb_category_examples.detail
+
+    _item_description.description
+;
+     NDB description of an example _category_examples.case
+;
+    _item.name                         '_ndb_category_examples.detail'
+    _item.category_id                    ndb_category_examples
+    _item.mandatory_code                 no
+    _item_type.code                      text
+     save_
+
+
+# --------------------------------------------------------------------------
+
+save_NDB_ITEM_DESCRIPTION
+
+    _category.description
+;
+     This category holds the NDB descriptions of each data item.
+;
+    _category.id                         ndb_item_description
+    _category.mandatory_code             no
+     loop_
+    _category_key.name                 '_ndb_item_description.name'
+                                       '_ndb_item_description.description'
+     loop_
+    _category_group.id                   'ddl_group'
+                                         'item_group'
+     save_
+
+save__ndb_item_description.name
+
+    _item_description.description
+;
+     Data name of the defined item.
+;
+    _item.name                         '_ndb_item_description.name'
+    _item.category_id                    ndb_item_description
+    _item.mandatory_code                 implicit
+    _item_type.code                      name
+    _item_linked.child_name            '_ndb_item_description.name'
+    _item_linked.parent_name           '_item.name'
+     save_
+
+
+save__ndb_item_description.description
+
+    _item_description.description
+;
+     NDB text description of the defined data item.
+;
+    _item.name                         '_ndb_item_description.description'
+    _item.category_id                    ndb_item_description
+    _item.mandatory_code                 yes
+    _item_type.code                      text
+     save_
+
+
+# --------------------------------------------------------------------------
+
+
+save_NDB_ITEM_ENUMERATION
+
+    _category.description
+;
+     Attributes which specify the permitted enumeration of the items.
+;
+    _category.id                         ndb_item_enumeration
+    _category.mandatory_code             no
+     loop_
+    _category_key.name                 '_ndb_item_enumeration.name'
+                                       '_ndb_item_enumeration.value'
+      loop_
+     _category_group.id                'ddl_group'
+                                       'item_group'
+     save_
+
+save__ndb_item_enumeration.name
+    _item.name                         '_ndb_item_enumeration.name'
+    _item.category_id                    ndb_item_enumeration
+    _item.mandatory_code                 implicit
+    _item_type.code                      name
+    _item_linked.child_name            '_ndb_item_enumeration.name'
+    _item_linked.parent_name           '_item.name'
+     save_
+
+
+save__ndb_item_enumeration.value
+
+    _item_description.description
+;
+     A permissible value, character or number, for the defined item.
+;
+    _item.name                         '_ndb_item_enumeration.value'
+    _item.category_id                    ndb_item_enumeration
+    _item.mandatory_code                 yes
+    _item_type.code                      any
+     save_
+
+
+save__ndb_item_enumeration.detail
+
+    _item_description.description
+;
+     A description of a permissible value for the defined item.
+;
+    _item.name                         '_ndb_item_enumeration.detail'
+    _item.category_id                    ndb_item_enumeration
+    _item.mandatory_code                 no
+    _item_type.code                      text
+     save_
+
+
+# --------------------------------------------------------------------------
+
+save_NDB_ITEM_EXAMPLES
+
+    _category.description
+;
+    Attributes for describing application examples of the data item.
+;
+    _category.id                         ndb_item_examples
+    _category.mandatory_code             no
+     loop_
+    _category_key.name                '_ndb_item_examples.name'
+                                      '_ndb_item_examples.case'
+     loop_
+     _category_group.id               'ddl_group'
+                                      'item_group'
+     save_
+
+
+save__ndb_item_examples.case
+
+    _item_description.description
+;
+     NDB example application of the defined data item.
+;
+    _item.name                         '_ndb_item_examples.case'
+    _item.category_id                    ndb_item_examples
+    _item.mandatory_code                 yes
+    _item_type.code                      text
+     save_
+
+
+save__ndb_item_examples.detail
+
+    _item_description.description
+;
+     NDB description of an example specified in _ndb_item_example.case
+;
+    _item.name                         '_ndb_item_examples.detail'
+    _item.category_id                    ndb_item_examples
+    _item.mandatory_code                 yes
+    _item_type.code                      text
+     save_
+
+save__ndb_item_examples.name
+    _item.name                         '_ndb_item_examples.name'
+    _item.category_id                    ndb_item_examples
+    _item.mandatory_code                 implicit
+    _item_type.code                      name
+    _item_linked.child_name            '_ndb_item_examples.name'
+    _item_linked.parent_name           '_item.name'
+     save_
+
+
+# --------------------------------------------------------------------------
+

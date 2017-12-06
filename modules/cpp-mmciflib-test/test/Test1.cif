@@ -1,0 +1,183 @@
+data_DATABLOCK_1
+#
+# Simple loop of unquoted words ...
+#
+loop_
+_category0.item1  
+_category0.item2  
+aa bb cc dd ee dd
+
+#
+#  Simple assignments with single and double quotes
+#               and missing quotes...
+#
+_category1.item1  '      abcdefghijklmnopqrstuvwxyz'
+_category1.item2  "abcdefghijklmnopqrstuvwxyz"
+_category1.item3  "abcdefghijklmnopqrstuvwxyz
+_category1.item4   abcdefghijklmnopqrstuvwxyz"
+_category1.item5  'abcdefghijklmnopqrstuvwxyz
+_category1.item6   abcdefghijklmnopqrstuvwxyz'
+
+#
+#  Loops with mixed quotes..
+#
+loop_
+_category2.item1
+_category2.item2  
+'abcdefghijklmnopqrstuvwxyz' "abcdefghijklmnopqrstuvwxyz"
+
+#
+# Standard multiline text sections
+#
+#loop_
+loop_
+_category3.item2  
+; 
+This is the data section 1 line 1 ....
+This is the data section 1 line 2 ....
+;
+; 
+This is the data section 2 line 1 ....
+This is the data section 2 line 2 ....
+;
+_category20.item1    aa
+_category20.item2    'aa bb'
+#
+
+#
+#  Some multine text sections that have proved troublesome.
+#
+_category4.item0
+;;SOME TEXT;;
+;
+_category4.item1
+';SOME TEXT;;'
+
+_category4.item2  
+;"Quoted text within a multiline section"
+;
+_category4.item3
+;  Quoted text within a multiline section 'This is quoted'
+;
+
+_category4.item4
+;ABCDEFGHIJKLMNOPTEXT
+;
+#
+#  Bazaar embedded quotation cases...
+#
+loop_
+_category6.item1 
+_category6.item2 
+_category6.item3
+b b b
+A 'A' 
+;A
+;
+stop_
+#
+loop_
+_category5.item1  
+_category5.item2  
+_category5.item3
+''x'   'x'' 'y'z'  
+  ''z'' ""y"  "'y"  
+ "" '' "'abc'"
+'[][ \t_(),.;:"&<>/\{}'`~!@#$%?+=*A-Za-z0-9|^-]*'
+'[][ \t_(),.;:"&<>/\{}'`~!@#$%?+=*A-Za-z0-9|^-]*'
+'[][ \t_(),.;:"&<>/\{}'`~!@#$%?+=*A-Za-z0-9|^-]*' stop_
+#
+#
+
+
+data_DATABLOCK_2
+#
+# Simple loop of unquoted words ...
+#
+loop_
+_category0.item1  
+_category0.item2  
+aa bb cc dd ee
+
+#
+#  Simple assignments with single and double quotes
+#               and missing quotes...
+#
+_category1.item1  '      abcdefghijklmnopqrstuvwxyz'
+_category1.item2  "abcdefghijklmnopqrstuvwxyz"
+_category1.item3  "abcdefghijklmnopqrstuvwxyz
+_category1.item4   abcdefghijklmnopqrstuvwxyz"
+_category1.item5  'abcdefghijklmnopqrstuvwxyz
+_category1.item6   abcdefghijklmnopqrstuvwxyz'
+
+#
+#  Loops with mixed quotes..
+#
+loop_
+_category2.item1
+_category2.item2  
+'abcdefghijklmnopqrstuvwxyz' "abcdefghijklmnopqrstuvwxyz"
+
+#
+# Standard multiline text sections
+#
+#loop_
+loop_
+_category3.item2  
+; 
+This is the data section 1 line 1 ....
+This is the data section 1 line 2 ....
+;
+; 
+This is the data section 2 line 1 ....
+This is the data section 2 line 2 ....
+;
+_category20.item1    aa
+_category20.item2    'aa bb'
+#
+
+#
+#  Some multine text sections that have proved troublesome.
+#
+_category4.item0
+;;SOME TEXT;;
+;
+_category4.item1
+';SOME TEXT;;'
+
+_category4.item2  
+;"Quoted text within a multiline section"
+;
+_category4.item3
+;  Quoted text within a multiline section 'This is quoted'
+;
+
+_category4.item4
+;ABCDEFGHIJKLMNOPTEXT
+;
+#
+#  Bazaar embedded quotation cases...
+#
+loop_
+_category6.item1 
+_category6.item2 
+_category6.item3
+b b b
+A 'A' 
+;A
+;
+#
+loop_
+_category5.item1  
+_category5.item2  
+_category5.item3
+''x'   'x'' 'y'z'  
+  ''z'' ""y"  "'y"  
+ "" '' "'abc'"
+'[][ \t_(),.;:"&<>/\{}'`~!@#$%?+=*A-Za-z0-9|^-]*'
+'[][ \t_(),.;:"&<>/\{}'`~!@#$%?+=*A-Za-z0-9|^-]*'
+'[][ \t_(),.;:"&<>/\{}'`~!@#$%?+=*A-Za-z0-9|^-]*'
+#
+#
+
+

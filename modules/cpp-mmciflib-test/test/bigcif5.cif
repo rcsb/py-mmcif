@@ -1,0 +1,394 @@
+
+data_ZYA
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     ZYA 'C1'        C  .  .  .
+     ZYA 'O1'        O  .  .  .
+     ZYA 'O2'        O  .  .  .
+     ZYA 'N1'        N  .  .  .
+     ZYA 'C2'        C  .  .  .
+     ZYA 'C3'        C  .  .  .
+     ZYA '1H2'       H  .  .  .
+     ZYA '2H2'       H  .  .  .
+     ZYA 'C4'        C  .  .  .
+     ZYA 'C8'        C  .  .  .
+     ZYA 'C5'        C  .  .  .
+     ZYA 'H4'        H  .  .  .
+     ZYA 'C6'        C  .  .  .
+     ZYA 'H5'        H  .  .  .
+     ZYA 'C7'        C  .  .  .
+     ZYA 'H6'        H  .  .  .
+     ZYA 'H7'        H  .  .  .
+     ZYA 'H8'        H  .  .  .
+     ZYA 'CA1'       C  .  .  .
+     ZYA 'CB1'       C  .  .  .
+     ZYA 'C'         C  .  .  .
+     ZYA 'HA1'       H  .  .  .
+     ZYA 'CG'        C  .  .  .
+     ZYA '1HB1'      H  .  .  .
+     ZYA '2HB1'      H  .  .  .
+     ZYA 'CD1'       C  .  .  .
+     ZYA 'CD2'       C  .  .  .
+     ZYA 'CE1'       C  .  .  .
+     ZYA 'HD1'       H  .  .  .
+     ZYA 'CE2'       C  .  .  .
+     ZYA 'HD2'       H  .  .  .
+     ZYA 'CZ'        C  .  .  .
+     ZYA 'HE1'       H  .  .  .
+     ZYA 'HE2'       H  .  .  .
+     ZYA 'OH'        O  .  .  .
+     ZYA 'N2'        N  .  .  .
+     ZYA 'O'         O  .  .  .
+     ZYA 'CA2'       C  .  .  .
+     ZYA 'CB2'       C  .  .  .
+     ZYA 'CT'        C  .  .  .
+     ZYA 'HA2'       H  .  .  .
+     ZYA '1HB2'      H  .  .  .
+     ZYA '2HB2'      H  .  .  .
+     ZYA '3HB2'      H  .  .  .
+     ZYA 'CM'        C  .  .  .
+     ZYA 'OT'        O  .  .  .
+     ZYA '1HM'       H  .  .  .
+     ZYA '2HM'       H  .  .  .
+     ZYA '3HM'       H  .  .  .
+     ZYA 'HN1'       H  .  .  .
+     ZYA 'HN2'       H  .  .  .
+     ZYA 'HO'        H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     ZYA 'C1'     'O1'     .  .  .
+     ZYA 'C1'     'O2'     .  .  .
+     ZYA 'C1'     'N1'     .  .  .
+     ZYA 'C2'     'C3'     .  .  .
+     ZYA 'C2'     'O2'     .  .  .
+     ZYA 'C2'     '1H2'    .  .  .
+     ZYA 'C2'     '2H2'    .  .  .
+     ZYA 'C3'     'C4'     .  .  .
+     ZYA 'C3'     'C8'     .  .  .
+     ZYA 'C4'     'C5'     .  .  .
+     ZYA 'C4'     'H4'     .  .  .
+     ZYA 'C5'     'C6'     .  .  .
+     ZYA 'C5'     'H5'     .  .  .
+     ZYA 'C6'     'C7'     .  .  .
+     ZYA 'C6'     'H6'     .  .  .
+     ZYA 'C7'     'C8'     .  .  .
+     ZYA 'C7'     'H7'     .  .  .
+     ZYA 'C8'     'H8'     .  .  .
+     ZYA 'CA1'    'CB1'    .  .  .
+     ZYA 'CA1'    'C'      .  .  .
+     ZYA 'CA1'    'N1'     .  .  .
+     ZYA 'CA1'    'HA1'    .  .  .
+     ZYA 'CB1'    'CG'     .  .  .
+     ZYA 'CB1'    '1HB1'   .  .  .
+     ZYA 'CB1'    '2HB1'   .  .  .
+     ZYA 'CG'     'CD1'    .  .  .
+     ZYA 'CG'     'CD2'    .  .  .
+     ZYA 'CD1'    'CE1'    .  .  .
+     ZYA 'CD1'    'HD1'    .  .  .
+     ZYA 'CD2'    'CE2'    .  .  .
+     ZYA 'CD2'    'HD2'    .  .  .
+     ZYA 'CE1'    'CZ'     .  .  .
+     ZYA 'CE1'    'HE1'    .  .  .
+     ZYA 'CE2'    'CZ'     .  .  .
+     ZYA 'CE2'    'HE2'    .  .  .
+     ZYA 'CZ'     'OH'     .  .  .
+     ZYA 'C'      'N2'     .  .  .
+     ZYA 'C'      'O'      .  .  .
+     ZYA 'CA2'    'CB2'    .  .  .
+     ZYA 'CA2'    'CT'     .  .  .
+     ZYA 'CA2'    'N2'     .  .  .
+     ZYA 'CA2'    'HA2'    .  .  .
+     ZYA 'CB2'    '1HB2'   .  .  .
+     ZYA 'CB2'    '2HB2'   .  .  .
+     ZYA 'CB2'    '3HB2'   .  .  .
+     ZYA 'CT'     'CM'     .  .  .
+     ZYA 'CT'     'OT'     .  .  .
+     ZYA 'CM'     '1HM'    .  .  .
+     ZYA 'CM'     '2HM'    .  .  .
+     ZYA 'CM'     '3HM'    .  .  .
+     ZYA 'N1'     'HN1'    .  .  .
+     ZYA 'N2'     'HN2'    .  .  .
+     ZYA 'OH'     'HO'     .  .  .
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   'ZYA'
+_chem_comp.name
+'BENZOYL-TYROSINE-ALANINE-METHYL KETONE'
+
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+'C21 H24 N2 O5'
+
+_chem_comp.number_atoms_all     52
+_chem_comp.number_atoms_nh      28
+_chem_comp.formula_weight      384.42
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+data_061
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '061'
+_chem_comp.name
+'L-159,061'
+
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+'C26 H24 N6 O2'
+
+_chem_comp.number_atoms_all     58
+_chem_comp.number_atoms_nh      34
+_chem_comp.formula_weight      452.51
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     061 'N1'        N  .  .  .
+     061 'N2'        N  .  .  .
+     061 'C5'        C  .  .  .
+     061 'N3'        N  .  .  .
+     061 'N4'        N  .  .  .
+     061 'HN4'       H  .  .  .
+     061 'C6'        C  .  .  .
+     061 'C7'        C  .  .  .
+     061 'C11'       C  .  .  .
+     061 'C8'        C  .  .  .
+     061 'C12'       C  .  .  .
+     061 'C9'        C  .  .  .
+     061 'H8'        H  .  .  .
+     061 'C10'       C  .  .  .
+     061 'H9'        H  .  .  .
+     061 'H10'       H  .  .  .
+     061 'H11'       H  .  .  .
+     061 'C13'       C  .  .  .
+     061 'C17'       C  .  .  .
+     061 'C14'       C  .  .  .
+     061 'H13'       H  .  .  .
+     061 'C15'       C  .  .  .
+     061 'H14'       H  .  .  .
+     061 'C16'       C  .  .  .
+     061 'C18'       C  .  .  .
+     061 'H16'       H  .  .  .
+     061 'H17'       H  .  .  .
+     061 'N19'       N  .  .  .
+     061 '1H18'      H  .  .  .
+     061 '2H18'      H  .  .  .
+     061 'C20'       C  .  .  .
+     061 'C33'       C  .  .  .
+     061 'C21'       C  .  .  .
+     061 'N25'       N  .  .  .
+     061 'C22'       C  .  .  .
+     061 '1H21'      H  .  .  .
+     061 '2H21'      H  .  .  .
+     061 'C23'       C  .  .  .
+     061 '1H22'      H  .  .  .
+     061 '2H22'      H  .  .  .
+     061 'C24'       C  .  .  .
+     061 '1H23'      H  .  .  .
+     061 '2H23'      H  .  .  .
+     061 '1H24'      H  .  .  .
+     061 '2H24'      H  .  .  .
+     061 '3H24'      H  .  .  .
+     061 'C26'       C  .  .  .
+     061 'C27'       C  .  .  .
+     061 'C32'       C  .  .  .
+     061 'C28'       C  .  .  .
+     061 'H27'       H  .  .  .
+     061 'C29'       C  .  .  .
+     061 'H28'       H  .  .  .
+     061 'O30'       O  .  .  .
+     061 'C31'       C  .  .  .
+     061 'HOU'       H  .  .  .
+     061 'H31'       H  .  .  .
+     061 'O34'       O  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     061 'N1'     'N2'     .  .  .
+     061 'N1'     'C5'     .  .  .
+     061 'N2'     'N3'     .  .  .
+     061 'N3'     'N4'     .  .  .
+     061 'N4'     'C5'     .  .  .
+     061 'N4'     'HN4'    .  .  .
+     061 'C5'     'C6'     .  .  .
+     061 'C6'     'C7'     .  .  .
+     061 'C6'     'C11'    .  .  .
+     061 'C7'     'C8'     .  .  .
+     061 'C7'     'C12'    .  .  .
+     061 'C8'     'C9'     .  .  .
+     061 'C8'     'H8'     .  .  .
+     061 'C9'     'C10'    .  .  .
+     061 'C9'     'H9'     .  .  .
+     061 'C10'    'C11'    .  .  .
+     061 'C10'    'H10'    .  .  .
+     061 'C11'    'H11'    .  .  .
+     061 'C12'    'C13'    .  .  .
+     061 'C12'    'C17'    .  .  .
+     061 'C13'    'C14'    .  .  .
+     061 'C13'    'H13'    .  .  .
+     061 'C14'    'C15'    .  .  .
+     061 'C14'    'H14'    .  .  .
+     061 'C15'    'C16'    .  .  .
+     061 'C15'    'C18'    .  .  .
+     061 'C16'    'C17'    .  .  .
+     061 'C16'    'H16'    .  .  .
+     061 'C17'    'H17'    .  .  .
+     061 'C18'    'N19'    .  .  .
+     061 'C18'    '1H18'   .  .  .
+     061 'C18'    '2H18'   .  .  .
+     061 'N19'    'C20'    .  .  .
+     061 'N19'    'C33'    .  .  .
+     061 'C20'    'C21'    .  .  .
+     061 'C20'    'N25'    .  .  .
+     061 'C21'    'C22'    .  .  .
+     061 'C21'    '1H21'   .  .  .
+     061 'C21'    '2H21'   .  .  .
+     061 'C22'    'C23'    .  .  .
+     061 'C22'    '1H22'   .  .  .
+     061 'C22'    '2H22'   .  .  .
+     061 'C23'    'C24'    .  .  .
+     061 'C23'    '1H23'   .  .  .
+     061 'C23'    '2H23'   .  .  .
+     061 'C24'    '1H24'   .  .  .
+     061 'C24'    '2H24'   .  .  .
+     061 'C24'    '3H24'   .  .  .
+     061 'N25'    'C26'    .  .  .
+     061 'C26'    'C27'    .  .  .
+     061 'C26'    'C32'    .  .  .
+     061 'C27'    'C28'    .  .  .
+     061 'C27'    'H27'    .  .  .
+     061 'C28'    'C29'    .  .  .
+     061 'C28'    'H28'    .  .  .
+     061 'C29'    'O30'    .  .  .
+     061 'C29'    'C31'    .  .  .
+     061 'O30'    'HOU'    .  .  .
+     061 'C31'    'C32'    .  .  .
+     061 'C31'    'H31'    .  .  .
+     061 'C32'    'C33'    .  .  .
+     061 'C33'    'O34'    .  .  .
+
+data_13P
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     13P 'P'      'O1'     .  .  .
+     13P 'P'      'O1P'    .  .  .
+     13P 'P'      'O2P'    .  .  .
+     13P 'P'      'O3P'    .  .  .
+     13P 'O2P'    '2HOP'   .  .  .
+     13P 'O3P'    '3HOP'   .  .  .
+     13P 'O1'     'C1'     .  .  .
+     13P 'C1'     'C2'     .  .  .
+     13P 'C1'     '1H1'    .  .  .
+     13P 'C1'     '2H1'    .  .  .
+     13P 'C2'     'C3'     .  .  .
+     13P 'C2'     'O2'     .  .  .
+     13P 'C3'     'O3'     .  .  .
+     13P 'C3'     '1H3'    .  .  .
+     13P 'C3'     '2H3'    .  .  .
+     13P 'O3'     'HO3'    .  .  .
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     13P 'P'         P  .  .  .
+     13P 'O1'        O  .  .  .
+     13P 'O1P'       O  .  .  .
+     13P 'O2P'       O  .  .  .
+     13P 'O3P'       O  .  .  .
+     13P '2HOP'      H  .  .  .
+     13P '3HOP'      H  .  .  .
+     13P 'C1'        C  .  .  .
+     13P 'C2'        C  .  .  .
+     13P '1H1'       H  .  .  .
+     13P '2H1'       H  .  .  .
+     13P 'C3'        C  .  .  .
+     13P 'O2'        O  .  .  .
+     13P 'O3'        O  .  .  .
+     13P '1H3'       H  .  .  .
+     13P '2H3'       H  .  .  .
+     13P 'HO3'       H  .  .  .
+
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '13P'
+_chem_comp.name
+'1,3-DIHYDROXYACETONEPHOSPHATE'
+
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+'C3 H7 O6 P1'
+
+_chem_comp.number_atoms_all     17
+_chem_comp.number_atoms_nh      10
+_chem_comp.formula_weight      170.08
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          .
+

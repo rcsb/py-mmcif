@@ -1,0 +1,245 @@
+#
+loop_
+_category0.item1  
+_category0.item2  
+aa0 bb0 cc0 dd0 
+#
+_category1.item1  a1
+_category1.item2  b1
+_category1.item3  c1
+_category1.item4  d1
+#
+_category2.item1  a2
+_category2.item2  b2
+#
+#  empty loop
+#
+loop_
+_category3.item1 
+_category3.item2 
+#
+loop_
+_category4.item1 
+_category4.item2 
+_category4.item3 
+_category4.item4 
+a4 b4 c4 d4 
+#
+_category5.item1  aa5 
+_category5.item2  bb5
+_category5.item3  cc5 
+_category5.item4  dd5 
+#
+#  empty loop
+#
+loop_
+_category6.item1 
+_category6.item2 
+_category6.item3
+# 
+loop_
+_category7.item1 
+_category7.item2 
+a7 b7 c7 d7
+
+#
+_category8.item1  aa8 
+_category8.item2  bb8 
+_category8.item3  cc8 
+#
+data_DATABLOCK1
+#
+loop_
+_category0.item1  
+_category0.item2  
+aa0 bb0 cc0 dd0 
+#
+_category1.item1  a1
+_category1.item2  b1
+_category1.item3  c1
+_category1.item4  d1
+#
+_category2.item1  a2
+_category2.item2  b2
+#
+#  empty loop
+#
+loop_
+_category3.item1 
+_category3.item2 
+#
+loop_
+_category4.item1 
+_category4.item2 
+_category4.item3 
+_category4.item4 
+a4 b4 c4 d4 
+#
+_category5.item1  aa5 
+_category5.item2  bb5
+_category5.item3  cc5 
+_category5.item4  dd5 
+#
+#  empty loop
+#
+loop_
+_category6.item1 
+_category6.item2 
+_category6.item3
+# 
+loop_
+_category7.item1 
+_category7.item2 
+a7 b7 c7 d7
+
+#
+_category8.item1  aa8 
+_category8.item2  bb8 
+_category8.item3  cc8 
+data_DATABLOCK2
+#
+loop_
+_category0.item1  
+_category0.item2  
+aa0 bb0 cc0 dd0 
+#
+_category1.item1  a1
+_category1.item2  b1
+_category1.item3  c1
+_category1.item4  d1
+#
+_category2.item1  a2
+_category2.item2  b2
+#
+#  empty loop
+#
+loop_
+_category3.item1 
+_category3.item2 
+#
+loop_
+_category4.item1 
+_category4.item2 
+_category4.item3 
+_category4.item4 
+a4 b4 c4 d4 
+#
+_category5.item1  aa5 
+_category5.item2  bb5
+_category5.item3  cc5 
+_category5.item4  dd5 
+#
+#  empty loop
+#
+loop_
+_category6.item1 
+_category6.item2 
+_category6.item3
+# 
+loop_
+_category7.item1 
+_category7.item2 
+a7 b7 c7 d7
+#
+_category8.item1  aa8 
+_category8.item2  bb8 
+_category8.item3  cc8 
+data_DATABLOCK3
+#
+loop_
+_category0.item1  
+_category0.item2  
+aa0 bb0 cc0 dd0 
+#
+_category1.item1  a1
+_category1.item2  b1
+_category1.item3  c1
+_category1.item4  d1
+#
+_category2.item1  a2
+_category2.item2  b2
+#
+#  empty loop
+#
+loop_
+_category3.item1 
+_category3.item2 
+#
+loop_
+_category4.item1 
+_category4.item2 
+_category4.item3 
+_category4.item4 
+a4 b4 c4 d4 
+#
+_category5.item1  aa5 
+_category5.item2  bb5
+_category5.item3  cc5 
+_category5.item4  dd5 
+#
+#  empty loop
+#
+loop_
+_category6.item1 
+_category6.item2 
+_category6.item3
+# 
+loop_
+_category7.item1 
+_category7.item2 
+a7 b7 c7 d7
+#
+_category8.item1  aa8 
+_category8.item2  bb8 
+_category8.item3  cc8 
+data_DATABLOCK4
+#
+loop_
+_category0.item1  
+_category0.item2  
+aa0 bb0 cc0 dd0 
+#
+_category1.item1  a1
+_category1.item2  b1
+_category1.item3  c1
+_category1.item4  d1
+#
+_category2.item1  a2
+_category2.item2  b2
+#
+#  empty loop
+#
+loop_
+_category3.item1 
+_category3.item2 
+#
+loop_
+_category4.item1 
+_category4.item2 
+_category4.item3 
+_category4.item4 
+a4 b4 c4 d4 
+#
+_category5.item1  aa5 
+_category5.item2  bb5
+_category5.item3  cc5 
+_category5.item4  dd5 
+#
+#  empty loop
+#
+loop_
+_category6.item1 
+_category6.item2 
+_category6.item3
+# 
+loop_
+_category7.item1 
+_category7.item2 
+a7 b7 c7 d7
+#
+_category8.item1  aa8 
+_category8.item2  bb8 
+_category8.item3  cc8 
+#
+
+

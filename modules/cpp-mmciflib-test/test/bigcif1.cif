@@ -1,0 +1,2710 @@
+
+data_1MZ
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1MZ'
+_chem_comp.name
+;1-METHYLIMIDAZOLE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C4 H7 N2
+;
+_chem_comp.number_atoms_all     13
+_chem_comp.number_atoms_nh      6
+_chem_comp.formula_weight       83.12
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1MZ 'N1'        N  .  .  .
+     1MZ 'CM1'       C  .  .  .
+     1MZ 'C2'        C  .  .  .
+     1MZ 'C5'        C  .  .  .
+     1MZ 'N3'        N  .  .  .
+     1MZ 'H2'        H  .  .  .
+     1MZ 'C4'        C  .  .  .
+     1MZ 'HN3'       H  .  .  .
+     1MZ 'H4'        H  .  .  .
+     1MZ 'H5'        H  .  .  .
+     1MZ '1HM1'      H  .  .  .
+     1MZ '2HM1'      H  .  .  .
+     1MZ '3HM1'      H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1MZ 'N1'     'CM1'    .  .  .
+     1MZ 'N1'     'C2'     .  .  .
+     1MZ 'N1'     'C5'     .  .  .
+     1MZ 'C2'     'N3'     .  .  .
+     1MZ 'C2'     'H2'     .  .  .
+     1MZ 'N3'     'C4'     .  .  .
+     1MZ 'N3'     'HN3'    .  .  .
+     1MZ 'C4'     'C5'     .  .  .
+     1MZ 'C4'     'H4'     .  .  .
+     1MZ 'C5'     'H5'     .  .  .
+     1MZ 'CM1'    '1HM1'   .  .  .
+     1MZ 'CM1'    '2HM1'   .  .  .
+     1MZ 'CM1'    '3HM1'   .  .  .
+data_061
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '061'
+_chem_comp.name
+;L-159,061
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C26 H24 N6 O2
+;
+_chem_comp.number_atoms_all     58
+_chem_comp.number_atoms_nh      34
+_chem_comp.formula_weight      452.51
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     061 'N1'        N  .  .  .
+     061 'N2'        N  .  .  .
+     061 'C5'        C  .  .  .
+     061 'N3'        N  .  .  .
+     061 'N4'        N  .  .  .
+     061 'HN4'       H  .  .  .
+     061 'C6'        C  .  .  .
+     061 'C7'        C  .  .  .
+     061 'C11'       C  .  .  .
+     061 'C8'        C  .  .  .
+     061 'C12'       C  .  .  .
+     061 'C9'        C  .  .  .
+     061 'H8'        H  .  .  .
+     061 'C10'       C  .  .  .
+     061 'H9'        H  .  .  .
+     061 'H10'       H  .  .  .
+     061 'H11'       H  .  .  .
+     061 'C13'       C  .  .  .
+     061 'C17'       C  .  .  .
+     061 'C14'       C  .  .  .
+     061 'H13'       H  .  .  .
+     061 'C15'       C  .  .  .
+     061 'H14'       H  .  .  .
+     061 'C16'       C  .  .  .
+     061 'C18'       C  .  .  .
+     061 'H16'       H  .  .  .
+     061 'H17'       H  .  .  .
+     061 'N19'       N  .  .  .
+     061 '1H18'      H  .  .  .
+     061 '2H18'      H  .  .  .
+     061 'C20'       C  .  .  .
+     061 'C33'       C  .  .  .
+     061 'C21'       C  .  .  .
+     061 'N25'       N  .  .  .
+     061 'C22'       C  .  .  .
+     061 '1H21'      H  .  .  .
+     061 '2H21'      H  .  .  .
+     061 'C23'       C  .  .  .
+     061 '1H22'      H  .  .  .
+     061 '2H22'      H  .  .  .
+     061 'C24'       C  .  .  .
+     061 '1H23'      H  .  .  .
+     061 '2H23'      H  .  .  .
+     061 '1H24'      H  .  .  .
+     061 '2H24'      H  .  .  .
+     061 '3H24'      H  .  .  .
+     061 'C26'       C  .  .  .
+     061 'C27'       C  .  .  .
+     061 'C32'       C  .  .  .
+     061 'C28'       C  .  .  .
+     061 'H27'       H  .  .  .
+     061 'C29'       C  .  .  .
+     061 'H28'       H  .  .  .
+     061 'O30'       O  .  .  .
+     061 'C31'       C  .  .  .
+     061 'HOU'       H  .  .  .
+     061 'H31'       H  .  .  .
+     061 'O34'       O  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     061 'N1'     'N2'     .  .  .
+     061 'N1'     'C5'     .  .  .
+     061 'N2'     'N3'     .  .  .
+     061 'N3'     'N4'     .  .  .
+     061 'N4'     'C5'     .  .  .
+     061 'N4'     'HN4'    .  .  .
+     061 'C5'     'C6'     .  .  .
+     061 'C6'     'C7'     .  .  .
+     061 'C6'     'C11'    .  .  .
+     061 'C7'     'C8'     .  .  .
+     061 'C7'     'C12'    .  .  .
+     061 'C8'     'C9'     .  .  .
+     061 'C8'     'H8'     .  .  .
+     061 'C9'     'C10'    .  .  .
+     061 'C9'     'H9'     .  .  .
+     061 'C10'    'C11'    .  .  .
+     061 'C10'    'H10'    .  .  .
+     061 'C11'    'H11'    .  .  .
+     061 'C12'    'C13'    .  .  .
+     061 'C12'    'C17'    .  .  .
+     061 'C13'    'C14'    .  .  .
+     061 'C13'    'H13'    .  .  .
+     061 'C14'    'C15'    .  .  .
+     061 'C14'    'H14'    .  .  .
+     061 'C15'    'C16'    .  .  .
+     061 'C15'    'C18'    .  .  .
+     061 'C16'    'C17'    .  .  .
+     061 'C16'    'H16'    .  .  .
+     061 'C17'    'H17'    .  .  .
+     061 'C18'    'N19'    .  .  .
+     061 'C18'    '1H18'   .  .  .
+     061 'C18'    '2H18'   .  .  .
+     061 'N19'    'C20'    .  .  .
+     061 'N19'    'C33'    .  .  .
+     061 'C20'    'C21'    .  .  .
+     061 'C20'    'N25'    .  .  .
+     061 'C21'    'C22'    .  .  .
+     061 'C21'    '1H21'   .  .  .
+     061 'C21'    '2H21'   .  .  .
+     061 'C22'    'C23'    .  .  .
+     061 'C22'    '1H22'   .  .  .
+     061 'C22'    '2H22'   .  .  .
+     061 'C23'    'C24'    .  .  .
+     061 'C23'    '1H23'   .  .  .
+     061 'C23'    '2H23'   .  .  .
+     061 'C24'    '1H24'   .  .  .
+     061 'C24'    '2H24'   .  .  .
+     061 'C24'    '3H24'   .  .  .
+     061 'N25'    'C26'    .  .  .
+     061 'C26'    'C27'    .  .  .
+     061 'C26'    'C32'    .  .  .
+     061 'C27'    'C28'    .  .  .
+     061 'C27'    'H27'    .  .  .
+     061 'C28'    'C29'    .  .  .
+     061 'C28'    'H28'    .  .  .
+     061 'C29'    'O30'    .  .  .
+     061 'C29'    'C31'    .  .  .
+     061 'O30'    'HOU'    .  .  .
+     061 'C31'    'C32'    .  .  .
+     061 'C31'    'H31'    .  .  .
+     061 'C32'    'C33'    .  .  .
+     061 'C33'    'O34'    .  .  .
+data_13P
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '13P'
+_chem_comp.name
+;1,3-DIHYDROXYACETONEPHOSPHATE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C3 H7 O6 P1
+;
+_chem_comp.number_atoms_all     17
+_chem_comp.number_atoms_nh      10
+_chem_comp.formula_weight      170.08
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     13P 'P'         P  .  .  .
+     13P 'O1'        O  .  .  .
+     13P 'O1P'       O  .  .  .
+     13P 'O2P'       O  .  .  .
+     13P 'O3P'       O  .  .  .
+     13P '2HOP'      H  .  .  .
+     13P '3HOP'      H  .  .  .
+     13P 'C1'        C  .  .  .
+     13P 'C2'        C  .  .  .
+     13P '1H1'       H  .  .  .
+     13P '2H1'       H  .  .  .
+     13P 'C3'        C  .  .  .
+     13P 'O2'        O  .  .  .
+     13P 'O3'        O  .  .  .
+     13P '1H3'       H  .  .  .
+     13P '2H3'       H  .  .  .
+     13P 'HO3'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     13P 'P'      'O1'     .  .  .
+     13P 'P'      'O1P'    .  .  .
+     13P 'P'      'O2P'    .  .  .
+     13P 'P'      'O3P'    .  .  .
+     13P 'O2P'    '2HOP'   .  .  .
+     13P 'O3P'    '3HOP'   .  .  .
+     13P 'O1'     'C1'     .  .  .
+     13P 'C1'     'C2'     .  .  .
+     13P 'C1'     '1H1'    .  .  .
+     13P 'C1'     '2H1'    .  .  .
+     13P 'C2'     'C3'     .  .  .
+     13P 'C2'     'O2'     .  .  .
+     13P 'C3'     'O3'     .  .  .
+     13P 'C3'     '1H3'    .  .  .
+     13P 'C3'     '2H3'    .  .  .
+     13P 'O3'     'HO3'    .  .  .
+data_146
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '146'
+_chem_comp.name
+;[4R-(4ALPHA,5ALPHA,6ALPHA,7ALPHA)]-3,3'-{{TETRAHYDRO-5,6-DIHYDROXY-2-OXO-4,7- BIS(PHENYLMETHYL)-1H-1,3-DIAZEPINE-1,3(2H)-DIYL]BIS(METHYLENE)]BIS[N-1H- BENZIMIDAZOL-2-YLBENZAMIDE]
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms
+;146
+;
+_chem_comp.formula
+;C49 H44 N8 O5
+;
+_chem_comp.number_atoms_all     106
+_chem_comp.number_atoms_nh      62
+_chem_comp.formula_weight      824.92
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     146 'C1'        C  .  .  .
+     146 'N2'        N  .  .  .
+     146 'N7'        N  .  .  .
+     146 'O1'        O  .  .  .
+     146 'C2'        C  .  .  .
+     146 'C20'       C  .  .  .
+     146 '1H2'       H  .  .  .
+     146 '2H2'       H  .  .  .
+     146 'C3'        C  .  .  .
+     146 'C4'        C  .  .  .
+     146 'C31'       C  .  .  .
+     146 'H3'        H  .  .  .
+     146 'C5'        C  .  .  .
+     146 'O4'        O  .  .  .
+     146 'H4'        H  .  .  .
+     146 'C6'        C  .  .  .
+     146 'O5'        O  .  .  .
+     146 'H5'        H  .  .  .
+     146 'C61'       C  .  .  .
+     146 'H6'        H  .  .  .
+     146 'C7'        C  .  .  .
+     146 'C70'       C  .  .  .
+     146 '1H7'       H  .  .  .
+     146 '2H7'       H  .  .  .
+     146 'C21'       C  .  .  .
+     146 'C25'       C  .  .  .
+     146 'C22'       C  .  .  .
+     146 'H21'       H  .  .  .
+     146 'C23'       C  .  .  .
+     146 'C26'       C  .  .  .
+     146 'C24'       C  .  .  .
+     146 'H23'       H  .  .  .
+     146 'H24'       H  .  .  .
+     146 'H25'       H  .  .  .
+     146 'N26'       N  .  .  .
+     146 'O26'       O  .  .  .
+     146 'C27'       C  .  .  .
+     146 'N27'       N  .  .  .
+     146 'N3'        N  .  .  .
+     146 'C9'        C  .  .  .
+     146 'C29'       C  .  .  .
+     146 'C11'       C  .  .  .
+     146 'H9'        H  .  .  .
+     146 'C13'       C  .  .  .
+     146 'H11'       H  .  .  .
+     146 'C14'       C  .  .  .
+     146 'H13'       H  .  .  .
+     146 'C28'       C  .  .  .
+     146 'H14'       H  .  .  .
+     146 'C32'       C  .  .  .
+     146 '1H31'      H  .  .  .
+     146 '2H31'      H  .  .  .
+     146 'C33'       C  .  .  .
+     146 'C37'       C  .  .  .
+     146 'C34'       C  .  .  .
+     146 'H33'       H  .  .  .
+     146 'C35'       C  .  .  .
+     146 'H34'       H  .  .  .
+     146 'C36'       C  .  .  .
+     146 'H35'       H  .  .  .
+     146 'H36'       H  .  .  .
+     146 'H37'       H  .  .  .
+     146 'C62'       C  .  .  .
+     146 '1H61'      H  .  .  .
+     146 '2H61'      H  .  .  .
+     146 'C63'       C  .  .  .
+     146 'C67'       C  .  .  .
+     146 'C64'       C  .  .  .
+     146 'H63'       H  .  .  .
+     146 'C65'       C  .  .  .
+     146 'H64'       H  .  .  .
+     146 'C66'       C  .  .  .
+     146 'H65'       H  .  .  .
+     146 'H66'       H  .  .  .
+     146 'H67'       H  .  .  .
+     146 'C71'       C  .  .  .
+     146 'C75'       C  .  .  .
+     146 'C72'       C  .  .  .
+     146 'H71'       H  .  .  .
+     146 'C73'       C  .  .  .
+     146 'C76'       C  .  .  .
+     146 'C74'       C  .  .  .
+     146 'H73'       H  .  .  .
+     146 'H74'       H  .  .  .
+     146 'H75'       H  .  .  .
+     146 'N76'       N  .  .  .
+     146 'O76'       O  .  .  .
+     146 'C77'       C  .  .  .
+     146 'N1'        N  .  .  .
+     146 'N77'       N  .  .  .
+     146 'C15'       C  .  .  .
+     146 'C8'        C  .  .  .
+     146 'C79'       C  .  .  .
+     146 'H15'       H  .  .  .
+     146 'C10'       C  .  .  .
+     146 'H8'        H  .  .  .
+     146 'C12'       C  .  .  .
+     146 'H10'       H  .  .  .
+     146 'C78'       C  .  .  .
+     146 'H12'       H  .  .  .
+     146 'HN6'       H  .  .  .
+     146 'HN3'       H  .  .  .
+     146 'HN7'       H  .  .  .
+     146 '7HN7'      H  .  .  .
+     146 'HO4'       H  .  .  .
+     146 'HO5'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     146 'C1'     'N2'     .  .  .
+     146 'C1'     'N7'     .  .  .
+     146 'C1'     'O1'     .  .  .
+     146 'C2'     'N2'     .  .  .
+     146 'C2'     'C20'    .  .  .
+     146 'C2'     '1H2'    .  .  .
+     146 'C2'     '2H2'    .  .  .
+     146 'C3'     'N2'     .  .  .
+     146 'C3'     'C4'     .  .  .
+     146 'C3'     'C31'    .  .  .
+     146 'C3'     'H3'     .  .  .
+     146 'C4'     'C5'     .  .  .
+     146 'C4'     'O4'     .  .  .
+     146 'C4'     'H4'     .  .  .
+     146 'C5'     'C6'     .  .  .
+     146 'C5'     'O5'     .  .  .
+     146 'C5'     'H5'     .  .  .
+     146 'C6'     'N7'     .  .  .
+     146 'C6'     'C61'    .  .  .
+     146 'C6'     'H6'     .  .  .
+     146 'C7'     'N7'     .  .  .
+     146 'C7'     'C70'    .  .  .
+     146 'C7'     '1H7'    .  .  .
+     146 'C7'     '2H7'    .  .  .
+     146 'C20'    'C21'    .  .  .
+     146 'C20'    'C25'    .  .  .
+     146 'C21'    'C22'    .  .  .
+     146 'C21'    'H21'    .  .  .
+     146 'C22'    'C23'    .  .  .
+     146 'C22'    'C26'    .  .  .
+     146 'C23'    'C24'    .  .  .
+     146 'C23'    'H23'    .  .  .
+     146 'C24'    'C25'    .  .  .
+     146 'C24'    'H24'    .  .  .
+     146 'C25'    'H25'    .  .  .
+     146 'C26'    'N26'    .  .  .
+     146 'C26'    'O26'    .  .  .
+     146 'C27'    'N26'    .  .  .
+     146 'C27'    'N27'    .  .  .
+     146 'C27'    'N3'     .  .  .
+     146 'C9'     'C29'    .  .  .
+     146 'C9'     'C11'    .  .  .
+     146 'C9'     'H9'     .  .  .
+     146 'C11'    'C13'    .  .  .
+     146 'C11'    'H11'    .  .  .
+     146 'C13'    'C14'    .  .  .
+     146 'C13'    'H13'    .  .  .
+     146 'C14'    'C28'    .  .  .
+     146 'C14'    'H14'    .  .  .
+     146 'C28'    'N27'    .  .  .
+     146 'C28'    'C29'    .  .  .
+     146 'C29'    'N3'     .  .  .
+     146 'C31'    'C32'    .  .  .
+     146 'C31'    '1H31'   .  .  .
+     146 'C31'    '2H31'   .  .  .
+     146 'C32'    'C33'    .  .  .
+     146 'C32'    'C37'    .  .  .
+     146 'C33'    'C34'    .  .  .
+     146 'C33'    'H33'    .  .  .
+     146 'C34'    'C35'    .  .  .
+     146 'C34'    'H34'    .  .  .
+     146 'C35'    'C36'    .  .  .
+     146 'C35'    'H35'    .  .  .
+     146 'C36'    'C37'    .  .  .
+     146 'C36'    'H36'    .  .  .
+     146 'C37'    'H37'    .  .  .
+     146 'C61'    'C62'    .  .  .
+     146 'C61'    '1H61'   .  .  .
+     146 'C61'    '2H61'   .  .  .
+     146 'C62'    'C63'    .  .  .
+     146 'C62'    'C67'    .  .  .
+     146 'C63'    'C64'    .  .  .
+     146 'C63'    'H63'    .  .  .
+     146 'C64'    'C65'    .  .  .
+     146 'C64'    'H64'    .  .  .
+     146 'C65'    'C66'    .  .  .
+     146 'C65'    'H65'    .  .  .
+     146 'C66'    'C67'    .  .  .
+     146 'C66'    'H66'    .  .  .
+     146 'C67'    'H67'    .  .  .
+     146 'C70'    'C71'    .  .  .
+     146 'C70'    'C75'    .  .  .
+     146 'C71'    'C72'    .  .  .
+     146 'C71'    'H71'    .  .  .
+     146 'C72'    'C73'    .  .  .
+     146 'C72'    'C76'    .  .  .
+     146 'C73'    'C74'    .  .  .
+     146 'C73'    'H73'    .  .  .
+     146 'C74'    'C75'    .  .  .
+     146 'C74'    'H74'    .  .  .
+     146 'C75'    'H75'    .  .  .
+     146 'C76'    'N76'    .  .  .
+     146 'C76'    'O76'    .  .  .
+     146 'C77'    'N76'    .  .  .
+     146 'C77'    'N1'     .  .  .
+     146 'C77'    'N77'    .  .  .
+     146 'C15'    'C8'     .  .  .
+     146 'C15'    'C79'    .  .  .
+     146 'C15'    'H15'    .  .  .
+     146 'C8'     'C10'    .  .  .
+     146 'C8'     'H8'     .  .  .
+     146 'C10'    'C12'    .  .  .
+     146 'C10'    'H10'    .  .  .
+     146 'C12'    'C78'    .  .  .
+     146 'C12'    'H12'    .  .  .
+     146 'C78'    'N77'    .  .  .
+     146 'C78'    'C79'    .  .  .
+     146 'C79'    'N1'     .  .  .
+     146 'N26'    'HN6'    .  .  .
+     146 'N3'     'HN3'    .  .  .
+     146 'N76'    'HN7'    .  .  .
+     146 'N77'    '7HN7'   .  .  .
+     146 'O4'     'HO4'    .  .  .
+     146 'O5'     'HO5'    .  .  .
+data_1BH
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1BH'
+_chem_comp.name
+;N-BENZYLOXYCARBONYL-ALA-PRO-PHE-CHLOROMETHYL KETONE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C26 H32 N3 O5
+;
+_chem_comp.number_atoms_all     66
+_chem_comp.number_atoms_nh      34
+_chem_comp.formula_weight      466.55
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1BH 'C1'        C  .  .  .
+     1BH 'C21'       C  .  .  .
+     1BH 'O1'        O  .  .  .
+     1BH '1H1'       H  .  .  .
+     1BH '2H1'       H  .  .  .
+     1BH 'C3'        C  .  .  .
+     1BH 'N1'        N  .  .  .
+     1BH 'O2'        O  .  .  .
+     1BH 'O4'        O  .  .  .
+     1BH 'C7'        C  .  .  .
+     1BH 'O5'        O  .  .  .
+     1BH 'C9'        C  .  .  .
+     1BH 'HO5'       H  .  .  .
+     1BH 'C6'        C  .  .  .
+     1BH 'N3'        N  .  .  .
+     1BH 'C8'        C  .  .  .
+     1BH 'C81'       C  .  .  .
+     1BH 'H8'        H  .  .  .
+     1BH 'CC'        C  .  .  .
+     1BH 'H9'        H  .  .  .
+     1BH 'C22'       C  .  .  .
+     1BH 'C26'       C  .  .  .
+     1BH 'C23'       C  .  .  .
+     1BH 'H22'       H  .  .  .
+     1BH 'C24'       C  .  .  .
+     1BH 'C25'       C  .  .  .
+     1BH 'H24'       H  .  .  .
+     1BH 'C4'        C  .  .  .
+     1BH 'HN1'       H  .  .  .
+     1BH 'C41'       C  .  .  .
+     1BH 'C5'        C  .  .  .
+     1BH 'H4'        H  .  .  .
+     1BH '1H41'      H  .  .  .
+     1BH '2H41'      H  .  .  .
+     1BH '3H41'      H  .  .  .
+     1BH 'O3'        O  .  .  .
+     1BH 'N2'        N  .  .  .
+     1BH 'CD'        C  .  .  .
+     1BH 'CG'        C  .  .  .
+     1BH '1HD'       H  .  .  .
+     1BH '2HD'       H  .  .  .
+     1BH 'C61'       C  .  .  .
+     1BH 'H6'        H  .  .  .
+     1BH '1H61'      H  .  .  .
+     1BH '2H61'      H  .  .  .
+     1BH '1HG'       H  .  .  .
+     1BH '2HG'       H  .  .  .
+     1BH 'HN3'       H  .  .  .
+     1BH 'C82'       C  .  .  .
+     1BH '1H81'      H  .  .  .
+     1BH '2H81'      H  .  .  .
+     1BH 'C83'       C  .  .  .
+     1BH 'C87'       C  .  .  .
+     1BH 'C84'       C  .  .  .
+     1BH 'H83'       H  .  .  .
+     1BH 'C86'       C  .  .  .
+     1BH 'H87'       H  .  .  .
+     1BH 'C85'       C  .  .  .
+     1BH 'H84'       H  .  .  .
+     1BH 'H86'       H  .  .  .
+     1BH '1HC'       H  .  .  .
+     1BH '2HC'       H  .  .  .
+     1BH '3HC'       H  .  .  .
+     1BH 'H26'       H  .  .  .
+     1BH 'H23'       H  .  .  .
+     1BH 'H25'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1BH 'C1'     'C21'    .  .  .
+     1BH 'C1'     'O1'     .  .  .
+     1BH 'C1'     '1H1'    .  .  .
+     1BH 'C1'     '2H1'    .  .  .
+     1BH 'C3'     'N1'     .  .  .
+     1BH 'C3'     'O1'     .  .  .
+     1BH 'C3'     'O2'     .  .  .
+     1BH 'O4'     'C7'     .  .  .
+     1BH 'O5'     'C9'     .  .  .
+     1BH 'O5'     'HO5'    .  .  .
+     1BH 'C7'     'C6'     .  .  .
+     1BH 'C7'     'N3'     .  .  .
+     1BH 'C8'     'C9'     .  .  .
+     1BH 'C8'     'N3'     .  .  .
+     1BH 'C8'     'C81'    .  .  .
+     1BH 'C8'     'H8'     .  .  .
+     1BH 'C9'     'CC'     .  .  .
+     1BH 'C9'     'H9'     .  .  .
+     1BH 'C21'    'C22'    .  .  .
+     1BH 'C21'    'C26'    .  .  .
+     1BH 'C22'    'C23'    .  .  .
+     1BH 'C22'    'H22'    .  .  .
+     1BH 'C24'    'C23'    .  .  .
+     1BH 'C24'    'C25'    .  .  .
+     1BH 'C24'    'H24'    .  .  .
+     1BH 'N1'     'C4'     .  .  .
+     1BH 'N1'     'HN1'    .  .  .
+     1BH 'C4'     'C41'    .  .  .
+     1BH 'C4'     'C5'     .  .  .
+     1BH 'C4'     'H4'     .  .  .
+     1BH 'C41'    '1H41'   .  .  .
+     1BH 'C41'    '2H41'   .  .  .
+     1BH 'C41'    '3H41'   .  .  .
+     1BH 'C5'     'O3'     .  .  .
+     1BH 'C5'     'N2'     .  .  .
+     1BH 'N2'     'CD'     .  .  .
+     1BH 'N2'     'C6'     .  .  .
+     1BH 'CD'     'CG'     .  .  .
+     1BH 'CD'     '1HD'    .  .  .
+     1BH 'CD'     '2HD'    .  .  .
+     1BH 'C6'     'C61'    .  .  .
+     1BH 'C6'     'H6'     .  .  .
+     1BH 'C61'    'CG'     .  .  .
+     1BH 'C61'    '1H61'   .  .  .
+     1BH 'C61'    '2H61'   .  .  .
+     1BH 'CG'     '1HG'    .  .  .
+     1BH 'CG'     '2HG'    .  .  .
+     1BH 'N3'     'HN3'    .  .  .
+     1BH 'C81'    'C82'    .  .  .
+     1BH 'C81'    '1H81'   .  .  .
+     1BH 'C81'    '2H81'   .  .  .
+     1BH 'C82'    'C83'    .  .  .
+     1BH 'C82'    'C87'    .  .  .
+     1BH 'C83'    'C84'    .  .  .
+     1BH 'C83'    'H83'    .  .  .
+     1BH 'C87'    'C86'    .  .  .
+     1BH 'C87'    'H87'    .  .  .
+     1BH 'C84'    'C85'    .  .  .
+     1BH 'C84'    'H84'    .  .  .
+     1BH 'C86'    'C85'    .  .  .
+     1BH 'C86'    'H86'    .  .  .
+     1BH 'CC'     '1HC'    .  .  .
+     1BH 'CC'     '2HC'    .  .  .
+     1BH 'CC'     '3HC'    .  .  .
+     1BH 'C26'    'C25'    .  .  .
+     1BH 'C26'    'H26'    .  .  .
+     1BH 'C23'    'H23'    .  .  .
+     1BH 'C25'    'H25'    .  .  .
+data_1C5
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1C5'
+_chem_comp.name
+;TRIPEPTIDE ANALOG IC50 (COMPOUND 1)
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C26 H39 N4 O10 P1
+;
+_chem_comp.number_atoms_all     80
+_chem_comp.number_atoms_nh      41
+_chem_comp.formula_weight      598.61
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1C5 'C1'        C  .  .  .
+     1C5 'C2'        C  .  .  .
+     1C5 'C6'        C  .  .  .
+     1C5 '1H1'       H  .  .  .
+     1C5 '2H1'       H  .  .  .
+     1C5 'C3'        C  .  .  .
+     1C5 '1H2'       H  .  .  .
+     1C5 '2H2'       H  .  .  .
+     1C5 'C4'        C  .  .  .
+     1C5 '1H3'       H  .  .  .
+     1C5 '2H3'       H  .  .  .
+     1C5 'C5'        C  .  .  .
+     1C5 'C7'        C  .  .  .
+     1C5 'H4'        H  .  .  .
+     1C5 '1H5'       H  .  .  .
+     1C5 '2H5'       H  .  .  .
+     1C5 '1H6'       H  .  .  .
+     1C5 '2H6'       H  .  .  .
+     1C5 'C8'        C  .  .  .
+     1C5 '1H7'       H  .  .  .
+     1C5 '2H7'       H  .  .  .
+     1C5 'C9'        C  .  .  .
+     1C5 '1H8'       H  .  .  .
+     1C5 '2H8'       H  .  .  .
+     1C5 'C10'       C  .  .  .
+     1C5 'N2'        N  .  .  .
+     1C5 'H9'        H  .  .  .
+     1C5 'N1'        N  .  .  .
+     1C5 'O1'        O  .  .  .
+     1C5 'C11'       C  .  .  .
+     1C5 'C12'       C  .  .  .
+     1C5 'O2'        O  .  .  .
+     1C5 'C13'       C  .  .  .
+     1C5 'N3'        N  .  .  .
+     1C5 'H12'       H  .  .  .
+     1C5 'C14'       C  .  .  .
+     1C5 '1H13'      H  .  .  .
+     1C5 '2H13'      H  .  .  .
+     1C5 'C15'       C  .  .  .
+     1C5 '1H14'      H  .  .  .
+     1C5 '2H14'      H  .  .  .
+     1C5 'O3'        O  .  .  .
+     1C5 'O4'        O  .  .  .
+     1C5 'C16'       C  .  .  .
+     1C5 'C17'       C  .  .  .
+     1C5 'O5'        O  .  .  .
+     1C5 'C18'       C  .  .  .
+     1C5 'N4'        N  .  .  .
+     1C5 'H17'       H  .  .  .
+     1C5 'C19'       C  .  .  .
+     1C5 '1H18'      H  .  .  .
+     1C5 '2H18'      H  .  .  .
+     1C5 'C20'       C  .  .  .
+     1C5 'C24'       C  .  .  .
+     1C5 'C21'       C  .  .  .
+     1C5 'H20'       H  .  .  .
+     1C5 'C22'       C  .  .  .
+     1C5 'H21'       H  .  .  .
+     1C5 'C23'       C  .  .  .
+     1C5 'O4P'       O  .  .  .
+     1C5 'H23'       H  .  .  .
+     1C5 'H24'       H  .  .  .
+     1C5 'C25'       C  .  .  .
+     1C5 'C26'       C  .  .  .
+     1C5 'O6'        O  .  .  .
+     1C5 '1H26'      H  .  .  .
+     1C5 '2H26'      H  .  .  .
+     1C5 '3H26'      H  .  .  .
+     1C5 '1HN1'      H  .  .  .
+     1C5 '2HN1'      H  .  .  .
+     1C5 'HN2'       H  .  .  .
+     1C5 'HN3'       H  .  .  .
+     1C5 'HN4'       H  .  .  .
+     1C5 'HO4'       H  .  .  .
+     1C5 'P'         P  .  .  .
+     1C5 'O1P'       O  .  .  .
+     1C5 'O2P'       O  .  .  .
+     1C5 '2HOP'      H  .  .  .
+     1C5 'O3P'       O  .  .  .
+     1C5 '3HOP'      H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1C5 'C1'     'C2'     .  .  .
+     1C5 'C1'     'C6'     .  .  .
+     1C5 'C1'     '1H1'    .  .  .
+     1C5 'C1'     '2H1'    .  .  .
+     1C5 'C2'     'C3'     .  .  .
+     1C5 'C2'     '1H2'    .  .  .
+     1C5 'C2'     '2H2'    .  .  .
+     1C5 'C3'     'C4'     .  .  .
+     1C5 'C3'     '1H3'    .  .  .
+     1C5 'C3'     '2H3'    .  .  .
+     1C5 'C4'     'C5'     .  .  .
+     1C5 'C4'     'C7'     .  .  .
+     1C5 'C4'     'H4'     .  .  .
+     1C5 'C5'     'C6'     .  .  .
+     1C5 'C5'     '1H5'    .  .  .
+     1C5 'C5'     '2H5'    .  .  .
+     1C5 'C6'     '1H6'    .  .  .
+     1C5 'C6'     '2H6'    .  .  .
+     1C5 'C7'     'C8'     .  .  .
+     1C5 'C7'     '1H7'    .  .  .
+     1C5 'C7'     '2H7'    .  .  .
+     1C5 'C8'     'C9'     .  .  .
+     1C5 'C8'     '1H8'    .  .  .
+     1C5 'C8'     '2H8'    .  .  .
+     1C5 'C9'     'C10'    .  .  .
+     1C5 'C9'     'N2'     .  .  .
+     1C5 'C9'     'H9'     .  .  .
+     1C5 'C10'    'N1'     .  .  .
+     1C5 'C10'    'O1'     .  .  .
+     1C5 'C11'    'C12'    .  .  .
+     1C5 'C11'    'N2'     .  .  .
+     1C5 'C11'    'O2'     .  .  .
+     1C5 'C12'    'C13'    .  .  .
+     1C5 'C12'    'N3'     .  .  .
+     1C5 'C12'    'H12'    .  .  .
+     1C5 'C13'    'C14'    .  .  .
+     1C5 'C13'    '1H13'   .  .  .
+     1C5 'C13'    '2H13'   .  .  .
+     1C5 'C14'    'C15'    .  .  .
+     1C5 'C14'    '1H14'   .  .  .
+     1C5 'C14'    '2H14'   .  .  .
+     1C5 'C15'    'O3'     .  .  .
+     1C5 'C15'    'O4'     .  .  .
+     1C5 'C16'    'C17'    .  .  .
+     1C5 'C16'    'N3'     .  .  .
+     1C5 'C16'    'O5'     .  .  .
+     1C5 'C17'    'C18'    .  .  .
+     1C5 'C17'    'N4'     .  .  .
+     1C5 'C17'    'H17'    .  .  .
+     1C5 'C18'    'C19'    .  .  .
+     1C5 'C18'    '1H18'   .  .  .
+     1C5 'C18'    '2H18'   .  .  .
+     1C5 'C19'    'C20'    .  .  .
+     1C5 'C19'    'C24'    .  .  .
+     1C5 'C20'    'C21'    .  .  .
+     1C5 'C20'    'H20'    .  .  .
+     1C5 'C21'    'C22'    .  .  .
+     1C5 'C21'    'H21'    .  .  .
+     1C5 'C22'    'C23'    .  .  .
+     1C5 'C22'    'O4P'    .  .  .
+     1C5 'C23'    'C24'    .  .  .
+     1C5 'C23'    'H23'    .  .  .
+     1C5 'C24'    'H24'    .  .  .
+     1C5 'C25'    'C26'    .  .  .
+     1C5 'C25'    'N4'     .  .  .
+     1C5 'C25'    'O6'     .  .  .
+     1C5 'C26'    '1H26'   .  .  .
+     1C5 'C26'    '2H26'   .  .  .
+     1C5 'C26'    '3H26'   .  .  .
+     1C5 'N1'     '1HN1'   .  .  .
+     1C5 'N1'     '2HN1'   .  .  .
+     1C5 'N2'     'HN2'    .  .  .
+     1C5 'N3'     'HN3'    .  .  .
+     1C5 'N4'     'HN4'    .  .  .
+     1C5 'O4'     'HO4'    .  .  .
+     1C5 'O4P'    'P'      .  .  .
+     1C5 'O1P'    'P'      .  .  .
+     1C5 'O2P'    'P'      .  .  .
+     1C5 'O2P'    '2HOP'   .  .  .
+     1C5 'O3P'    'P'      .  .  .
+     1C5 'O3P'    '3HOP'   .  .  .
+data_1DA
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1DA'
+_chem_comp.name
+;1-DEAZA-ADENOSINE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C11 H14 N4 O4
+;
+_chem_comp.number_atoms_all     33
+_chem_comp.number_atoms_nh      19
+_chem_comp.formula_weight      266.26
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1DA 'O5*'       O  .  .  .
+     1DA 'C5*'       C  .  .  .
+     1DA '*HO5'      .  .  .  .
+     1DA 'C4*'       C  .  .  .
+     1DA '1H5*'      H  .  .  .
+     1DA '2H5*'      H  .  .  .
+     1DA 'O4*'       O  .  .  .
+     1DA 'C3*'       C  .  .  .
+     1DA 'H4*'       H  .  .  .
+     1DA 'C1*'       C  .  .  .
+     1DA 'O3*'       O  .  .  .
+     1DA 'C2*'       C  .  .  .
+     1DA 'H3*'       H  .  .  .
+     1DA '*HO3'      .  .  .  .
+     1DA 'O2*'       O  .  .  .
+     1DA 'H2*'       H  .  .  .
+     1DA '*HO2'      .  .  .  .
+     1DA 'N9'        N  .  .  .
+     1DA 'H1*'       H  .  .  .
+     1DA 'C8'        C  .  .  .
+     1DA 'C4'        C  .  .  .
+     1DA 'N7'        N  .  .  .
+     1DA 'H8'        H  .  .  .
+     1DA 'C5'        C  .  .  .
+     1DA 'C6'        C  .  .  .
+     1DA 'N6'        N  .  .  .
+     1DA 'C1'        C  .  .  .
+     1DA '1HN6'      H  .  .  .
+     1DA '2HN6'      H  .  .  .
+     1DA 'C2'        C  .  .  .
+     1DA 'H1'        H  .  .  .
+     1DA 'N3'        N  .  .  .
+     1DA 'H2'        H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1DA 'O5*'    'C5*'    .  .  .
+     1DA 'O5*'    '*HO5'   .  .  .
+     1DA 'C5*'    'C4*'    .  .  .
+     1DA 'C5*'    '1H5*'   .  .  .
+     1DA 'C5*'    '2H5*'   .  .  .
+     1DA 'C4*'    'O4*'    .  .  .
+     1DA 'C4*'    'C3*'    .  .  .
+     1DA 'C4*'    'H4*'    .  .  .
+     1DA 'O4*'    'C1*'    .  .  .
+     1DA 'C3*'    'O3*'    .  .  .
+     1DA 'C3*'    'C2*'    .  .  .
+     1DA 'C3*'    'H3*'    .  .  .
+     1DA 'O3*'    '*HO3'   .  .  .
+     1DA 'C2*'    'O2*'    .  .  .
+     1DA 'C2*'    'C1*'    .  .  .
+     1DA 'C2*'    'H2*'    .  .  .
+     1DA 'O2*'    '*HO2'   .  .  .
+     1DA 'C1*'    'N9'     .  .  .
+     1DA 'C1*'    'H1*'    .  .  .
+     1DA 'N9'     'C8'     .  .  .
+     1DA 'N9'     'C4'     .  .  .
+     1DA 'C8'     'N7'     .  .  .
+     1DA 'C8'     'H8'     .  .  .
+     1DA 'N7'     'C5'     .  .  .
+     1DA 'C5'     'C6'     .  .  .
+     1DA 'C5'     'C4'     .  .  .
+     1DA 'C6'     'N6'     .  .  .
+     1DA 'C6'     'C1'     .  .  .
+     1DA 'N6'     '1HN6'   .  .  .
+     1DA 'N6'     '2HN6'   .  .  .
+     1DA 'C1'     'C2'     .  .  .
+     1DA 'C1'     'H1'     .  .  .
+     1DA 'C2'     'N3'     .  .  .
+     1DA 'C2'     'H2'     .  .  .
+     1DA 'N3'     'C4'     .  .  .
+data_1GN
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1GN'
+_chem_comp.name
+;2-DEOXY-2-AMINOGALACTOSE
+;
+_chem_comp.type                 'UNKNOWN'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C6 H13 N1 O5
+;
+_chem_comp.number_atoms_all     25
+_chem_comp.number_atoms_nh      12
+_chem_comp.formula_weight      179.17
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1GN 'C2'        C  .  .  .
+     1GN 'C3'        C  .  .  .
+     1GN 'C1'        C  .  .  .
+     1GN 'N2'        N  .  .  .
+     1GN 'H2'        H  .  .  .
+     1GN 'C4'        C  .  .  .
+     1GN 'O3'        O  .  .  .
+     1GN 'H3'        H  .  .  .
+     1GN 'O4'        O  .  .  .
+     1GN 'C5'        C  .  .  .
+     1GN 'H4'        H  .  .  .
+     1GN 'O5'        O  .  .  .
+     1GN 'O1'        O  .  .  .
+     1GN 'H1'        H  .  .  .
+     1GN 'HO1'       H  .  .  .
+     1GN '1HN2'      H  .  .  .
+     1GN '2HN2'      H  .  .  .
+     1GN 'HO3'       H  .  .  .
+     1GN 'HO4'       H  .  .  .
+     1GN 'C6'        C  .  .  .
+     1GN 'H5'        H  .  .  .
+     1GN 'O6'        O  .  .  .
+     1GN '1H6'       H  .  .  .
+     1GN '2H6'       H  .  .  .
+     1GN 'HO6'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1GN 'C2'     'C3'     .  .  .
+     1GN 'C2'     'C1'     .  .  .
+     1GN 'C2'     'N2'     .  .  .
+     1GN 'C2'     'H2'     .  .  .
+     1GN 'C3'     'C4'     .  .  .
+     1GN 'C3'     'O3'     .  .  .
+     1GN 'C3'     'H3'     .  .  .
+     1GN 'C4'     'O4'     .  .  .
+     1GN 'C4'     'C5'     .  .  .
+     1GN 'C4'     'H4'     .  .  .
+     1GN 'O5'     'C1'     .  .  .
+     1GN 'O5'     'C5'     .  .  .
+     1GN 'C1'     'O1'     .  .  .
+     1GN 'C1'     'H1'     .  .  .
+     1GN 'O1'     'HO1'    .  .  .
+     1GN 'N2'     '1HN2'   .  .  .
+     1GN 'N2'     '2HN2'   .  .  .
+     1GN 'O3'     'HO3'    .  .  .
+     1GN 'O4'     'HO4'    .  .  .
+     1GN 'C5'     'C6'     .  .  .
+     1GN 'C5'     'H5'     .  .  .
+     1GN 'C6'     'O6'     .  .  .
+     1GN 'C6'     '1H6'    .  .  .
+     1GN 'C6'     '2H6'    .  .  .
+     1GN 'O6'     'HO6'    .  .  .
+data_1MA
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1MA'
+_chem_comp.name
+;6-HYDRO-1-METHYLADENOSINE-5'-MONOPHOSPHATE
+;
+_chem_comp.type                 'nucleic acid component'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C11 H18 N5 O7 P1
+;
+_chem_comp.number_atoms_all     42
+_chem_comp.number_atoms_nh      24
+_chem_comp.formula_weight      363.30
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1MA 'P'         P  .  .  .
+     1MA 'O1P'       O  .  .  .
+     1MA 'O2P'       O  .  .  .
+     1MA 'O3P'       O  .  .  .
+     1MA 'O5*'       O  .  .  .
+     1MA '2HOP'      H  .  .  .
+     1MA '3HOP'      H  .  .  .
+     1MA 'C5*'       C  .  .  .
+     1MA 'C4*'       C  .  .  .
+     1MA '1H5*'      H  .  .  .
+     1MA '2H5*'      H  .  .  .
+     1MA 'O4*'       O  .  .  .
+     1MA 'C3*'       C  .  .  .
+     1MA 'H4*'       H  .  .  .
+     1MA 'C1*'       C  .  .  .
+     1MA 'O3*'       O  .  .  .
+     1MA 'C2*'       C  .  .  .
+     1MA 'H3*'       H  .  .  .
+     1MA '*HO3'      .  .  .  .
+     1MA 'O2*'       O  .  .  .
+     1MA 'H2*'       H  .  .  .
+     1MA '*HO2'      .  .  .  .
+     1MA 'N9'        N  .  .  .
+     1MA 'H1*'       H  .  .  .
+     1MA 'C8'        C  .  .  .
+     1MA 'C4'        C  .  .  .
+     1MA 'N7'        N  .  .  .
+     1MA 'H8'        H  .  .  .
+     1MA 'C5'        C  .  .  .
+     1MA 'C6'        C  .  .  .
+     1MA 'N6'        N  .  .  .
+     1MA 'N1'        N  .  .  .
+     1MA 'H6'        H  .  .  .
+     1MA '1HN6'      H  .  .  .
+     1MA '2HN6'      H  .  .  .
+     1MA 'C2'        C  .  .  .
+     1MA 'CM1'       C  .  .  .
+     1MA '1HM1'      H  .  .  .
+     1MA '2HM1'      H  .  .  .
+     1MA '3HM1'      H  .  .  .
+     1MA 'N3'        N  .  .  .
+     1MA 'H2'        H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1MA 'P'      'O1P'    .  .  .
+     1MA 'P'      'O2P'    .  .  .
+     1MA 'P'      'O3P'    .  .  .
+     1MA 'P'      'O5*'    .  .  .
+     1MA 'O2P'    '2HOP'   .  .  .
+     1MA 'O3P'    '3HOP'   .  .  .
+     1MA 'O5*'    'C5*'    .  .  .
+     1MA 'C5*'    'C4*'    .  .  .
+     1MA 'C5*'    '1H5*'   .  .  .
+     1MA 'C5*'    '2H5*'   .  .  .
+     1MA 'C4*'    'O4*'    .  .  .
+     1MA 'C4*'    'C3*'    .  .  .
+     1MA 'C4*'    'H4*'    .  .  .
+     1MA 'O4*'    'C1*'    .  .  .
+     1MA 'C3*'    'O3*'    .  .  .
+     1MA 'C3*'    'C2*'    .  .  .
+     1MA 'C3*'    'H3*'    .  .  .
+     1MA 'O3*'    '*HO3'   .  .  .
+     1MA 'C2*'    'O2*'    .  .  .
+     1MA 'C2*'    'C1*'    .  .  .
+     1MA 'C2*'    'H2*'    .  .  .
+     1MA 'O2*'    '*HO2'   .  .  .
+     1MA 'C1*'    'N9'     .  .  .
+     1MA 'C1*'    'H1*'    .  .  .
+     1MA 'N9'     'C8'     .  .  .
+     1MA 'N9'     'C4'     .  .  .
+     1MA 'C8'     'N7'     .  .  .
+     1MA 'C8'     'H8'     .  .  .
+     1MA 'N7'     'C5'     .  .  .
+     1MA 'C5'     'C6'     .  .  .
+     1MA 'C5'     'C4'     .  .  .
+     1MA 'C6'     'N6'     .  .  .
+     1MA 'C6'     'N1'     .  .  .
+     1MA 'C6'     'H6'     .  .  .
+     1MA 'N6'     '1HN6'   .  .  .
+     1MA 'N6'     '2HN6'   .  .  .
+     1MA 'N1'     'C2'     .  .  .
+     1MA 'N1'     'CM1'    .  .  .
+     1MA 'CM1'    '1HM1'   .  .  .
+     1MA 'CM1'    '2HM1'   .  .  .
+     1MA 'CM1'    '3HM1'   .  .  .
+     1MA 'C2'     'N3'     .  .  .
+     1MA 'C2'     'H2'     .  .  .
+     1MA 'N3'     'C4'     .  .  .
+data_1MC
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1MC'
+_chem_comp.name
+;1-METHYLCYTOSINE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C5 H7 N3 O1
+;
+_chem_comp.number_atoms_all     16
+_chem_comp.number_atoms_nh      9
+_chem_comp.formula_weight      125.14
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1MC 'N3'        N  .  .  .
+     1MC 'C4'        C  .  .  .
+     1MC 'C2'        C  .  .  .
+     1MC 'N4'        N  .  .  .
+     1MC 'C5'        C  .  .  .
+     1MC 'N1'        N  .  .  .
+     1MC 'CN1'       C  .  .  .
+     1MC 'C6'        C  .  .  .
+     1MC '1H1'       H  .  .  .
+     1MC '2H1'       H  .  .  .
+     1MC '3H1'       H  .  .  .
+     1MC 'O2'        O  .  .  .
+     1MC '1HN4'      H  .  .  .
+     1MC '2HN4'      H  .  .  .
+     1MC 'H5'        H  .  .  .
+     1MC 'H6'        H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1MC 'N3'     'C4'     .  .  .
+     1MC 'N3'     'C2'     .  .  .
+     1MC 'C4'     'N4'     .  .  .
+     1MC 'C4'     'C5'     .  .  .
+     1MC 'N1'     'CN1'    .  .  .
+     1MC 'N1'     'C2'     .  .  .
+     1MC 'N1'     'C6'     .  .  .
+     1MC 'CN1'    '1H1'    .  .  .
+     1MC 'CN1'    '2H1'    .  .  .
+     1MC 'CN1'    '3H1'    .  .  .
+     1MC 'C2'     'O2'     .  .  .
+     1MC 'N4'     '1HN4'   .  .  .
+     1MC 'N4'     '2HN4'   .  .  .
+     1MC 'C5'     'C6'     .  .  .
+     1MC 'C5'     'H5'     .  .  .
+     1MC 'C6'     'H6'     .  .  .
+data_1MG
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1MG'
+_chem_comp.name
+;1N-METHYLGUANOSINE-5'-MONOPHOSPHATE
+;
+_chem_comp.type                 'nucleic acid component'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C11 H16 N5 O8 P1
+;
+_chem_comp.number_atoms_all     41
+_chem_comp.number_atoms_nh      25
+_chem_comp.formula_weight      377.28
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1MG 'P'         P  .  .  .
+     1MG 'O1P'       O  .  .  .
+     1MG 'O2P'       O  .  .  .
+     1MG 'O3P'       O  .  .  .
+     1MG 'O5*'       O  .  .  .
+     1MG '2HOP'      H  .  .  .
+     1MG '3HOP'      H  .  .  .
+     1MG 'C5*'       C  .  .  .
+     1MG 'C4*'       C  .  .  .
+     1MG '1H5*'      H  .  .  .
+     1MG '2H5*'      H  .  .  .
+     1MG 'O4*'       O  .  .  .
+     1MG 'C3*'       C  .  .  .
+     1MG 'H4*'       H  .  .  .
+     1MG 'C1*'       C  .  .  .
+     1MG 'O3*'       O  .  .  .
+     1MG 'C2*'       C  .  .  .
+     1MG 'H3*'       H  .  .  .
+     1MG '*HO3'      .  .  .  .
+     1MG 'O2*'       O  .  .  .
+     1MG 'H2*'       H  .  .  .
+     1MG '*HO2'      .  .  .  .
+     1MG 'N9'        N  .  .  .
+     1MG 'H1*'       H  .  .  .
+     1MG 'C8'        C  .  .  .
+     1MG 'C4'        C  .  .  .
+     1MG 'N7'        N  .  .  .
+     1MG 'H8'        H  .  .  .
+     1MG 'C5'        C  .  .  .
+     1MG 'C6'        C  .  .  .
+     1MG 'O6'        O  .  .  .
+     1MG 'N1'        N  .  .  .
+     1MG 'C2'        C  .  .  .
+     1MG 'CM1'       C  .  .  .
+     1MG '1HM1'      H  .  .  .
+     1MG '2HM1'      H  .  .  .
+     1MG '3HM1'      H  .  .  .
+     1MG 'N2'        N  .  .  .
+     1MG 'N3'        N  .  .  .
+     1MG '1HN2'      H  .  .  .
+     1MG '2HN2'      H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1MG 'P'      'O1P'    .  .  .
+     1MG 'P'      'O2P'    .  .  .
+     1MG 'P'      'O3P'    .  .  .
+     1MG 'P'      'O5*'    .  .  .
+     1MG 'O2P'    '2HOP'   .  .  .
+     1MG 'O3P'    '3HOP'   .  .  .
+     1MG 'O5*'    'C5*'    .  .  .
+     1MG 'C5*'    'C4*'    .  .  .
+     1MG 'C5*'    '1H5*'   .  .  .
+     1MG 'C5*'    '2H5*'   .  .  .
+     1MG 'C4*'    'O4*'    .  .  .
+     1MG 'C4*'    'C3*'    .  .  .
+     1MG 'C4*'    'H4*'    .  .  .
+     1MG 'O4*'    'C1*'    .  .  .
+     1MG 'C3*'    'O3*'    .  .  .
+     1MG 'C3*'    'C2*'    .  .  .
+     1MG 'C3*'    'H3*'    .  .  .
+     1MG 'O3*'    '*HO3'   .  .  .
+     1MG 'C2*'    'O2*'    .  .  .
+     1MG 'C2*'    'C1*'    .  .  .
+     1MG 'C2*'    'H2*'    .  .  .
+     1MG 'O2*'    '*HO2'   .  .  .
+     1MG 'C1*'    'N9'     .  .  .
+     1MG 'C1*'    'H1*'    .  .  .
+     1MG 'N9'     'C8'     .  .  .
+     1MG 'N9'     'C4'     .  .  .
+     1MG 'C8'     'N7'     .  .  .
+     1MG 'C8'     'H8'     .  .  .
+     1MG 'N7'     'C5'     .  .  .
+     1MG 'C5'     'C6'     .  .  .
+     1MG 'C5'     'C4'     .  .  .
+     1MG 'C6'     'O6'     .  .  .
+     1MG 'C6'     'N1'     .  .  .
+     1MG 'N1'     'C2'     .  .  .
+     1MG 'N1'     'CM1'    .  .  .
+     1MG 'CM1'    '1HM1'   .  .  .
+     1MG 'CM1'    '2HM1'   .  .  .
+     1MG 'CM1'    '3HM1'   .  .  .
+     1MG 'C2'     'N2'     .  .  .
+     1MG 'C2'     'N3'     .  .  .
+     1MG 'N2'     '1HN2'   .  .  .
+     1MG 'N2'     '2HN2'   .  .  .
+     1MG 'N3'     'C4'     .  .  .
+data_1NI
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1NI'
+_chem_comp.name
+;LP-130
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C45 H58 N6 O7
+;
+_chem_comp.number_atoms_all     116
+_chem_comp.number_atoms_nh      58
+_chem_comp.formula_weight      794.97
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1NI 'C1'        C  .  .  .
+     1NI 'C2'        C  .  .  .
+     1NI '1H1'       H  .  .  .
+     1NI '2H1'       H  .  .  .
+     1NI '3H1'       H  .  .  .
+     1NI 'O3'        O  .  .  .
+     1NI 'N4'        N  .  .  .
+     1NI 'C7'        C  .  .  .
+     1NI 'C8'        C  .  .  .
+     1NI 'C11'       C  .  .  .
+     1NI 'C6'        C  .  .  .
+     1NI 'C9'        C  .  .  .
+     1NI 'H8'        H  .  .  .
+     1NI 'C10'       C  .  .  .
+     1NI 'H9'        H  .  .  .
+     1NI 'C12'       C  .  .  .
+     1NI 'H10'       H  .  .  .
+     1NI 'C13'       C  .  .  .
+     1NI 'C14'       C  .  .  .
+     1NI 'C15'       C  .  .  .
+     1NI 'H13'       H  .  .  .
+     1NI 'C16'       C  .  .  .
+     1NI 'H14'       H  .  .  .
+     1NI 'H15'       H  .  .  .
+     1NI 'H16'       H  .  .  .
+     1NI 'C20'       C  .  .  .
+     1NI 'C21'       C  .  .  .
+     1NI 'N19'       N  .  .  .
+     1NI 'C23'       C  .  .  .
+     1NI 'H20'       H  .  .  .
+     1NI 'N26'       N  .  .  .
+     1NI 'O22'       O  .  .  .
+     1NI 'C24'       C  .  .  .
+     1NI '1H24'      H  .  .  .
+     1NI '2H24'      H  .  .  .
+     1NI '3H24'      H  .  .  .
+     1NI 'C27'       C  .  .  .
+     1NI 'HNQ'       H  .  .  .
+     1NI 'C32'       C  .  .  .
+     1NI 'C28'       C  .  .  .
+     1NI 'H27'       H  .  .  .
+     1NI 'C30'       C  .  .  .
+     1NI 'C29'       C  .  .  .
+     1NI '1H30'      H  .  .  .
+     1NI '2H30'      H  .  .  .
+     1NI '3H30'      H  .  .  .
+     1NI 'C31'       C  .  .  .
+     1NI '1H31'      H  .  .  .
+     1NI '2H31'      H  .  .  .
+     1NI '3H31'      H  .  .  .
+     1NI 'C33'       C  .  .  .
+     1NI 'O34'       O  .  .  .
+     1NI 'H32'       H  .  .  .
+     1NI 'C35'       C  .  .  .
+     1NI '1H33'      H  .  .  .
+     1NI '2H33'      H  .  .  .
+     1NI 'O36'       O  .  .  .
+     1NI 'N37'       N  .  .  .
+     1NI 'C5'        C  .  .  .
+     1NI 'HN4'       H  .  .  .
+     1NI 'C17'       C  .  .  .
+     1NI 'H5'        H  .  .  .
+     1NI '1H6'       H  .  .  .
+     1NI '2H6'       H  .  .  .
+     1NI 'O18'       O  .  .  .
+     1NI 'HNJ'       H  .  .  .
+     1NI 'C25'       C  .  .  .
+     1NI 'H23'       H  .  .  .
+     1NI '1H25'      H  .  .  .
+     1NI '2H25'      H  .  .  .
+     1NI '3H25'      H  .  .  .
+     1NI '1H28'      H  .  .  .
+     1NI '2H28'      H  .  .  .
+     1NI 'H29'       H  .  .  .
+     1NI 'HOY'       H  .  .  .
+     1NI 'C38'       C  .  .  .
+     1NI 'HN3'       H  .  .  .
+     1NI 'C39'       C  .  .  .
+     1NI 'C41'       C  .  .  .
+     1NI 'H38'       H  .  .  .
+     1NI 'C40'       C  .  .  .
+     1NI '1H39'      H  .  .  .
+     1NI '2H39'      H  .  .  .
+     1NI '1H40'      H  .  .  .
+     1NI '2H40'      H  .  .  .
+     1NI '3H40'      H  .  .  .
+     1NI 'O42'       O  .  .  .
+     1NI 'N43'       N  .  .  .
+     1NI 'C44'       C  .  .  .
+     1NI 'HN''       H  .  .  .
+     1NI 'C45'       C  .  .  .
+     1NI 'C56'       C  .  .  .
+     1NI 'H44'       H  .  .  .
+     1NI 'C46'       C  .  .  .
+     1NI '1H45'      H  .  .  .
+     1NI '2H45'      H  .  .  .
+     1NI 'C47'       C  .  .  .
+     1NI 'C50'       C  .  .  .
+     1NI 'C48'       C  .  .  .
+     1NI 'H47'       H  .  .  .
+     1NI 'C49'       C  .  .  .
+     1NI 'H48'       H  .  .  .
+     1NI 'C51'       C  .  .  .
+     1NI 'H49'       H  .  .  .
+     1NI 'C52'       C  .  .  .
+     1NI 'C53'       C  .  .  .
+     1NI 'C54'       C  .  .  .
+     1NI 'H52'       H  .  .  .
+     1NI 'C55'       C  .  .  .
+     1NI 'H53'       H  .  .  .
+     1NI 'H54'       H  .  .  .
+     1NI 'H55'       H  .  .  .
+     1NI 'O57'       O  .  .  .
+     1NI 'N58'       N  .  .  .
+     1NI '1HN'       H  .  .  .
+     1NI '2HN'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1NI 'C1'     'C2'     .  .  .
+     1NI 'C1'     '1H1'    .  .  .
+     1NI 'C1'     '2H1'    .  .  .
+     1NI 'C1'     '3H1'    .  .  .
+     1NI 'C2'     'O3'     .  .  .
+     1NI 'C2'     'N4'     .  .  .
+     1NI 'C7'     'C8'     .  .  .
+     1NI 'C7'     'C11'    .  .  .
+     1NI 'C7'     'C6'     .  .  .
+     1NI 'C8'     'C9'     .  .  .
+     1NI 'C8'     'H8'     .  .  .
+     1NI 'C9'     'C10'    .  .  .
+     1NI 'C9'     'H9'     .  .  .
+     1NI 'C10'    'C12'    .  .  .
+     1NI 'C10'    'H10'    .  .  .
+     1NI 'C11'    'C12'    .  .  .
+     1NI 'C11'    'C13'    .  .  .
+     1NI 'C12'    'C14'    .  .  .
+     1NI 'C13'    'C15'    .  .  .
+     1NI 'C13'    'H13'    .  .  .
+     1NI 'C14'    'C16'    .  .  .
+     1NI 'C14'    'H14'    .  .  .
+     1NI 'C15'    'C16'    .  .  .
+     1NI 'C15'    'H15'    .  .  .
+     1NI 'C16'    'H16'    .  .  .
+     1NI 'C20'    'C21'    .  .  .
+     1NI 'C20'    'N19'    .  .  .
+     1NI 'C20'    'C23'    .  .  .
+     1NI 'C20'    'H20'    .  .  .
+     1NI 'C21'    'N26'    .  .  .
+     1NI 'C21'    'O22'    .  .  .
+     1NI 'C24'    'C23'    .  .  .
+     1NI 'C24'    '1H24'   .  .  .
+     1NI 'C24'    '2H24'   .  .  .
+     1NI 'C24'    '3H24'   .  .  .
+     1NI 'N26'    'C27'    .  .  .
+     1NI 'N26'    'HNQ'    .  .  .
+     1NI 'C27'    'C32'    .  .  .
+     1NI 'C27'    'C28'    .  .  .
+     1NI 'C27'    'H27'    .  .  .
+     1NI 'C30'    'C29'    .  .  .
+     1NI 'C30'    '1H30'   .  .  .
+     1NI 'C30'    '2H30'   .  .  .
+     1NI 'C30'    '3H30'   .  .  .
+     1NI 'C31'    'C29'    .  .  .
+     1NI 'C31'    '1H31'   .  .  .
+     1NI 'C31'    '2H31'   .  .  .
+     1NI 'C31'    '3H31'   .  .  .
+     1NI 'C32'    'C33'    .  .  .
+     1NI 'C32'    'O34'    .  .  .
+     1NI 'C32'    'H32'    .  .  .
+     1NI 'C33'    'C35'    .  .  .
+     1NI 'C33'    '1H33'   .  .  .
+     1NI 'C33'    '2H33'   .  .  .
+     1NI 'C35'    'O36'    .  .  .
+     1NI 'C35'    'N37'    .  .  .
+     1NI 'N4'     'C5'     .  .  .
+     1NI 'N4'     'HN4'    .  .  .
+     1NI 'C5'     'C6'     .  .  .
+     1NI 'C5'     'C17'    .  .  .
+     1NI 'C5'     'H5'     .  .  .
+     1NI 'C6'     '1H6'    .  .  .
+     1NI 'C6'     '2H6'    .  .  .
+     1NI 'C17'    'O18'    .  .  .
+     1NI 'C17'    'N19'    .  .  .
+     1NI 'N19'    'HNJ'    .  .  .
+     1NI 'C23'    'C25'    .  .  .
+     1NI 'C23'    'H23'    .  .  .
+     1NI 'C25'    '1H25'   .  .  .
+     1NI 'C25'    '2H25'   .  .  .
+     1NI 'C25'    '3H25'   .  .  .
+     1NI 'C28'    'C29'    .  .  .
+     1NI 'C28'    '1H28'   .  .  .
+     1NI 'C28'    '2H28'   .  .  .
+     1NI 'C29'    'H29'    .  .  .
+     1NI 'O34'    'HOY'    .  .  .
+     1NI 'N37'    'C38'    .  .  .
+     1NI 'N37'    'HN3'    .  .  .
+     1NI 'C38'    'C39'    .  .  .
+     1NI 'C38'    'C41'    .  .  .
+     1NI 'C38'    'H38'    .  .  .
+     1NI 'C39'    'C40'    .  .  .
+     1NI 'C39'    '1H39'   .  .  .
+     1NI 'C39'    '2H39'   .  .  .
+     1NI 'C40'    '1H40'   .  .  .
+     1NI 'C40'    '2H40'   .  .  .
+     1NI 'C40'    '3H40'   .  .  .
+     1NI 'C41'    'O42'    .  .  .
+     1NI 'C41'    'N43'    .  .  .
+     1NI 'N43'    'C44'    .  .  .
+     1NI 'N43'    'HN''    .  .  .
+     1NI 'C44'    'C45'    .  .  .
+     1NI 'C44'    'C56'    .  .  .
+     1NI 'C44'    'H44'    .  .  .
+     1NI 'C45'    'C46'    .  .  .
+     1NI 'C45'    '1H45'   .  .  .
+     1NI 'C45'    '2H45'   .  .  .
+     1NI 'C46'    'C47'    .  .  .
+     1NI 'C46'    'C50'    .  .  .
+     1NI 'C47'    'C48'    .  .  .
+     1NI 'C47'    'H47'    .  .  .
+     1NI 'C48'    'C49'    .  .  .
+     1NI 'C48'    'H48'    .  .  .
+     1NI 'C49'    'C51'    .  .  .
+     1NI 'C49'    'H49'    .  .  .
+     1NI 'C50'    'C51'    .  .  .
+     1NI 'C50'    'C52'    .  .  .
+     1NI 'C51'    'C53'    .  .  .
+     1NI 'C52'    'C54'    .  .  .
+     1NI 'C52'    'H52'    .  .  .
+     1NI 'C53'    'C55'    .  .  .
+     1NI 'C53'    'H53'    .  .  .
+     1NI 'C54'    'C55'    .  .  .
+     1NI 'C54'    'H54'    .  .  .
+     1NI 'C55'    'H55'    .  .  .
+     1NI 'C56'    'O57'    .  .  .
+     1NI 'C56'    'N58'    .  .  .
+     1NI 'N58'    '1HN'    .  .  .
+     1NI 'N58'    '2HN'    .  .  .
+data_1PA
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1PA'
+_chem_comp.name
+;PHENYLMETHYLACETIC ACID ALANINE
+;
+_chem_comp.type                 'protein component'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C11 H13 N1 O4
+;
+_chem_comp.number_atoms_all     29
+_chem_comp.number_atoms_nh      16
+_chem_comp.formula_weight      223.22
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1PA 'N'         N  .  .  .
+     1PA 'CA'        C  .  .  .
+     1PA '1HN'       H  .  .  .
+     1PA '2HN'       H  .  .  .
+     1PA 'CB'        C  .  .  .
+     1PA 'C'         C  .  .  .
+     1PA 'HA'        H  .  .  .
+     1PA 'CG'        C  .  .  .
+     1PA '1HB'       H  .  .  .
+     1PA '2HB'       H  .  .  .
+     1PA 'CD1'       C  .  .  .
+     1PA 'CD2'       C  .  .  .
+     1PA 'CE1'       C  .  .  .
+     1PA 'HD1'       H  .  .  .
+     1PA 'CZ'        C  .  .  .
+     1PA 'HE1'       H  .  .  .
+     1PA 'CE2'       C  .  .  .
+     1PA 'HD2'       H  .  .  .
+     1PA 'HE2'       H  .  .  .
+     1PA 'CH'        C  .  .  .
+     1PA 'CO'        C  .  .  .
+     1PA '1HH'       H  .  .  .
+     1PA '2HH'       H  .  .  .
+     1PA 'O1'        O  .  .  .
+     1PA 'O2'        O  .  .  .
+     1PA 'HO1'       H  .  .  .
+     1PA 'O'         O  .  .  .
+     1PA 'OXT'       O  .  .  .
+     1PA 'HXT'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1PA 'N'      'CA'     .  .  .
+     1PA 'N'      '1HN'    .  .  .
+     1PA 'N'      '2HN'    .  .  .
+     1PA 'CA'     'CB'     .  .  .
+     1PA 'CA'     'C'      .  .  .
+     1PA 'CA'     'HA'     .  .  .
+     1PA 'CB'     'CG'     .  .  .
+     1PA 'CB'     '1HB'    .  .  .
+     1PA 'CB'     '2HB'    .  .  .
+     1PA 'CG'     'CD1'    .  .  .
+     1PA 'CG'     'CD2'    .  .  .
+     1PA 'CD1'    'CE1'    .  .  .
+     1PA 'CD1'    'HD1'    .  .  .
+     1PA 'CE1'    'CZ'     .  .  .
+     1PA 'CE1'    'HE1'    .  .  .
+     1PA 'CD2'    'CE2'    .  .  .
+     1PA 'CD2'    'HD2'    .  .  .
+     1PA 'CE2'    'CZ'     .  .  .
+     1PA 'CE2'    'HE2'    .  .  .
+     1PA 'CZ'     'CH'     .  .  .
+     1PA 'CH'     'CO'     .  .  .
+     1PA 'CH'     '1HH'    .  .  .
+     1PA 'CH'     '2HH'    .  .  .
+     1PA 'CO'     'O1'     .  .  .
+     1PA 'CO'     'O2'     .  .  .
+     1PA 'O1'     'HO1'    .  .  .
+     1PA 'C'      'O'      .  .  .
+     1PA 'C'      'OXT'    .  .  .
+     1PA 'OXT'    'HXT'    .  .  .
+data_1PC
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1PC'
+_chem_comp.name
+;1-(PHENYLCYCLOHEXYL)PIPERIDINE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C17 H25 N1
+;
+_chem_comp.number_atoms_all     43
+_chem_comp.number_atoms_nh      18
+_chem_comp.formula_weight      243.38
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1PC 'CP'        C  .  .  .
+     1PC 'CO'        C  .  .  .
+     1PC 'CQ'        C  .  .  .
+     1PC '1HP'       H  .  .  .
+     1PC '2HP'       H  .  .  .
+     1PC 'CA'        C  .  .  .
+     1PC 'CB'        C  .  .  .
+     1PC 'CF'        C  .  .  .
+     1PC 'CG'        C  .  .  .
+     1PC 'CC'        C  .  .  .
+     1PC 'HB'        H  .  .  .
+     1PC 'CD'        C  .  .  .
+     1PC 'HC'        H  .  .  .
+     1PC 'CE'        C  .  .  .
+     1PC 'HD'        H  .  .  .
+     1PC 'HE'        H  .  .  .
+     1PC 'HF'        H  .  .  .
+     1PC 'CH'        C  .  .  .
+     1PC 'CL'        C  .  .  .
+     1PC 'NM'        N  .  .  .
+     1PC 'CI'        C  .  .  .
+     1PC '1HH'       H  .  .  .
+     1PC '2HH'       H  .  .  .
+     1PC 'CJ'        C  .  .  .
+     1PC '1HI'       H  .  .  .
+     1PC '2HI'       H  .  .  .
+     1PC 'CK'        C  .  .  .
+     1PC '1HJ'       H  .  .  .
+     1PC '2HJ'       H  .  .  .
+     1PC '1HK'       H  .  .  .
+     1PC '2HK'       H  .  .  .
+     1PC '1HL'       H  .  .  .
+     1PC '2HL'       H  .  .  .
+     1PC 'CN'        C  .  .  .
+     1PC 'CR'        C  .  .  .
+     1PC '1HN'       H  .  .  .
+     1PC '2HN'       H  .  .  .
+     1PC '1HO'       H  .  .  .
+     1PC '2HO'       H  .  .  .
+     1PC '1HQ'       H  .  .  .
+     1PC '2HQ'       H  .  .  .
+     1PC '1HR'       H  .  .  .
+     1PC '2HR'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1PC 'CP'     'CO'     .  .  .
+     1PC 'CP'     'CQ'     .  .  .
+     1PC 'CP'     '1HP'    .  .  .
+     1PC 'CP'     '2HP'    .  .  .
+     1PC 'CA'     'CB'     .  .  .
+     1PC 'CA'     'CF'     .  .  .
+     1PC 'CA'     'CG'     .  .  .
+     1PC 'CB'     'CC'     .  .  .
+     1PC 'CB'     'HB'     .  .  .
+     1PC 'CC'     'CD'     .  .  .
+     1PC 'CC'     'HC'     .  .  .
+     1PC 'CD'     'CE'     .  .  .
+     1PC 'CD'     'HD'     .  .  .
+     1PC 'CE'     'CF'     .  .  .
+     1PC 'CE'     'HE'     .  .  .
+     1PC 'CF'     'HF'     .  .  .
+     1PC 'CG'     'CH'     .  .  .
+     1PC 'CG'     'CL'     .  .  .
+     1PC 'CG'     'NM'     .  .  .
+     1PC 'CH'     'CI'     .  .  .
+     1PC 'CH'     '1HH'    .  .  .
+     1PC 'CH'     '2HH'    .  .  .
+     1PC 'CI'     'CJ'     .  .  .
+     1PC 'CI'     '1HI'    .  .  .
+     1PC 'CI'     '2HI'    .  .  .
+     1PC 'CJ'     'CK'     .  .  .
+     1PC 'CJ'     '1HJ'    .  .  .
+     1PC 'CJ'     '2HJ'    .  .  .
+     1PC 'CK'     'CL'     .  .  .
+     1PC 'CK'     '1HK'    .  .  .
+     1PC 'CK'     '2HK'    .  .  .
+     1PC 'CL'     '1HL'    .  .  .
+     1PC 'CL'     '2HL'    .  .  .
+     1PC 'NM'     'CN'     .  .  .
+     1PC 'NM'     'CR'     .  .  .
+     1PC 'CN'     'CO'     .  .  .
+     1PC 'CN'     '1HN'    .  .  .
+     1PC 'CN'     '2HN'    .  .  .
+     1PC 'CO'     '1HO'    .  .  .
+     1PC 'CO'     '2HO'    .  .  .
+     1PC 'CQ'     'CR'     .  .  .
+     1PC 'CQ'     '1HQ'    .  .  .
+     1PC 'CQ'     '2HQ'    .  .  .
+     1PC 'CR'     '1HR'    .  .  .
+     1PC 'CR'     '2HR'    .  .  .
+data_1PG
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1PG'
+_chem_comp.name
+;REPRESENTATIVE POLYETHYLENE GLYCOL FRAGMENT
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C11 H24 O6
+;
+_chem_comp.number_atoms_all     41
+_chem_comp.number_atoms_nh      17
+_chem_comp.formula_weight      252.30
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1PG 'C2'        C  .  .  .
+     1PG 'O1'        O  .  .  .
+     1PG 'C3'        C  .  .  .
+     1PG '1H2'       H  .  .  .
+     1PG '2H2'       H  .  .  .
+     1PG 'C1'        C  .  .  .
+     1PG '1H1'       H  .  .  .
+     1PG '2H1'       H  .  .  .
+     1PG '3H1'       H  .  .  .
+     1PG 'O2'        O  .  .  .
+     1PG 'C4'        C  .  .  .
+     1PG '1H3'       H  .  .  .
+     1PG '2H3'       H  .  .  .
+     1PG 'C5'        C  .  .  .
+     1PG '1H4'       H  .  .  .
+     1PG '2H4'       H  .  .  .
+     1PG 'O3'        O  .  .  .
+     1PG '1H5'       H  .  .  .
+     1PG '2H5'       H  .  .  .
+     1PG 'C6'        C  .  .  .
+     1PG 'C7'        C  .  .  .
+     1PG '1H6'       H  .  .  .
+     1PG '2H6'       H  .  .  .
+     1PG 'O4'        O  .  .  .
+     1PG '1H7'       H  .  .  .
+     1PG '2H7'       H  .  .  .
+     1PG 'C8'        C  .  .  .
+     1PG 'C9'        C  .  .  .
+     1PG '1H8'       H  .  .  .
+     1PG '2H8'       H  .  .  .
+     1PG 'O5'        O  .  .  .
+     1PG '1H9'       H  .  .  .
+     1PG '2H9'       H  .  .  .
+     1PG 'C10'       C  .  .  .
+     1PG 'C11'       C  .  .  .
+     1PG '1H10'      H  .  .  .
+     1PG '2H10'      H  .  .  .
+     1PG 'O6'        O  .  .  .
+     1PG '1H11'      H  .  .  .
+     1PG '2H11'      H  .  .  .
+     1PG 'HO6'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1PG 'C2'     'O1'     .  .  .
+     1PG 'C2'     'C3'     .  .  .
+     1PG 'C2'     '1H2'    .  .  .
+     1PG 'C2'     '2H2'    .  .  .
+     1PG 'C1'     'O1'     .  .  .
+     1PG 'C1'     '1H1'    .  .  .
+     1PG 'C1'     '2H1'    .  .  .
+     1PG 'C1'     '3H1'    .  .  .
+     1PG 'O2'     'C3'     .  .  .
+     1PG 'O2'     'C4'     .  .  .
+     1PG 'C3'     '1H3'    .  .  .
+     1PG 'C3'     '2H3'    .  .  .
+     1PG 'C4'     'C5'     .  .  .
+     1PG 'C4'     '1H4'    .  .  .
+     1PG 'C4'     '2H4'    .  .  .
+     1PG 'C5'     'O3'     .  .  .
+     1PG 'C5'     '1H5'    .  .  .
+     1PG 'C5'     '2H5'    .  .  .
+     1PG 'O3'     'C6'     .  .  .
+     1PG 'C6'     'C7'     .  .  .
+     1PG 'C6'     '1H6'    .  .  .
+     1PG 'C6'     '2H6'    .  .  .
+     1PG 'C7'     'O4'     .  .  .
+     1PG 'C7'     '1H7'    .  .  .
+     1PG 'C7'     '2H7'    .  .  .
+     1PG 'O4'     'C8'     .  .  .
+     1PG 'C8'     'C9'     .  .  .
+     1PG 'C8'     '1H8'    .  .  .
+     1PG 'C8'     '2H8'    .  .  .
+     1PG 'C9'     'O5'     .  .  .
+     1PG 'C9'     '1H9'    .  .  .
+     1PG 'C9'     '2H9'    .  .  .
+     1PG 'O5'     'C10'    .  .  .
+     1PG 'C10'    'C11'    .  .  .
+     1PG 'C10'    '1H10'   .  .  .
+     1PG 'C10'    '2H10'   .  .  .
+     1PG 'C11'    'O6'     .  .  .
+     1PG 'C11'    '1H11'   .  .  .
+     1PG 'C11'    '2H11'   .  .  .
+     1PG 'O6'     'HO6'    .  .  .
+data_1UN
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '1UN'
+_chem_comp.name
+;NELFINAVIR MESYLATE AG1343
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C32 H45 N3 O4 S1
+;
+_chem_comp.number_atoms_all     85
+_chem_comp.number_atoms_nh      40
+_chem_comp.formula_weight      567.68
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     1UN 'C1'        C  .  .  .
+     1UN 'C2'        C  .  .  .
+     1UN 'C6'        C  .  .  .
+     1UN 'C10'       C  .  .  .
+     1UN 'H1'        H  .  .  .
+     1UN 'C3'        C  .  .  .
+     1UN 'C9'        C  .  .  .
+     1UN 'H2'        H  .  .  .
+     1UN 'C4'        C  .  .  .
+     1UN '1H3'       H  .  .  .
+     1UN '2H3'       H  .  .  .
+     1UN 'C5'        C  .  .  .
+     1UN '1H4'       H  .  .  .
+     1UN '2H4'       H  .  .  .
+     1UN '1H5'       H  .  .  .
+     1UN '2H5'       H  .  .  .
+     1UN '1H6'       H  .  .  .
+     1UN '2H6'       H  .  .  .
+     1UN 'N7'        N  .  .  .
+     1UN 'C8'        C  .  .  .
+     1UN 'C18'       C  .  .  .
+     1UN 'C11'       C  .  .  .
+     1UN 'H8'        H  .  .  .
+     1UN '1H9'       H  .  .  .
+     1UN '2H9'       H  .  .  .
+     1UN '1H10'      H  .  .  .
+     1UN '2H10'      H  .  .  .
+     1UN 'N12'       N  .  .  .
+     1UN 'O17'       O  .  .  .
+     1UN 'C13'       C  .  .  .
+     1UN 'HNC'       H  .  .  .
+     1UN 'C14'       C  .  .  .
+     1UN 'C15'       C  .  .  .
+     1UN 'C16'       C  .  .  .
+     1UN '1H14'      H  .  .  .
+     1UN '2H14'      H  .  .  .
+     1UN '3H14'      H  .  .  .
+     1UN '1H15'      H  .  .  .
+     1UN '2H15'      H  .  .  .
+     1UN '3H15'      H  .  .  .
+     1UN '1H16'      H  .  .  .
+     1UN '2H16'      H  .  .  .
+     1UN '3H16'      H  .  .  .
+     1UN 'C19'       C  .  .  .
+     1UN '1H18'      H  .  .  .
+     1UN '2H18'      H  .  .  .
+     1UN 'C20'       C  .  .  .
+     1UN 'O21'       O  .  .  .
+     1UN 'H19'       H  .  .  .
+     1UN 'N22'       N  .  .  .
+     1UN 'C23'       C  .  .  .
+     1UN 'H20'       H  .  .  .
+     1UN 'HOL'       H  .  .  .
+     1UN 'C24'       C  .  .  .
+     1UN 'HNM'       H  .  .  .
+     1UN 'S74'       S  .  .  .
+     1UN '1H23'      H  .  .  .
+     1UN '2H23'      H  .  .  .
+     1UN 'O25'       O  .  .  .
+     1UN 'C29'       C  .  .  .
+     1UN 'C30'       C  .  .  .
+     1UN 'C34'       C  .  .  .
+     1UN 'C31'       C  .  .  .
+     1UN 'H30'       H  .  .  .
+     1UN 'C32'       C  .  .  .
+     1UN 'H31'       H  .  .  .
+     1UN 'C33'       C  .  .  .
+     1UN 'H32'       H  .  .  .
+     1UN 'O38'       O  .  .  .
+     1UN 'C39'       C  .  .  .
+     1UN 'HO'        H  .  .  .
+     1UN '1H39'      H  .  .  .
+     1UN '2H39'      H  .  .  .
+     1UN '3H39'      H  .  .  .
+     1UN 'C77'       C  .  .  .
+     1UN 'C78'       C  .  .  .
+     1UN 'C82'       C  .  .  .
+     1UN 'C79'       C  .  .  .
+     1UN 'H78'       H  .  .  .
+     1UN 'C80'       C  .  .  .
+     1UN 'H79'       H  .  .  .
+     1UN 'C81'       C  .  .  .
+     1UN 'H80'       H  .  .  .
+     1UN 'H81'       H  .  .  .
+     1UN 'H82'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     1UN 'C1'     'C2'     .  .  .
+     1UN 'C1'     'C6'     .  .  .
+     1UN 'C1'     'C10'    .  .  .
+     1UN 'C1'     'H1'     .  .  .
+     1UN 'C2'     'C3'     .  .  .
+     1UN 'C2'     'C9'     .  .  .
+     1UN 'C2'     'H2'     .  .  .
+     1UN 'C3'     'C4'     .  .  .
+     1UN 'C3'     '1H3'    .  .  .
+     1UN 'C3'     '2H3'    .  .  .
+     1UN 'C4'     'C5'     .  .  .
+     1UN 'C4'     '1H4'    .  .  .
+     1UN 'C4'     '2H4'    .  .  .
+     1UN 'C5'     'C6'     .  .  .
+     1UN 'C5'     '1H5'    .  .  .
+     1UN 'C5'     '2H5'    .  .  .
+     1UN 'C6'     '1H6'    .  .  .
+     1UN 'C6'     '2H6'    .  .  .
+     1UN 'N7'     'C8'     .  .  .
+     1UN 'N7'     'C10'    .  .  .
+     1UN 'N7'     'C18'    .  .  .
+     1UN 'C8'     'C9'     .  .  .
+     1UN 'C8'     'C11'    .  .  .
+     1UN 'C8'     'H8'     .  .  .
+     1UN 'C9'     '1H9'    .  .  .
+     1UN 'C9'     '2H9'    .  .  .
+     1UN 'C10'    '1H10'   .  .  .
+     1UN 'C10'    '2H10'   .  .  .
+     1UN 'C11'    'N12'    .  .  .
+     1UN 'C11'    'O17'    .  .  .
+     1UN 'N12'    'C13'    .  .  .
+     1UN 'N12'    'HNC'    .  .  .
+     1UN 'C13'    'C14'    .  .  .
+     1UN 'C13'    'C15'    .  .  .
+     1UN 'C13'    'C16'    .  .  .
+     1UN 'C14'    '1H14'   .  .  .
+     1UN 'C14'    '2H14'   .  .  .
+     1UN 'C14'    '3H14'   .  .  .
+     1UN 'C15'    '1H15'   .  .  .
+     1UN 'C15'    '2H15'   .  .  .
+     1UN 'C15'    '3H15'   .  .  .
+     1UN 'C16'    '1H16'   .  .  .
+     1UN 'C16'    '2H16'   .  .  .
+     1UN 'C16'    '3H16'   .  .  .
+     1UN 'C18'    'C19'    .  .  .
+     1UN 'C18'    '1H18'   .  .  .
+     1UN 'C18'    '2H18'   .  .  .
+     1UN 'C19'    'C20'    .  .  .
+     1UN 'C19'    'O21'    .  .  .
+     1UN 'C19'    'H19'    .  .  .
+     1UN 'C20'    'N22'    .  .  .
+     1UN 'C20'    'C23'    .  .  .
+     1UN 'C20'    'H20'    .  .  .
+     1UN 'O21'    'HOL'    .  .  .
+     1UN 'N22'    'C24'    .  .  .
+     1UN 'N22'    'HNM'    .  .  .
+     1UN 'C23'    'S74'    .  .  .
+     1UN 'C23'    '1H23'   .  .  .
+     1UN 'C23'    '2H23'   .  .  .
+     1UN 'C24'    'O25'    .  .  .
+     1UN 'C24'    'C29'    .  .  .
+     1UN 'C29'    'C30'    .  .  .
+     1UN 'C29'    'C34'    .  .  .
+     1UN 'C30'    'C31'    .  .  .
+     1UN 'C30'    'H30'    .  .  .
+     1UN 'C31'    'C32'    .  .  .
+     1UN 'C31'    'H31'    .  .  .
+     1UN 'C32'    'C33'    .  .  .
+     1UN 'C32'    'H32'    .  .  .
+     1UN 'C33'    'C34'    .  .  .
+     1UN 'C33'    'O38'    .  .  .
+     1UN 'C34'    'C39'    .  .  .
+     1UN 'O38'    'HO'     .  .  .
+     1UN 'C39'    '1H39'   .  .  .
+     1UN 'C39'    '2H39'   .  .  .
+     1UN 'C39'    '3H39'   .  .  .
+     1UN 'S74'    'C77'    .  .  .
+     1UN 'C77'    'C78'    .  .  .
+     1UN 'C77'    'C82'    .  .  .
+     1UN 'C78'    'C79'    .  .  .
+     1UN 'C78'    'H78'    .  .  .
+     1UN 'C79'    'C80'    .  .  .
+     1UN 'C79'    'H79'    .  .  .
+     1UN 'C80'    'C81'    .  .  .
+     1UN 'C80'    'H80'    .  .  .
+     1UN 'C81'    'C82'    .  .  .
+     1UN 'C81'    'H81'    .  .  .
+     1UN 'C82'    'H82'    .  .  .
+data_24T
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '24T'
+_chem_comp.name
+;2-AMINO-4-METHYLTHIAZOLE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C4 H6 N2 S1
+;
+_chem_comp.number_atoms_all     13
+_chem_comp.number_atoms_nh      7
+_chem_comp.formula_weight      114.08
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     24T 'S1'        S  .  .  .
+     24T 'C2'        C  .  .  .
+     24T 'C5'        C  .  .  .
+     24T 'N3'        N  .  .  .
+     24T 'N'         N  .  .  .
+     24T 'C4'        C  .  .  .
+     24T 'CM'        C  .  .  .
+     24T 'H5'        H  .  .  .
+     24T '1HN'       H  .  .  .
+     24T '2HN'       H  .  .  .
+     24T '1HM'       H  .  .  .
+     24T '2HM'       H  .  .  .
+     24T '3HM'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     24T 'S1'     'C2'     .  .  .
+     24T 'S1'     'C5'     .  .  .
+     24T 'C2'     'N3'     .  .  .
+     24T 'C2'     'N'      .  .  .
+     24T 'N3'     'C4'     .  .  .
+     24T 'C4'     'C5'     .  .  .
+     24T 'C4'     'CM'     .  .  .
+     24T 'C5'     'H5'     .  .  .
+     24T 'N'      '1HN'    .  .  .
+     24T 'N'      '2HN'    .  .  .
+     24T 'CM'     '1HM'    .  .  .
+     24T 'CM'     '2HM'    .  .  .
+     24T 'CM'     '3HM'    .  .  .
+data_25T
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '25T'
+_chem_comp.name
+;2-AMINO-5-METHYLTHIAZOLE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C4 H7 N2 S1
+;
+_chem_comp.number_atoms_all     14
+_chem_comp.number_atoms_nh      7
+_chem_comp.formula_weight      115.09
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     25T 'S1'        S  .  .  .
+     25T 'C2'        C  .  .  .
+     25T 'C5'        C  .  .  .
+     25T 'N3'        N  .  .  .
+     25T 'N'         N  .  .  .
+     25T 'C4'        C  .  .  .
+     25T 'HN3'       H  .  .  .
+     25T 'H4'        H  .  .  .
+     25T 'CM'        C  .  .  .
+     25T '1HN'       H  .  .  .
+     25T '2HN'       H  .  .  .
+     25T '1HM'       H  .  .  .
+     25T '2HM'       H  .  .  .
+     25T '3HM'       H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     25T 'S1'     'C2'     .  .  .
+     25T 'S1'     'C5'     .  .  .
+     25T 'C2'     'N3'     .  .  .
+     25T 'C2'     'N'      .  .  .
+     25T 'N3'     'C4'     .  .  .
+     25T 'N3'     'HN3'    .  .  .
+     25T 'C4'     'C5'     .  .  .
+     25T 'C4'     'H4'     .  .  .
+     25T 'C5'     'CM'     .  .  .
+     25T 'N'      '1HN'    .  .  .
+     25T 'N'      '2HN'    .  .  .
+     25T 'CM'     '1HM'    .  .  .
+     25T 'CM'     '2HM'    .  .  .
+     25T 'CM'     '3HM'    .  .  .
+data_26P
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '26P'
+_chem_comp.name
+;2-AMINO-6-OXOPIMELATE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C7 H11 N1 O5
+;
+_chem_comp.number_atoms_all     24
+_chem_comp.number_atoms_nh      13
+_chem_comp.formula_weight      189.17
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     26P 'C1'        C  .  .  .
+     26P 'O11'       O  .  .  .
+     26P 'O12'       O  .  .  .
+     26P 'C2'        C  .  .  .
+     26P 'HOC'       H  .  .  .
+     26P 'N2'        N  .  .  .
+     26P 'C3'        C  .  .  .
+     26P 'H2'        H  .  .  .
+     26P '1HN2'      H  .  .  .
+     26P '2HN2'      H  .  .  .
+     26P 'C4'        C  .  .  .
+     26P '1H3'       H  .  .  .
+     26P '2H3'       H  .  .  .
+     26P 'C5'        C  .  .  .
+     26P '1H4'       H  .  .  .
+     26P '2H4'       H  .  .  .
+     26P 'C6'        C  .  .  .
+     26P '1H5'       H  .  .  .
+     26P '2H5'       H  .  .  .
+     26P 'O6'        O  .  .  .
+     26P 'C7'        C  .  .  .
+     26P 'O71'       O  .  .  .
+     26P 'O72'       O  .  .  .
+     26P 'HO'        H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     26P 'C1'     'O11'    .  .  .
+     26P 'C1'     'O12'    .  .  .
+     26P 'C1'     'C2'     .  .  .
+     26P 'O12'    'HOC'    .  .  .
+     26P 'C2'     'N2'     .  .  .
+     26P 'C2'     'C3'     .  .  .
+     26P 'C2'     'H2'     .  .  .
+     26P 'N2'     '1HN2'   .  .  .
+     26P 'N2'     '2HN2'   .  .  .
+     26P 'C3'     'C4'     .  .  .
+     26P 'C3'     '1H3'    .  .  .
+     26P 'C3'     '2H3'    .  .  .
+     26P 'C4'     'C5'     .  .  .
+     26P 'C4'     '1H4'    .  .  .
+     26P 'C4'     '2H4'    .  .  .
+     26P 'C5'     'C6'     .  .  .
+     26P 'C5'     '1H5'    .  .  .
+     26P 'C5'     '2H5'    .  .  .
+     26P 'C6'     'O6'     .  .  .
+     26P 'C6'     'C7'     .  .  .
+     26P 'C7'     'O71'    .  .  .
+     26P 'C7'     'O72'    .  .  .
+     26P 'O72'    'HO'     .  .  .
+data_2AM
+
+###############
+## CHEM_COMP ##
+###############
+
+_chem_comp.id                   '2AM'
+_chem_comp.name
+;ADENOSINE-2'-MONOPHOSPHATE
+;
+_chem_comp.type                 'inhibitor'
+_chem_comp.ndb_synonyms         ?
+_chem_comp.formula
+;C10 H14 N5 O7 P1
+;
+_chem_comp.number_atoms_all     37
+_chem_comp.number_atoms_nh      23
+_chem_comp.formula_weight      347.26
+_chem_comp.ndb_formal_charge    0
+_chem_comp.rcsb_details          ?
+
+####################
+## CHEM_COMP_ATOM ##
+####################
+
+loop_
+_chem_comp_atom.comp_id
+_chem_comp_atom.atom_id
+_chem_comp_atom.type_symbol
+_chem_comp_atom.model_Cartn_x
+_chem_comp_atom.model_Cartn_y
+_chem_comp_atom.model_Cartn_z
+     2AM 'P'         P  .  .  .
+     2AM 'O1P'       O  .  .  .
+     2AM 'O2P'       O  .  .  .
+     2AM 'O3P'       O  .  .  .
+     2AM 'O2*'       O  .  .  .
+     2AM '2HOP'      H  .  .  .
+     2AM '3HOP'      H  .  .  .
+     2AM 'C5*'       C  .  .  .
+     2AM 'O5*'       O  .  .  .
+     2AM 'C4*'       C  .  .  .
+     2AM '1H5*'      H  .  .  .
+     2AM '2H5*'      H  .  .  .
+     2AM '*HO5'      .  .  .  .
+     2AM 'O4*'       O  .  .  .
+     2AM 'C3*'       C  .  .  .
+     2AM 'H4*'       H  .  .  .
+     2AM 'C1*'       C  .  .  .
+     2AM 'O3*'       O  .  .  .
+     2AM 'C2*'       C  .  .  .
+     2AM 'H3*'       H  .  .  .
+     2AM '*HO3'      .  .  .  .
+     2AM 'H2*'       H  .  .  .
+     2AM 'N9'        N  .  .  .
+     2AM 'H1*'       H  .  .  .
+     2AM 'C8'        C  .  .  .
+     2AM 'C4'        C  .  .  .
+     2AM 'N7'        N  .  .  .
+     2AM 'H8'        H  .  .  .
+     2AM 'C5'        C  .  .  .
+     2AM 'C6'        C  .  .  .
+     2AM 'N6'        N  .  .  .
+     2AM 'N1'        N  .  .  .
+     2AM '1HN6'      H  .  .  .
+     2AM '2HN6'      H  .  .  .
+     2AM 'C2'        C  .  .  .
+     2AM 'N3'        N  .  .  .
+     2AM 'H2'        H  .  .  .
+
+####################
+## CHEM_COMP_BOND ##
+####################
+
+loop_
+_chem_comp_bond.comp_id
+_chem_comp_bond.atom_id_1
+_chem_comp_bond.atom_id_2
+_chem_comp_bond.value_order
+_chem_comp_bond.value_dist
+_chem_comp_bond.value_dist_esd
+     2AM 'P'      'O1P'    .  .  .
+     2AM 'P'      'O2P'    .  .  .
+     2AM 'P'      'O3P'    .  .  .
+     2AM 'P'      'O2*'    .  .  .
+     2AM 'O2P'    '2HOP'   .  .  .
+     2AM 'O3P'    '3HOP'   .  .  .
+     2AM 'C5*'    'O5*'    .  .  .
+     2AM 'C5*'    'C4*'    .  .  .
+     2AM 'C5*'    '1H5*'   .  .  .
+     2AM 'C5*'    '2H5*'   .  .  .
+     2AM 'O5*'    '*HO5'   .  .  .
+     2AM 'C4*'    'O4*'    .  .  .
+     2AM 'C4*'    'C3*'    .  .  .
+     2AM 'C4*'    'H4*'    .  .  .
+     2AM 'O4*'    'C1*'    .  .  .
+     2AM 'C3*'    'O3*'    .  .  .
+     2AM 'C3*'    'C2*'    .  .  .
+     2AM 'C3*'    'H3*'    .  .  .
+     2AM 'O3*'    '*HO3'   .  .  .
+     2AM 'C2*'    'O2*'    .  .  .
+     2AM 'C2*'    'C1*'    .  .  .
+     2AM 'C2*'    'H2*'    .  .  .
+     2AM 'C1*'    'N9'     .  .  .
+     2AM 'C1*'    'H1*'    .  .  .
+     2AM 'N9'     'C8'     .  .  .
+     2AM 'N9'     'C4'     .  .  .
+     2AM 'C8'     'N7'     .  .  .
+     2AM 'C8'     'H8'     .  .  .
+     2AM 'N7'     'C5'     .  .  .
+     2AM 'C5'     'C6'     .  .  .
+     2AM 'C5'     'C4'     .  .  .
+     2AM 'C6'     'N6'     .  .  .
+     2AM 'C6'     'N1'     .  .  .
+     2AM 'N6'     '1HN6'   .  .  .
+     2AM 'N6'     '2HN6'   .  .  .
+     2AM 'N1'     'C2'     .  .  .
+     2AM 'C2'     'N3'     .  .  .
+     2AM 'C2'     'H2'     .  .  .
+     2AM 'N3'     'C4'     .  .  .
+#

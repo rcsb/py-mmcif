@@ -1,0 +1,1333 @@
+#################################################################################################################################
+#																#
+#       February 1998														#
+#																#
+#															        #
+#															        #
+#	Depositor View Only: Search for 	# Depo									        #
+#															        #
+#															        #
+#	Annotator View: Search for 		# Anno									        #
+#															        #
+#															        #
+#	Problems: Search for 			# Watch									        #
+#															        #
+#															        #
+#															        #
+#################################################################################################################################
+
+data_viewndb
+
+#
+#
+############################################################################################################################@@ Loop
+#
+#
+
+loop_
+_ndb_view_category_group.view_group_id  
+_ndb_view_category_group.description  
+
+
+
+#################################################################################################################################
+																#
+																#
+'Deposition'                         'Contains database codes, processing and status data items'  				#
+																#
+'Authors'                            'Citation and bibliographic information'							#
+																#
+'Chemical/Biological Features'       'Basic biological and chemical features'                             			#
+																#
+'Structure Features'                 'Basic structural features of the deposited structure'                      		#
+																#
+'Crystallization'                    'Description of the cystallization conditions'						#
+																#
+'Crystal Data'                       'Diffraction properties of the crystal(s)'							#
+																#
+'Data Collection'                    'Describes data collection'                        					#
+																#
+'Refinement'                         'Describes cystallographic refinement'                                   			#
+																#
+'Software'                           'Software used for Data collection, reduction, structure solution, and refinement'		#
+																#
+'Coordinates'                        'Atomic coordinates and temperature factors'                 				#
+																#
+'PDB Placeholders'                   'Place holders for PDB file records: COMPND, SOURCE, REMARK, REVDAT'  			#
+																#
+																#
+																#
+#################################################################################################################################
+
+#
+#
+############################################################################################################################@@ Loop
+#
+#
+
+loop_
+_ndb_view_category.category_id  
+_ndb_view_category.category_view_name  
+_ndb_view_category.view_group_id  
+_ndb_view_category.category_view_mandatory_code  
+
+#
+############################################################################################################################
+#
+
+audit_author                   audit_author                   'Deposition'                      H
+audit_contact_author           audit_contact_author           'Deposition'                      Y # Depo
+
+database                       database                       'Deposition'                      H # Anno
+
+ndb_database_status            ndb_database_status            'Deposition'                      H # Anno    
+ndb_database_proc              ndb_database_proc              'Deposition'                      H # Anno
+ndb_database_remark            ndb_database_remark            'Deposition'                      H
+ndb_database_message           ndb_database_message           'UNKNOWN'                         H
+
+############################################################################################################################
+
+citation                       citation                       'Authors'                         Y # Depo 
+citation_author                citation_author                'Authors'                         Y # Depo
+citation_editor                citation_editor                'Authors'                         H
+
+############################################################################################################################
+
+entity                         entity                         'Chemical/Biological Features'    H # Anno
+entity_keywords                entity_keywords                'Chemical/Biological Features'    H
+entity_name_com                entity_name_com                'Chemical/Biological Features'    H
+entity_name_sys                entity_name_sys                'Chemical/Biological Features'    H # Anno
+
+ndb_na_strand_info             ndb_na_strand_info             'Chemical/Biological Features'    H # Anno
+ndb_trna_info                  ndb_trna_info                  'Chemical/Biological Features'    H # Anno
+ndb_protein_info               ndb_protein_info               'Chemical/Biological Features'    H
+ndb_drug_info                  ndb_drug_info                  'Chemical/Biological Features'    H # Anno
+ndb_inhibitor_info             ndb_inhibitor_info             'Chemical/Biological Features'    H # Anno
+ndb_solvent_info               ndb_solvent_info               'Chemical/Biological Features'    H # Anno
+ndb_ion_info                   ndb_ion_info                   'Chemical/Biological Features'    H # Anno
+
+entity_poly_seq                entity_poly_seq                'Chemical/Biological Features'    H # Anno
+
+ndb_source                     ndb_source                     'Chemical/Biological Features'    H
+ndb_poly_seq_scheme            ndb_poly_seq_scheme            'Chemical/Biological Features'    H
+
+ndb_entity_poly_domain         ndb_entity_poly_domain         'Chemical/Biological Features'    H    
+ndb_entity_func_bind_mode      ndb_entity_func_bind_mode      'Chemical/Biological Features'    H    
+ndb_entity_func_enzyme         ndb_entity_func_enzyme         'Chemical/Biological Features'    H    
+ndb_entity_func_regulatory     ndb_entity_func_regulatory     'Chemical/Biological Features'    H    
+ndb_entity_func_structural     ndb_entity_func_structural     'Chemical/Biological Features'    H    
+ndb_entity_func_other          ndb_entity_func_other          'Chemical/Biological Features'    H    
+
+ndb_unpair                     ndb_unpair                     'Chemical/Biological Features'    H # Watch
+
+entity_src_nat                 entity_src_nat                 'Chemical/Biological Features'    H
+entity_src_gen                 entity_src_gen                 'Chemical/Biological Features'    H
+
+############################################################################################################################
+
+struct_keywords                struct_keywords                'Structure Features'              Y # Depo
+struct                         struct                         'Structure Features'              H # Anno
+ndb_na_struct_keywds           ndb_na_struct_keywds           'Structure Features'              H # Anno
+
+chem_comp                      chem_comp                      'structure features'              H # Anno
+ndb_nonstandard_list           ndb_nonstandard_list           'Structure Features'              H
+struct_conn                    struct_conn                    'Structure Features'              H
+
+struct_biol_gen                struct_biol_gen                'Structure Features'              H # Anno
+struct_biol_keywords           struct_biol_keywords           'Structure Features'              H
+struct_biol_view               struct_biol_view               'Structure Features'              H
+
+struct_asym                    struct_asym                    'Structure Features'              H
+ndb_struct_pack_gen            ndb_struct_pack_gen            'Structure Features'              H
+
+struct_conf_type               struct_conf_type               'Structure Features'              H
+struct_conf                    struct_conf                    'Structure Features'              H
+struct_mon_prot_cis            struct_mon_prot_cis            'Structure Features'              H
+
+struct_site                    struct_site                    'Structure Features'              H
+struct_site_keywords           struct_site_keywords           'Structure Features'              H
+struct_site_gen                struct_site_gen                'Structure Features'              H
+
+struct_sheet                   struct_sheet                   'Structure Features'              H
+struct_sheet_order             struct_sheet_order             'Structure Features'              H
+struct_sheet_range             struct_sheet_range             'Structure Features'              H
+struct_sheet_hbond             struct_sheet_hbond             'Structure Features'              H
+
+ndb_hybrid                     ndb_hybrid                     'Structure Features'              H # Anno
+
+############################################################################################################################
+
+exptl_crystal_grow             exptl_crystal_grow             'Crystallization'                 Y # Depo
+exptl_crystal_grow_comp        exptl_crystal_grow_comp        'Crystallization'                 Y # Depo
+exptl_crystal                  exptl_crystal                  'Crystallization'                 H # Anno
+
+############################################################################################################################
+
+cell                           cell                           'Crystal Data'                    Y # Depo
+symmetry                       symmetry                       'Crystal Data'                    Y # Depo
+atom_sites                     atom_sites                     'Crystal Data'                    H # Anno
+struct_ncs_oper                struct_ncs_oper                'Crystal Data'                    H # Anno
+
+############################################################################################################################
+
+exptl                          exptl                          'Data Collection'                 Y # Depo
+diffrn_source                  diffrn_source                  'Data Collection'                 Y # Depo
+diffrn_detector                diffrn_detector                'Data Collection'                 Y # Depo
+diffrn                         diffrn                         'Data Collection'                 Y # Depo
+diffrn_radiation               diffrn_radiation               'Data Collection'                 H    
+diffrn_radiation_wavelength    diffrn_radiation_wavelength    'Data Collection'                 Y # Depo
+reflns                         reflns                         'Data Collection'                 Y # Depo
+reflns_shell                   reflns_shell                   'Data Collection'                 Y # Depo
+refln                          refln                          'UNKNOWN'                         H    
+
+############################################################################################################################
+
+refine                         refine                         'Refinement'                      Y # Depo
+refine_ls_restr                refine_ls_restr                'Refinement'                      Y # Depo
+refine_ls_restr_ncs            refine_ls_restr_ncs            'Refinement'                      H # Anno
+refine_ls_shell                refine_ls_shell                'Refinement'                      H # Anno
+ndb_refine                     ndb_refine                     'Refinement'                      H # Anno
+refine_analyze                 refine_analyze                 'Refinement'                      H # Anno
+refine_B_iso                   refine_B_iso                   'Refinement'                      H # Anno
+refine_occupancy               refine_occupancy               'Refinement'                      H # Anno
+ndb_xplor_file                 ndb_xplor_file                 'Refinement'                      H # Anno
+
+############################################################################################################################
+
+computing                      computing                      'Software'                        Y # Depo
+
+############################################################################################################################
+
+ndb_coord                      ndb_coord                      'Coordinates'                     H # Anno
+atom_sites_footnote            atom_sites_footnote            'Coordinates'                     H
+atom_site                      atom_site                      'Coordinates'                     H
+atom_site_anisotrop            atom_site_anisotrop            'Coordinates'                     H
+
+############################################################################################################################
+
+ndb_pdb_compnd                 ndb_pdb_compnd                 'PDB Placeholders'                H # Anno
+ndb_pdb_source                 ndb_pdb_source                 'PDB Placeholders'                H # Anno
+ndb_database_PDB_master        ndb_database_PDB_master        'PDB Placeholders'                H # Anno
+database_PDB_rev               database_PDB_rev               'PDB Placeholders'                H # Anno
+ndb_database_PDB_obs_spr       ndb_database_PDB_obs_spr       'PDB Placeholders'                H # Anno
+database_PDB_remark            database_PDB_remark            'PDB Placeholders'                H # Anno
+struct_ref                     struct_ref                     'PDB Placeholders'                H # Anno
+struct_ref_seq                 struct_ref_seq                 'PDB Placeholders'                H # Anno
+struct_ref_seq_dif             struct_ref_seq_dif             'PDB Placeholders'                H # Anno
+database_pdb_tvect             database_pdb_tvect             'PDB Placeholders'                H # Anno
+database_PDB_caveat            database_PDB_caveat            'PDB Placeholders'                H # Anno
+ndb_original_pdb_coordinates   ndb_original_pdb_coordinates   'PDB Placeholders'                H #
+#
+#
+############################################################################################################################@@ Loop for All Categories
+#
+#
+#
+############################################################################################################################@@ Loop for All Categories
+#
+#
+
+loop_
+_ndb_view_item.category_id  
+_ndb_view_item.item_name  
+_ndb_view_item.item_view_name  
+_ndb_view_item.item_view_mandatory_code  
+_ndb_view_item.item_view_allow_alternate_value  
+
+#
+#
+############################################################################################################################@@  atom
+#
+#
+
+atom_site                      '_atom_site.id'                                              '_atom_site.id'                                              H    N
+atom_site                      '_atom_site.label_atom_id'                                   '_atom_site.label_atom_id'                                   H    N
+atom_site                      '_atom_site.footnote_id'                                     '_atom_site.footnote_id'                                     H    N
+atom_site                      '_atom_site.label_alt_id'                                    '_atom_site.label_alt_id'                                    H    N
+atom_site                      '_atom_site.label_asym_id'                                   '_atom_site.label_asym_id'                                   H    N
+atom_site                      '_atom_site.label_comp_id'                                   '_atom_site.label_comp_id'                                   H    N
+atom_site                      '_atom_site.label_entity_id'                                 '_atom_site.label_entity_id'                                 H    N
+atom_site                      '_atom_site.label_seq_id'                                    '_atom_site.label_seq_id'                                    H    N
+atom_site                      '_atom_site.ndb_PDB_atom_name'                               '_atom_site.ndb_PDB_atom_name'                               H    N
+atom_site                      '_atom_site.ndb_PDB_residue_name'                            '_atom_site.ndb_PDB_residue_name'                            H    N
+atom_site                      '_atom_site.ndb_PDB_residue_no'                              '_atom_site.ndb_PDB_residue_no'                              H    N
+atom_site                      '_atom_site.ndb_PDB_strand_id'                               '_atom_site.ndb_PDB_strand_id'                               H    N
+atom_site                      '_atom_site.group_PDB'                                       '_atom_site.group_PDB'                                       H    N
+atom_site                      '_atom_site.cartn_x'                                         '_atom_site.cartn_x'                                         H    N
+atom_site                      '_atom_site.cartn_x_esd'                                     '_atom_site.cartn_x_esd'                                     H    N    
+atom_site                      '_atom_site.cartn_y'                                         '_atom_site.cartn_y'                                         H    N
+atom_site                      '_atom_site.cartn_y_esd'                                     '_atom_site.cartn_y_esd'                                     H    N    
+atom_site                      '_atom_site.cartn_z'                                         '_atom_site.cartn_z'                                         H    N
+atom_site                      '_atom_site.cartn_z_esd'                                     '_atom_site.cartn_z_esd'                                     H    N    
+atom_site                      '_atom_site.B_iso_or_equiv'                                  '_atom_site.B_iso_or_equiv'                                  H    N
+atom_site                      '_atom_site.B_iso_or_equiv_esd'                              '_atom_site.B_iso_or_equiv_esd'                              H    N    
+atom_site                      '_atom_site.occupancy'                                       '_atom_site.occupancy'                                       H    N
+atom_site                      '_atom_site.occupancy_esd'                                   '_atom_site.occupancy_esd'                                   H    N    
+atom_site                      '_atom_site.auth_seq_id'                                     '_atom_site.auth_seq_id'                                     H    N
+atom_site                      '_atom_site.ndb_auth_asym_id'                                '_atom_site.ndb_auth_asym_id'                                H    N
+atom_site                      '_atom_site.ndb_auth_atom_name'                              '_atom_site.ndb_auth_atom_name'                              H    N
+atom_site                      '_atom_site.ndb_auth_comp_id'                                '_atom_site.ndb_auth_comp_id'                                H    N
+atom_site                      '_atom_site.ndb_ins_code'                                    '_atom_site.ndb_ins_code'                                    H    N
+atom_site                      '_atom_site.ndb_label_seq_num'                               '_atom_site.ndb_label_seq_num'                               H    N
+atom_site                      '_atom_site.ndb_model'                                       '_atom_site.ndb_model'                                       H    N
+atom_site                      '_atom_site.ndb_not_in_asym'                                 '_atom_site.ndb_not_in_asym'                                 H    N
+
+atom_site_anisotrop            '_atom_site_anisotrop.id'                                    '_atom_site_anisotrop.id'                                    H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_PDB_atom_name'                     '_atom_site_anisotrop.ndb_PDB_atom_name'                     H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_PDB_residue_name'                  '_atom_site_anisotrop.ndb_PDB_residue_name'                  H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_PDB_residue_no'                    '_atom_site_anisotrop.ndb_PDB_residue_no'                    H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_PDB_strand_id'                     '_atom_site_anisotrop.ndb_PDB_strand_id'                     H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[1][1]'                               '_atom_site_anisotrop.U[1][1]'                               H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[1][1]_esd'                           '_atom_site_anisotrop.U[1][1]_esd'                           H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[1][2]'                               '_atom_site_anisotrop.U[1][2]'                               H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[1][2]_esd'                           '_atom_site_anisotrop.U[1][2]_esd'                           H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[1][3]'                               '_atom_site_anisotrop.U[1][3]'                               H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[1][3]_esd'                           '_atom_site_anisotrop.U[1][3]_esd'                           H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[2][2]'                               '_atom_site_anisotrop.U[2][2]'                               H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[2][2]_esd'                           '_atom_site_anisotrop.U[2][2]_esd'                           H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[2][3]'                               '_atom_site_anisotrop.U[2][3]'                               H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[2][3]_esd'                           '_atom_site_anisotrop.U[2][3]_esd'                           H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[3][3]'                               '_atom_site_anisotrop.U[3][3]'                               H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.U[3][3]_esd'                           '_atom_site_anisotrop.U[3][3]_esd'                           H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_auth_asym_id'                      '_atom_site_anisotrop.ndb_auth_asym_id'                      H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_auth_comp_id'                      '_atom_site_anisotrop.ndb_auth_comp_id'                      H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_auth_seq_id'                       '_atom_site_anisotrop.ndb_auth_seq_id'                       H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_label_alt_id'                      '_atom_site_anisotrop.ndb_label_alt_id'                      H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_label_asym_id'                     '_atom_site_anisotrop.ndb_label_asym_id'                     H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_label_atom_id'                     '_atom_site_anisotrop.ndb_label_atom_id'                     H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_label_comp_id'                     '_atom_site_anisotrop.ndb_label_comp_id'                     H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_auth_atom_name'                    '_atom_site_anisotrop.ndb_auth_atom_name'                    H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_label_ins_code'                    '_atom_site_anisotrop.ndb_label_ins_code'                    H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_label_seq_num'                     '_atom_site_anisotrop.ndb_label_seq_num'                     H    N    
+atom_site_anisotrop            '_atom_site_anisotrop.ndb_not_in_asym'                       '_atom_site_anisotrop.ndb_not_in_asym'                       H    N    
+
+#
+#
+############################################################################################################################@@ audit
+#
+#
+
+atom_sites                     '_atom_sites.entry_id'                                       '_atom_sites.entry_id'                                       H    N
+atom_sites                     '_atom_sites.fract_transf_matrix[1][1]'                      '_atom_sites.fract_transf_matrix[1][1]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[1][2]'                      '_atom_sites.fract_transf_matrix[1][2]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[1][3]'                      '_atom_sites.fract_transf_matrix[1][3]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[2][1]'                      '_atom_sites.fract_transf_matrix[2][1]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[2][2]'                      '_atom_sites.fract_transf_matrix[2][2]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[2][3]'                      '_atom_sites.fract_transf_matrix[2][3]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[3][1]'                      '_atom_sites.fract_transf_matrix[3][1]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[3][2]'                      '_atom_sites.fract_transf_matrix[3][2]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_matrix[3][3]'                      '_atom_sites.fract_transf_matrix[3][3]'                      H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_vector[1]'                         '_atom_sites.fract_transf_vector[1]'                         H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_vector[2]'                         '_atom_sites.fract_transf_vector[2]'                         H    N # Anno
+atom_sites                     '_atom_sites.fract_transf_vector[3]'                         '_atom_sites.fract_transf_vector[3]'                         H    N # Anno
+
+atom_sites                     '_atom_sites.cartn_transf_matrix[1][1]'                      '_atom_sites.cartn_transf_matrix[1][1]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[1][2]'                      '_atom_sites.cartn_transf_matrix[1][2]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[1][3]'                      '_atom_sites.cartn_transf_matrix[1][3]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[2][1]'                      '_atom_sites.cartn_transf_matrix[2][1]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[2][2]'                      '_atom_sites.cartn_transf_matrix[2][2]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[2][3]'                      '_atom_sites.cartn_transf_matrix[2][3]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[3][1]'                      '_atom_sites.cartn_transf_matrix[3][1]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[3][2]'                      '_atom_sites.cartn_transf_matrix[3][2]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_matrix[3][3]'                      '_atom_sites.cartn_transf_matrix[3][3]'                      H    N
+atom_sites                     '_atom_sites.cartn_transf_vector[1]'                         '_atom_sites.cartn_transf_vector[1]'                         H    N
+atom_sites                     '_atom_sites.cartn_transf_vector[2]'                         '_atom_sites.cartn_transf_vector[2]'                         H    N
+atom_sites                     '_atom_sites.cartn_transf_vector[3]'                         '_atom_sites.cartn_transf_vector[3]'                         H    N
+atom_sites                     '_atom_sites.cartn_transform_axes'                           '_atom_sites.cartn_transform_axes'                           H    N    
+
+atom_sites_footnote            '_atom_sites_footnote.id'                                    '_atom_sites_footnote.id'                                    H    N    
+atom_sites_footnote            '_atom_sites_footnote.text'                                  '_atom_sites_footnote.text'                                  H    N    
+
+#
+#
+############################################################################################################################@@ audit
+#
+#
+
+audit_author                   '_audit_author.name'                                         '_audit_author.name'                                         H    N
+
+############################################################################################################################
+
+audit_contact_author           '_audit_contact_author.name'                                 '_audit_contact_author.name'                                 Y    Y # Depo
+audit_contact_author           '_audit_contact_author.email'                                '_audit_contact_author.email'                                Y    Y # Depo
+audit_contact_author           '_audit_contact_author.address'                              '_audit_contact_author.address'                              Y    Y # Depo
+audit_contact_author           '_audit_contact_author.fax'                                  '_audit_contact_author.fax'                                  Y    Y # Depo
+audit_contact_author           '_audit_contact_author.phone'                                '_audit_contact_author.phone'                                Y    Y # Depo
+
+#
+#
+############################################################################################################################@@ cell
+#
+#
+
+cell                           '_cell.entry_id'                                             '_cell.entry_id'                                             H    N
+cell                           '_cell.length_a'                                             '_cell.length_a'                                             Y    Y # Depo
+cell                           '_cell.length_b'                                             '_cell.length_b'                                             Y    Y # Depo
+cell                           '_cell.length_c'                                             '_cell.length_c'                                             Y    Y # Depo
+cell                           '_cell.angle_alpha'                                          '_cell.angle_alpha'                                          Y    Y # Depo
+cell                           '_cell.angle_beta'                                           '_cell.angle_beta'                                           Y    Y # Depo
+cell                           '_cell.angle_gamma'                                          '_cell.angle_gamma'                                          Y    Y # Depo
+cell                           '_cell.ndb_unique_axis'                                      '_cell.ndb_unique_axis'                                      H    N
+cell                           '_cell.Z_PDB'                                                '_cell.Z_PDB'                                                H    N    
+
+#
+#
+############################################################################################################################@@ chem
+#
+#
+
+chem_comp                      '_chem_comp.id'                                              '_chem_comp.id'                                              H    N
+chem_comp                      '_chem_comp.formula'                                         '_chem_comp.formula'                                         H    N # Anno
+chem_comp                      '_chem_comp.formula_weight'                                  '_chem_comp.formula_weight'                                  H    N # Anno
+chem_comp                      '_chem_comp.name'                                            '_chem_comp.name'                                            H    N # Anno
+chem_comp                      '_chem_comp.ndb_component_no'                                '_chem_comp.ndb_component_no'                                H    N # Anno
+chem_comp                      '_chem_comp.ndb_synonyms'                                    '_chem_comp.ndb_synonyms'                                    H    N # Anno
+
+#
+#
+############################################################################################################################@@ citation
+#
+#
+
+citation                       '_citation.id'                                               '_citation.id'                                               H    N # Anno
+citation                       '_citation.year'                                             '_citation.year'                                             Y    Y # Depo
+citation                       '_citation.journal_abbrev'                                   '_citation.journal_abbrev'                                   Y    Y # Depo
+citation                       '_citation.journal_volume'                                   '_citation.journal_volume'                                   Y    Y # Depo
+citation                       '_citation.page_first'                                       '_citation.page_first'                                       Y    Y # Depo
+citation                       '_citation.page_last'                                        '_citation.page_last'                                        Y    Y # Depo
+citation                       '_citation.title'                                            '_citation.title'                                            Y    Y # Depo
+citation                       '_citation.book_publisher'                                   '_citation.book_publisher'                                   H    N
+citation                       '_citation.country'                                          '_citation.country'                                          H    N
+citation                       '_citation.journal_id_ASTM'                                  '_citation.journal_id_ASTM'                                  H    N
+citation                       '_citation.journal_id_CSD'                                   '_citation.journal_id_CSD'                                   H    N
+citation                       '_citation.journal_id_ISSN'                                  '_citation.journal_id_ISSN'                                  H    N
+citation                       '_citation.ndb_author_list'                                  '_citation.ndb_author_list'                                  H    N
+
+############################################################################################################################
+
+citation_author                '_citation_author.citation_id'                               '_citation_author.citation_id'                               Y    N # Anno
+citation_author                '_citation_author.name'                                      '_citation_author.name'                                      Y    Y # Depo
+citation_editor                '_citation_editor.citation_id'                               '_citation_editor.citation_id'                               H    N
+citation_editor                '_citation_editor.name'                                      '_citation_editor.name'                                      H    N
+
+#
+#
+############################################################################################################################@@ computing
+#
+#
+
+computing                      '_computing.entry_id'                                        '_computing.entry_id'                                        H    N
+computing                      '_computing.data_collection'                                 '_computing.data_collection'                                 Y    Y # Depo
+computing                      '_computing.data_reduction'                                  '_computing.data_reduction'                                  Y    Y # Depo
+computing                      '_computing.structure_solution'                              '_computing.structure_solution'                              Y    Y # Depo
+computing                      '_computing.structure_refinement'                            '_computing.structure_refinement'                            Y    Y # Depo
+computing                      '_computing.ndb_structure_refinement_method'                 '_computing.ndb_structure_refinement_method'                 H    N # Watch
+
+#
+#
+############################################################################################################################@@ database
+#
+#
+
+database                       '_database.entry_id'                                         '_database.entry_id'                                         H    N
+database                       '_database.ndb_code_NDB'                                     '_database.ndb_code_NDB'                                     H    N # Anno
+database                       '_database.ndb_code_PDB'                                     '_database.ndb_code_PDB'                                     H    N # Anno
+database                       '_database.code_CSD'                                         '_database.code_CSD'                                         H    N # Anno
+database                       '_database.ndb_code_BMCD'                                    '_database.ndb_code_BMCD'                                    H    N # Anno
+
+############################################################################################################################
+
+database_PDB_remark            '_database_PDB_remark.id'                                    '_database_PDB_remark.id'                                    H    N
+database_PDB_remark            '_database_PDB_remark.text'                                  '_database_PDB_remark.text'                                  H    N # Anno
+
+database_PDB_caveat            '_database_PDB_caveat.id'                                    '_database_PDB_caveat.id'                                    H    N
+database_PDB_caveat            '_database_PDB_caveat.text'                                  '_database_PDB_caveat.text'                                  H    N # Anno
+
+database_PDB_rev               '_database_PDB_rev.num'                                      '_database_PDB_rev.num'                                      H    N # Anno
+database_PDB_rev               '_database_PDB_rev.date'                                     '_database_PDB_rev.date'                                     H    N # Anno
+database_PDB_rev               '_database_PDB_rev.date_original'                            '_database_PDB_rev.date_original'                            H    N # Anno
+database_PDB_rev               '_database_PDB_rev.mod_type'                                 '_database_PDB_rev.mod_type'                                 H    N # Anno
+database_PDB_rev               '_database_PDB_rev.status'                                   '_database_PDB_rev.status'                                   H    N # Anno
+
+database_pdb_tvect             '_database_pdb_tvect.id'                                     '_database_pdb_tvect.id'                                     H    N
+database_pdb_tvect             '_database_pdb_tvect.vector[1]'                              '_database_pdb_tvect.vector[1]'                              H    N # Anno
+database_pdb_tvect             '_database_pdb_tvect.vector[2]'                              '_database_pdb_tvect.vector[2]'                              H    N # Anno
+database_pdb_tvect             '_database_pdb_tvect.vector[3]'                              '_database_pdb_tvect.vector[3]'                              H    N # Anno
+database_pdb_tvect             '_database_pdb_tvect.details'                                '_database_pdb_tvect.details'                                H    N # Anno
+
+#
+#
+############################################################################################################################@@ diffrn
+#
+#
+
+diffrn                         '_diffrn.id'                                                 '_diffrn.id'                                                 H    N
+diffrn                         '_diffrn.ambient_temp'                                       '_diffrn.ambient_temp'                                       Y    Y # Depo
+diffrn                         '_diffrn.ambient_temp_details'                               '_diffrn.ambient_temp_details'                               H    N
+
+############################################################################################################################
+
+diffrn_detector                '_diffrn_detector.diffrn_id'                                 '_diffrn_detector.diffrn_id'                                 H    N
+diffrn_detector                '_diffrn_detector.detector'                                  '_diffrn_detector.detector'                                  Y    Y # Depo
+diffrn_detector                '_diffrn_detector.type'                                      '_diffrn_detector.type'                                      Y    Y # Depo
+diffrn_detector                '_diffrn_detector.ndb_collection_date'                       '_diffrn_detector.ndb_collection_date'                       Y    Y # Depo
+diffrn_detector                '_diffrn_detector.details'                                   '_diffrn_detector.details'                                   H    N
+
+diffrn_radiation               '_diffrn_radiation.diffrn_id'                                '_diffrn_radiation.diffrn_id'                                H    N
+diffrn_radiation               '_diffrn_radiation.wavelength_id'                            '_diffrn_radiation.wavelength_id'                            H    N
+diffrn_radiation               '_diffrn_radiation.monochromator'                            '_diffrn_radiation.monochromator'                            H    N
+diffrn_radiation               '_diffrn_radiation.ndb_monochromatic_or_laue_m_l'            '_diffrn_radiation.ndb_monochromatic_or_laue_m_l'            H    N
+diffrn_radiation_wavelength    '_diffrn_radiation_wavelength.id'                            '_diffrn_radiation_wavelength.id'                            H    N # Anno
+diffrn_radiation_wavelength    '_diffrn_radiation_wavelength.wavelength'                    '_diffrn_radiation_wavelength.wavelength'                    Y    Y # Depo
+
+diffrn_source                  '_diffrn_source.diffrn_id'                                   '_diffrn_source.diffrn_id'                                   H    N
+diffrn_source                  '_diffrn_source.source'                                      '_diffrn_source.source'                                      Y    Y # Depo
+diffrn_source                  '_diffrn_source.type'                                        '_diffrn_source.type'                                        Y    Y # Depo
+diffrn_source                  '_diffrn_source.ndb_synchrotron_site'                        '_diffrn_source.ndb_synchrotron_site'                        H    N
+diffrn_source                  '_diffrn_source.ndb_synchrotron_beamline'                    '_diffrn_source.ndb_synchrotron_beamline'                    H    N
+diffrn_source                  '_diffrn_source.ndb_synchrotron_y_n'                         '_diffrn_source.ndb_synchrotron_y_n'                         H    N
+
+#
+#
+############################################################################################################################@@ entity
+#
+#
+
+entity                         '_entity.id'                                                 '_entity.id'                                                 H    N
+entity                         '_entity.type'                                               '_entity.type'                                               H    N # Anno
+entity                         '_entity.formula_weight'                                     '_entity.formula_weight'                                     H    N # Anno
+entity                         '_entity.ndb_description'                                    '_entity.ndb_description'                                    H    N # Anno
+entity                         '_entity.ndb_number_of_molecules'                            '_entity.ndb_number_of_molecules'                            H    N # Anno
+entity                         '_entity.src_method'                                         '_entity.src_method'                                         H    N # Anno
+entity                         '_entity.details'                                            '_entity.details'                                            H    N # Anno
+
+############################################################################################################################
+
+entity_keywords                '_entity_keywords.entity_id'                                 '_entity_keywords.entity_id'                                 H    N
+entity_keywords                '_entity_keywords.ndb_biological_unit'                       '_entity_keywords.ndb_biological_unit'                       H    N # Anno
+entity_keywords                '_entity_keywords.ndb_ec'                                    '_entity_keywords.ndb_ec'                                    H    N    
+entity_keywords                '_entity_keywords.ndb_antibody_isotype'                      '_entity_keywords.ndb_antibody_isotype'                      H    N    
+entity_keywords                '_entity_keywords.ndb_fragment'                              '_entity_keywords.ndb_fragment'                              H    N    
+entity_keywords                '_entity_keywords.ndb_mutation'                              '_entity_keywords.ndb_mutation'                              H    N    
+entity_keywords                '_entity_keywords.text'                                      '_entity_keywords.text'                                      H    N # Anno
+
+entity_name_com                '_entity_name_com.entity_id'                                 '_entity_name_com.entity_id'                                 H    N # Anno
+entity_name_com                '_entity_name_com.name'                                      '_entity_name_com.name'                                      H    N # Anno
+
+entity_name_sys                '_entity_name_sys.entity_id'                                 '_entity_name_sys.entity_id'                                 H    N # Anno
+entity_name_sys                '_entity_name_sys.name'                                      '_entity_name_sys.name'                                      H    N # Anno
+
+entity_poly_seq                '_entity_poly_seq.entity_id'                                 '_entity_poly_seq.entity_id'                                 H    N # Anno
+entity_poly_seq                '_entity_poly_seq.mon_id'                                    '_entity_poly_seq.mon_id'                                    H    N # Anno
+entity_poly_seq                '_entity_poly_seq.num'                                       '_entity_poly_seq.num'                                       H    N # Anno
+
+############################################################################################################################
+
+entity_src_gen                 '_entity_src_gen.entity_id'                                  '_entity_src_gen.entity_id'                                  H    N # Anno
+entity_src_gen                 '_entity_src_gen.gene_src_common_name'                       '_entity_src_gen.gene_src_common_name'                       H    N # Anno
+entity_src_gen                 '_entity_src_gen.gene_src_details'                           '_entity_src_gen.gene_src_details'                           H    N # Anno
+entity_src_gen                 '_entity_src_gen.gene_src_genus'                             '_entity_src_gen.gene_src_genus'                             H    N # Anno
+entity_src_gen                 '_entity_src_gen.gene_src_species'                           '_entity_src_gen.gene_src_species'                           H    N # Anno
+entity_src_gen                 '_entity_src_gen.gene_src_strain'                            '_entity_src_gen.gene_src_strain'                            H    N # Anno
+entity_src_gen                 '_entity_src_gen.gene_src_tissue'                            '_entity_src_gen.gene_src_tissue'                            H    N # Anno
+entity_src_gen                 '_entity_src_gen.gene_src_tissue_fraction'                   '_entity_src_gen.gene_src_tissue_fraction'                   H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_atcc'                          '_entity_src_gen.ndb_gene_src_atcc'                          H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_cell'                          '_entity_src_gen.ndb_gene_src_cell'                          H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_cell_line'                     '_entity_src_gen.ndb_gene_src_cell_line'                     H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_cellular_location'             '_entity_src_gen.ndb_gene_src_cellular_location'             H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_fragment'                      '_entity_src_gen.ndb_gene_src_fragment'                      H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_gene'                          '_entity_src_gen.ndb_gene_src_gene'                          H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_organ'                         '_entity_src_gen.ndb_gene_src_organ'                         H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_organelle'                     '_entity_src_gen.ndb_gene_src_organelle'                     H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_scientific_name'               '_entity_src_gen.ndb_gene_src_scientific_name'               H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_gene_src_variant'                       '_entity_src_gen.ndb_gene_src_variant'                       H    N # Anno
+entity_src_gen                 '_entity_src_gen.host_org_common_name'                       '_entity_src_gen.host_org_common_name'                       H    N # Anno
+entity_src_gen                 '_entity_src_gen.host_org_genus'                             '_entity_src_gen.host_org_genus'                             H    N # Anno
+entity_src_gen                 '_entity_src_gen.host_org_species'                           '_entity_src_gen.host_org_species'                           H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_atcc'                          '_entity_src_gen.ndb_host_org_atcc'                          H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_cell'                          '_entity_src_gen.ndb_host_org_cell'                          H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_cell_line'                     '_entity_src_gen.ndb_host_org_cell_line'                     H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_cellular_location'             '_entity_src_gen.ndb_host_org_cellular_location'             H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_gene'                          '_entity_src_gen.ndb_host_org_gene'                          H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_organ'                         '_entity_src_gen.ndb_host_org_organ'                         H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_organelle'                     '_entity_src_gen.ndb_host_org_organelle'                     H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_scientific_name'               '_entity_src_gen.ndb_host_org_scientific_name'               H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_strain'                        '_entity_src_gen.ndb_host_org_strain'                        H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_tissue'                        '_entity_src_gen.ndb_host_org_tissue'                        H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_tissue_fraction'               '_entity_src_gen.ndb_host_org_tissue_fraction'               H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_varient'                       '_entity_src_gen.ndb_host_org_varient'                       H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_vector'                        '_entity_src_gen.ndb_host_org_vector'                        H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_host_org_vector_type'                   '_entity_src_gen.ndb_host_org_vector_type'                   H    N # Anno
+entity_src_gen                 '_entity_src_gen.plasmid_name'                               '_entity_src_gen.plasmid_name'                               H    N # Anno
+entity_src_gen                 '_entity_src_gen.ndb_description'                            '_entity_src_gen.ndb_description'                            H    N # Anno
+entity_src_gen                 '_entity_src_gen.plasmid_details'                            '_entity_src_gen.plasmid_details'                            H    N # Anno
+
+entity_src_nat                 '_entity_src_nat.entity_id'                                  '_entity_src_nat.entity_id'                                  H    N # Anno
+entity_src_nat                 '_entity_src_nat.species'                                    '_entity_src_nat.species'                                    H    N # Anno
+entity_src_nat                 '_entity_src_nat.common_name'                                '_entity_src_nat.common_name'                                H    N # Anno
+entity_src_nat                 '_entity_src_nat.genus'                                      '_entity_src_nat.genus'                                      H    N # Anno
+entity_src_nat                 '_entity_src_nat.strain'                                     '_entity_src_nat.strain'                                     H    N # Anno
+entity_src_nat                 '_entity_src_nat.tissue'                                     '_entity_src_nat.tissue'                                     H    N # Anno
+entity_src_nat                 '_entity_src_nat.tissue_fraction'                            '_entity_src_nat.tissue_fraction'                            H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_atcc'                                   '_entity_src_nat.ndb_atcc'                                   H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_cell'                                   '_entity_src_nat.ndb_cell'                                   H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_cell_line'                              '_entity_src_nat.ndb_cell_line'                              H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_cellular_location'                      '_entity_src_nat.ndb_cellular_location'                      H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_organ'                                  '_entity_src_nat.ndb_organ'                                  H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_organelle'                              '_entity_src_nat.ndb_organelle'                              H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_organism_scientific'                    '_entity_src_nat.ndb_organism_scientific'                    H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_plasmid_details'                        '_entity_src_nat.ndb_plasmid_details'                        H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_plasmid_name'                           '_entity_src_nat.ndb_plasmid_name'                           H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_fragment'                               '_entity_src_nat.ndb_fragment'                               H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_secretion'                              '_entity_src_nat.ndb_secretion'                              H    N # Anno
+entity_src_nat                 '_entity_src_nat.ndb_variant'                                '_entity_src_nat.ndb_variant'                                H    N # Anno
+entity_src_nat                 '_entity_src_nat.details'                                    '_entity_src_nat.details'                                    H    N # Anno
+
+#
+#
+############################################################################################################################@@ exptl
+#
+#
+
+exptl                          '_exptl.entry_id'                                            '_exptl.entry_id'                                            H    N
+exptl                          '_exptl.crystals_number'                                     '_exptl.crystals_number'                                     Y    Y # Depo
+exptl                          '_exptl.method'                                              '_exptl.method'                                              H    N # Anno
+
+############################################################################################################################
+
+exptl_crystal                  '_exptl_crystal.id'                                          '_exptl_crystal.id'                                          H    N # Anno
+exptl_crystal                  '_exptl_crystal.density_meas'                                '_exptl_crystal.density_meas'                                H    N # Anno
+exptl_crystal                  '_exptl_crystal.density_percent_sol'                         '_exptl_crystal.density_percent_sol'                         H    N # Anno
+exptl_crystal                  '_exptl_crystal.density_matthews'                            '_exptl_crystal.density_matthews'                            H    N # Anno
+exptl_crystal                  '_exptl_crystal.description'                                 '_exptl_crystal.description'                                 H    N # Anno
+
+exptl_crystal_grow             '_exptl_crystal_grow.crystal_id'                             '_exptl_crystal_grow.crystal_id'                             H    N # Anno
+exptl_crystal_grow             '_exptl_crystal_grow.method'                                 '_exptl_crystal_grow.method'                                 Y    Y # Depo
+exptl_crystal_grow             '_exptl_crystal_grow.pH'                                     '_exptl_crystal_grow.pH'                                     Y    Y # Depo
+exptl_crystal_grow             '_exptl_crystal_grow.temp'                                   '_exptl_crystal_grow.temp'                                   Y    Y # Depo
+exptl_crystal_grow             '_exptl_crystal_grow.temp_details'                           '_exptl_crystal_grow.temp_details'                           H    N # Anno
+
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.crystal_id'                        '_exptl_crystal_grow_comp.crystal_id'                        H    N # Anno
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.sol_id'                            '_exptl_crystal_grow_comp.sol_id'                            Y    N # Depo 
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.id'                                '_exptl_crystal_grow_comp.id'                                Y    N # Depo
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.name'                              '_exptl_crystal_grow_comp.name'                              Y    N # Depo
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.conc'                              '_exptl_crystal_grow_comp.conc'                              H    N
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.volume'                            '_exptl_crystal_grow_comp.volume'                            H    N
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.details'                           '_exptl_crystal_grow_comp.details'                           H    N
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.ndb_bath'                          '_exptl_crystal_grow_comp.ndb_bath'                          H    N
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.ndb_salt'                          '_exptl_crystal_grow_comp.ndb_salt'                          H    N
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.ndb_soak_salt'                     '_exptl_crystal_grow_comp.ndb_soak_salt'                     H    N
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.ndb_soak_solv'                     '_exptl_crystal_grow_comp.ndb_soak_solv'                     H    N
+exptl_crystal_grow_comp        '_exptl_crystal_grow_comp.ndb_solv'                          '_exptl_crystal_grow_comp.ndb_solv'                          H    N
+
+#
+#
+############################################################################################################################@@ ndb
+#
+#
+
+ndb_coord                      '_ndb_coord.entry_id'                                        '_ndb_coord.entry_id'                                        H    N
+ndb_coord                      '_ndb_coord.chain_atoms_Y_P'                                 '_ndb_coord.chain_atoms_Y_P'                                 H    N # Anno
+ndb_coord                      '_ndb_coord.hydrogen_atoms_Y_N'                              '_ndb_coord.hydrogen_atoms_Y_N'                              H    N # Anno
+ndb_coord                      '_ndb_coord.solvent_atoms_Y_N'                               '_ndb_coord.solvent_atoms_Y_N'                               H    N # Anno
+ndb_coord                      '_ndb_coord.structure_factors_Y_N'                           '_ndb_coord.structure_factors_Y_N'                           H    N # Anno
+
+############################################################################################################################
+
+ndb_database_PDB_obs_spr       '_ndb_database_PDB_obs_spr.id'                               '_ndb_database_PDB_obs_spr.id'                               H    N # Anno
+ndb_database_PDB_obs_spr       '_ndb_database_PDB_obs_spr.pdb_id'                           '_ndb_database_PDB_obs_spr.pdb_id'                           H    N # Anno
+ndb_database_PDB_obs_spr       '_ndb_database_PDB_obs_spr.replace_pdb_id'                   '_ndb_database_PDB_obs_spr.replace_pdb_id'                   H    N # Anno
+ndb_database_PDB_obs_spr       '_ndb_database_PDB_obs_spr.date'                             '_ndb_database_PDB_obs_spr.date'                             H    N # Anno
+
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_seqres'                        '_ndb_database_PDB_master.num_seqres'                        H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_conect'                        '_ndb_database_PDB_master.num_conect'                        H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_coord'                         '_ndb_database_PDB_master.num_coord'                         H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_helix'                         '_ndb_database_PDB_master.num_helix'                         H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_turn'                          '_ndb_database_PDB_master.num_turn'                          H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_sheet'                         '_ndb_database_PDB_master.num_sheet'                         H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_site'                          '_ndb_database_PDB_master.num_site'                          H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_trans'                         '_ndb_database_PDB_master.num_trans'                         H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_het'                           '_ndb_database_PDB_master.num_het'                           H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_ter'                           '_ndb_database_PDB_master.num_ter'                           H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_ftnote'                        '_ndb_database_PDB_master.num_ftnote'                        H    N # Anno
+ndb_database_PDB_master        '_ndb_database_PDB_master.num_remark'                        '_ndb_database_PDB_master.num_remark'                        H    N # Anno
+
+ndb_database_message           '_ndb_database_message.entry_id'                             '_ndb_database_message.entry_id'                             H    N
+ndb_database_message           '_ndb_database_message.message_id'                           '_ndb_database_message.message_id'                           H    N
+ndb_database_message           '_ndb_database_message.date'                                 '_ndb_database_message.date'                                 H    N
+ndb_database_message           '_ndb_database_message.message'                              '_ndb_database_message.message'                              H    N
+ndb_database_message           '_ndb_database_message.message_type'                         '_ndb_database_message.message_type'                         H    N
+ndb_database_message           '_ndb_database_message.content_type'                         '_ndb_database_message.content_type'                         H    N
+ndb_database_message           '_ndb_database_message.receiver'                             '_ndb_database_message.receiver'                             H    N
+ndb_database_message           '_ndb_database_message.receiver_address_email'               '_ndb_database_message.receiver_address_email'               H    N
+ndb_database_message           '_ndb_database_message.receiver_address_fax'                 '_ndb_database_message.receiver_address_fax'                 H    N
+ndb_database_message           '_ndb_database_message.receiver_address_mail'                '_ndb_database_message.receiver_address_mail'                H    N
+ndb_database_message           '_ndb_database_message.receiver_address_phone'               '_ndb_database_message.receiver_address_phone'               H    N
+ndb_database_message           '_ndb_database_message.sender'                               '_ndb_database_message.sender'                               H    N
+ndb_database_message           '_ndb_database_message.sender_address_email'                 '_ndb_database_message.sender_address_email'                 H    N
+ndb_database_message           '_ndb_database_message.sender_address_fax'                   '_ndb_database_message.sender_address_fax'                   H    N
+ndb_database_message           '_ndb_database_message.sender_address_mail'                  '_ndb_database_message.sender_address_mail'                  H    N
+ndb_database_message           '_ndb_database_message.sender_address_phone'                 '_ndb_database_message.sender_address_phone'                 H    N
+
+ndb_database_proc              '_ndb_database_proc.entry_id'                                '_ndb_database_proc.entry_id'                                H    N # Anno
+ndb_database_proc              '_ndb_database_proc.cycle_id'                                '_ndb_database_proc.cycle_id'                                H    N # Anno
+ndb_database_proc              '_ndb_database_proc.date_begin_cycle'                        '_ndb_database_proc.date_begin_cycle'                        H    N # Anno
+ndb_database_proc              '_ndb_database_proc.date_end_cycle'                          '_ndb_database_proc.date_end_cycle'                          H    N # Anno
+ndb_database_proc              '_ndb_database_proc.details'                                 '_ndb_database_proc.details'                                 H    N
+
+ndb_database_status            '_ndb_database_status.entry_id'                              '_ndb_database_status.entry_id'                              H    N # Anno
+ndb_database_status            '_ndb_database_status.ndb_tid'                               '_ndb_database_status.ndb_tid'                               H    N # Anno # Watch
+ndb_database_status            '_ndb_database_status.deposit_site'                          '_ndb_database_status.deposit_site'                          H    N # Anno
+ndb_database_status            '_ndb_database_status.process_site'                          '_ndb_database_status.process_site'                          H    N # Anno
+ndb_database_status            '_ndb_database_status.date_submitted'                        '_ndb_database_status.date_submitted'                        H    N # Anno
+ndb_database_status            '_ndb_database_status.date_of_NDB_release'                   '_ndb_database_status.date_of_NDB_release'                   H    N # Anno
+ndb_database_status            '_ndb_database_status.date_released_to_PDB'                  '_ndb_database_status.date_released_to_PDB'                  H    N # Anno
+ndb_database_status            '_ndb_database_status.date_of_PDB_release'                   '_ndb_database_status.date_of_PDB_release'                   H    N # Anno
+ndb_database_status            '_ndb_database_status.date_author_approval'                  '_ndb_database_status.date_author_approval'                  H    N # Anno
+ndb_database_status            '_ndb_database_status.pdb_date_of_author_approval'           '_ndb_database_status.pdb_date_of_author_approval'           H    N # Anno
+ndb_database_status            '_ndb_database_status.date_deposition_form'                  '_ndb_database_status.date_deposition_form'                  H    N # Anno
+ndb_database_status            '_ndb_database_status.date_coordinates'                      '_ndb_database_status.date_coordinates'                      H    N # Anno
+ndb_database_status            '_ndb_database_status.date_struct_fact'                      '_ndb_database_status.date_struct_fact'                      H    N # Anno
+ndb_database_status            '_ndb_database_status.date_manuscript'                       '_ndb_database_status.date_manuscript'                       H    N # Anno
+ndb_database_status            '_ndb_database_status.name_depositor'                        '_ndb_database_status.name_depositor'                        H    N # Anno
+ndb_database_status            '_ndb_database_status.date_hold_coordinates'                 '_ndb_database_status.date_hold_coordinates'                 H    N # Anno
+ndb_database_status            '_ndb_database_status.date_hold_struct_fact'                 '_ndb_database_status.date_hold_struct_fact'                 H    N # Anno
+ndb_database_status            '_ndb_database_status.hold_for_publication'                  '_ndb_database_status.hold_for_publication'                  H    N # Anno
+ndb_database_status            '_ndb_database_status.recvd_initial_deposition_date'         '_ndb_database_status.recvd_initial_deposition_date'         H    N # Anno
+ndb_database_status            '_ndb_database_status.recvd_deposit_form'                    '_ndb_database_status.recvd_deposit_form'                    H    N # Anno
+ndb_database_status            '_ndb_database_status.recvd_author_approval'                 '_ndb_database_status.recvd_author_approval'                 H    N # Anno
+ndb_database_status            '_ndb_database_status.recvd_internal_approval'               '_ndb_database_status.recvd_internal_approval'               H    N # Anno
+ndb_database_status            '_ndb_database_status.recvd_coordinates'                     '_ndb_database_status.recvd_coordinates'                     H    N # Anno
+ndb_database_status            '_ndb_database_status.recvd_struct_fact'                     '_ndb_database_status.recvd_struct_fact'                     H    N # Anno
+ndb_database_status            '_ndb_database_status.recvd_manuscript'                      '_ndb_database_status.recvd_manuscript'                      H    N # Anno
+ndb_database_status            '_ndb_database_status.replaced_entry_id'                     '_ndb_database_status.replaced_entry_id'                     H    N # Anno
+ndb_database_status            '_ndb_database_status.revision_id'                           '_ndb_database_status.revision_id'                           H    N # Anno
+ndb_database_status            '_ndb_database_status.date_revised'                          '_ndb_database_status.date_revised'                          H    N # Anno
+ndb_database_status            '_ndb_database_status.revision_description'                  '_ndb_database_status.revision_description'                  H    N # Anno
+ndb_database_status            '_ndb_database_status.status_code'                           '_ndb_database_status.status_code'                           H    N # Anno
+ndb_database_status            '_ndb_database_status.status_coordinates_in_NDB'             '_ndb_database_status.status_coordinates_in_NDB'             H    N # Anno
+
+ndb_database_remark            '_ndb_database_remark.id'                                    '_ndb_database_remark.id'                                    H    N
+ndb_database_remark            '_ndb_database_remark.text'                                  '_ndb_database_remark.text'                                  H    N
+
+#
+#
+############################################################################################################################
+#
+#
+
+ndb_na_strand_info             '_ndb_na_strand_info.id'                                     '_ndb_na_strand_info.id'                                     H    N # Anno
+ndb_na_strand_info             '_ndb_na_strand_info.fract_NA_strand_per_asym_unit'          '_ndb_na_strand_info.fract_NA_strand_per_asym_unit'          H    N # Anno
+ndb_na_strand_info             '_ndb_na_strand_info.num_of_NA_strands_per_asym_unit'        '_ndb_na_strand_info.num_of_NA_strands_per_asym_unit'        H    N # Anno
+ndb_na_strand_info             '_ndb_na_strand_info.num_of_NA_strands_per_biol_unit'        '_ndb_na_strand_info.num_of_NA_strands_per_biol_unit'        H    N # Anno
+
+############################################################################################################################
+
+ndb_trna_info                  '_ndb_trna_info.id'                                          '_ndb_trna_info.id'                                          H    N # Anno
+ndb_trna_info                  '_ndb_trna_info.name'                                        '_ndb_trna_info.name'                                        H    N # Anno
+ndb_trna_info                  '_ndb_trna_info.num_per_asym_unit'                           '_ndb_trna_info.num_per_asym_unit'                           H    N # Anno
+
+############################################################################################################################
+
+ndb_protein_info               '_ndb_protein_info.id'                                       '_ndb_protein_info.id'                                       H    N # Anno
+ndb_protein_info               '_ndb_protein_info.name'                                     '_ndb_protein_info.name'                                     H    N # Anno
+ndb_protein_info               '_ndb_protein_info.num_per_asym_unit'                        '_ndb_protein_info.num_per_asym_unit'                        H    N # Anno
+
+############################################################################################################################
+
+ndb_solvent_info               '_ndb_solvent_info.id'                                       '_ndb_solvent_info.id'                                       H    N # Anno
+ndb_solvent_info               '_ndb_solvent_info.name'                                     '_ndb_solvent_info.name'                                     H    N # Anno
+ndb_solvent_info               '_ndb_solvent_info.numb_per_asym_unit'                       '_ndb_solvent_info.numb_per_asym_unit'                       H    N # Anno
+
+############################################################################################################################
+
+ndb_inhibitor_info             '_ndb_inhibitor_info.id'                                     '_ndb_inhibitor_info.id'                                     H    N # Anno
+ndb_inhibitor_info             '_ndb_inhibitor_info.name'                                   '_ndb_inhibitor_info.name'                                   H    N # Anno
+ndb_inhibitor_info             '_ndb_inhibitor_info.num_per_asym_unit'                      '_ndb_inhibitor_info.num_per_asym_unit'                      H    N # Anno
+
+############################################################################################################################
+
+ndb_ion_info                   '_ndb_ion_info.id'                                           '_ndb_ion_info.id'                                           H    N # Anno
+ndb_ion_info                   '_ndb_ion_info.name'                                         '_ndb_ion_info.name'                                         H    N # Anno
+ndb_ion_info                   '_ndb_ion_info.numb_per_asym_unit'                           '_ndb_ion_info.numb_per_asym_unit'                           H    N # Anno
+
+############################################################################################################################
+
+ndb_drug_info                  '_ndb_drug_info.id'                                          '_ndb_drug_info.id'                                          H    N # Anno
+ndb_drug_info                  '_ndb_drug_info.name'                                        '_ndb_drug_info.name'                                        H    N # Anno
+ndb_drug_info                  '_ndb_drug_info.num_per_asym_unit'                           '_ndb_drug_info.num_per_asym_unit'                           H    N # Anno
+ndb_drug_info                  '_ndb_drug_info.num_of_whole_molecule'                       '_ndb_drug_info.num_of_whole_molecule'                       H    N    
+ndb_drug_info                  '_ndb_drug_info.size_of_molecule_per_asym_unit'              '_ndb_drug_info.size_of_molecule_per_asym_unit'              H    N    
+
+############################################################################################################################
+
+ndb_entity_func_bind_mode      '_ndb_entity_func_bind_mode.domain_id'                       '_ndb_entity_func_bind_mode.domain_id'                       H    N
+ndb_entity_func_bind_mode      '_ndb_entity_func_bind_mode.entity_id'                       '_ndb_entity_func_bind_mode.entity_id'                       H    N
+ndb_entity_func_bind_mode      '_ndb_entity_func_bind_mode.id'                              '_ndb_entity_func_bind_mode.id'                              H    N
+ndb_entity_func_bind_mode      '_ndb_entity_func_bind_mode.protein_binds_to'                '_ndb_entity_func_bind_mode.protein_binds_to'                H    N
+ndb_entity_func_bind_mode      '_ndb_entity_func_bind_mode.type'                            '_ndb_entity_func_bind_mode.type'                            H    N
+ndb_entity_func_structural     '_ndb_entity_func_structural.bind_mode_id'                   '_ndb_entity_func_structural.bind_mode_id'                   H    N
+ndb_entity_func_structural     '_ndb_entity_func_structural.type'                           '_ndb_entity_func_structural.type'                           H    N
+ndb_entity_func_enzyme         '_ndb_entity_func_enzyme.bind_mode_id'                       '_ndb_entity_func_enzyme.bind_mode_id'                       H    N
+ndb_entity_func_enzyme         '_ndb_entity_func_enzyme.type'                               '_ndb_entity_func_enzyme.type'                               H    N
+ndb_entity_func_regulatory     '_ndb_entity_func_regulatory.bind_mode_id'                   '_ndb_entity_func_regulatory.bind_mode_id'                   H    N
+ndb_entity_func_regulatory     '_ndb_entity_func_regulatory.type'                           '_ndb_entity_func_regulatory.type'                           H    N
+ndb_entity_func_other          '_ndb_entity_func_other.bind_mode_id'                        '_ndb_entity_func_other.bind_mode_id'                        H    N
+ndb_entity_func_other          '_ndb_entity_func_other.type'                                '_ndb_entity_func_other.type'                                H    N
+
+ndb_entity_poly_domain         '_ndb_entity_poly_domain.begin_mon_id'                       '_ndb_entity_poly_domain.begin_mon_id'                       H    N
+ndb_entity_poly_domain         '_ndb_entity_poly_domain.begin_seq_num'                      '_ndb_entity_poly_domain.begin_seq_num'                      H    N
+ndb_entity_poly_domain         '_ndb_entity_poly_domain.end_mon_id'                         '_ndb_entity_poly_domain.end_mon_id'                         H    N
+ndb_entity_poly_domain         '_ndb_entity_poly_domain.end_seq_num'                        '_ndb_entity_poly_domain.end_seq_num'                        H    N
+ndb_entity_poly_domain         '_ndb_entity_poly_domain.entity_id'                          '_ndb_entity_poly_domain.entity_id'                          H    N
+ndb_entity_poly_domain         '_ndb_entity_poly_domain.id'                                 '_ndb_entity_poly_domain.id'                                 H    N
+
+############################################################################################################################
+
+ndb_hybrid                     '_ndb_hybrid.id'                                             '_ndb_hybrid.id'                                             H    N
+ndb_hybrid                     '_ndb_hybrid.residue_names'                                  '_ndb_hybrid.residue_names'                                  H    N # Anno
+ndb_hybrid                     '_ndb_hybrid.strand_id'                                      '_ndb_hybrid.strand_id'                                      H    N # Anno
+ndb_hybrid                     '_ndb_hybrid.sugar_name'                                     '_ndb_hybrid.sugar_name'                                     H    N # Anno
+
+############################################################################################################################
+
+ndb_na_struct_keywds           '_ndb_na_struct_keywds.entry_id'                             '_ndb_na_struct_keywds.entry_id'                             H    N # Watch
+ndb_na_struct_keywds           '_ndb_na_struct_keywds.conformation_type'                    '_ndb_na_struct_keywds.conformation_type'                    H    N # Anno # Watch
+ndb_na_struct_keywds           '_ndb_na_struct_keywds.strand_description'                   '_ndb_na_struct_keywds.strand_description'                   H    N # Anno # Watch
+ndb_na_struct_keywds           '_ndb_na_struct_keywds.special_feature'                      '_ndb_na_struct_keywds.special_feature'                      H    N # Anno # Watch
+
+############################################################################################################################
+
+ndb_nonstandard_list           '_ndb_nonstandard_list.id'                                   '_ndb_nonstandard_list.id'                                   H    N # Anno
+ndb_nonstandard_list           '_ndb_nonstandard_list.ins_code'                             '_ndb_nonstandard_list.ins_code'                             H    N # Anno
+ndb_nonstandard_list           '_ndb_nonstandard_list.label_asym_id'                        '_ndb_nonstandard_list.label_asym_id'                        H    N # Anno
+ndb_nonstandard_list           '_ndb_nonstandard_list.label_seq_id'                         '_ndb_nonstandard_list.label_seq_id'                         H    N # Anno
+ndb_nonstandard_list           '_ndb_nonstandard_list.number_atoms_nh'                      '_ndb_nonstandard_list.number_atoms_nh'                      H    N # Anno
+ndb_nonstandard_list           '_ndb_nonstandard_list.auth_asym_id'                         '_ndb_nonstandard_list.auth_asym_id'                         H    N # Anno
+ndb_nonstandard_list           '_ndb_nonstandard_list.auth_seq_id'                          '_ndb_nonstandard_list.auth_seq_id'                          H    N # Anno
+
+############################################################################################################################
+
+ndb_pdb_compnd                 '_ndb_pdb_compnd.id'                                         '_ndb_pdb_compnd.id'                                         H    N # Anno
+ndb_pdb_compnd                 '_ndb_pdb_compnd.text'                                       '_ndb_pdb_compnd.text'                                       H    N # Anno
+
+ndb_pdb_source                 '_ndb_pdb_source.id'                                         '_ndb_pdb_source.id'                                         H    N # Anno
+ndb_pdb_source                 '_ndb_pdb_source.text'                                       '_ndb_pdb_source.text'                                       H    N # Anno
+
+############################################################################################################################
+
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.auth_mon_id'                           '_ndb_poly_seq_scheme.auth_mon_id'                           H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.auth_num'                              '_ndb_poly_seq_scheme.auth_num'                              H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.entity_id'                             '_ndb_poly_seq_scheme.entity_id'                             H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.id'                                    '_ndb_poly_seq_scheme.id'                                    H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.mon_id'                                '_ndb_poly_seq_scheme.mon_id'                                H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.ndb_num'                               '_ndb_poly_seq_scheme.ndb_num'                               H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.pdb_id'                                '_ndb_poly_seq_scheme.pdb_id'                                H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.pdb_mon_id'                            '_ndb_poly_seq_scheme.pdb_mon_id'                            H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.pdb_num'                               '_ndb_poly_seq_scheme.pdb_num'                               H    N
+ndb_poly_seq_scheme            '_ndb_poly_seq_scheme.seq_id'                                '_ndb_poly_seq_scheme.seq_id'                                H    N
+
+############################################################################################################################
+
+ndb_refine                     '_ndb_refine.entry_id'                                       '_ndb_refine.entry_id'                                       H    N # Anno
+ndb_refine                     '_ndb_refine.R_factor_all_no_cutoff'                         '_ndb_refine.R_factor_all_no_cutoff'                         H    N # Watch
+ndb_refine                     '_ndb_refine.R_factor_obs_no_cutoff'                         '_ndb_refine.R_factor_obs_no_cutoff'                         H    N # Watch
+ndb_refine                     '_ndb_refine.number_reflns_obs_no_cutoff'                    '_ndb_refine.number_reflns_obs_no_cutoff'                    H    N # Watch
+ndb_refine                     '_ndb_refine.free_R_factor_no_cutoff'                        '_ndb_refine.free_R_factor_no_cutoff'                        H    N # Watch
+ndb_refine                     '_ndb_refine.free_R_val_test_set_ct_no_cutoff'               '_ndb_refine.free_R_val_test_set_ct_no_cutoff'               H    N # Watch
+ndb_refine                     '_ndb_refine.free_R_val_test_set_size_perc_no_cutoff'        '_ndb_refine.free_R_val_test_set_size_perc_no_cutoff'        H    N # Watch
+ndb_refine                     '_ndb_refine.R_factor_all_4sig_cutoff'                       '_ndb_refine.R_factor_all_4sig_cutoff'                       H    N # Anno
+ndb_refine                     '_ndb_refine.R_factor_obs_4sig_cutoff'                       '_ndb_refine.R_factor_obs_4sig_cutoff'                       H    N # Anno
+ndb_refine                     '_ndb_refine.number_reflns_obs_4sig_cutoff'                  '_ndb_refine.number_reflns_obs_4sig_cutoff'                  H    N # Anno
+ndb_refine                     '_ndb_refine.free_R_factor_4sig_cutoff'                      '_ndb_refine.free_R_factor_4sig_cutoff'                      H    N # Anno
+ndb_refine                     '_ndb_refine.free_R_val_test_set_ct_4sig_cutoff'             '_ndb_refine.free_R_val_test_set_ct_4sig_cutoff'             H    N # Anno
+ndb_refine                     '_ndb_refine.free_R_val_test_set_size_perc_4sig_cutoff'      '_ndb_refine.free_R_val_test_set_size_perc_4sig_cutoff'      H    N # Anno
+
+############################################################################################################################
+
+ndb_source                     '_ndb_source.src_method'                                     '_ndb_source.src_method'                                     H    N # Anno # Watch
+
+############################################################################################################################
+
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.asym_id'                               '_ndb_struct_pack_gen.asym_id'                               H    N
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.color_blue'                            '_ndb_struct_pack_gen.color_blue'                            H    N
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.color_green'                           '_ndb_struct_pack_gen.color_green'                           H    N
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.color_red'                             '_ndb_struct_pack_gen.color_red'                             H    N
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.crystal_type'                          '_ndb_struct_pack_gen.crystal_type'                          H    N
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.id'                                    '_ndb_struct_pack_gen.id'                                    H    N
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.packing_type'                          '_ndb_struct_pack_gen.packing_type'                          H    N
+ndb_struct_pack_gen            '_ndb_struct_pack_gen.symmetry'                              '_ndb_struct_pack_gen.symmetry'                              H    N
+
+############################################################################################################################
+
+ndb_unpair                     '_ndb_unpair.chain_id'                                       '_ndb_unpair.chain_id'                                       H    N # Anno
+ndb_unpair                     '_ndb_unpair.residue_name'                                   '_ndb_unpair.residue_name'                                   H    N # Anno
+ndb_unpair                     '_ndb_unpair.residue_number'                                 '_ndb_unpair.residue_number'                                 H    N # Anno
+
+############################################################################################################################
+
+ndb_xplor_file                 '_ndb_xplor_file.serial_no'                                  '_ndb_xplor_file.serial_no'                                  H    N
+ndb_xplor_file                 '_ndb_xplor_file.param_file'                                 '_ndb_xplor_file.param_file'                                 H    N # Anno
+ndb_xplor_file                 '_ndb_xplor_file.topol_file'                                 '_ndb_xplor_file.topol_file'                                 H    N # Anno
+
+#
+#
+############################################################################################################################@@ refine
+#
+#
+
+refine                         '_refine.entry_id'                                           '_refine.entry_id'                                           H    N # Anno
+refine                         '_refine.ls_R_factor_all'                                    '_refine.ls_R_factor_all'                                    Y    Y # Depo
+refine                         '_refine.ls_R_factor_obs'                                    '_refine.ls_R_factor_obs'                                    Y    Y # Depo
+refine                         '_refine.ls_R_factor_R_work'                                 '_refine.ls_R_factor_R_work'                                 Y    Y # Depo
+refine                         '_refine.ls_d_res_high'                                      '_refine.ls_d_res_high'                                      Y    Y # Depo
+refine                         '_refine.ls_d_res_low'                                       '_refine.ls_d_res_low'                                       Y    Y # Depo
+refine                         '_refine.ls_number_reflns_obs'                               '_refine.ls_number_reflns_obs'                               Y    Y # Depo
+refine                         '_refine.ls_percent_reflns_obs'                              '_refine.ls_percent_reflns_obs'                              Y    Y # Depo
+refine                         '_refine.ls_number_reflns_all'                               '_refine.ls_number_reflns_all'                               Y    Y # Depo
+refine                         '_refine.ndb_ls_sigma_F'                                     '_refine.ndb_ls_sigma_F'                                     Y    Y # Depo
+refine                         '_refine.ndb_ls_sigma_I'                                     '_refine.ndb_ls_sigma_I'                                     Y    Y # Depo
+refine                         '_refine.ls_redundancy_reflns_obs'                           '_refine.ls_redundancy_reflns_obs'                           H    N # Anno
+refine                         '_refine.ndb_data_cutoff_high_absF'                          '_refine.ndb_data_cutoff_high_absF'                          H    N # Anno
+refine                         '_refine.ndb_data_cutoff_low_absF'                           '_refine.ndb_data_cutoff_low_absF'                           H    N # Anno
+refine                         '_refine.ls_number_parameters'                               '_refine.ls_number_parameters'                               H    N # Anno
+refine                         '_refine.ls_number_restraints'                               '_refine.ls_number_restraints'                               H    N # Anno
+
+refine                         '_refine.ls_R_factor_R_free'                                 '_refine.ls_R_factor_R_free'                                 Y    Y # Depo
+refine                         '_refine.ls_number_reflns_R_free'                            '_refine.ls_number_reflns_R_free'                            Y    Y # Depo
+refine                         '_refine.ls_percent_reflns_R_free'                           '_refine.ls_percent_reflns_R_free'                           H    N # Anno
+refine                         '_refine.ls_R_factor_R_free_error'                           '_refine.ls_R_factor_R_free_error'                           H    N # Anno
+refine                         '_refine.ls_R_factor_R_free_error_details'                   '_refine.ls_R_factor_R_free_error_details'                   H    N # Anno
+
+refine                         '_refine.ndb_method_to_determine_struct'                     '_refine.ndb_method_to_determine_struct'                     H    N
+refine                         '_refine.ndb_starting_model'                                 '_refine.ndb_starting_model'                                 H    N
+
+refine                         '_refine.ndb_isotropic_thermal_model'                        '_refine.ndb_isotropic_thermal_model'                        H    N # Anno
+refine                         '_refine.B_iso_mean'                                         '_refine.B_iso_mean'                                         H    N
+refine                         '_refine.aniso_B[1][1]'                                      '_refine.aniso_B[1][1]'                                      H    N
+refine                         '_refine.aniso_B[1][2]'                                      '_refine.aniso_B[1][2]'                                      H    N
+refine                         '_refine.aniso_B[1][3]'                                      '_refine.aniso_B[1][3]'                                      H    N
+refine                         '_refine.aniso_B[2][2]'                                      '_refine.aniso_B[2][2]'                                      H    N
+refine                         '_refine.aniso_B[2][3]'                                      '_refine.aniso_B[2][3]'                                      H    N
+refine                         '_refine.aniso_B[3][3]'                                      '_refine.aniso_B[3][3]'                                      H    N
+refine                         '_refine.ndb_ls_cross_valid_method'                          '_refine.ndb_ls_cross_valid_method'                          H    N # Anno
+refine                         '_refine.ndb_R_Free_selection_details'                       '_refine.ndb_R_Free_selection_details'                       Y    Y # Depo
+refine                         '_refine.ndb_stereochem_target_val_spec_case'                '_refine.ndb_stereochem_target_val_spec_case'                H    N # Anno
+refine                         '_refine.ndb_stereochemistry_target_values'                  '_refine.ndb_stereochemistry_target_values'                  Y    Y # Depo
+refine                         '_refine.solvent_model_details'                              '_refine.solvent_model_details'                              H    N # Anno
+refine                         '_refine.solvent_model_param_bsol'                           '_refine.solvent_model_param_bsol'                           H    N # Anno
+refine                         '_refine.solvent_model_param_ksol'                           '_refine.solvent_model_param_ksol'                           H    N # Anno
+refine                         '_refine.occupancy_max'                                      '_refine.occupancy_max'                                      H    N # Anno
+refine                         '_refine.occupancy_min'                                      '_refine.occupancy_min'                                      H    N # Anno
+refine                         '_refine.details'                                            '_refine.details'                                            H    N # Anno
+
+############################################################################################################################
+
+refine_ls_restr                '_refine_ls_restr.type'                                      '_refine_ls_restr.type'                                      Y    Y # Depo
+refine_ls_restr                '_refine_ls_restr.dev_ideal'                                 '_refine_ls_restr.dev_ideal'                                 Y    Y # Depo
+refine_ls_restr                '_refine_ls_restr.dev_ideal_target'                          '_refine_ls_restr.dev_ideal_target'                          H    N # Anno
+refine_ls_restr                '_refine_ls_restr.number'                                    '_refine_ls_restr.number'                                    H    N # Anno
+refine_ls_restr                '_refine_ls_restr.weight'                                    '_refine_ls_restr.weight'                                    H    N # Anno
+refine_ls_restr_ncs            '_refine_ls_restr_ncs.dom_id'                                '_refine_ls_restr_ncs.dom_id'                                H    N # Anno
+refine_ls_restr_ncs            '_refine_ls_restr_ncs.ncs_model_details'                     '_refine_ls_restr_ncs.ncs_model_details'                     H    N # Anno
+refine_ls_restr_ncs            '_refine_ls_restr_ncs.rms_dev_B_iso'                         '_refine_ls_restr_ncs.rms_dev_B_iso'                         H    N # Anno
+refine_ls_restr_ncs            '_refine_ls_restr_ncs.rms_dev_position'                      '_refine_ls_restr_ncs.rms_dev_position'                      H    N # Anno
+refine_ls_restr_ncs            '_refine_ls_restr_ncs.weight_B_iso'                          '_refine_ls_restr_ncs.weight_B_iso'                          H    N # Anno
+refine_ls_restr_ncs            '_refine_ls_restr_ncs.weight_position'                       '_refine_ls_restr_ncs.weight_position'                       H    N # Anno
+
+refine_ls_shell                '_refine_ls_shell.R_factor_R_free'                           '_refine_ls_shell.R_factor_R_free'                           H    N # Anno
+refine_ls_shell                '_refine_ls_shell.R_factor_R_free_error'                     '_refine_ls_shell.R_factor_R_free_error'                     H    N # Anno
+refine_ls_shell                '_refine_ls_shell.R_factor_R_work'                           '_refine_ls_shell.R_factor_R_work'                           H    N # Anno
+refine_ls_shell                '_refine_ls_shell.d_res_high'                                '_refine_ls_shell.d_res_high'                                H    N # Anno
+refine_ls_shell                '_refine_ls_shell.d_res_low'                                 '_refine_ls_shell.d_res_low'                                 H    N # Anno
+refine_ls_shell                '_refine_ls_shell.ndb_total_number_of_bins_used'             '_refine_ls_shell.ndb_total_number_of_bins_used'             H    N # Anno
+refine_ls_shell                '_refine_ls_shell.number_reflns_R_free'                      '_refine_ls_shell.number_reflns_R_free'                      H    N # Anno
+refine_ls_shell                '_refine_ls_shell.number_reflns_R_work'                      '_refine_ls_shell.number_reflns_R_work'                      H    N # Anno
+refine_ls_shell                '_refine_ls_shell.percent_reflns_R_free'                     '_refine_ls_shell.percent_reflns_R_free'                     H    N # Anno
+refine_ls_shell                '_refine_ls_shell.percent_reflns_obs'                        '_refine_ls_shell.percent_reflns_obs'                        H    N # Anno
+refine_ls_shell                '_refine_ls_shell.redundancy_reflns_obs'                     '_refine_ls_shell.redundancy_reflns_obs'                     Y    Y # Depo
+
+############################################################################################################################
+
+refine_B_iso                   '_refine_B_iso.class'                                        '_refine_B_iso.class'                                        H    N    
+refine_B_iso                   '_refine_B_iso.details'                                      '_refine_B_iso.details'                                      H    N    
+refine_B_iso                   '_refine_B_iso.ndb_residue_name'                             '_refine_B_iso.ndb_residue_name'                             H    N    
+refine_B_iso                   '_refine_B_iso.ndb_residue_num'                              '_refine_B_iso.ndb_residue_num'                              H    N    
+refine_B_iso                   '_refine_B_iso.ndb_strand'                                   '_refine_B_iso.ndb_strand'                                   H    N    
+refine_B_iso                   '_refine_B_iso.treatment'                                    '_refine_B_iso.treatment'                                    H    N    
+
+############################################################################################################################
+
+refine_analyze                 '_refine_analyze.entry_id'                                   '_refine_analyze.entry_id'                                   H    N # Anno
+refine_analyze                 '_refine_analyze.Luzzati_coordinate_error_obs'               '_refine_analyze.Luzzati_coordinate_error_obs'               H    N # Anno
+refine_analyze                 '_refine_analyze.Luzzati_d_res_low_obs'                      '_refine_analyze.Luzzati_d_res_low_obs'                      H    N # Anno
+refine_analyze                 '_refine_analyze.Luzzati_coordinate_error_free'              '_refine_analyze.Luzzati_coordinate_error_free'              H    N # Anno
+refine_analyze                 '_refine_analyze.Luzzati_d_res_low_free'                     '_refine_analyze.Luzzati_d_res_low_free'                     H    N # Anno
+refine_analyze                 '_refine_analyze.Luzzati_sigma_a_obs'                        '_refine_analyze.Luzzati_sigma_a_obs'                        H    N # Anno
+refine_analyze                 '_refine_analyze.Luzzati_sigma_a_free'                       '_refine_analyze.Luzzati_sigma_a_free'                       H    N # Anno
+refine_analyze                 '_refine_analyze.number_disordered_residues'                 '_refine_analyze.number_disordered_residues'                 H    N # Anno
+refine_analyze                 '_refine_analyze.occupancy_sum_non_hydrogen'                 '_refine_analyze.occupancy_sum_non_hydrogen'                 H    N # Anno
+refine_analyze                 '_refine_analyze.occupancy_sum_hydrogen'                     '_refine_analyze.occupancy_sum_hydrogen'                     H    N # Anno
+
+############################################################################################################################
+
+refine_occupancy               '_refine_occupancy.class'                                    '_refine_occupancy.class'                                    H    N # Anno
+refine_occupancy               '_refine_occupancy.treatment'                                '_refine_occupancy.treatment'                                H    N # Anno
+
+#
+#
+############################################################################################################################@@ refln
+#
+#
+
+refln                          '_refln.crystal_id'                                          '_refln.crystal_id'                                          H    N    
+refln                          '_refln.wavelength_id'                                       '_refln.wavelength_id'                                       H    N    
+refln                          '_refln.index_h'                                             '_refln.index_h'                                             H    N    
+refln                          '_refln.index_k'                                             '_refln.index_k'                                             H    N    
+refln                          '_refln.index_l'                                             '_refln.index_l'                                             H    N    
+refln                          '_refln.F_meas_au'                                           '_refln.F_meas_au'                                           H    N    
+refln                          '_refln.F_meas_au_sigma'                                     '_refln.F_meas_au_sigma'                                     H    N    
+refln                          '_refln.F_calc_au'                                           '_refln.F_calc_au'                                           H    N    
+refln                          '_refln.intensity_meas'                                      '_refln.intensity_meas'                                      H    N    
+refln                          '_refln.intensity_calc'                                      '_refln.intensity_calc'                                      H    N    
+refln                          '_refln.intensity_sigma'                                     '_refln.intensity_sigma'                                     H    N    
+refln                          '_refln.phase_calc'                                          '_refln.phase_calc'                                          H    N    
+refln                          '_refln.ndb_anomalous_diff'                                  '_refln.ndb_anomalous_diff'                                  H    N    
+refln                          '_refln.ndb_anomalous_diff_sigma'                            '_refln.ndb_anomalous_diff_sigma'                            H    N    
+refln                          '_refln.scale_group_code'                                    '_refln.scale_group_code'                                    H    N    
+refln                          '_refln.status'                                              '_refln.status'                                              H    N    
+
+#
+#
+############################################################################################################################@@ reflns
+#
+#
+
+reflns                         '_reflns.entry_id'                                           '_reflns.entry_id'                                           H    N
+reflns                         '_reflns.number_all'                                         '_reflns.number_all'                                         Y    Y # Depo
+reflns                         '_reflns.number_obs'                                         '_reflns.number_obs'                                         Y    Y # Depo
+reflns                         '_reflns.percent_possible_obs'                               '_reflns.percent_possible_obs'                               Y    Y # Depo
+reflns                         '_reflns.observed_criterion_sigma_F'                         '_reflns.observed_criterion_sigma_F'                         Y    Y # Depo
+reflns                         '_reflns.observed_criterion_sigma_I'                         '_reflns.observed_criterion_sigma_I'                         Y    Y # Depo
+reflns                         '_reflns.d_resolution_high'                                  '_reflns.d_resolution_high'                                  Y    Y # Depo
+reflns                         '_reflns.d_resolution_low'                                   '_reflns.d_resolution_low'                                   H    N
+reflns                         '_reflns.ndb_Rmerge_I_obs'                                   '_reflns.ndb_Rmerge_I_obs'                                   Y    N # Depo
+reflns                         '_reflns.ndb_Rsym_value'                                     '_reflns.ndb_Rsym_value'                                     H    N
+reflns                         '_reflns.ndb_netI_over_av_sigmaI'                            '_reflns.ndb_netI_over_av_sigmaI'                            Y    N # Depo
+reflns                         '_reflns.B_iso_Wilson_estimate'                              '_reflns.B_iso_Wilson_estimate'                              Y    N # Anno
+reflns                         '_reflns.ndb_redundancy'                                     '_reflns.ndb_redundancy'                                     Y    Y # Depo
+reflns                         '_reflns.R_free_details'                                     '_reflns.R_free_details'                                     H    N # Watch
+
+############################################################################################################################
+
+reflns_shell                   '_reflns_shell.d_res_high'                                   '_reflns_shell.d_res_high'                                   Y    Y # Depo
+reflns_shell                   '_reflns_shell.d_res_low'                                    '_reflns_shell.d_res_low'                                    Y    Y # Depo
+reflns_shell                   '_reflns_shell.percent_possible_obs'                         '_reflns_shell.percent_possible_obs'                         H    N
+reflns_shell                   '_reflns_shell.percent_possible_all'                         '_reflns_shell.percent_possible_all'                         Y    Y # Depo
+reflns_shell                   '_reflns_shell.Rmerge_I_obs'                                 '_reflns_shell.Rmerge_I_obs'                                 Y    Y # Depo
+reflns_shell                   '_reflns_shell.meanI_over_sigI_obs'                          '_reflns_shell.meanI_over_sigI_obs'                          H    N
+reflns_shell                   '_reflns_shell.ndb_Rsym_value'                               '_reflns_shell.ndb_Rsym_value'                               H    N
+reflns_shell                   '_reflns_shell.ndb_redundancy'                               '_reflns_shell.ndb_redundancy'                               Y    Y # Depo
+
+reflns_shell                   '_reflns_shell.number_unique_all'                            '_reflns_shell.number_unique_all'                            N    N # Watch
+
+#
+#
+############################################################################################################################@@ struct
+#
+#
+
+struct                         '_struct.entry_id'                                           '_struct.entry_id'                                           H    N # Anno
+struct                         '_struct.ndb_title_text'                                     '_struct.ndb_title_text'                                     H    N # Anno # Watch
+struct                         '_struct.title'                                              '_struct.title'                                              H    N # Anno
+
+############################################################################################################################
+
+struct_asym                    '_struct_asym.id'                                            '_struct_asym.id'                                            H    N # Anno
+struct_asym                    '_struct_asym.entity_id'                                     '_struct_asym.entity_id'                                     H    N # Anno
+struct_asym                    '_struct_asym.ndb_pdb_id'                                    '_struct_asym.ndb_pdb_id'                                    H    N # Anno
+struct_asym                    '_struct_asym.ndb_alt_id'                                    '_struct_asym.ndb_alt_id'                                    H    N # Anno
+struct_asym                    '_struct_asym.ndb_type'                                      '_struct_asym.ndb_type'                                      H    N # Anno # Watch
+struct_asym                    '_struct_asym.ndb_fraction_per_asym_unit'                    '_struct_asym.ndb_fraction_per_asym_unit'                    H    N # Anno
+struct_asym                    '_struct_asym.ndb_missing_num_begin_of_chain_in_seqres'      '_struct_asym.ndb_missing_num_begin_of_chain_in_seqres'      H    N # Anno
+struct_asym                    '_struct_asym.ndb_missing_num_begin_of_chain_not_in_seqres'  '_struct_asym.ndb_missing_num_begin_of_chain_not_in_seqres'  H    N # Anno
+struct_asym                    '_struct_asym.ndb_missing_num_end_of_chain_not_in_seqres'    '_struct_asym.ndb_missing_num_end_of_chain_not_in_seqres'    H    N # Anno
+struct_asym                    '_struct_asym.ndb_modified'                                  '_struct_asym.ndb_modified'                                  H    N # Anno
+struct_asym                    '_struct_asym.ndb_order'                                     '_struct_asym.ndb_order'                                     H    N # Anno
+struct_asym                    '_struct_asym.details'                                       '_struct_asym.details'                                       H    N # Anno
+
+############################################################################################################################
+
+struct_biol_gen                '_struct_biol_gen.asym_id'                                   '_struct_biol_gen.asym_id'                                   H    N # Anno
+struct_biol_gen                '_struct_biol_gen.biol_id'                                   '_struct_biol_gen.biol_id'                                   H    N # Anno
+struct_biol_gen                '_struct_biol_gen.symmetry'                                  '_struct_biol_gen.symmetry'                                  H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_after_begin_residue_no'                '_struct_biol_gen.ndb_after_begin_residue_no'                H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_after_end_residue_no'                  '_struct_biol_gen.ndb_after_end_residue_no'                  H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_before_begin_residue_no'               '_struct_biol_gen.ndb_before_begin_residue_no'               H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_before_end_residue_no'                 '_struct_biol_gen.ndb_before_end_residue_no'                 H    N # Anno
+struct_biol_gen                '_struct_biol_gen.details'                                   '_struct_biol_gen.details'                                   H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_full_symmetry_operation'               '_struct_biol_gen.ndb_full_symmetry_operation'               H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_new_asym_id'                           '_struct_biol_gen.ndb_new_asym_id'                           H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_new_pdb_asym_id'                       '_struct_biol_gen.ndb_new_pdb_asym_id'                       H    N # Anno
+struct_biol_gen                '_struct_biol_gen.details'                                   '_struct_biol_gen.details'                                   H    N # Anno
+struct_biol_gen                '_struct_biol_gen.ndb_color_blue'                            '_struct_biol_gen.ndb_color_blue'                            H    N
+struct_biol_gen                '_struct_biol_gen.ndb_color_green'                           '_struct_biol_gen.ndb_color_green'                           H    N
+struct_biol_gen                '_struct_biol_gen.ndb_color_red'                             '_struct_biol_gen.ndb_color_red'                             H    N
+
+struct_biol_keywords           '_struct_biol_keywords.biol_id'                              '_struct_biol_keywords.biol_id'                              H    N # Anno
+struct_biol_keywords           '_struct_biol_keywords.text'                                 '_struct_biol_keywords.text'                                 H    N # Anno
+
+struct_biol_view               '_struct_biol_view.id'                                       '_struct_biol_view.id'                                       H    N    
+struct_biol_view               '_struct_biol_view.biol_id'                                  '_struct_biol_view.biol_id'                                  H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[1][1]'                         '_struct_biol_view.rot_matrix[1][1]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[1][2]'                         '_struct_biol_view.rot_matrix[1][2]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[1][3]'                         '_struct_biol_view.rot_matrix[1][3]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[2][1]'                         '_struct_biol_view.rot_matrix[2][1]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[2][2]'                         '_struct_biol_view.rot_matrix[2][2]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[2][3]'                         '_struct_biol_view.rot_matrix[2][3]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[3][1]'                         '_struct_biol_view.rot_matrix[3][1]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[3][2]'                         '_struct_biol_view.rot_matrix[3][2]'                         H    N    
+struct_biol_view               '_struct_biol_view.rot_matrix[3][3]'                         '_struct_biol_view.rot_matrix[3][3]'                         H    N    
+struct_biol_view               '_struct_biol_view.ndb_vector[1]'                            '_struct_biol_view.ndb_vector[1]'                            H    N    
+struct_biol_view               '_struct_biol_view.ndb_vector[2]'                            '_struct_biol_view.ndb_vector[2]'                            H    N    
+struct_biol_view               '_struct_biol_view.ndb_vector[3]'                            '_struct_biol_view.ndb_vector[3]'                            H    N    
+
+############################################################################################################################
+
+struct_conf                    '_struct_conf.beg_auth_asym_id'                              '_struct_conf.beg_auth_asym_id'                              H    N # Anno
+struct_conf                    '_struct_conf.beg_auth_comp_id'                              '_struct_conf.beg_auth_comp_id'                              H    N # Anno
+struct_conf                    '_struct_conf.beg_auth_seq_id'                               '_struct_conf.beg_auth_seq_id'                               H    N # Anno
+struct_conf                    '_struct_conf.beg_label_asym_id'                             '_struct_conf.beg_label_asym_id'                             H    N # Anno
+struct_conf                    '_struct_conf.beg_label_comp_id'                             '_struct_conf.beg_label_comp_id'                             H    N # Anno
+struct_conf                    '_struct_conf.beg_label_seq_id'                              '_struct_conf.beg_label_seq_id'                              H    N # Anno
+struct_conf                    '_struct_conf.conf_type_id'                                  '_struct_conf.conf_type_id'                                  H    N # Anno
+struct_conf                    '_struct_conf.details'                                       '_struct_conf.details'                                       H    N # Anno 
+struct_conf                    '_struct_conf.end_auth_asym_id'                              '_struct_conf.end_auth_asym_id'                              H    N # Anno
+struct_conf                    '_struct_conf.end_auth_comp_id'                              '_struct_conf.end_auth_comp_id'                              H    N # Anno
+struct_conf                    '_struct_conf.end_auth_seq_id'                               '_struct_conf.end_auth_seq_id'                               H    N # Anno
+struct_conf                    '_struct_conf.end_label_asym_id'                             '_struct_conf.end_label_asym_id'                             H    N # Anno
+struct_conf                    '_struct_conf.end_label_comp_id'                             '_struct_conf.end_label_comp_id'                             H    N # Anno
+struct_conf                    '_struct_conf.end_label_seq_id'                              '_struct_conf.end_label_seq_id'                              H    N # Anno
+struct_conf                    '_struct_conf.id'                                            '_struct_conf.id'                                            H    N # Anno
+struct_conf                    '_struct_conf.ndb_beg_label_ins_code_pdb'                    '_struct_conf.ndb_beg_label_ins_code_pdb'                    H    N # Anno
+struct_conf                    '_struct_conf.ndb_end_label_ins_code_pdb'                    '_struct_conf.ndb_end_label_ins_code_pdb'                    H    N # Anno
+struct_conf                    '_struct_conf.ndb_helix_class_pdb'                           '_struct_conf.ndb_helix_class_pdb'                           H    N # Anno
+struct_conf                    '_struct_conf.ndb_length'                                    '_struct_conf.ndb_length'                                    H    N # Anno
+struct_conf                    '_struct_conf.pdb_id'                                        '_struct_conf.pdb_id'                                        H    N # Anno
+
+struct_conf_type               '_struct_conf_type.criteria'                                 '_struct_conf_type.criteria'                                 H    N # Anno
+struct_conf_type               '_struct_conf_type.id'                                       '_struct_conf_type.id'                                       H    N # Anno
+struct_conf_type               '_struct_conf_type.reference'                                '_struct_conf_type.reference'                                H    N # Anno
+
+############################################################################################################################
+
+struct_conn                    '_struct_conn.conn_type_id'                                  '_struct_conn.conn_type_id'                                  H    N # Anno
+struct_conn                    '_struct_conn.details'                                       '_struct_conn.details'                                       H    N # Anno 
+struct_conn                    '_struct_conn.id'                                            '_struct_conn.id'                                            H    N # Anno
+struct_conn                    '_struct_conn.ndb_PDB_id'                                    '_struct_conn.ndb_PDB_id'                                    H    N # Anno 
+struct_conn                    '_struct_conn.ndb_ptnr1_label_alt_loc'                       '_struct_conn.ndb_ptnr1_label_alt_loc'                       H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr1_label_ins_code'                      '_struct_conn.ndb_ptnr1_label_ins_code'                      H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr1_mod_name'                            '_struct_conn.ndb_ptnr1_mod_name'                            H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr1_replaced_atom'                       '_struct_conn.ndb_ptnr1_replaced_atom'                       H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr1_standard_comp_id'                    '_struct_conn.ndb_ptnr1_standard_comp_id'                    H    N # Anno    
+struct_conn                    '_struct_conn.ndb_ptnr1_sugar_name'                          '_struct_conn.ndb_ptnr1_sugar_name'                          H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr2_label_alt_loc'                       '_struct_conn.ndb_ptnr2_label_alt_loc'                       H    N # Anno    
+struct_conn                    '_struct_conn.ndb_ptnr2_label_ins_code'                      '_struct_conn.ndb_ptnr2_label_ins_code'                      H    N # Anno    
+struct_conn                    '_struct_conn.ndb_ptnr3_label_alt_loc'                       '_struct_conn.ndb_ptnr3_label_alt_loc'                       H    N # Anno    
+struct_conn                    '_struct_conn.ndb_ptnr3_label_asym_id'                       '_struct_conn.ndb_ptnr3_label_asym_id'                       H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr3_label_atom_id'                       '_struct_conn.ndb_ptnr3_label_atom_id'                       H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr3_label_comp_id'                       '_struct_conn.ndb_ptnr3_label_comp_id'                       H    N # Anno
+struct_conn                    '_struct_conn.ndb_ptnr3_label_ins_code'                      '_struct_conn.ndb_ptnr3_label_ins_code'                      H    N # Anno    
+struct_conn                    '_struct_conn.ndb_ptnr3_label_seq_id'                        '_struct_conn.ndb_ptnr3_label_seq_id'                        H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_auth_asym_id'                            '_struct_conn.ptnr1_auth_asym_id'                            H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_auth_comp_id'                            '_struct_conn.ptnr1_auth_comp_id'                            H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_auth_seq_id'                             '_struct_conn.ptnr1_auth_seq_id'                             H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_label_asym_id'                           '_struct_conn.ptnr1_label_asym_id'                           H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_label_atom_id'                           '_struct_conn.ptnr1_label_atom_id'                           H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_label_comp_id'                           '_struct_conn.ptnr1_label_comp_id'                           H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_label_seq_id'                            '_struct_conn.ptnr1_label_seq_id'                            H    N # Anno
+struct_conn                    '_struct_conn.ptnr1_symmetry'                                '_struct_conn.ptnr1_symmetry'                                H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_auth_asym_id'                            '_struct_conn.ptnr2_auth_asym_id'                            H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_auth_comp_id'                            '_struct_conn.ptnr2_auth_comp_id'                            H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_auth_seq_id'                             '_struct_conn.ptnr2_auth_seq_id'                             H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_label_asym_id'                           '_struct_conn.ptnr2_label_asym_id'                           H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_label_atom_id'                           '_struct_conn.ptnr2_label_atom_id'                           H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_label_comp_id'                           '_struct_conn.ptnr2_label_comp_id'                           H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_label_seq_id'                            '_struct_conn.ptnr2_label_seq_id'                            H    N # Anno
+struct_conn                    '_struct_conn.ptnr2_symmetry'                                '_struct_conn.ptnr2_symmetry'                                H    N # Anno
+
+############################################################################################################################
+
+struct_keywords                '_struct_keywords.entry_id'                                  '_struct_keywords.entry_id'                                  H    N
+struct_keywords                '_struct_keywords.ndb_keywords'                              '_struct_keywords.ndb_keywords'                              H    N
+struct_keywords                '_struct_keywords.text'                                      '_struct_keywords.text'                                      Y    Y # Depo
+
+############################################################################################################################
+
+struct_mon_prot_cis            '_struct_mon_prot_cis.id'                                    '_struct_mon_prot_cis.id'                                    H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.label_asym_id'                         '_struct_mon_prot_cis.label_asym_id'                         H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.label_comp_id'                         '_struct_mon_prot_cis.label_comp_id'                         H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.label_seq_id'                          '_struct_mon_prot_cis.label_seq_id'                          H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.ndb_label_asym_id_2'                   '_struct_mon_prot_cis.ndb_label_asym_id_2'                   H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.ndb_label_comp_id_2'                   '_struct_mon_prot_cis.ndb_label_comp_id_2'                   H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.ndb_label_ins_code'                    '_struct_mon_prot_cis.ndb_label_ins_code'                    H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.ndb_label_ins_code_2'                  '_struct_mon_prot_cis.ndb_label_ins_code_2'                  H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.ndb_label_seq_id_2'                    '_struct_mon_prot_cis.ndb_label_seq_id_2'                    H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.ndb_model_num'                         '_struct_mon_prot_cis.ndb_model_num'                         H    N    
+struct_mon_prot_cis            '_struct_mon_prot_cis.ndb_omega_angle'                       '_struct_mon_prot_cis.ndb_omega_angle'                       H    N    
+
+############################################################################################################################
+
+struct_ncs_oper                '_struct_ncs_oper.id'                                        '_struct_ncs_oper.id'                                        H    N
+struct_ncs_oper                '_struct_ncs_oper.code'                                      '_struct_ncs_oper.code'                                      H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[1][1]'                              '_struct_ncs_oper.matrix[1][1]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[1][2]'                              '_struct_ncs_oper.matrix[1][2]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[1][3]'                              '_struct_ncs_oper.matrix[1][3]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[2][1]'                              '_struct_ncs_oper.matrix[2][1]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[2][2]'                              '_struct_ncs_oper.matrix[2][2]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[2][3]'                              '_struct_ncs_oper.matrix[2][3]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[3][1]'                              '_struct_ncs_oper.matrix[3][1]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[3][2]'                              '_struct_ncs_oper.matrix[3][2]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.matrix[3][3]'                              '_struct_ncs_oper.matrix[3][3]'                              H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.vector[1]'                                 '_struct_ncs_oper.vector[1]'                                 H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.vector[2]'                                 '_struct_ncs_oper.vector[2]'                                 H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.vector[3]'                                 '_struct_ncs_oper.vector[3]'                                 H    N # Anno
+struct_ncs_oper                '_struct_ncs_oper.details'                                   '_struct_ncs_oper.details'                                   H    N # Anno
+
+############################################################################################################################
+
+struct_ref                     '_struct_ref.id'                                             '_struct_ref.id'                                             H    N # Anno
+struct_ref                     '_struct_ref.db_code'                                        '_struct_ref.db_code'                                        H    N # Anno
+struct_ref                     '_struct_ref.db_name'                                        '_struct_ref.db_name'                                        H    N # Anno
+
+struct_ref_seq                 '_struct_ref_seq.ref_id'                                     '_struct_ref_seq.ref_id'                                     H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.align_id'                                   '_struct_ref_seq.align_id'                                   H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.ndb_pdb_id_code'                            '_struct_ref_seq.ndb_pdb_id_code'                            H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.ndb_chain_id'                               '_struct_ref_seq.ndb_chain_id'                               H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.ndb_db_accession'                           '_struct_ref_seq.ndb_db_accession'                           H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.seq_align_beg'                              '_struct_ref_seq.seq_align_beg'                              H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.seq_align_end'                              '_struct_ref_seq.seq_align_end'                              H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.db_align_beg'                               '_struct_ref_seq.db_align_beg'                               H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.db_align_end'                               '_struct_ref_seq.db_align_end'                               H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.ndb_db_align_beg_ins_code'                  '_struct_ref_seq.ndb_db_align_beg_ins_code'                  H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.ndb_db_align_end_ins_code'                  '_struct_ref_seq.ndb_db_align_end_ins_code'                  H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.ndb_seq_align_beg_ins_code'                 '_struct_ref_seq.ndb_seq_align_beg_ins_code'                 H    N # Anno
+struct_ref_seq                 '_struct_ref_seq.ndb_seq_align_end_ins_code'                 '_struct_ref_seq.ndb_seq_align_end_ins_code'                 H    N # Anno
+
+struct_ref_seq_dif             '_struct_ref_seq_dif.align_id'                               '_struct_ref_seq_dif.align_id'                               H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.mon_id'                                 '_struct_ref_seq_dif.mon_id'                                 H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.db_mon_id'                              '_struct_ref_seq_dif.db_mon_id'                              H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.ndb_pdb_id_code'                        '_struct_ref_seq_dif.ndb_pdb_id_code'                        H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.ndb_pdb_chain_id'                       '_struct_ref_seq_dif.ndb_pdb_chain_id'                       H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.ndb_seq_db_accession_code'              '_struct_ref_seq_dif.ndb_seq_db_accession_code'              H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.seq_num'                                '_struct_ref_seq_dif.seq_num'                                H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.ndb_pdb_ins_code'                       '_struct_ref_seq_dif.ndb_pdb_ins_code'                       H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.ndb_seq_db_name'                        '_struct_ref_seq_dif.ndb_seq_db_name'                        H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.ndb_seq_db_seq_num'                     '_struct_ref_seq_dif.ndb_seq_db_seq_num'                     H    N # Anno
+struct_ref_seq_dif             '_struct_ref_seq_dif.details'                                '_struct_ref_seq_dif.details'                                H    N # Anno
+
+############################################################################################################################
+
+struct_sheet                   '_struct_sheet.id'                                           '_struct_sheet.id'                                           H    N
+struct_sheet                   '_struct_sheet.number_strands'                               '_struct_sheet.number_strands'                               H    N
+struct_sheet                   '_struct_sheet.type'                                         '_struct_sheet.type'                                         H    N
+struct_sheet                   '_struct_sheet.details'                                      '_struct_sheet.details'                                      H    N
+
+struct_sheet_order             '_struct_sheet_order.sheet_id'                               '_struct_sheet_order.sheet_id'                               H    N
+struct_sheet_order             '_struct_sheet_order.range_id_1'                             '_struct_sheet_order.range_id_1'                             H    N
+struct_sheet_order             '_struct_sheet_order.range_id_2'                             '_struct_sheet_order.range_id_2'                             H    N
+struct_sheet_order             '_struct_sheet_order.offset'                                 '_struct_sheet_order.offset'                                 H    N
+struct_sheet_order             '_struct_sheet_order.sense'                                  '_struct_sheet_order.sense'                                  H    N
+
+struct_sheet_range             '_struct_sheet_range.sheet_id'                               '_struct_sheet_range.sheet_id'                               H    N
+struct_sheet_range             '_struct_sheet_range.id'                                     '_struct_sheet_range.id'                                     H    N
+struct_sheet_range             '_struct_sheet_range.beg_auth_asym_id'                       '_struct_sheet_range.beg_auth_asym_id'                       H    N
+struct_sheet_range             '_struct_sheet_range.beg_auth_comp_id'                       '_struct_sheet_range.beg_auth_comp_id'                       H    N
+struct_sheet_range             '_struct_sheet_range.beg_auth_seq_id'                        '_struct_sheet_range.beg_auth_seq_id'                        H    N
+struct_sheet_range             '_struct_sheet_range.beg_label_asym_id'                      '_struct_sheet_range.beg_label_asym_id'                      H    N
+struct_sheet_range             '_struct_sheet_range.beg_label_comp_id'                      '_struct_sheet_range.beg_label_comp_id'                      H    N
+struct_sheet_range             '_struct_sheet_range.beg_label_seq_id'                       '_struct_sheet_range.beg_label_seq_id'                       H    N
+struct_sheet_range             '_struct_sheet_range.end_auth_asym_id'                       '_struct_sheet_range.end_auth_asym_id'                       H    N
+struct_sheet_range             '_struct_sheet_range.end_auth_comp_id'                       '_struct_sheet_range.end_auth_comp_id'                       H    N
+struct_sheet_range             '_struct_sheet_range.end_auth_seq_id'                        '_struct_sheet_range.end_auth_seq_id'                        H    N
+struct_sheet_range             '_struct_sheet_range.end_label_asym_id'                      '_struct_sheet_range.end_label_asym_id'                      H    N
+struct_sheet_range             '_struct_sheet_range.end_label_comp_id'                      '_struct_sheet_range.end_label_comp_id'                      H    N
+struct_sheet_range             '_struct_sheet_range.end_label_seq_id'                       '_struct_sheet_range.end_label_seq_id'                       H    N
+struct_sheet_range             '_struct_sheet_range.ndb_beg_label_ins_code_pdb'             '_struct_sheet_range.ndb_beg_label_ins_code_pdb'             H    N
+struct_sheet_range             '_struct_sheet_range.ndb_end_label_ins_code_pdb'             '_struct_sheet_range.ndb_end_label_ins_code_pdb'             H    N
+struct_sheet_range             '_struct_sheet_range.symmetry'                               '_struct_sheet_range.symmetry'                               H    N
+
+struct_sheet_hbond             '_struct_sheet_hbond.sheet_id'                               '_struct_sheet_hbond.sheet_id'                               H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_id_1'                             '_struct_sheet_hbond.range_id_1'                             H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_1_beg_auth_seq_id'                '_struct_sheet_hbond.range_1_beg_auth_seq_id'                H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_1_beg_label_atom_id'              '_struct_sheet_hbond.range_1_beg_label_atom_id'              H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_1_beg_label_seq_id'               '_struct_sheet_hbond.range_1_beg_label_seq_id'               H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_1_end_auth_seq_id'                '_struct_sheet_hbond.range_1_end_auth_seq_id'                H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_1_end_label_atom_id'              '_struct_sheet_hbond.range_1_end_label_atom_id'              H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_1_end_label_seq_id'               '_struct_sheet_hbond.range_1_end_label_seq_id'               H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_2_beg_label_atom_id'              '_struct_sheet_hbond.range_2_beg_label_atom_id'              H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_2_beg_label_seq_id'               '_struct_sheet_hbond.range_2_beg_label_seq_id'               H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_2_end_label_atom_id'              '_struct_sheet_hbond.range_2_end_label_atom_id'              H    N
+struct_sheet_hbond             '_struct_sheet_hbond.range_2_end_label_seq_id'               '_struct_sheet_hbond.range_2_end_label_seq_id'               H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_beg_auth_asym_id'           '_struct_sheet_hbond.ndb_range_1_beg_auth_asym_id'           H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_beg_auth_comp_id'           '_struct_sheet_hbond.ndb_range_1_beg_auth_comp_id'           H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_beg_label_asym_id'          '_struct_sheet_hbond.ndb_range_1_beg_label_asym_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_beg_label_comp_id'          '_struct_sheet_hbond.ndb_range_1_beg_label_comp_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_beg_label_ins_code'         '_struct_sheet_hbond.ndb_range_1_beg_label_ins_code'         H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_end_auth_asym_id'           '_struct_sheet_hbond.ndb_range_1_end_auth_asym_id'           H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_end_auth_comp_id'           '_struct_sheet_hbond.ndb_range_1_end_auth_comp_id'           H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_end_label_asym_id'          '_struct_sheet_hbond.ndb_range_1_end_label_asym_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_end_label_comp_id'          '_struct_sheet_hbond.ndb_range_1_end_label_comp_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_1_end_label_ins_code'         '_struct_sheet_hbond.ndb_range_1_end_label_ins_code'         H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_2_beg_label_asym_id'          '_struct_sheet_hbond.ndb_range_2_beg_label_asym_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_2_beg_label_comp_id'          '_struct_sheet_hbond.ndb_range_2_beg_label_comp_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_2_beg_label_ins_code'         '_struct_sheet_hbond.ndb_range_2_beg_label_ins_code'         H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_2_end_label_asym_id'          '_struct_sheet_hbond.ndb_range_2_end_label_asym_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_2_end_label_comp_id'          '_struct_sheet_hbond.ndb_range_2_end_label_comp_id'          H    N
+struct_sheet_hbond             '_struct_sheet_hbond.ndb_range_2_end_label_ins_code'         '_struct_sheet_hbond.ndb_range_2_end_label_ins_code'         H    N
+
+############################################################################################################################
+
+struct_site                    '_struct_site.id'                                            '_struct_site.id'                                            H    N    
+struct_site                    '_struct_site.details'                                       '_struct_site.details'                                       H    N    
+
+struct_site_gen                '_struct_site_gen.id'                                        '_struct_site_gen.id'                                        H    N    
+struct_site_gen                '_struct_site_gen.site_id'                                   '_struct_site_gen.site_id'                                   H    N    
+struct_site_gen                '_struct_site_gen.label_asym_id'                             '_struct_site_gen.label_asym_id'                             H    N    
+struct_site_gen                '_struct_site_gen.label_comp_id'                             '_struct_site_gen.label_comp_id'                             H    N    
+struct_site_gen                '_struct_site_gen.label_seq_id'                              '_struct_site_gen.label_seq_id'                              H    N    
+struct_site_gen                '_struct_site_gen.ndb_label_ins_code'                        '_struct_site_gen.ndb_label_ins_code'                        H    N    
+struct_site_gen                '_struct_site_gen.ndb_num_res'                               '_struct_site_gen.ndb_num_res'                               H    N    
+struct_site_gen                '_struct_site_gen.symmetry'                                  '_struct_site_gen.symmetry'                                  H    N    
+struct_site_gen                '_struct_site_gen.auth_asym_id'                              '_struct_site_gen.auth_asym_id'                              H    N    
+struct_site_gen                '_struct_site_gen.auth_comp_id'                              '_struct_site_gen.auth_comp_id'                              H    N    
+struct_site_gen                '_struct_site_gen.auth_seq_id'                               '_struct_site_gen.auth_seq_id'                               H    N    
+struct_site_gen                '_struct_site_gen.details'                                   '_struct_site_gen.details'                                   H    N    
+
+struct_site_keywords           '_struct_site_keywords.site_id'                              '_struct_site_keywords.site_id'                              H    N    
+struct_site_keywords           '_struct_site_keywords.text'                                 '_struct_site_keywords.text'                                 H    N    
+
+#
+#
+############################################################################################################################@@ symmetry
+#
+#
+
+symmetry                       '_symmetry.entry_id'                                         '_symmetry.entry_id'                                         H    N
+symmetry                       '_symmetry.space_group_name_H-M'                             '_symmetry.space_group_name_H-M'                             Y    Y # Depo
+symmetry                       '_symmetry.ndb_full_space_group_name_H-M'                    '_symmetry.ndb_full_space_group_name_H-M'                    H    N # Anno
+symmetry                       '_symmetry.Int_Tables_number'                                '_symmetry.Int_Tables_number'                                H    N # Anno
+symmetry                       '_symmetry.cell_setting'                                     '_symmetry.cell_setting'                                     H    N # Anno
+
+##
+ndb_original_pdb_coordinates   '_ndb_original_pdb_coordinates.coord_section'                'ndb_original_pdb_coordinates.coord_section'                 H    N #
+#
+#
+############################################################################################################################@@ End
+#
+#
+#
+#
+#
+#
+#############################################################################################################################@@ End
