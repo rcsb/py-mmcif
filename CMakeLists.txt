@@ -23,6 +23,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 IF(NOT DEFINED ENV{RUN_FROM_DISUTILS})
     set(CMAKE_VERBOSE_MAKEFILE ON)
 ENDIF()
+set(CMAKE_VERBOSE_MAKEFILE ON)
 #
 #
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -56,6 +57,12 @@ message(STATUS "Compiler flags " ${CMAKE_CXX_FLAGS})
 
 #
 # ---------------------------------------------------------------
+#   WHERE AM I RUNNING
+#
+message(STATUS "---CMAKE MODULE PATH - " ${CMAKE_MODULE_PATH})
+message(STATUS "---CMAKE SOURCE DIR  - " ${CMAKE_SOURCE_DIR})
+message(STATUS "---CMAKE PROJECT DIR - " ${PROJECT_SOURCE_DIR})
+# ---------------------------------------------------------------
 #
 set(BUILD_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/src")
 set(BUILD_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/include")
@@ -88,7 +95,7 @@ set(INCLUDE_DIR_6 "modules/cpp-dict-obj-file/include")
 set(SOURCE_DIR_7  "modules/cpp-cif-parser/src")
 set(INCLUDE_DIR_7 "modules/cpp-cif-parser/include")
 #
-set(SOURCE_TEST_DIR  "modules/cpp-cifparse-test-v1.0/src")
+set(SOURCE_TEST_DIR  "modules/cpp-mmciflib-test/src")
 #
 # ---------------------------------------------------------------
 #
@@ -281,7 +288,6 @@ add_executable("mmcif_reader_test_1" "${SOURCE_TEST_DIR}/CifReader.C")
 target_link_libraries("mmcif_reader_test_1" "mmciflib-all")
 target_include_directories("mmcif_reader_test_1" PUBLIC ${BUILD_INCLUDE_DIR})
 #
-#
 #  -- Build a wrapper library  --
 #
 add_subdirectory("modules/pybind11")
@@ -289,9 +295,9 @@ add_subdirectory("modules/pybind11")
 file(GLOB_RECURSE WRAP_SRC_FILES "${WRAP_DIR_1}/*.cpp")
 file(GLOB_RECURSE EXC_FILES "${WRAP_DIR_1}/std/vector.cpp")
 list(REMOVE_ITEM WRAP_SRC_FILES ${EXC_FILES})
-pybind11_add_module("mmciflib" ${WRAP_SRC_FILES})
 #
-target_include_directories("mmciflib" PUBLIC ${BUILD_INCLUDE_DIR})
+pybind11_add_module("mmciflib" ${WRAP_SRC_FILES})
+target_include_directories("mmciflib" PUBLIC ${BUILD_INCLUDE_DIR} )
 target_link_libraries("mmciflib" PUBLIC "mmciflib-all")
 #
 IF(NOT DEFINED ENV{RUN_FROM_DISUTILS})
