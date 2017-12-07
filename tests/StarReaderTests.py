@@ -68,7 +68,8 @@ class StarReaderTests(unittest.TestCase):
                 for c in self.__containerList:
                     c.setType('data')
                 dir, fnOut = os.path.split(fp)
-                ok = myIo.writeFile(outputFile=fnOut + ".cif", containerList=self.__containerList[1:])
+                ofn = os.path.join(HERE, "test-output", fnOut + ".cif")
+                ok = myIo.writeFile(outputFile=ofn, containerList=self.__containerList[1:])
                 self.assertEqual(ok, True)
         except Exception as e:
             logger.exception("Failing with %s" % str(e))
@@ -123,7 +124,8 @@ class StarReaderTests(unittest.TestCase):
                         for ii, row in enumerate(rowL):
                             logger.debug("  %4d  %r\n" % (ii, row))
                 dir, fnOut = os.path.split(fp)
-                ok = myIo.writeFile(outputFile=fnOut + ".out", containerList=self.__containerList, useStopTokens=True)
+                ofn = os.path.join(HERE, "test-output", fnOut + ".out")
+                ok = myIo.writeFile(outputFile=ofn, containerList=self.__containerList, useStopTokens=True)
                 self.assertEqual(ok, True)
         except Exception as e:
             logger.exception("Failing with %s" % str(e))

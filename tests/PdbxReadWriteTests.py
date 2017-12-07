@@ -54,7 +54,10 @@ class PdbxReadWriteTests(unittest.TestCase):
         #
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "specialTestFile.cif")
         self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif")
-        self.__pathOutputFile = "testOutputDataFile.cif"
+
+        self.__pathOutputFile1 = os.path.join(HERE, "test-output", "testOutputDataFile1.cif")
+        self.__pathOutputFile2 = os.path.join(HERE, "test-output", "testOutputDataFile2.cif")
+        self.__pathOutputFile3 = os.path.join(HERE, "test-output", "testOutputDataFileStopToken3.cif")
         #
         self.__pathTestFile = os.path.join(HERE, "data", "testSingleRow.cif")
         self.__pathTestFileStop = os.path.join(HERE, "data", "testFileWithStopTokens.cif")
@@ -75,7 +78,7 @@ class PdbxReadWriteTests(unittest.TestCase):
         try:
             #
             myDataList = []
-            ofh = open("test-output.cif", "w")
+            ofh = open(self.__pathOutputFile1, "w")
             curContainer = DataContainer("myblock")
             aCat = DataCategory("pdbx_seqtool_mapping_ref")
             aCat.appendAttribute("ordinal")
@@ -98,7 +101,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             row = bCat.getRow(0)
             logger.debug("----ROW %r\n" % row)
             #
-            with open("test-output-2.cif", "w") as ofh:
+            with open(self.__pathOutputFile2, "w") as ofh:
                 myDataList.append(curContainer)
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
@@ -125,9 +128,9 @@ class PdbxReadWriteTests(unittest.TestCase):
             row = myCat.getRow(0)
             logger.debug("----ROW %r\n" % row)
             #
-            #myCat.dumpIt()
+            # myCat.dumpIt()
 
-            with open("test-output-3.cif", "w") as ofh:
+            with open(self.__pathOutputFile2, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
 
@@ -141,7 +144,7 @@ class PdbxReadWriteTests(unittest.TestCase):
         """
         try:
             #
-            fn = "test-simple.cif"
+            fn = self.__pathOutputFile1
             attributeNameList = ['aOne', 'aTwo', 'aThree', 'aFour', 'aFive', 'aSix', 'aSeven', 'aEight', 'aNine', 'aTen']
             rowList = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -211,7 +214,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             # curContainer.printIt()
             #
             myDataList.append(curContainer)
-            with  open("test-output.cif", "w") as ofh:
+            with open(self.__pathOutputFile1, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
             self.assertEqual(len(myDataList), 1)
@@ -243,7 +246,7 @@ class PdbxReadWriteTests(unittest.TestCase):
 
             curContainer.append(aCat)
             myDataList.append(curContainer)
-            ofh = open("test-output-1.cif", "w")
+            ofh = open(self.__pathOutputFile1, "w")
             pdbxW = PdbxWriter(ofh)
             pdbxW.write(myDataList)
             ofh.close()
@@ -252,7 +255,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             # Read and update the data -
             #
             myDataList = []
-            ifh = open("test-output-1.cif", "r")
+            ifh = open(self.__pathOutputFile1, "r")
             pRd = PdbxReader(ifh)
             pRd.read(myDataList)
             ifh.close()
@@ -264,7 +267,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             for iRow in range(0, myCat.getRowCount()):
                 myCat.setValue('some value', 'ref_mon_id', iRow)
                 myCat.setValue(100, 'ref_mon_num', iRow)
-            with open("test-output-2.cif", "w") as ofh:
+            with open(self.__pathOutputFile2, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
 
@@ -298,7 +301,7 @@ class PdbxReadWriteTests(unittest.TestCase):
                 pRd = PdbxReader(ifh)
                 pRd.read(myDataList)
 
-            with open(self.__pathOutputFile, "w") as ofh:
+            with open(self.__pathOutputFile1, "w") as ofh:
                 pWr = PdbxWriter(ofh)
                 pWr.write(myDataList)
             self.assertEqual(len(myDataList), 1)
@@ -378,7 +381,7 @@ class PdbxReadWriteTests(unittest.TestCase):
         """Test case -  udpdate entry_id
         """
         ifn = self.__pathBigPdbxDataFile
-        ofn = self.__pathOutputFile
+        ofn = self.__pathOutputFile2
         try:
             #
             myContainerList = []
@@ -418,7 +421,7 @@ class PdbxReadWriteTests(unittest.TestCase):
                 pRd = PdbxReader(ifh)
                 pRd.read(myDataList)
 
-            with open('testFileStop.cif', "w") as ofh:
+            with open(self.__pathOutputFile3, "w") as ofh:
                 pWr = PdbxWriter(ofh)
                 pWr.write(myDataList)
             self.assertEqual(len(myDataList), 1)
@@ -479,7 +482,7 @@ if __name__ == '__main__':
         mySuite = simpleSuite3()
         unittest.TextTestRunner(verbosity=2).run(mySuite)
         #
-        mySuite=quotingCasesSuite()
+        mySuite = quotingCasesSuite()
         unittest.TextTestRunner(verbosity=2).run(mySuite)
 
         mySuite = attributeUpdateSuite()
@@ -487,4 +490,3 @@ if __name__ == '__main__':
 
         mySuite = suiteReadWithStopTokens()
         unittest.TextTestRunner(verbosity=2).run(mySuite)
-

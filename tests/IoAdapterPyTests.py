@@ -8,6 +8,7 @@
 # Updates:
 #   2-Oct-2017 jdw  adjust block count on dictionary test
 #   4-Oct-2017 jdw  verified the package IoAdapter default preference works.
+#   7-Dec-2017 jdw  path all output files
 ##
 """
 Test cases for reading and updating PDBx data files using Python Wrapper
@@ -60,15 +61,15 @@ class IoAdapterTests(unittest.TestCase):
         self.__pathErrPdbxDataFile = os.path.join(HERE, "data", "1bna-errors.cif")
         self.__pathQuotesPdbxDataFile = os.path.join(HERE, "data", "specialTestFile.cif")
         #
-        self.__pathOutputPdbxFile = "myPdbxOutputFile.cif"
-        self.__pathQuotesOutputPdbxFile = "myPdbxQuotesOutputFile.cif"
-        self.__pathBigOutputDictFile = "myDictOutputFile.cif"
+        self.__pathOutputPdbxFile = os.path.join(HERE, "test-output", "myPdbxOutputFile.cif")
+        self.__pathQuotesOutputPdbxFile = os.path.join(HERE, "test-output", "myPdbxQuotesOutputFile.cif")
+        self.__pathBigOutputDictFile = os.path.join(HERE, "test-output", "myDictOutputFile.cif")
         #
         self.__pathUnicodePdbxFile = os.path.join(HERE, "data", "unicode-test.cif")
         self.__pathCharRefPdbxFile = os.path.join(HERE, "data", "unicode-char-ref-test.cif")
         #
-        self.__pathOutputUnicodePdbxFile = "out-unicode-test.cif"
-        self.__pathOutputCharRefPdbxFile = "out-unicode-char-ref-test.cif"
+        self.__pathOutputUnicodePdbxFile = os.path.join(HERE, "test-output", "out-unicode-test.cif")
+        self.__pathOutputCharRefPdbxFile = os.path.join(HERE, "test-output", "out-unicode-char-ref-test.cif")
 
         self.__startTime = time.time()
         logger.debug("Starting %s at %s" % (self.id(),

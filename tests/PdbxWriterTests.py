@@ -50,7 +50,8 @@ class PdbxWriterTests(unittest.TestCase):
         #
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "1kip.cif")
         self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif")
-        self.__pathOutputFile = "testOutputDataFile.cif"
+        self.__pathOutputFile1 = os.path.join(HERE, "test-output", "testOutputDataFile.cif")
+        self.__pathOutputFile2 = os.path.join(HERE, "test-output", "testOutputDataFile.cif")
         #
         self.__startTime = time.time()
         logger.debug("Starting %s at %s" % (self.id(),
@@ -84,7 +85,7 @@ class PdbxWriterTests(unittest.TestCase):
             aCat.append((1, 2, 3, 4, '5', 6, 7))
             curContainer.append(aCat)
             myDataList.append(curContainer)
-            with open("test-output.cif", "w") as ofh:
+            with open(self.__pathOutputFile1, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.setAlignmentFlag(flag=True)
                 pdbxW.write(myDataList)
@@ -116,14 +117,14 @@ class PdbxWriterTests(unittest.TestCase):
             aCat.append((1, 2, 3, 4, 5, 6, 7))
             curContainer.append(aCat)
             myDataList.append(curContainer)
-            with open("test-output-1.cif", "w") as ofh:
+            with open(self.__pathOutputFile1, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
             #
             # Read and update the data -
             #
             myDataList = []
-            with open("test-output-1.cif", "r") as ifh:
+            with open(self.__pathOutputFile1, "r") as ifh:
                 pRd = PdbxReader(ifh)
                 pRd.read(myDataList)
             #
@@ -134,7 +135,7 @@ class PdbxWriterTests(unittest.TestCase):
             for iRow in range(0, myCat.getRowCount()):
                 myCat.setValue('some value', 'ref_mon_id', iRow)
                 myCat.setValue(100, 'ref_mon_num', iRow)
-            with open("test-output-2.cif", "w") as ofh:
+            with open(self.__pathOutputFile2, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
             self.assertEqual(len(myDataList), 1)
@@ -153,7 +154,7 @@ class PdbxWriterTests(unittest.TestCase):
                 pRd = PdbxReader(ifh)
                 pRd.read(myDataList)
 
-            with open(self.__pathOutputFile, "w") as ofh:
+            with open(self.__pathOutputFile1, "w") as ofh:
                 pWr = PdbxWriter(ofh)
                 pWr.write(myDataList)
 

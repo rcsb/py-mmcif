@@ -48,6 +48,7 @@ class MethodUtilsTests(unittest.TestCase):
 
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "1kip.cif")
         self.__pathPdbxDictFile = os.path.join(HERE, "data", "mmcif_pdbx_v5_next_w_methods.dic")
+        self.__pathOutFile = os.path.join(HERE, "test-output", "test-after-invoke-methods.cif")
 
         self.__startTime = time.time()
         logger.debug("Starting %s at %s" % (self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
@@ -86,7 +87,7 @@ class MethodUtilsTests(unittest.TestCase):
             mU.invokeMethods()
             logger.debug("Write data file after invoking methods")
             dataContainerList = mU.getDataContainerList()
-            ok = myIo.writeFile(outputFile="test-after-invoke-methods.cif", containerList=dataContainerList)
+            ok = myIo.writeFile(outputFile=self.__pathOutFile, containerList=dataContainerList)
             #
             self.assertEqual(ok, True)
         except Exception as e:
