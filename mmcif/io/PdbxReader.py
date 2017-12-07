@@ -25,7 +25,8 @@ Acknowledgements:
  See:  http://pymmlib.sourceforge.net/
 
 """
-from __future__ import absolute_import, generator_stop
+#from __future__ import absolute_import, generator_stop
+from __future__ import absolute_import
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"

@@ -116,7 +116,7 @@ class PdbxWriterTests(unittest.TestCase):
             aCat.append((1, 2, 3, 4, 5, 6, 7))
             curContainer.append(aCat)
             myDataList.append(curContainer)
-            with ("test-output-1.cif", "w") as ofh:
+            with open("test-output-1.cif", "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
             #

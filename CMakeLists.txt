@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(mmciflib)
 #
+# Using submodules -
 # https://github.com/RosettaCommons/pybind11.git
+#
 #
 #  These svn modules have been used -
 # svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/common common Latest
@@ -23,7 +25,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 IF(NOT DEFINED ENV{RUN_FROM_DISUTILS})
     set(CMAKE_VERBOSE_MAKEFILE ON)
 ENDIF()
-set(CMAKE_VERBOSE_MAKEFILE ON)
 #
 #
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
