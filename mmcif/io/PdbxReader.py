@@ -395,48 +395,51 @@ class PdbxReader(object):
 
         # Tokenizer loop begins here ---
         while True:
-            line = next(fileIter)
-            self.__curLineNumber += 1
+            try:
+                line = next(fileIter)
+                self.__curLineNumber += 1
 
-            # Dump comments
-            if line.startswith("#"):
-                continue
-
-            # Gobble up the entire semi-colon/multi-line delimited string and
-            #    and stuff this into the string slot in the return tuple
-            #
-            if line.startswith(";"):
-                mlString = [line[1:]]
-                while True:
-                    line = next(fileIter)
-                    self.__curLineNumber += 1
-                    if line.startswith(";"):
-                        break
-                    mlString.append(line)
-
-                # remove trailing new-line that is part of the \n; delimiter
-                mlString[-1] = mlString[-1].rstrip()
-                #
-                yield (None, None, "".join(mlString), None)
-                #
-                # Need to process the remainder of the current line -
-                line = line[1:]
-                # continue
-
-            # Apply regex to the current line consolidate the single/double
-            # quoted within the quoted string category
-            for it in mmcifRe.finditer(line):
-                tgroups = it.groups()
-                #
-                if tgroups[4] is not None and tgroups[4].lower() == 'stop_':
+                # Dump comments
+                if line.startswith("#"):
                     continue
-                if tgroups != (None, None, None, None, None):
-                    if tgroups[2] is not None:
-                        qs = tgroups[2]
-                    elif tgroups[3] is not None:
-                        qs = tgroups[3]
-                    else:
-                        qs = None
-                    groups = (tgroups[0], tgroups[1], qs, tgroups[4])
-                    yield groups
+
+                # Gobble up the entire semi-colon/multi-line delimited string and
+                #    and stuff this into the string slot in the return tuple
+                #
+                if line.startswith(";"):
+                    mlString = [line[1:]]
+                    while True:
+                        line = next(fileIter)
+                        self.__curLineNumber += 1
+                        if line.startswith(";"):
+                            break
+                        mlString.append(line)
+
+                    # remove trailing new-line that is part of the \n; delimiter
+                    mlString[-1] = mlString[-1].rstrip()
+                    #
+                    yield (None, None, "".join(mlString), None)
+                    #
+                    # Need to process the remainder of the current line -
+                    line = line[1:]
+                    # continue
+
+                # Apply regex to the current line consolidate the single/double
+                # quoted within the quoted string category
+                for it in mmcifRe.finditer(line):
+                    tgroups = it.groups()
+                    #
+                    if tgroups[4] is not None and tgroups[4].lower() == 'stop_':
+                        continue
+                    if tgroups != (None, None, None, None, None):
+                        if tgroups[2] is not None:
+                            qs = tgroups[2]
+                        elif tgroups[3] is not None:
+                            qs = tgroups[3]
+                        else:
+                            qs = None
+                        groups = (tgroups[0], tgroups[1], qs, tgroups[4])
+                        yield groups
+            except StopIteration:
+                return
 

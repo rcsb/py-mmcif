@@ -78,7 +78,7 @@ class PdbxReadWriteTests(unittest.TestCase):
         try:
             #
             myDataList = []
-            ofh = open(self.__pathOutputFile1, "w")
+            #ofh = open(self.__pathOutputFile1, "w")
             curContainer = DataContainer("myblock")
             aCat = DataCategory("pdbx_seqtool_mapping_ref")
             aCat.appendAttribute("ordinal")
