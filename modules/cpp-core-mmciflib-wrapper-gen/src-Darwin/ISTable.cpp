@@ -16,6 +16,8 @@
 #include <vector>
 
 #include <pybind11/pybind11.h>
+#include "pybind11/stl.h"
+
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
 	#define BINDER_PYBIND11_TYPE_CASTER

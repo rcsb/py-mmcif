@@ -6,8 +6,6 @@ CifFileReadDef.cpp
 std/__functional_base.cpp
 std/__locale.cpp
 GenString.cpp
-std/__functional_base_1.cpp
-GenString_1.cpp
 rcsb_types.cpp
 ITTable.cpp
 ISTable.cpp

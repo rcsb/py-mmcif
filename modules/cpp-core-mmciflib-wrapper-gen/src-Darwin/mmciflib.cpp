@@ -4,18 +4,12 @@
 #include <functional>
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 
-void bind_std_exception(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_std_unknown_unknown(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_std_unknown_unknown_1(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_CifFileReadDef(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_std___functional_base(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_std___locale(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_GenString(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_std___functional_base_1(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_GenString_1(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_rcsb_types(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_ITTable(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_ISTable(std::function< pybind11::module &(std::string const &namespace_) > &M);
@@ -25,8 +19,7 @@ void bind_DicFile(std::function< pybind11::module &(std::string const &namespace
 void bind_CifFileUtil(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_DataInfo(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_GenCont(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_std_fstream(std::function< pybind11::module &(std::string const &namespace_) > &M);
-//void bind_std_vector(std::function< pybind11::module &(std::string const &namespace_) > &M);
+
 
 
 PYBIND11_MODULE(mmciflib, root_module) {
@@ -48,15 +41,8 @@ PYBIND11_MODULE(mmciflib, root_module) {
 
 	//pybind11::class_<std::shared_ptr<void>>(M(""), "_encapsulated_data_");
 
-	bind_std_exception(M);
-	bind_std_unknown_unknown(M);
-	bind_std_unknown_unknown_1(M);
 	bind_CifFileReadDef(M);
-	bind_std___functional_base(M);
-	bind_std___locale(M);
 	bind_GenString(M);
-	bind_std___functional_base_1(M);
-	bind_GenString_1(M);
 	bind_rcsb_types(M);
 	bind_ITTable(M);
 	bind_ISTable(M);
@@ -66,7 +52,5 @@ PYBIND11_MODULE(mmciflib, root_module) {
 	bind_CifFileUtil(M);
 	bind_DataInfo(M);
 	bind_GenCont(M);
-	bind_std_fstream(M);
-	//bind_std_vector(M);
 
 }

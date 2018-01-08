@@ -74,6 +74,7 @@ set(BUILD_LIBRARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/lib")
 #
 set(WRAP_DIR_1      "modules/cpp-core-mmciflib-wrapper-gen/src-${WRAPPER_DIR_EXT}")
 set(WRAP_INCL_DIR_1 "modules/cpp-core-mmciflib-wrapper-gen/include-binder")
+set(WRAP_INCL_BINDER_DIR_1 "modules/cpp-core-mmciflib-wrapper-gen/binder-mappers")
 
 set(SOURCE_DIR_1 "modules/cpp-common/src")
 set(INCLUDE_DIR_1 "modules/cpp-common/include")
@@ -122,6 +123,9 @@ file(COPY ${INC_6} DESTINATION include)
 
 file(GLOB INC_7 "${INCLUDE_DIR_7}/*.h")
 file(COPY ${INC_7} DESTINATION include)
+#
+file(GLOB INC_8 "${WRAP_INCL_BINDER_DIR_1}/*.hpp")
+file(COPY ${INC_8} DESTINATION include)
 #
 file(MAKE_DIRECTORY ${BUILD_SOURCE_DIR})
 file(MAKE_DIRECTORY ${BUILD_INCLUDE_DIR})
@@ -294,8 +298,8 @@ target_include_directories("mmcif_reader_test_1" PUBLIC ${BUILD_INCLUDE_DIR})
 add_subdirectory("modules/pybind11")
 #
 file(GLOB_RECURSE WRAP_SRC_FILES "${WRAP_DIR_1}/*.cpp")
-file(GLOB_RECURSE EXC_FILES "${WRAP_DIR_1}/std/vector.cpp")
-list(REMOVE_ITEM WRAP_SRC_FILES ${EXC_FILES})
+#file(GLOB_RECURSE EXC_FILES "${WRAP_DIR_1}/std/vector.cpp")
+# list(REMOVE_ITEM WRAP_SRC_FILES ${EXC_FILES})
 #
 pybind11_add_module("mmciflib" ${WRAP_SRC_FILES})
 target_include_directories("mmciflib" PUBLIC ${BUILD_INCLUDE_DIR} )
