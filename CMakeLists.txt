@@ -40,7 +40,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     endif()
     #set(warnings "-Wall -Wextra -Werror")
     set(warnings " -Wall -Wno-unused-variable")
-    set(WRAPPER_DIR_EXT "Darwin")
+    #set(WRAPPER_DIR_EXT "Darwin")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     message(FATAL_ERROR "No current support for MSVC!")
     set(warnings "/W4 /WX /EHsc")
@@ -48,7 +48,7 @@ endif()
 #
 set(mydefines " -DBIG_ENDIAN_PLATFORM  -DHAVE_STRCASECMP -DINCL_TEMPLATE_SRC -DHAVE_PLACEMENT_NEW  ")
 if (NOT CONFIGURED_ONCE)
-    set(CMAKE_CXX_FLAGS "${warnings} ${mydefines}  -fno-common -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11  -flto "
+    set(CMAKE_CXX_FLAGS "${warnings} ${mydefines}  -fno-common -fvisibility=hidden -fvisibility-inlines-hidden -std=c++14  -flto "
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
     set(CMAKE_C_FLAGS   "${warnings} ${mydefines} -FPIC"
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
@@ -72,9 +72,10 @@ set(BUILD_LIBRARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/lib")
 #
 #  Set the source module paths ---
 #
-set(WRAP_DIR_1      "modules/cpp-core-mmciflib-wrapper-gen/src-${WRAPPER_DIR_EXT}")
-set(WRAP_INCL_DIR_1 "modules/cpp-core-mmciflib-wrapper-gen/include-binder")
-set(WRAP_INCL_BINDER_DIR_1 "modules/cpp-core-mmciflib-wrapper-gen/binder-mappers")
+#set(WRAP_DIR_1      "modules/cpp-core-mmciflib-wrapper-gen/src-${WRAPPER_DIR_EXT}")
+set(WRAP_DIR_1      "modules/cpp-core-mmciflib-wrapper-gen/src")
+#set(WRAP_INCL_DIR_1 "modules/cpp-core-mmciflib-wrapper-gen/include-binder")
+#set(WRAP_INCL_BINDER_DIR_1 "modules/cpp-core-mmciflib-wrapper-gen/binder-mappers")
 
 set(SOURCE_DIR_1 "modules/cpp-common/src")
 set(INCLUDE_DIR_1 "modules/cpp-common/include")
@@ -124,8 +125,8 @@ file(COPY ${INC_6} DESTINATION include)
 file(GLOB INC_7 "${INCLUDE_DIR_7}/*.h")
 file(COPY ${INC_7} DESTINATION include)
 #
-file(GLOB INC_8 "${WRAP_INCL_BINDER_DIR_1}/*.hpp")
-file(COPY ${INC_8} DESTINATION include)
+#file(GLOB INC_8 "${WRAP_INCL_BINDER_DIR_1}/*.hpp")
+#file(COPY ${INC_8} DESTINATION include)
 #
 file(MAKE_DIRECTORY ${BUILD_SOURCE_DIR})
 file(MAKE_DIRECTORY ${BUILD_INCLUDE_DIR})
