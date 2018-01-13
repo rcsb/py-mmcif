@@ -178,10 +178,10 @@ class IoAdapterTests(unittest.TestCase):
 
     #
     def testFileReaderWriterUnicode(self):
-        self.__testFileReaderWriter(self.__pathUnicodePdbxFile, self.__pathOutputUnicodePdbxFile, enforceAscii=False, cnvCharRefs=False)
+        self.__testFileReaderWriter(self.__pathUnicodePdbxFile, self.__pathOutputUnicodePdbxFile, enforceAscii=False)
 
     def testFileReaderWriterCharRef(self):
-        self.__testFileReaderWriter(self.__pathCharRefPdbxFile, self.__pathOutputCharRefPdbxFile, enforceAscii=False, cnvCharRefs=True)
+        self.__testFileReaderWriter(self.__pathCharRefPdbxFile, self.__pathOutputCharRefPdbxFile, enforceAscii=False)
 
     def __testFileReaderWriter(self, ifp, ofp, **kwargs):
         """Test case -  read and then write PDBx file or dictionary

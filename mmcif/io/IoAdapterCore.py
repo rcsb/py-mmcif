@@ -30,9 +30,8 @@ __version__ = "V0.01"
 import sys
 import time
 import os
-
-import copy
-import io
+import errno
+from future.utils import raise_from
 
 import logging
 logger = logging.getLogger(__name__)
@@ -49,6 +48,7 @@ from mmcif.io.IoAdapterBase import IoAdapterBase
 
 from mmcif.api.PdbxContainers import *
 from mmcif.api.DataCategory import DataCategory
+from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 
 class IoAdapterCore(IoAdapterBase):
@@ -59,140 +59,106 @@ class IoAdapterCore(IoAdapterBase):
     def __init__(self, *args, **kwargs):
         super(IoAdapterCore, self).__init__(*args, **kwargs)
 
-        self.__verbose = True
-        self.__debug = True
-        self.__timing = False
-        self.__lfh = sys.stderr
-        #
-        #
-        self.__lastInOrder = ['pdbx_nonpoly_scheme', 'pdbx_poly_seq_scheme', 'atom_site', 'atom_site_anisotrop']
-        #
-
-    def readFile(self, pdbxFilePath, selectList=None, logFilePath=None, logtag="", enforceAscii=True):
+    def readFile(self, filePath, enforceAscii=True, selectList=None, logFilePath=None, outDirPath=None, cleanUp=True):
         """ Import the input Pdbx data file.
         """
+        asciiFilePath = None
         try:
-            if (not os.access(pdbxFilePath, os.R_OK)):
-                if (self.__verbose):
-                    logger.info("+ERROR- IoAdapterCore.read() Missing file %s\n" % pdbxFilePath)
+            #
+            lPath = logFilePath
+            if not lPath:
+                lPath = self._getDefaultFileName(filePath, fileType='cif-parser-log', outDirPath=outDirPath)
+            #
+            self._setLogFilePath(lPath)
+            #
+            if not self._fileExists(filePath):
                 return []
-            else:
-                if (self.__debug):
-                    logger.info("+IoAdapterCore.read() reading from file path %s\n" % pdbxFilePath)
-
-            if selectList is not None and len(selectList) > 0:
-                return self.__readDataSelect(pdbxFilePath, selectList, logFilePath=logFilePath)
-            else:
-                return self.__readData(pdbxFilePath, logtag=logtag)
-
+            #
+            inputFilePath = filePath
+            if enforceAscii:
+                asciiFilePath = self._getDefaultFileName(filePath, fileType='cif-parser-ascii', fileExt='cif', outDirPath=outDirPath)
+                encodingErrors = 'xmlcharrefreplace' if self._useCharRefs else 'ignore'
+                logger.debug("Filtering input file to %s using encoding errors as %s" % (asciiFilePath, encodingErrors))
+                ok = self._toAscii(filePath, asciiFilePath, chunkSize=5000, encodingErrors=encodingErrors)
+                if ok:
+                    inputFilePath = asciiFilePath
+            #
+            readDef = None
+            if selectList and len(selectList) > 0:
+                readDef = self.__getSelectionDef(selectList)
+            #
+            containerL, diagL = self.__readData(inputFilePath, readDef=readDef, cleanUp=cleanUp, logFilePath=lPath, maxLineLength=self._maxInputLineLength)
+            #
+            self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
+            #
+            return containerL
+        except (PdbxError, SyntaxError) as ex:
+            self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
+            if self._raiseExceptions:
+                raise_from(ex, None)
+                #raise ex from None
         except Exception as e:
-            if (self.__verbose):
-                logger.exception("+ERROR- IoAdapterCore.read() Could not read file %s with %s\n" % (pdbxFilePath, str(e)))
+            self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
+            msg = "Failing read for %s with %s" % (filePath, str(e))
+            self._logError(msg)
 
-            return []
+        return []
 
-    def __readDataSelect(self, pdbxFilePath, selectList, maxLineLength=1024, logFilePath=None):
-        """ Read the selected  data/definition containers in the input PDBxfile.
+    def getReadDiags(self):
+        return self._readLogRecords()
 
-        """
-        #
-        # Set read filters  -
-        #
-        startTime = time.clock()
-        containerList = []
+    def __getSelectionDef(self, selectList):
         try:
             readDef = CifFileReadDef()
             readDef.SetCategoryList(selectList, type.A)
-        except:
-            if (self.__verbose):
-                logger.exception("+ERROR - IoAdapterCore.__readDataSelect() selection failed for %s select list %r\n" % (pdbxFilePath, selectList))
-        #
-        try:
-            sFilePath = str(pdbxFilePath)
-            if (not os.access(sFilePath, os.R_OK)):
-                logger.info("+ERROR- IoAdapterCore.__readDataSelect() Missing file %r\n" % sFilePath)
-                return containerList
-            #
-            #
-            if logFilePath is None:
-                sf = '-' + str(int(time.time() * 10000)) + '-cif-parser.log'
-                logFilePath = sFilePath + sf
-            # myReader = ParseCifSelective(sFilePath, readDef, parseLogFileName=logFilePath)
-            myReader = ParseCifSelective(sFilePath, readDef, False, 0, maxLineLength, "?", logFilePath)
-            containerNameList = []
-            containerNameList = list(myReader.GetBlockNames(containerNameList))
-            if self.__timing:
-                stepTime1 = time.clock()
-                logger.info("+IoAdapterCore.__readDataSelect() containerNameList %r read in %.4f seconds\n" % (repr(containerNameList), stepTime1 - startTime))
-            #
-            for containerName in containerNameList:
-                #
-                aContainer = DataContainer(containerName)
-                #
-                block = myReader.GetBlock(containerName)
-                tableNameList = list(block.GetTableNames())
-
-                for tableName in tableNameList:
-                    table = block.GetTable(tableName)
-                    attributeNameList = list(table.GetColumnNames())
-                    if self.__debug:
-                        logger.info("+IoAdapterCore.__readDataSelect() Attribute name list %r\n" % repr(attributeNameList))
-                    numRows = table.GetNumRows()
-                    rowList = []
-                    for iRow in range(0, numRows):
-                        row = table.GetRow(iRow)
-                        rowList.append(list(row))
-                    aCategory = DataCategory(tableName, attributeNameList, rowList)
-                    aContainer.append(aCategory)
-                    #
-                    if self.__debug:
-                        logger.info("+IoAdapterCore.__readDataSelect() read %s length %d %d\n" % (tableName, numRows, len(rowList)))
-                containerList.append(aContainer)
-            #
-            if self.__timing:
-                stepTime2 = time.clock()
-                logger.info("Api load in %.4f seconds read time %.4f seconds\n" %
-                            (stepTime2 - stepTime1, stepTime2 - startTime))
-            return containerList
+            return readDef
         except Exception as e:
-            if (self.__verbose):
-                logger.exception("Failing for %s with %s\n" % (pdbxFilePath, str(e)))
-            return containerList
+            msg = "Failing read selection with %s" % str(e)
+            self._logError(msg)
+        return None
 
-    def __readData(self, pdbxFilePath, maxLineLength=1024, logFilePath=None, logtag=""):
-        """ Read all data/definition containers in the input PDBxfile.
-        """
-        # read file contents -
+    def __processReadLogFile(self, pdbxFilePath):
+        diagL = self._readLogRecords()
         #
-        startTime = time.clock()
+        if diagL:
+            numErrors = 0
+            numSyntaxErrors = 0
+            numWarnings = 0
+            for diag in diagL:
+                if 'ERROR' in diag:
+                    numErrors += 1
+                if 'WARN' in diag:
+                    numWarnings += 1
+                if 'syntax' in diag.lower():
+                    numSyntaxErrors += 1
+            #
+            logger.debug("%s syntax errors %d  warnings %d all errors %d" % (pdbxFilePath, numSyntaxErrors, numWarnings, numErrors))
+            #
+            if numSyntaxErrors and self._raiseExceptions:
+                raise SyntaxError("%s syntax errors %d  all errors %d" % (pdbxFilePath, numSyntaxErrors, numErrors))
+            elif numErrors and self._raiseExceptions:
+                raise PdbxError("%s error count is %d" % (pdbxFilePath, numErrors))
+            elif numErrors:
+                logger.error("%s syntax errors %d  all errors %d" % (pdbxFilePath, numSyntaxErrors, numErrors))
+            if numWarnings:
+                logger.warn("%s warnings %d" % (pdbxFilePath, numWarnings))
+
+        return diagL
+
+    def __processContent(self, cifFileObj):
         containerList = []
         containerNameList = []
         try:
-            sFilePath = str(pdbxFilePath)
-            if (not os.access(sFilePath, os.R_OK)):
-                logger.info("Missing input file %r" % sFilePath)
-                return containerList
+            # ----- Repackage the data content  ----
             #
-            #
-            if logFilePath is None:
-                if(len(logtag) > 0):
-                    logtag = '-' + logtag
-                sf = '-' + str(int(time.time() * 10000)) + logtag + '-cif-parser.log'
-                logFilePath = sFilePath + sf
-            myReader = ParseCifSimple(sFilePath, verbose=self.__verbose, intCaseSense=0, maxLineLength=maxLineLength, nullValue="?", parseLogFileName=logFilePath)
-            tt = []
-            tt = myReader.GetBlockNames(tt)
-            # print (dir(tt))
-            containerNameList = list(myReader.GetBlockNames(containerNameList))
-            if self.__timing:
-                stepTime1 = time.clock()
-                logger.info("%r containers read in %.4f seconds" % (len(containerNameList), stepTime1 - startTime))
-            #
+            containerList = []
+            containerNameList = []
+            containerNameList = list(cifFileObj.GetBlockNames(containerNameList))
             for containerName in containerNameList:
                 #
                 aContainer = DataContainer(containerName)
                 #
-                block = myReader.GetBlock(containerName)
+                block = cifFileObj.GetBlock(containerName)
                 tableNameList = []
                 tableNameList = list(block.GetTableNames(tableNameList))
 
@@ -203,100 +169,123 @@ class IoAdapterCore(IoAdapterBase):
                     rowList = []
                     for iRow in range(0, numRows):
                         row = table.GetRow(iRow)
+                        # row = table.GetRow(iRow).decode('unicode_escape').encode('utf-8')
+                        # row = [p.encode('ascii', 'xmlcharrefreplace') for p in table.GetRow(iRow)]
                         rowList.append(list(row))
                     aCategory = DataCategory(tableName, attributeNameList, rowList)
                     aContainer.append(aCategory)
                 containerList.append(aContainer)
-            #
-            if self.__timing:
-                stepTime2 = time.clock()
-                logger.info("Api load in %.4f seconds read time %.4f seconds\n" %
-                            (stepTime2 - stepTime1, stepTime2 - startTime))
-            return containerList
         except Exception as e:
-            if (self.__verbose):
-                logger.exception("Failing for %s with %s\n" % (pdbxFilePath, str(e)))
-            return containerList
+            msg = "Failing packaging with %s" % str(e)
+            self._logError(msg)
 
-    def writeFile(self, pdbxFilePath, containerList=[], maxLineLength=900,
+        return containerList
+
+    def __readData(self, pdbxFilePath, readDef=None, maxLineLength=1024, logFilePath=None, cleanUp=False):
+        """ Internal method to read input file and return data as a list of DataContainer objects.
+            readDef optionally contains a selection of data categories to be returned.    Diagnostics
+            will be written to logFilePath (persisted if cleanuUp=False).
+
+        """
+        #
+        startTime = time.clock()
+        containerList = []
+        diagL = []
+        try:
+            if readDef:
+                cifFileObj = ParseCifSelective(
+                    pdbxFilePath,
+                    readDef,
+                    verbose=self._verbose,
+                    intCaseSense=0,
+                    maxLineLength=maxLineLength,
+                    nullValue="?",
+                    parseLogFileName=logFilePath)
+            else:
+                cifFileObj = ParseCifSimple(pdbxFilePath, verbose=self._verbose, intCaseSense=0, maxLineLength=maxLineLength, nullValue="?", parseLogFileName=logFilePath)
+            #
+            # ---  Process/Handle read errors   ----
+            #
+            diagL = self.__processReadLogFile(pdbxFilePath)
+            logger.debug("Diagnostic count %d values %r" % (len(diagL), diagL))
+            #
+            if self._timing:
+                stepTime1 = time.clock()
+                logger.info("Timing parsed %r in %.4f seconds" % (pdbxFilePath, stepTime1 - startTime))
+            #
+            containerList = self.__processContent(cifFileObj)
+            #
+            self._cleanupFile(cleanUp, logFilePath)
+            if self._timing:
+                stepTime2 = time.clock()
+                logger.info("Timing api load in %.4f seconds read time %.4f seconds\n" %
+                            (stepTime2 - stepTime1, stepTime2 - startTime))
+            #
+            return containerList, diagL
+        except (PdbxError, SyntaxError) as ex:
+            self._cleanupFile(cleanUp, logFilePath)
+            if self._raiseExceptions:
+                raise_from(ex, None)
+        except Exception as e:
+            self._cleanupFile(cleanUp, logFilePath)
+            msg = "Failing read for %s with %s" % (pdbxFilePath, str(e))
+            self._logError(msg)
+
+        return containerList, diagL
+
+    def writeFile(self, pdbxFilePath, containerList=[], maxLineLength=900, enforceAscii=True,
                   lastInWriteOrder=['pdbx_nonpoly_scheme', 'pdbx_poly_seq_scheme', 'atom_site', 'atom_site_anisotrop']):
         """ Export the input containerlist to PDBx format file in the path 'pdbxFilePath'.
         """
         try:
             startTime = time.clock()
-            if self.__debug:
-                logger.info("+IoAdapterCore.write() container length %d\n" % len(containerList))
-            cF = CifFile()
-            # cF=CifFile(maxLineLength=maxLineLength)
+            logger.debug("write container length %d\n" % len(containerList))
+            # cF = CifFile()
+            # (verbose: bool, caseSense: Char::eCompareType, maxLineLength: int, nullValue: str)
+            cF = CifFile(True, self._verbose, 0, maxLineLength, '?')
             for container in containerList:
                 containerName = container.getName()
-                if self.__debug:
-                    logger.info("+IoAdapterCore.write() write container %s\n" % containerName)
+                logger.debug("writing container %s\n" % containerName)
                 cF.AddBlock(containerName)
                 block = cF.GetBlock(containerName)
                 objNameList = container.getObjNameList()
-                if self.__debug:
-                    logger.info("+IoAdapterCore.write() category length %d\n" % len(objNameList))
+                logger.debug("write category length %d\n" % len(objNameList))
                 #
                 # Reorder - output -
-                if lastInWriteOrder is not None and len(lastInWriteOrder) > 0:
-                    catNameList = []
-                    lastList = []
-                    for oN in objNameList:
-                        if oN in lastInWriteOrder:
-                            lastList.append(oN)
-                            continue
-                        catNameList.append(oN)
-                    catNameList.extend(lastList)
-                else:
-                    catNameList = objNameList
-
-                logger.info("category names  %r\n" % catNameList)
+                catNameList = self._getCategoryNameList(container, lastInOrder=lastInWriteOrder, selectOrder=None)
+                logger.debug("write category names  %r\n" % catNameList)
                 #
                 for objName in catNameList:
                     name, attributeNameList, rowList = container.getObj(objName).get()
-                    logger.info("Adding table %s\n" % name)
                     table = block.AddTable(name)
                     for attributeName in attributeNameList:
-                        logger.info("Adding column %s\n" % attributeName)
                         table.AddColumn(attributeName)
                     try:
                         rLen = len(attributeNameList)
                         for ii, row in enumerate(rowList):
-                            logger.info("Adding row %d vals: %r\n" % (ii, row))
                             table.AddRow()
                             table.FillRow(ii, [str(row[jj]) if row[jj] is not None else '?' for jj in range(0, rLen)])
                     except Exception as e:
-                        if (self.__verbose):
-                            logger.info("Exception writing data structure %s" % str(e))
-                            logger.info(" write failed for file %s" % pdbxFilePath)
-                            logger.info(" table name %s len attributeNameList %d" % (objName, len(attributeNameList)))
-                            logger.info(" len row index %d row no. %d" % (len(row), ii))
-                            for ii, r in enumerate(row):
-                                logger.info("col index %d  attr %r value %r" % (ii, attributeNameList[ii], r))
-                            for ii, r in enumerate(attributeNameList):
-                                logger.info("col index %d  attr %r" % (ii, r))
+                        logger.error("Exception for %s preparing data for writing %s" % (pdbxFilePath, str(e)))
                     #
-                    logger.info(" before writeTable : %r" % table)
                     block.WriteTable(table)
-                    logger.info("after writeTable ")
-            if self.__timing:
+            #
+            if self._timing:
                 stepTime1 = time.clock()
-                logger.info(" %d container(s) api loaded in %.4f seconds\n" % (len(containerList), stepTime1 - startTime))
-            logger.info(" before  dumpBlocks  %s" % pdbxFilePath)
-            if (self.__debug):
+                logger.info("Timing %d container(s) api loaded in %.4f seconds" % (len(containerList), stepTime1 - startTime))
+            if (self._debug):
                 self.__dumpBlocks(cF)
             cF.Write(str(pdbxFilePath))
-            if self.__timing:
+            if self._timing:
                 stepTime2 = time.clock()
-                logger.info("%d container(s) written in %.4f seconds total time %.4f\n" %
+                logger.info("Timing %d container(s) written in %.4f seconds total time %.4f" %
                             (len(containerList), stepTime2 - stepTime1, stepTime2 - startTime))
             return True
 
         except Exception as e:
-            if (self.__verbose):
-                logger.info("Write failing for file %s with %s" % (pdbxFilePath, str(e)))
-            return False
+            msg = "Write failing for file %s with %s" % (pdbxFilePath, str(e))
+            self._logError(msg)
+        return False
 
     def __dumpBlocks(self, cf):
         try:

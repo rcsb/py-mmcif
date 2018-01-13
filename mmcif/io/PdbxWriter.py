@@ -311,3 +311,4 @@ class PdbxWriter(object):
         self.__write("\n")
         if self.__useStopTokens:
             self.__write("stop_\n")
+

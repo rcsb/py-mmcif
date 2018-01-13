@@ -25,7 +25,7 @@ Acknowledgements:
  See:  http://pymmlib.sourceforge.net/
 
 """
-#from __future__ import absolute_import, generator_stop
+# from __future__ import absolute_import, generator_stop
 from __future__ import absolute_import
 
 __docformat__ = "restructuredtext en"
@@ -42,22 +42,7 @@ logger = logging.getLogger(__name__)
 
 from mmcif.api.PdbxContainers import *
 from mmcif.api.DataCategory import DataCategory
-
-
-class PdbxError(Exception):
-    """ Class for catch general errors
-    """
-
-    def __init__(self, msg):
-        super(PdbxError, self).__init__(msg)
-
-
-class SyntaxError(Exception):
-    """ Class for catching syntax errors
-    """
-
-    def __init__(self, msg):
-        super(SyntaxError, self).__init__(msg)
+from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 
 class PdbxReader(object):
@@ -77,16 +62,18 @@ class PdbxReader(object):
                             "save": "ST_DEFINITION",
                             "stop": "ST_STOP"}
 
-    def read(self, containerList):
+    def read(self, containerList, selection=None):
         """
         Appends to input list of definition and data containers.
 
         return
 
         """
+        sL = selection if selection else []
+        catSelectD = {k: k for k in sL}
         self.__curLineNumber = 0
         try:
-            self.__parser(self.__tokenizer(self.__ifh), containerList)
+            self.__parser(self.__tokenizer(self.__ifh), containerList, categorySelectionD=catSelectD)
         except RuntimeError as e:
             # will be raised at the end of token iterator - not an error -
             logger.debug("Normal termination after reading %d lines with %s" % (self.__curLineNumber, str(e)))
@@ -103,6 +90,20 @@ class PdbxReader(object):
             raise PdbxError("Failing at line %d with %s" % (self.__curLineNumber, str(e)))
         else:
             raise PdbxError("Miscellaneous parsing error at line %d" % self.__curLineNumber)
+
+    def __allSelected(self, container, catSelectD):
+        """ Test the input container for completeness relative to the input category selection dictionary.
+        """
+        if not catSelectD:
+            return False
+        try:
+            nl = container.getObjNameList()
+            if len(nl) < len(catSelectD):
+                return False
+            return True
+        except Exception:
+            pass
+        return False
 
     def __syntaxError(self, errText):
         msg = " [Line: %d] %s" % (self.__curLineNumber, errText)
@@ -133,7 +134,7 @@ class PdbxReader(object):
         except:
             return None, "ST_UNKNOWN"
 
-    def __parser(self, tokenizer, containerList):
+    def __parser(self, tokenizer, containerList, categorySelectionD=None):
         """ Parser for PDBx data files and dictionaries.
 
             Input - tokenizer() reentrant method recognizing data item names (_category.attribute)
@@ -146,6 +147,7 @@ class PdbxReader(object):
             On return:
                     The input containerList is appended with data and definition objects -
         """
+        catSelectD = categorySelectionD if categorySelectionD is not None else {}
         # Working container - data or definition
         curContainer = None
         # the last container of type data -
@@ -192,9 +194,13 @@ class PdbxReader(object):
                 except KeyError:
                     # A new category is encountered - create a container and add a row
                     curCategory = categoryIndex[curCatName] = DataCategory(curCatName)
-
+                    #
+                    #  check if we have all of the selection
+                    if self.__allSelected(curContainer, catSelectD):
+                        return
                     try:
-                        curContainer.append(curCategory)
+                        if catSelectD and curCatName in catSelectD:
+                            curContainer.append(curCategory)
                     except AttributeError:
                         self.__syntaxError("Category cannot be added to  data_ block")
                         return
@@ -262,8 +268,13 @@ class PdbxReader(object):
 
                 curCategory = DataCategory(curCatName)
 
+                #
+                #  check if we have all of the selection
+                if self.__allSelected(curContainer, catSelectD):
+                    return
                 try:
-                    curContainer.append(curCategory)
+                    if catSelectD and curCatName in catSelectD:
+                        curContainer.append(curCategory)
                 except AttributeError:
                     self.__syntaxError("loop_ declaration outside of data_ block or save_ frame")
                     return
@@ -442,4 +453,3 @@ class PdbxReader(object):
                         yield groups
             except StopIteration:
                 return
-

@@ -32,6 +32,7 @@ from mmcif.io.IoAdapterBase import IoAdapterBase
 from mmcif.io.PdbxReader import PdbxReader
 from mmcif.io.PdbxWriter import PdbxWriter
 
+
 class IoAdapterPy(IoAdapterBase):
     """ Python implementation of IoAdapterBase class providing read and write
         methods for PDBx/mmCIF data files -
@@ -40,11 +41,10 @@ class IoAdapterPy(IoAdapterBase):
 
     def __init__(self, *args, **kwargs):
         super(IoAdapterPy, self).__init__(*args, **kwargs)
+        self.__readDiagL = []
 
     def readFile(self, inputFile, enforceAscii=False):
         """  Read PDBx/mmCIF file and return list of data or definition containers.
-
-             The Py2 Py3 behavior -
 
         """
         containerList = []
@@ -67,13 +67,20 @@ class IoAdapterPy(IoAdapterBase):
                         pRd = PdbxReader(ifh)
                         pRd.read(containerList)
         except Exception as e:
+            self.__readDiagL = str(e)
             if self._raiseExceptions:
                 raise e
             else:
                 logger.error("Failing read for %s with %s" % (inputFile, str(e)))
         return containerList
 
-    def writeFile(self, outputFile, containerList, maxLineLength=900, columnAlignFlag=True, useStopTokens=False, formattingStep=None, enforceAscii=True, cnvCharRefs=False):
+    def getReadDiags(self):
+        """ Return diagnostics from last readFile operation. This will NOT be an exhustive list but
+        rather the particular failure that raised a parsing exception.
+        """
+        return self.__readDiagL
+
+    def writeFile(self, outputFile, containerList, maxLineLength=900, enforceAscii=True, columnAlignFlag=True, useStopTokens=False, formattingStep=None):
         """ Write input list of data or definition containers to the specified output file path.
         """
         try:
@@ -85,16 +92,16 @@ class IoAdapterPy(IoAdapterBase):
             if sys.version_info[0] > 2:
                 with open(outputFile, "w", encoding=encoding) as ofh:
                     self.__writeFile(ofh, containerList, maxLineLength=maxLineLength, columnAlignFlag=columnAlignFlag, useStopTokens=useStopTokens,
-                                     formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=cnvCharRefs)
+                                     formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=self._useCharRefs)
             else:
                 if enforceAscii:
                     with io.open(outputFile, 'w', encoding=encoding) as ofh:
                         self.__writeFile(ofh, containerList, maxLineLength=maxLineLength, columnAlignFlag=columnAlignFlag, useStopTokens=useStopTokens,
-                                         formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=cnvCharRefs)
+                                         formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=self._useCharRefs)
                 else:
                     with open(outputFile, "wb") as ofh:
                         self.__writeFile(ofh, containerList, maxLineLength=maxLineLength, columnAlignFlag=columnAlignFlag, useStopTokens=useStopTokens,
-                                         formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=cnvCharRefs)
+                                         formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=self._useCharRefs)
             return True
         except Exception as e:
             logger.exception("Failing write with %s" % str(e))
@@ -106,6 +113,9 @@ class IoAdapterPy(IoAdapterBase):
         return False
 
     def __writeFile(self, ofh, containerList, maxLineLength=900, columnAlignFlag=True, useStopTokens=False, formattingStep=None, enforceAscii=False, cnvCharRefs=False):
+        # Reorder - output -
+        #
+
         pdbxW = PdbxWriter(ofh)
         pdbxW.setUseStopTokens(flag=useStopTokens)
         pdbxW.setMaxLineLength(numChars=maxLineLength)
