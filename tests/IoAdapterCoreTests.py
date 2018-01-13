@@ -51,7 +51,7 @@ from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 class IoAdapterTests(unittest.TestCase):
 
-    def shortDescription():
+    # def shortDescription():
 
     def setUp(self):
         self.__lfh = sys.stdout
