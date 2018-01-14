@@ -187,7 +187,9 @@ class IoAdapterTests(unittest.TestCase):
         """Test case -  read and then write PDBx file or dictionary
         """
         try:
-            io = IoAdapter(raiseExceptions=True)
+            enforceAscii = kwargs.get('enforceAscii', True)
+            useCharRefs = True if enforceAscii else False
+            io = IoAdapter(raiseExceptions=True, useCharRefs=useCharRefs)
             containerList = io.readFile(ifp)
             logger.debug("Read %d data blocks" % len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, **kwargs)
@@ -197,11 +199,16 @@ class IoAdapterTests(unittest.TestCase):
             self.fail()
 
 
-def suiteFileReader():
+def suiteFileReaderRaw():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(IoAdapterTests("testFileReaderUtf8"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderBigUtf8"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderQuotesUtf8"))
+    return suiteSelect
+
+
+def suiteFileReaderAscii():
+    suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(IoAdapterTests("testFileReaderAscii"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderBigAscii"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderQuotesAscii"))
@@ -247,7 +254,11 @@ def suiteReaderWriterUnicode():
 if __name__ == '__main__':
     #
     if (True):
-        mySuite = suiteFileReader()
+        mySuite = suiteFileReaderRaw()
+        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+
+    if (True):
+        mySuite = suiteFileReaderAscii()
         unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
     if (True):

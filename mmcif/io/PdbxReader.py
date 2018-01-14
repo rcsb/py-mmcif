@@ -94,16 +94,20 @@ class PdbxReader(object):
     def __allSelected(self, container, catSelectD):
         """ Test the input container for completeness relative to the input category selection dictionary.
         """
-        if not catSelectD:
-            return False
-        try:
-            nl = container.getObjNameList()
-            if len(nl) < len(catSelectD):
-                return False
-            return True
-        except Exception:
-            pass
-        return False
+        nl = -1
+        if catSelectD:
+            try:
+                nl = container.getObjNameList()
+                if len(nl) < len(catSelectD):
+                    ok = False
+                else:
+                    ok = True
+            except Exception:
+                ok = False
+        else:
+            ok = False
+        logger.debug("nl %d length catSelectD %d returning %r" % (nl, len(catSelectD), ok))
+        return ok
 
     def __syntaxError(self, errText):
         msg = " [Line: %d] %s" % (self.__curLineNumber, errText)
@@ -148,6 +152,7 @@ class PdbxReader(object):
                     The input containerList is appended with data and definition objects -
         """
         catSelectD = categorySelectionD if categorySelectionD is not None else {}
+        logger.debug("Category selection %r" % catSelectD)
         # Working container - data or definition
         curContainer = None
         # the last container of type data -
@@ -199,8 +204,10 @@ class PdbxReader(object):
                     if self.__allSelected(curContainer, catSelectD):
                         return
                     try:
-                        if catSelectD and curCatName in catSelectD:
+                        if not catSelectD or curCatName in catSelectD:
                             curContainer.append(curCategory)
+                        else:
+                            logger.debug("Skipped unselected category %s" % curCatName)
                     except AttributeError:
                         self.__syntaxError("Category cannot be added to  data_ block")
                         return
@@ -273,8 +280,10 @@ class PdbxReader(object):
                 if self.__allSelected(curContainer, catSelectD):
                     return
                 try:
-                    if catSelectD and curCatName in catSelectD:
+                    if not catSelectD or curCatName in catSelectD:
                         curContainer.append(curCategory)
+                    else:
+                        logger.debug("Skipped unselected category %s" % curCatName)
                 except AttributeError:
                     self.__syntaxError("loop_ declaration outside of data_ block or save_ frame")
                     return

@@ -17,6 +17,7 @@ __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 import os
+import io
 import time
 import tempfile
 
@@ -201,7 +202,7 @@ class IoAdapterBase(object):
         try:
             startTime = time.clock()
             chunk = []
-            with open(inputFilePath, "r", encoding="utf-8") as r, open(outputFilePath, "w", encoding='ascii') as w:
+            with io.open(inputFilePath, "r", encoding="utf-8") as r, io.open(outputFilePath, "w", encoding='ascii') as w:
                 for line in r:
                     # chunk.append(line.encode('ascii', 'xmlcharrefreplace').decode('ascii'))
                     chunk.append(line.encode('ascii', encodingErrors).decode('ascii'))

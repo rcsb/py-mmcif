@@ -30,7 +30,6 @@ __version__ = "V0.01"
 import sys
 import time
 import os
-import errno
 from future.utils import raise_from
 
 import logging
@@ -38,17 +37,19 @@ logger = logging.getLogger(__name__)
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
-try:
-    from mmcif.core.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, type, CifFileReadDef
-except Exception as e:
-    sys.path.insert(0, os.path.dirname(os.path.dirname(HERE)))
-    from build.lib.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, type, CifFileReadDef
 
 from mmcif.io.IoAdapterBase import IoAdapterBase
 
 from mmcif.api.PdbxContainers import *
 from mmcif.api.DataCategory import DataCategory
 from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
+
+try:
+    from mmcif.core.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, type, CifFileReadDef
+except Exception as e:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(HERE)))
+    logger.info(os.path.dirname(os.path.dirname(HERE)))
+    from build.lib.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, type, CifFileReadDef
 
 
 class IoAdapterCore(IoAdapterBase):

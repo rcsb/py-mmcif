@@ -208,12 +208,17 @@ class IoAdapterTests(unittest.TestCase):
             self.fail()
 
 
-def suiteFileReader():
+def suiteFileReaderRaw():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(IoAdapterTests("testFileReaderUtf8"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderBigUtf8"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderQuotesUtf8"))
     #
+    return suiteSelect
+
+
+def suiteFileReaderAscii():
+    suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(IoAdapterTests("testFileReaderAscii"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderBigAscii"))
     suiteSelect.addTest(IoAdapterTests("testFileReaderQuotesAscii"))
@@ -266,7 +271,11 @@ if __name__ == '__main__':
     #
     if True:
         if (True):
-            mySuite = suiteFileReader()
+            mySuite = suiteFileReaderRaw()
+            unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+
+        if True:
+            mySuite = suiteFileReaderAscii()
             unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
         if (True):

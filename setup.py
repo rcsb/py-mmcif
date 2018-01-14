@@ -81,7 +81,7 @@ class CMakeBuild(build_ext):
 
 packages = []
 thisPackage = 'mmcif'
-requires = ['requests', 'six']
+requires = ['future', 'six']
 
 
 with open('mmcif/__init__.py', 'r') as fd:
