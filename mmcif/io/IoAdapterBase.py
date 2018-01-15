@@ -5,6 +5,7 @@
 # Version: 0.001 Initial version
 #
 # Updates:
+#   13-Jan-2018 jdw move _getCategoryNameList() PdbxContainerBase class
 ##
 """
 Base class presenting essential PDBx/mmCIF IO methods.
@@ -37,7 +38,7 @@ class IoAdapterBase(object):
         self._useCharRefs = kwargs.get('useCharRefs', True)
         self.__logFilePath = None
         self._debug = kwargs.get('debug', False)
-        self._timing = kwargs.get('timing', False)
+        self._timing = kwargs.get('timing', True)
         self._verbose = kwargs.get('verbose', True)
 
     def readFile(self, inputFile, **kwargs):
@@ -183,9 +184,10 @@ class IoAdapterBase(object):
         except Exception as e:
             msg = "File check error for %r with %s " % (filePath, str(e))
             self._appendToLog([msg])
-            logger.error(msg)
             if self._raiseExceptions:
                 raise PdbxError(msg)
+            else:
+                logger.error(msg)
         return False
 
     def _cleanupFile(self, test, filePath):

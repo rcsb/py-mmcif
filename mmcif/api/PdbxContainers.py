@@ -16,6 +16,7 @@
 #   14-Nov-2012   jdw refactoring
 #   28-Jun-2013   jdw expose remove method
 #   01-Aug-2017   jdw migrate portions to public repo
+#   14-Jan-2018   jdw add method filterObjectNameList(lastInOrder=None, selectOrder=None)
 ##
 """
 
@@ -187,6 +188,34 @@ class ContainerBase(object):
 
         return False
 
+    def filterObjectNameList(self, lastInOrder=None, selectOrder=None):
+        """ Return an ordered list of categories in the input container subject to
+            input -
+
+               lastInOrder: list:  categories to be shifted to the end of the container.
+               selectOrder: list:  ordered selection of container categories
+
+            returns:
+               filNameList: list:  augmented category list or full list (default)
+        """
+        filNameList = []
+        if lastInOrder:
+            objNameList = self.__objNameList
+            lastList = []
+            for nm in objNameList:
+                if nm in lastInOrder:
+                    lastList.append(nm)
+                    continue
+                filNameList.append(nm)
+            filNameList.extend(lastList)
+        elif selectOrder:
+            for nm in selectOrder:
+                if self.exists(nm):
+                    filNameList.append(nm)
+        else:
+            filNameList = objNameList
+
+        return filNameList
 
 class DefinitionContainer(ContainerBase):
 

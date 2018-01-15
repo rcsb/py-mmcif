@@ -38,7 +38,7 @@ class DataCategory(DataCategoryBase):
     """  Methods for creating, accessing, and formatting PDBx/mmCif data categories.
     """
 
-    def __init__(self, name, attributeNameList=None, rowList=None, raiseExceptions=True):
+    def __init__(self, name, attributeNameList=None, rowList=None, raiseExceptions=True, copyInputData=True):
         """Summary
 
         Args:
@@ -47,7 +47,7 @@ class DataCategory(DataCategoryBase):
             rowList (None, optional): Description
             raiseExceptions (bool, optional): Description
         """
-        super(DataCategory, self).__init__(name, attributeNameList, rowList, raiseExceptions=raiseExceptions)
+        super(DataCategory, self).__init__(name, attributeNameList, rowList, raiseExceptions=raiseExceptions, copyInputData=copyInputData)
         #
         self.__verbose = False
         self._currentRowIndex = 0

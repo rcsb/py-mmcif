@@ -48,7 +48,6 @@ try:
     from mmcif.core.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, type, CifFileReadDef
 except Exception as e:
     sys.path.insert(0, os.path.dirname(os.path.dirname(HERE)))
-    logger.info(os.path.dirname(os.path.dirname(HERE)))
     from build.lib.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, type, CifFileReadDef
 
 
@@ -97,7 +96,7 @@ class IoAdapterCore(IoAdapterBase):
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
             if self._raiseExceptions:
                 raise_from(ex, None)
-                #raise ex from None
+                # raise ex from None
         except Exception as e:
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
             msg = "Failing read for %s with %s" % (filePath, str(e))
@@ -173,7 +172,7 @@ class IoAdapterCore(IoAdapterBase):
                         # row = table.GetRow(iRow).decode('unicode_escape').encode('utf-8')
                         # row = [p.encode('ascii', 'xmlcharrefreplace') for p in table.GetRow(iRow)]
                         rowList.append(list(row))
-                    aCategory = DataCategory(tableName, attributeNameList, rowList)
+                    aCategory = DataCategory(tableName, attributeNameList, rowList, copyInputData=False)
                     aContainer.append(aCategory)
                 containerList.append(aContainer)
         except Exception as e:
@@ -235,10 +234,12 @@ class IoAdapterCore(IoAdapterBase):
         return containerList, diagL
 
     def writeFile(self, pdbxFilePath, containerList=[], maxLineLength=900, enforceAscii=True,
-                  lastInWriteOrder=['pdbx_nonpoly_scheme', 'pdbx_poly_seq_scheme', 'atom_site', 'atom_site_anisotrop']):
+                  lastInOrder=['pdbx_nonpoly_scheme', 'pdbx_poly_seq_scheme', 'atom_site', 'atom_site_anisotrop'], selectOrder=None, **kwargs):
         """ Export the input containerlist to PDBx format file in the path 'pdbxFilePath'.
         """
         try:
+            if len(kwargs):
+                logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
             startTime = time.clock()
             logger.debug("write container length %d\n" % len(containerList))
             # cF = CifFile()
@@ -249,14 +250,15 @@ class IoAdapterCore(IoAdapterBase):
                 logger.debug("writing container %s\n" % containerName)
                 cF.AddBlock(containerName)
                 block = cF.GetBlock(containerName)
-                objNameList = container.getObjNameList()
-                logger.debug("write category length %d\n" % len(objNameList))
                 #
-                # Reorder - output -
-                catNameList = self._getCategoryNameList(container, lastInOrder=lastInWriteOrder, selectOrder=None)
-                logger.debug("write category names  %r\n" % catNameList)
+                # objNameList = container.getObjNameList()
+                # logger.debug("write category length %d\n" % len(objNameList))
                 #
-                for objName in catNameList:
+                # Reorder/Filter - container object list-
+                objNameList = container.filterObjectNameList(lastInOrder=lastInOrder, selectOrder=selectOrder)
+                logger.debug("write category names  %r\n" % objNameList)
+                #
+                for objName in objNameList:
                     name, attributeNameList, rowList = container.getObj(objName).get()
                     table = block.AddTable(name)
                     for attributeName in attributeNameList:

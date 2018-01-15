@@ -62,14 +62,14 @@ class PdbxReader(object):
                             "save": "ST_DEFINITION",
                             "stop": "ST_STOP"}
 
-    def read(self, containerList, selection=None):
+    def read(self, containerList, selectList=None):
         """
         Appends to input list of definition and data containers.
 
         return
 
         """
-        sL = selection if selection else []
+        sL = selectList if selectList else []
         catSelectD = {k: k for k in sL}
         self.__curLineNumber = 0
         try:

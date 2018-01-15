@@ -8,6 +8,8 @@
 #   17-Dec-2012 jdw  Add quoting preference option
 #   25-Jul-2014 jdw  expose methods setAlignmentFlag() and setMaxLineLength()
 #   23-Jun-2015 jdw  correct misnamed parameter in formatting method
+#   28-Dec-2017 jdw  port to
+#   13-Jan-2018 jdw  add selection attributes lastInOrder=None, selectOrder=None
 ###
 """
 Classes for writing data and dictionary containers in PDBx/mmCIF format.
@@ -90,12 +92,12 @@ class PdbxWriter(object):
         '''
         self.__rowPartition = numParts
 
-    def write(self, containerList):
+    def write(self, containerList, lastInOrder=None, selectOrder=None):
         self.__containerList = containerList
         for container in self.__containerList:
-            self.writeContainer(container)
+            self.writeContainer(container, lastInOrder=lastInOrder, selectOrder=selectOrder)
 
-    def writeContainer(self, container):
+    def writeContainer(self, container, lastInOrder=None, selectOrder=None):
         indS = " " * self.__INDENT_DEFINITION
         if container.getType() == 'definition':
             self.__write("save_%s\n" % container.getName())
@@ -111,7 +113,8 @@ class PdbxWriter(object):
                 self.__doDefinitionIndent = False
                 self.__write("#\n")
 
-        for nm in container.getObjNameList():
+        nmL = container.filterObjectNameList(lastInOrder=lastInOrder, selectOrder=selectOrder)
+        for nm in nmL:
             obj = container.getObj(nm)
             objL = obj.getRowList()
 
@@ -311,4 +314,5 @@ class PdbxWriter(object):
         self.__write("\n")
         if self.__useStopTokens:
             self.__write("stop_\n")
+
 
