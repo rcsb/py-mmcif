@@ -1,4 +1,7 @@
-# core_mmciflib example -----s
+# File: setup.py
+# Date: 17-Dec-2017
+#
+# Update:  17-Jan-2018 jdw - resolve python virtual env issues with Tox.
 #
 import os
 import re
@@ -46,14 +49,21 @@ class CMakeBuild(build_ext):
 
         # we need to help cmake find the correct python for this virtual env -
         if hasattr(sys, 'real_prefix'):
-            sp = os.path.join(sys.real_prefix, 'lib', 'libpython') + "*"
+            lsp = os.path.join(sys.real_prefix, 'lib', 'libpython') + "*"
+            isp = os.path.join(sys.real_prefix, 'include', 'python') + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"
         else:
-            sp = os.path.join(sys.exec_prefix, 'lib', 'libpython') + "*"
+            lsp = os.path.join(sys.exec_prefix, 'lib', 'libpython') + "*"
+            isp = os.path.join(sys.exec_prefix, 'include', 'python') + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"
         #
-        lpL = glob.glob(sp)
+        lpL = glob.glob(lsp)
         if len(lpL):
             lp = lpL[0]
             cmake_args += ['-DPYTHON_LIBRARY=' + lp]
+
+        ipL = glob.glob(isp)
+        if len(ipL):
+            ip = ipL[0]
+            cmake_args += ['-DPYTHON_INCLUDE_DIR=' + ip]
         #
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
@@ -75,7 +85,7 @@ class CMakeBuild(build_ext):
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
         #
-        if True:
+        if False:
             print("------------------------------")
             print("Extension source path ", ext.sourcedir)
             print("CMAKE_ARGS ", cmake_args)
@@ -103,13 +113,6 @@ with open('mmcif/__init__.py', 'r') as fd:
 if not version:
     raise RuntimeError('Cannot find version information')
 
-extFiles = ['CMakeLists.txt',
-            'modules/cc-regex/include/*.h',
-            'modules/cc-regex/src/*.c',
-            'modules/cpp-*/include/*.h',
-            'modules/cpp-*/src/*.C',
-            'modules/cpp-*/src/*.cpp',
-            'modules/pybind11/include/pybind11/*.h']
 setup(
     name=thisPackage,
     version=version,
@@ -129,8 +132,6 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ),

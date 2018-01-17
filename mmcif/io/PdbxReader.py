@@ -13,7 +13,7 @@
 # 2013-19-14 - (jdw)  change the treatment of stop_ tokens --
 ##
 """
-PDBx/mmCIF dictionary and data file parser.
+Utilities for reading mmCIF for data files and dictionaries.
 
 Acknowledgements:
 
@@ -46,7 +46,7 @@ from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 
 class PdbxReader(object):
-    """ PDBx reader for data files and dictionaries.
+    """ Utilities for reading mmCIF for data files and dictionaries.
 
     """
 

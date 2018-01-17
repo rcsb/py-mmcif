@@ -11,21 +11,21 @@
 #  6-Dec-2015 jdw add additional filters for category write order -
 # 28-Jul-2016 rps readFile(), __readData() methods updated to accept optional "logtag" parameter
 # 15-Feb-2017 ep  Correct variable name in exception in __readDataSelect()
-#  8-Jan-2018 jdw adapt to new python bindings -  change logging framework -- py2->3
+#  8-Jan-2018 jdw adapt to new pybind11 bindings -  change logging framework -- handle py2->3
+# 10-Jan-2018 jdw complete rewrite for new mmciflib framework.
 #
 ##
 """
-Adapter between PDBx IO classes and the Pybind11/Python wrappers
+Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.
 
 """
 from __future__ import absolute_import
 from six.moves import range
+
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
-__email__ = "jwest@rcsb.rutgers.edu"
-__license__ = "Creative Commons Attribution 3.0 Unported"
-__version__ = "V0.01"
-
+__email__ = "john.westbrook@rcsb.org"
+__license__ = "Apache 2.0"
 
 import sys
 import time
@@ -52,18 +52,31 @@ except Exception as e:
 
 
 class IoAdapterCore(IoAdapterBase):
-
-    """ Adapter between PDBx IO classes (C++ Pybind11 wrappers) and Python persistence classes.
+    """ Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.
     """
 
     def __init__(self, *args, **kwargs):
         super(IoAdapterCore, self).__init__(*args, **kwargs)
 
     def readFile(self, inputFilePath, enforceAscii=True, selectList=None, excludeFlag=False, logFilePath=None, outDirPath=None, cleanUp=True, **kwargs):
-        """ Import the input Pdbx data file.
+        """Parse the data blocks in the input mmCIF format data file into list of DataContainers().  The data category content within each data block
+           is stored a collection of DataCategory objects within each DataContainer.
+
+        Args:
+            inputFilePath (string): Input file path
+            enforceAscii (bool, optional): Flag to requiring pre-filtering operation to convert input file to ASCII encoding. See encoding error options.
+            selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)
+            excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list
+            logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)
+            outDirPath (string, optional): Path for translated/reencoded files and default logfiles.
+            cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.
+            **kwargs: Placeholder for missing keyword arguments.
+
+        Returns:
+            List of DataContainers: Contents of input file parsed into a list of DataContainer objects.
         """
         if len(kwargs):
-                logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
+            logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         asciiFilePath = None
         filePath = str(inputFilePath)
         try:
@@ -108,9 +121,19 @@ class IoAdapterCore(IoAdapterBase):
         return []
 
     def getReadDiags(self):
+        """Recover the diagnostics for the previous readFile() operation.readFile
+
+           Returns:
+             list of strings:  List of parsing and processing diagnostics from last readFile() operation
+        """
         return self._readLogRecords()
 
     def __getSelectionDef(self, selectList, excludeFlag):
+        """ Internal method to package selection/exclusion list for the C++ parser library.
+
+            Returns:
+               CifFileReadDef() object:  object prepared for parsing library
+        """
         try:
             readDef = CifFileReadDef()
             if excludeFlag:
@@ -124,6 +147,12 @@ class IoAdapterCore(IoAdapterBase):
         return None
 
     def __processReadLogFile(self, inputFilePath):
+        """ Internal method to process logfiles and either log errors or raise exceptions (See: Class PdbxExceptions).
+            The behavior is controlled by the class attribute _raiseExcetions.
+
+            Returns:
+             list of strings:  List of records in the input log file
+        """
         diagL = self._readLogRecords()
         #
         if diagL:
@@ -152,6 +181,16 @@ class IoAdapterCore(IoAdapterBase):
         return diagL
 
     def __processContent(self, cifFileObj):
+        """Internal method to transfer parsed data from the wrapped input C++ CifFile object into
+        the list of Python DataContainer objects.
+
+        Args:
+            cifFileObj (wrapped CifFile object): Wrapped input C++ CifFile object
+
+        Returns:
+            list of DataContainer objects:   List of Python DataContainer objects
+
+        """
         containerList = []
         containerNameList = []
         try:
@@ -188,9 +227,19 @@ class IoAdapterCore(IoAdapterBase):
         return containerList
 
     def __readData(self, inputFilePath, readDef=None, maxLineLength=1024, logFilePath=None, cleanUp=False):
-        """ Internal method to read input file and return data as a list of DataContainer objects.
-            readDef optionally contains a selection of data categories to be returned.    Diagnostics
-            will be written to logFilePath (persisted if cleanuUp=False).
+        """Internal method to read input file and return data as a list of DataContainer objects.
+        readDef optionally contains a selection of data categories to be returned.    Diagnostics
+        will be written to logFilePath (persisted if cleanuUp=False).
+
+        Args:
+            inputFilePath (string):  input file path
+            readDef (CifFileReadDef object, optional): wrapped CifFileReadDef() object
+            maxLineLength (int, optional): Maximum supported line length on input
+            logFilePath (string, optional): Log file path
+            cleanUp (bool, optional): Flag to remove temporary files on exit
+
+        Returns:
+            Tuple of lists : DataContainer List, Diagnostics (string) List
 
         """
         #
@@ -239,19 +288,33 @@ class IoAdapterCore(IoAdapterBase):
 
         return containerList, diagL
 
-    def writeFile(self, outputFilePath, containerList=[], maxLineLength=900, enforceAscii=True,
+    def writeFile(self, outputFilePath, containerList=None, maxLineLength=900, enforceAscii=True,
                   lastInOrder=['pdbx_nonpoly_scheme', 'pdbx_poly_seq_scheme', 'atom_site', 'atom_site_anisotrop'], selectOrder=None, **kwargs):
-        """ Export the input containerlist to PDBx format file in the path 'outputFilePath'.
+        """Write input list of data containers to the specified output file path in mmCIF format.
+
+        Args:
+            outputFilePath (string): output file path
+            containerList (list DataContainer objects, optional):
+            maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)
+            enforceAscii (bool, optional): Filter output (not implemented - content must be ascii compatible on input)
+            lastInOrder (list of category names, optional): Move data categories in this list to end of each data block
+            selectOrder (list of category names, optional): Write only data categories on this list.
+            **kwargs: Placeholder for unsupported key value pairs
+
+        Returns:
+            bool: Completion status
+
+
         """
-        try:
-            if len(kwargs):
+        containerL = containerList if containerList else []
+        if len(kwargs):
                 logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
+        try:
             startTime = time.clock()
-            logger.debug("write container length %d\n" % len(containerList))
-            # cF = CifFile()
-            # (verbose: bool, caseSense: Char::eCompareType, maxLineLength: int, nullValue: str)
+            logger.debug("write container length %d\n" % len(containerL))
+            # (CifFile args: placeholder, verbose: bool, caseSense: Char::eCompareType, maxLineLength: int, nullValue: str)
             cF = CifFile(True, self._verbose, 0, maxLineLength, '?')
-            for container in containerList:
+            for container in containerL:
                 containerName = container.getName()
                 logger.debug("writing container %s\n" % containerName)
                 cF.AddBlock(containerName)
@@ -281,7 +344,7 @@ class IoAdapterCore(IoAdapterBase):
             #
             if self._timing:
                 stepTime1 = time.clock()
-                logger.info("Timing %d container(s) api loaded in %.4f seconds" % (len(containerList), stepTime1 - startTime))
+                logger.info("Timing %d container(s) api loaded in %.4f seconds" % (len(containerL), stepTime1 - startTime))
             if (self._debug):
                 self.__dumpBlocks(cF)
             cF.Write(str(outputFilePath))
@@ -297,6 +360,11 @@ class IoAdapterCore(IoAdapterBase):
         return False
 
     def __dumpBlocks(self, cf):
+        """Internal method to log the contents of the input wrapped CifFile object.
+
+        Args:
+            cf (CifFile object): wrapped CifFile object.
+        """
         try:
             logger.info("cif file %r" % cf)
             blockNameList = []

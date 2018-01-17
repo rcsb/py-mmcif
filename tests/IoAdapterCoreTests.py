@@ -12,10 +12,9 @@
 #   9-Jan-2018 jdw  update tests for new binding library - add logging framework
 ##
 """
-Test cases for reading and updating PDBx data files using Python Wrapper
+Test cases for reading and updating mmCIF data files using Python Wrapper
 IoAdapterCore wrapper which provides an API to the C++ CifFile class
-library of file and dictionary tools that is conforms to our native
-Python library.
+library of file and dictionary tools conforming to our native Python library.
 """
 from __future__ import absolute_import
 

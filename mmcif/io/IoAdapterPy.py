@@ -38,8 +38,7 @@ from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 
 class IoAdapterPy(IoAdapterBase):
-    """ Python implementation of IoAdapterBase class providing read and write
-        methods for PDBx/mmCIF data files -
+    """ Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF data files -
 
     """
 
@@ -47,7 +46,21 @@ class IoAdapterPy(IoAdapterBase):
         super(IoAdapterPy, self).__init__(*args, **kwargs)
 
     def readFile(self, inputFilePath, enforceAscii=False, selectList=None, excludeFlag=False, logFilePath=None, outDirPath=None, cleanUp=False, **kwargs):
-        """  Read PDBx/mmCIF file and return list of data or definition containers.
+        """  Parse the data blocks in the input mmCIF format data file into list of data or definition containers.  The data category content within
+            each data block is stored a collection of DataCategory objects within each container.
+
+        Args:
+            inputFilePath (string): Input file path
+            enforceAscii (bool, optional): Flag to requiring ASCII encoding. See encoding error options.
+            selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)
+            excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list
+            logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)
+            outDirPath (string, optional): Path for translated/reencoded files and default logfiles.
+            cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.
+            **kwargs: Placeholder for missing keyword arguments.
+
+        Returns:
+            List of DataContainers: Contents of input file parsed into a list of DataContainer objects.
 
         """
         if len(kwargs):
@@ -111,7 +124,25 @@ class IoAdapterPy(IoAdapterBase):
     def writeFile(self, outputFilePath, containerList, maxLineLength=900, enforceAscii=True,
                   lastInOrder=['pdbx_nonpoly_scheme', 'pdbx_poly_seq_scheme', 'atom_site', 'atom_site_anisotrop'], selectOrder=None,
                   columnAlignFlag=True, useStopTokens=False, formattingStep=None, **kwargs):
-        """ Write input list of data or definition containers to the specified output file path.
+        """Write input list of data containers to the specified output file path in mmCIF format.
+
+        Args:
+            outputFilePath (string): output file path
+            containerList (list DataContainer objects, optional)
+            maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)
+            enforceAscii (bool, optional): Filter output (not implemented - content must be ascii compatible on input)
+            lastInOrder (list of category names, optional): Move data categories in this list to end of each data block
+            selectOrder (list of category names, optional): Write only data categories on this list.
+
+            columnAlignFlag (bool, optional): Format the output in aligned columns (default=True) (Native Python Only)
+            useStopTokens (bool, optional): Include terminating 'stop_' tokens at the end of mmCIF categories (loop_'s) (Native Python only)
+            formattingStep (int, optional): The number row samples within each category used to estimate maximum column width for data alignment (Native Python only)
+            **kwargs: Placeholder for unsupported key value pairs
+
+        Returns:
+            bool: Completion status
+
+
         """
         if len(kwargs):
                 logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
@@ -149,7 +180,8 @@ class IoAdapterPy(IoAdapterBase):
     def __writeFile(self, ofh, containerList, maxLineLength=900, columnAlignFlag=True,
                     lastInOrder=None, selectOrder=None, useStopTokens=False,
                     formattingStep=None, enforceAscii=False, cnvCharRefs=False):
-
+        """ Internal method mapping arguments to PDBxWriter API.
+        """
         #
         pdbxW = PdbxWriter(ofh)
         pdbxW.setUseStopTokens(flag=useStopTokens)

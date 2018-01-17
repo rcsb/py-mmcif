@@ -29,10 +29,20 @@ from mmcif.io.PdbxExceptions import PdbxError
 
 
 class IoAdapterBase(object):
-    """ Base class presenting essential PDBx/mmCIF IO methods.
+    """ Base class presenting essential mmCIF I/O methods.
     """
 
     def __init__(self, *args, **kwargs):
+        """General options controlling I/O method operations:
+
+        Args:
+            raiseExceptions (bool, optional): Flag to indicate that API errors should generate exceptions (True) or catch and log errors (default=False)
+            maxInputLineLength (int, optional):  Default maximum input line length (default=4096)
+            useCharRefs (bool, optional): Replace non-ascii characters with XML Character References (default=True)
+            timing (bool, optional):  log timing details for parsing and processing steps (default=False)
+            verbose (bool,optional):  log verbose output from wrapped libraries
+
+        """
         self._raiseExceptions = kwargs.get('raiseExceptions', False)
         self._maxInputLineLength = kwargs.get('maxInputLineLength', 4096)
         self._useCharRefs = kwargs.get('useCharRefs', True)
@@ -42,38 +52,44 @@ class IoAdapterBase(object):
         self._verbose = kwargs.get('verbose', True)
 
     def readFile(self, inputFilePath, **kwargs):
-        """ Read file method -
+        """ Read file method. (abstract)
 
-            inputFile:  Input file path/uri
+         Args:
+            inputFilePath (string):  Input file path/uri
                    kw:  optional key-value arguments
 
-            Returns:
-                  containerList = list of data or definition container objects
+        Returns:
+            list of DataContainer Objects:  list of data or definition container objects
         """
         raise NotImplementedError("To be implemented in subclass")
 
     def writeFile(self, outputFilePath, containerList, **kwargs):
-        """ Write file method -
+        """ Write file method - (abstract)
 
-            outputFile:  output file path
-            containerList:  list of data or definition containers objects for output
+        Args:
+            outputFilePath (string):  output file path
+            containerList (list of DataContainer objects):  list of data or definition containers objects for output
 
+        Returns:
+            bool: Completion status
         """
         raise NotImplementedError("To be implemented in subclass")
 
     def getReadDiags(self):
-        """ Return any diagnostics from the last read operation.
+        """ Return any diagnostics from the last read operation. (abstract)
         """
         raise NotImplementedError("To be implemented in subclass")
 
     def _getCategoryNameList(self, container, lastInOrder=None, selectOrder=None):
         """ Return an ordered list of categories in the input container subject to
-            input -
+            input category name lists.
 
-               lastInOrder: list:  categories to be shifted to the end of the container.
-               selectOrder: list:  ordered selection of container categories
+            Args:
+               container (DataContainer object):  Input DataContainer object
+               lastInOrder (list):  names of categories to be shifted to the end of the container.
+               selectOrder (list):  preferred order of category names
 
-            returns:
+            Returns:
                catNameList: list:  augmented category list or full list (default)
         """
         catNameList = []
@@ -96,13 +112,17 @@ class IoAdapterBase(object):
         return catNameList
 
     def _setLogFilePath(self, filePath):
+        """ Set the log file path.
+        """
         self.__logFilePath = filePath
 
     def _getLogFilePath(self):
+        """ Return current log file path.
+        """
         return self.__logFilePath
 
     def _appendToLog(self, stList):
-        """ Append input string list to the input file -
+        """ Append input string list to the current log file -
         """
         if not self.__logFilePath:
             return
@@ -113,6 +133,8 @@ class IoAdapterBase(object):
             pass
 
     def _logError(self, msg):
+        """ Convenience method to log error messages and optionally raise general exceptions (PdbxError).
+        """
         self._appendToLog([msg])
         if self._raiseExceptions:
             raise PdbxError(msg)
@@ -120,6 +142,8 @@ class IoAdapterBase(object):
             logger.error(msg)
 
     def _readLogRecords(self):
+        """ Return the contents of the current log file as list of strings.
+        """
         diagL = []
         try:
             with open(self.__logFilePath, 'r') as ifh:
@@ -138,8 +162,7 @@ class IoAdapterBase(object):
         return str(int(time.time() * 10000))
 
     def _getDefaultFileName(self, filePath, fileType='cif-parser', fileExt='log', outDirPath=None, verify=True):
-        """ Return default file path for the target input file subject to
-            input for values and the output path.
+        """ Return default file path for the target input file subject to input attributes and the output path.
         """
         returnFilePath = None
         try:
@@ -169,6 +192,8 @@ class IoAdapterBase(object):
         return returnFilePath
 
     def _fileExists(self, filePath):
+        """ Verify that input file path exists and is readable.
+        """
         try:
             if (not os.access(filePath, os.R_OK)):
                 msg = "Missing file %r" % filePath
@@ -191,6 +216,8 @@ class IoAdapterBase(object):
         return False
 
     def _cleanupFile(self, test, filePath):
+        """  Remove the input file path subject to the input test condition.
+        """
         try:
             if test:
                 os.remove(filePath)

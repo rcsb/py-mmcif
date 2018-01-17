@@ -12,7 +12,7 @@
 #   13-Jan-2018 jdw  add selection attributes lastInOrder=None, selectOrder=None
 ###
 """
-Classes for writing data and dictionary containers in PDBx/mmCIF format.
+Utilities for writing mmCIF format data and dictionary containers.
 
 """
 
@@ -28,19 +28,12 @@ logger = logging.getLogger(__name__)
 
 from mmcif.api.PdbxContainers import *
 from mmcif.api.DataCategoryFormatted import DataCategoryFormatted
-
-
-class PdbxError(Exception):
-
-    """ Class for catch general errors
-    """
-    pass
+from mmcif.io.PdbxExceptions import PdbxError
 
 
 class PdbxWriter(object):
 
-    """Write PDBx data files or dictionaries using the input container
-       or container list.
+    """Write mmCIF data files or dictionaries using the input container or container list.
     """
 
     def __init__(self, ofh=sys.stdout):
