@@ -63,13 +63,13 @@ class StarReaderTests(unittest.TestCase):
         try:
             for fp in self.__pathStarFileList:
                 myIo = IoAdapter(self.__verbose, self.__lfh)
-                self.__containerList = myIo.readFile(inputFile=fp)
+                self.__containerList = myIo.readFile(inputFilePath=fp)
                 logger.debug("container list is  %r\n" % ([(c.getName(), c.getType()) for c in self.__containerList]))
                 for c in self.__containerList:
                     c.setType('data')
                 dir, fnOut = os.path.split(fp)
                 ofn = os.path.join(HERE, "test-output", fnOut + ".cif")
-                ok = myIo.writeFile(outputFile=ofn, containerList=self.__containerList[1:])
+                ok = myIo.writeFile(outputFilePath=ofn, containerList=self.__containerList[1:])
                 self.assertEqual(ok, True)
         except Exception as e:
             logger.exception("Failing with %s" % str(e))
@@ -81,7 +81,7 @@ class StarReaderTests(unittest.TestCase):
         try:
             for fp in self.__pathStarFileList:
                 myIo = IoAdapter(self.__verbose, self.__lfh)
-                self.__containerList = myIo.readFile(inputFile=fp)
+                self.__containerList = myIo.readFile(inputFilePath=fp)
                 #
                 # containerList is a flat list of containers in the order parsed.
                 #
@@ -125,7 +125,7 @@ class StarReaderTests(unittest.TestCase):
                             logger.debug("  %4d  %r\n" % (ii, row))
                 dir, fnOut = os.path.split(fp)
                 ofn = os.path.join(HERE, "test-output", fnOut + ".out")
-                ok = myIo.writeFile(outputFile=ofn, containerList=self.__containerList, useStopTokens=True)
+                ok = myIo.writeFile(outputFilePath=ofn, containerList=self.__containerList, useStopTokens=True)
                 self.assertEqual(ok, True)
         except Exception as e:
             logger.exception("Failing with %s" % str(e))

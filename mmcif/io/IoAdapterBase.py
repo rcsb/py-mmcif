@@ -38,10 +38,10 @@ class IoAdapterBase(object):
         self._useCharRefs = kwargs.get('useCharRefs', True)
         self.__logFilePath = None
         self._debug = kwargs.get('debug', False)
-        self._timing = kwargs.get('timing', True)
+        self._timing = kwargs.get('timing', False)
         self._verbose = kwargs.get('verbose', True)
 
-    def readFile(self, inputFile, **kwargs):
+    def readFile(self, inputFilePath, **kwargs):
         """ Read file method -
 
             inputFile:  Input file path/uri
@@ -52,7 +52,7 @@ class IoAdapterBase(object):
         """
         raise NotImplementedError("To be implemented in subclass")
 
-    def writeFile(self, outputFile, containerList, **kwargs):
+    def writeFile(self, outputFilePath, containerList, **kwargs):
         """ Write file method -
 
             outputFile:  output file path

@@ -62,7 +62,7 @@ class PdbxReader(object):
                             "save": "ST_DEFINITION",
                             "stop": "ST_STOP"}
 
-    def read(self, containerList, selectList=None):
+    def read(self, containerList, selectList=None, excludeFlag=False):
         """
         Appends to input list of definition and data containers.
 
@@ -73,7 +73,7 @@ class PdbxReader(object):
         catSelectD = {k: k for k in sL}
         self.__curLineNumber = 0
         try:
-            self.__parser(self.__tokenizer(self.__ifh), containerList, categorySelectionD=catSelectD)
+            self.__parser(self.__tokenizer(self.__ifh), containerList, categorySelectionD=catSelectD, excludeFlag=excludeFlag)
         except RuntimeError as e:
             # will be raised at the end of token iterator - not an error -
             logger.debug("Normal termination after reading %d lines with %s" % (self.__curLineNumber, str(e)))
@@ -98,15 +98,15 @@ class PdbxReader(object):
         if catSelectD:
             try:
                 nl = container.getObjNameList()
-                if len(nl) < len(catSelectD):
+                if len(nl) <= len(catSelectD):
                     ok = False
                 else:
                     ok = True
+                    logger.debug("nl %d length catSelectD %d returning %r" % (len(nl), len(catSelectD), ok))
             except Exception:
                 ok = False
         else:
             ok = False
-        logger.debug("nl %d length catSelectD %d returning %r" % (nl, len(catSelectD), ok))
         return ok
 
     def __syntaxError(self, errText):
@@ -138,7 +138,7 @@ class PdbxReader(object):
         except:
             return None, "ST_UNKNOWN"
 
-    def __parser(self, tokenizer, containerList, categorySelectionD=None):
+    def __parser(self, tokenizer, containerList, categorySelectionD=None, excludeFlag=False):
         """ Parser for PDBx data files and dictionaries.
 
             Input - tokenizer() reentrant method recognizing data item names (_category.attribute)
@@ -152,7 +152,7 @@ class PdbxReader(object):
                     The input containerList is appended with data and definition objects -
         """
         catSelectD = categorySelectionD if categorySelectionD is not None else {}
-        logger.debug("Category selection %r" % catSelectD)
+        logger.debug("Exclude Flag %r Category selection %r" % (excludeFlag, catSelectD))
         # Working container - data or definition
         curContainer = None
         # the last container of type data -
@@ -201,13 +201,18 @@ class PdbxReader(object):
                     curCategory = categoryIndex[curCatName] = DataCategory(curCatName)
                     #
                     #  check if we have all of the selection
-                    if self.__allSelected(curContainer, catSelectD):
+                    if not excludeFlag and self.__allSelected(curContainer, catSelectD):
                         return
                     try:
-                        if not catSelectD or curCatName in catSelectD:
-                            curContainer.append(curCategory)
+                        if catSelectD:
+                            if not excludeFlag and curCatName in catSelectD:
+                                curContainer.append(curCategory)
+                            elif excludeFlag and curCatName not in catSelectD:
+                                curContainer.append(curCategory)
+                            else:
+                                logger.debug("Skipped unselected/excluded category %s" % curCatName)
                         else:
-                            logger.debug("Skipped unselected category %s" % curCatName)
+                            curContainer.append(curCategory)
                     except AttributeError:
                         self.__syntaxError("Category cannot be added to  data_ block")
                         return
@@ -277,13 +282,18 @@ class PdbxReader(object):
 
                 #
                 #  check if we have all of the selection
-                if self.__allSelected(curContainer, catSelectD):
+                if not excludeFlag and self.__allSelected(curContainer, catSelectD):
                     return
                 try:
-                    if not catSelectD or curCatName in catSelectD:
-                        curContainer.append(curCategory)
+                    if catSelectD:
+                        if not excludeFlag and curCatName in catSelectD:
+                            curContainer.append(curCategory)
+                        elif excludeFlag and curCatName not in catSelectD:
+                            curContainer.append(curCategory)
+                        else:
+                            logger.debug("Skipped unselected/excluded category %s" % curCatName)
                     else:
-                        logger.debug("Skipped unselected category %s" % curCatName)
+                        curContainer.append(curCategory)
                 except AttributeError:
                     self.__syntaxError("loop_ declaration outside of data_ block or save_ frame")
                     return

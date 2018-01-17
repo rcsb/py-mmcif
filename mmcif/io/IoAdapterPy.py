@@ -46,10 +46,13 @@ class IoAdapterPy(IoAdapterBase):
     def __init__(self, *args, **kwargs):
         super(IoAdapterPy, self).__init__(*args, **kwargs)
 
-    def readFile(self, filePath, enforceAscii=False, selectList=None, logFilePath=None, outDirPath=None, cleanUp=False):
+    def readFile(self, inputFilePath, enforceAscii=False, selectList=None, excludeFlag=False, logFilePath=None, outDirPath=None, cleanUp=False, **kwargs):
         """  Read PDBx/mmCIF file and return list of data or definition containers.
 
         """
+        if len(kwargs):
+                logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
+        filePath = str(inputFilePath)
         containerList = []
         if enforceAscii:
             encoding = 'ascii'
@@ -69,16 +72,16 @@ class IoAdapterPy(IoAdapterBase):
             if sys.version_info[0] > 2:
                 with open(filePath, 'r', encoding=encoding) as ifh:
                     pRd = PdbxReader(ifh)
-                    pRd.read(containerList, selectList)
+                    pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             else:
                 if enforceAscii:
                     with io.open(filePath, 'r', encoding=encoding) as ifh:
                         pRd = PdbxReader(ifh)
-                        pRd.read(containerList, selectList)
+                        pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:
                     with open(filePath, 'r') as ifh:
                         pRd = PdbxReader(ifh)
-                        pRd.read(containerList, selectList)
+                        pRd.read(containerList, selectList, excludeFlag=excludeFlag)
 
             self._cleanupFile(lPath and cleanUp, lPath)
 
@@ -105,11 +108,13 @@ class IoAdapterPy(IoAdapterBase):
         """
         return self._readLogRecords()
 
-    def writeFile(self, outputFile, containerList, maxLineLength=900, enforceAscii=True,
+    def writeFile(self, outputFilePath, containerList, maxLineLength=900, enforceAscii=True,
                   lastInOrder=['pdbx_nonpoly_scheme', 'pdbx_poly_seq_scheme', 'atom_site', 'atom_site_anisotrop'], selectOrder=None,
-                  columnAlignFlag=True, useStopTokens=False, formattingStep=None):
+                  columnAlignFlag=True, useStopTokens=False, formattingStep=None, **kwargs):
         """ Write input list of data or definition containers to the specified output file path.
         """
+        if len(kwargs):
+                logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         try:
             if enforceAscii:
                 encoding = 'ascii'
@@ -117,18 +122,18 @@ class IoAdapterPy(IoAdapterBase):
                 encoding = 'utf-8'
             #
             if sys.version_info[0] > 2:
-                with open(outputFile, "w", encoding=encoding) as ofh:
+                with open(outputFilePath, "w", encoding=encoding) as ofh:
                     self.__writeFile(ofh, containerList, maxLineLength=maxLineLength, columnAlignFlag=columnAlignFlag,
                                      lastInOrder=lastInOrder, selectOrder=selectOrder, useStopTokens=useStopTokens,
                                      formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=self._useCharRefs)
             else:
                 if enforceAscii:
-                    with io.open(outputFile, 'w', encoding=encoding) as ofh:
+                    with io.open(outputFilePath, 'w', encoding=encoding) as ofh:
                         self.__writeFile(ofh, containerList, maxLineLength=maxLineLength, columnAlignFlag=columnAlignFlag,
                                          lastInOrder=lastInOrder, selectOrder=selectOrder, useStopTokens=useStopTokens,
                                          formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=self._useCharRefs)
                 else:
-                    with open(outputFile, "wb") as ofh:
+                    with open(outputFilePath, "wb") as ofh:
                         self.__writeFile(ofh, containerList, maxLineLength=maxLineLength, columnAlignFlag=columnAlignFlag,
                                          lastInOrder=lastInOrder, selectOrder=selectOrder, useStopTokens=useStopTokens,
                                          formattingStep=formattingStep, enforceAscii=enforceAscii, cnvCharRefs=self._useCharRefs)
@@ -137,7 +142,7 @@ class IoAdapterPy(IoAdapterBase):
             if self._raiseExceptions:
                 raise_from(ex, None)
             else:
-                logger.error("Failing write for %s with %s" % (outputFile, str(ex)))
+                logger.error("Failing write for %s with %s" % (outputFilePath, str(ex)))
 
         return False
 

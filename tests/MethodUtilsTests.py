@@ -64,7 +64,7 @@ class MethodUtilsTests(unittest.TestCase):
         """
         try:
             myIo = IoAdapter(self.__verbose, self.__lfh)
-            self.__dictContainerList = myIo.readFile(inputFile=self.__pathPdbxDictFile)
+            self.__dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
             mU = MethodUtils(dictContainerList=self.__dictContainerList, verbose=self.__verbose)
             # mU.dumpMethods(fh=self.__lfh)
             mD = mU.getMethods()
@@ -78,8 +78,8 @@ class MethodUtilsTests(unittest.TestCase):
         """
         try:
             myIo = IoAdapter(self.__verbose, self.__lfh)
-            self.__dictContainerList = myIo.readFile(inputFile=self.__pathPdbxDictFile)
-            self.__dataContainerList = myIo.readFile(inputFile=self.__pathPdbxDataFile)
+            self.__dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
+            self.__dataContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDataFile)
 
             #
             mU = MethodUtils(dictContainerList=self.__dictContainerList, verbose=self.__verbose)
@@ -87,7 +87,7 @@ class MethodUtilsTests(unittest.TestCase):
             mU.invokeMethods()
             logger.debug("Write data file after invoking methods")
             dataContainerList = mU.getDataContainerList()
-            ok = myIo.writeFile(outputFile=self.__pathOutFile, containerList=dataContainerList)
+            ok = myIo.writeFile(outputFilePath=self.__pathOutFile, containerList=dataContainerList)
             #
             self.assertEqual(ok, True)
         except Exception as e:

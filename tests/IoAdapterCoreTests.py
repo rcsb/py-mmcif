@@ -65,6 +65,8 @@ class IoAdapterTests(unittest.TestCase):
         self.__pathQuotesPdbxDataFile = os.path.join(HERE, "data", "specialTestFile.cif")
         #
         self.__pathOutputPdbxFile = os.path.join(HERE, "test-output", "myPdbxOutputFile.cif")
+        self.__pathOutputPdbxFileSelect = os.path.join(HERE, "test-output", "myPdbxOutputFileSelect.cif")
+        self.__pathOutputPdbxFileExclude = os.path.join(HERE, "test-output", "myPdbxOutputFileExclude.cif")
         #
         self.__pathQuotesOutputPdbxFile = os.path.join(HERE, "test-output", "myPdbxQuotesOutputFile.cif")
         self.__pathBigOutputDictFile = os.path.join(HERE, "test-output", "myDictOutputFile.cif")
@@ -75,6 +77,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__pathOutputUnicodePdbxFile = os.path.join(HERE, "test-output", "out-unicode-test.cif")
         self.__pathOutputCharRefPdbxFile = os.path.join(HERE, "test-output", "out-unicode-char-ref-test.cif")
 
+        self.__pathOutputDir = os.path.join(HERE, "test-output")
         self.__startTime = time.time()
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
@@ -95,7 +98,9 @@ class IoAdapterTests(unittest.TestCase):
         self.__testFileReader(self.__pathQuotesPdbxDataFile, enforceAscii=False)
 
     def testFileReaderUnicodeUtf8(self):
-        self.__testFileReader(self.__pathUnicodePdbxFile, enforceAscii=False)
+        # core parser will only parse ascii so this must fail
+        # self.__testFileReader(self.__pathUnicodePdbxFile, enforceAscii=False)
+        self.__testFileReaderExceptionHandler2(self.__pathUnicodePdbxFile, enforceAscii=False)
 
     def testFileReaderAscii(self):
         self.__testFileReader(self.__pathPdbxDataFile, enforceAscii=True)
@@ -111,16 +116,18 @@ class IoAdapterTests(unittest.TestCase):
         """
         try:
             io = IoAdapter(raiseExceptions=raiseExceptions)
-            containerList = io.readFile(fp, enforceAscii=enforceAscii)
+            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
             logger.debug("Read %d data blocks" % len(containerList))
             self.assertEqual(len(containerList), 1)
         except Exception as e:
             logger.error("Failing with %s" % str(e))
             self.fail()
 
+    @unittest.skip("Dictionary test skipping")
     def testDictReaderUtf8(self):
         self.__testDictReader(self.__pathPdbxDictFile, enforceAscii=False)
 
+    @unittest.skip("Dictionary test skipping")
     def testDictReaderAscii(self):
         self.__testDictReader(self.__pathPdbxDictFile, enforceAscii=False)
 
@@ -129,7 +136,7 @@ class IoAdapterTests(unittest.TestCase):
         """
         try:
             io = IoAdapter(raiseExceptions=True)
-            containerList = io.readFile(fp, enforceAscii=enforceAscii)
+            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
             logger.info("Read %d data blocks" % len(containerList))
             for container in containerList:
                 container.printIt()
@@ -153,14 +160,14 @@ class IoAdapterTests(unittest.TestCase):
         """Test case -  read selected categories from PDBx file and handle exceptions
         """
         io = IoAdapter(raiseExceptions=True)
-        self.assertRaises(SyntaxError, io.readFile, fp, enforceAscii=enforceAscii)
+        self.assertRaises(SyntaxError, io.readFile, fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
 
     def __testFileReaderExceptionHandler2(self, fp, enforceAscii=False):
         """Test case -  read selected categories from PDBx and handle exceptions
         """
         try:
             io = IoAdapter(raiseExceptions=True)
-            containerList = io.readFile(fp, enforceAscii=enforceAscii)
+            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
             #
         except SyntaxError as e:
             logger.debug("Expected syntax failure")
@@ -181,6 +188,7 @@ class IoAdapterTests(unittest.TestCase):
     def testFileReaderWriter(self):
         self.__testFileReaderWriter(self.__pathBigPdbxDataFile, self.__pathOutputPdbxFile)
 
+    @unittest.skip("Dictionary test skipping")
     def testDictReaderWriter(self):
         self.__testFileReaderWriter(self.__pathPdbxDictFile, self.__pathBigOutputDictFile)
 
@@ -199,9 +207,28 @@ class IoAdapterTests(unittest.TestCase):
         """
         try:
             io = IoAdapter(raiseExceptions=True, useCharRefs=True)
-            containerList = io.readFile(ifp)
+            containerList = io.readFile(ifp, enforceAscii=True, outDirPath=self.__pathOutputDir)
             logger.debug("Read %d data blocks" % len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, **kwargs)
+            self.assertTrue(ok)
+        except Exception as e:
+            logger.error("Failing with %s" % str(e))
+            self.fail()
+
+    def testFileReaderWriterSelect(self):
+        self.__testFileReaderWriterSelect(self.__pathBigPdbxDataFile, self.__pathOutputPdbxFileSelect, selectList=['atom_site'])
+
+    def testFileReaderWriterExclude(self):
+        self.__testFileReaderWriterSelect(self.__pathBigPdbxDataFile, self.__pathOutputPdbxFileExclude, selectList=['atom_site'], excludeFlag=True)
+
+    def __testFileReaderWriterSelect(self, ifp, ofp, selectList=None, excludeFlag=False):
+        """Test case -  read and then write PDBx file with selection.
+        """
+        try:
+            io = IoAdapter(raiseExceptions=True, useCharRefs=True)
+            containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir)
+            logger.debug("Read %d data blocks" % len(containerList))
+            ok = io.writeFile(ofp, containerList=containerList, enforceAscii=True)
             self.assertTrue(ok)
         except Exception as e:
             logger.error("Failing with %s" % str(e))
@@ -260,6 +287,13 @@ def suiteReaderWriter():
     return suiteSelect
 
 
+def suiteReaderWriterSelect():
+    suiteSelect = unittest.TestSuite()
+    suiteSelect.addTest(IoAdapterTests("testFileReaderWriterSelect"))
+    suiteSelect.addTest(IoAdapterTests("testFileReaderWriterExclude"))
+    return suiteSelect
+
+
 def suiteReaderWriterUnicode():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(IoAdapterTests("testFileReaderWriterCharRef"))
@@ -282,22 +316,27 @@ if __name__ == '__main__':
             mySuite = suiteReaderWriter()
             unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
-    if (True):
-        mySuite = suiteFileReaderExceptions()
-        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+        if (True):
+            mySuite = suiteFileReaderExceptions()
+            unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
-    if (True):
-        mySuite = suiteFileReaderProcessErrors()
-        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+        if (True):
+            mySuite = suiteFileReaderProcessErrors()
+            unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
-    if (False):
-        mySuite = suiteDictReader()
-        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+        if (False):
+            mySuite = suiteDictReader()
+            unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
-    if (False):
-        mySuite = suiteReaderUnicode()
-        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+        if (False):
+            mySuite = suiteReaderUnicode()
+            unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
-    if (True):
-        mySuite = suiteReaderWriterUnicode()
-        unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+        if (True):
+            mySuite = suiteReaderWriterUnicode()
+            unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+
+        if (True):
+            mySuite = suiteReaderWriterSelect()
+            unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+    #

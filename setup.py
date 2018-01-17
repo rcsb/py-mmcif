@@ -3,6 +3,7 @@
 import os
 import re
 import sys
+import glob
 import platform
 import subprocess
 
@@ -14,8 +15,8 @@ from distutils.version import LooseVersion
 
 class CMakeExtension(Extension):
 
-    def __init__(self, name, sourcedir=''):
-        Extension.__init__(self, name, sources=[])
+    def __init__(self, name, sourcedir='', sources=[]):
+        Extension.__init__(self, name, sources=sources)
         self.sourcedir = os.path.abspath(sourcedir)
 
 
@@ -37,10 +38,23 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext):
+
+        #
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                       '-DPYTHON_EXECUTABLE=' + sys.executable]
 
+        # we need to help cmake find the correct python for this virtual env -
+        if hasattr(sys, 'real_prefix'):
+            sp = os.path.join(sys.real_prefix, 'lib', 'libpython') + "*"
+        else:
+            sp = os.path.join(sys.exec_prefix, 'lib', 'libpython') + "*"
+        #
+        lpL = glob.glob(sp)
+        if len(lpL):
+            lp = lpL[0]
+            cmake_args += ['-DPYTHON_LIBRARY=' + lp]
+        #
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
 
@@ -61,7 +75,7 @@ class CMakeBuild(build_ext):
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
         #
-        if False:
+        if True:
             print("------------------------------")
             print("Extension source path ", ext.sourcedir)
             print("CMAKE_ARGS ", cmake_args)
@@ -69,14 +83,12 @@ class CMakeBuild(build_ext):
             print("extdir", extdir)
             print("ext.name", ext.name)
             print("sys.executable", sys.executable)
+            print("sys.exec_prefix", sys.exec_prefix)
             print("CXXFLAGS ", env['CXXFLAGS'])
 
         #
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp, env=env)
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
-
-
-
 
 
 packages = []
@@ -91,7 +103,13 @@ with open('mmcif/__init__.py', 'r') as fd:
 if not version:
     raise RuntimeError('Cannot find version information')
 
-
+extFiles = ['CMakeLists.txt',
+            'modules/cc-regex/include/*.h',
+            'modules/cc-regex/src/*.c',
+            'modules/cpp-*/include/*.h',
+            'modules/cpp-*/src/*.C',
+            'modules/cpp-*/src/*.cpp',
+            'modules/pybind11/include/pybind11/*.h']
 setup(
     name=thisPackage,
     version=version,
@@ -122,15 +140,17 @@ setup(
     #    ]
     # },
     #
-    install_requires=['requests', 'six'],
-    packages=find_packages(exclude=['mmcif.tests', 'tests.*', 'modules.*']),
+    install_requires=['future', 'six'],
+    packages=find_packages(exclude=['mmcif.tests', 'tests.*']),
     package_data={
-        # If any package contains *.md or *.rst files, include them:
-        '': ['*.md', '*.rst'],
+        # If any package contains *.md or *.rst ...  files, include them:
+        '': ['*.md', '*.rst', "*.txt", "*.h", "*.C", ".c", "*.cpp"],
     },
     #
+
+    #
     test_suite="tests",
-    tests_require=[],
+    # tests_require=[],
     #
     # Not configured ...
     extras_require={
@@ -149,4 +169,3 @@ setup(
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
 )
-

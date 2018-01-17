@@ -72,7 +72,7 @@ class DictionaryApiTests(unittest.TestCase):
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
-            self.__containerList = myIo.readFile(inputFile=self.__pathPdbxV50Dictionary)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxV50Dictionary)
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
             #
             eList = dApi.getEnumListAlt(category="pdbx_audit_support", attribute="country")
@@ -92,7 +92,7 @@ class DictionaryApiTests(unittest.TestCase):
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
-            self.__containerList = myIo.readFile(inputFile=self.__pathPdbxV50Dictionary)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxV50Dictionary)
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
             if self.__verbose:
                 dApi.dumpCategoryIndex(fh=self.__lfh)
@@ -111,7 +111,7 @@ class DictionaryApiTests(unittest.TestCase):
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
-            self.__containerList = myIo.readFile(inputFile=self.__pathPdbxDictionary)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
             # dApi.dumpCategoryIndex(fh=self.__lfh)
             # dApi.dumpEnumFeatures(fh=self.__lfh)
@@ -134,7 +134,7 @@ class DictionaryApiTests(unittest.TestCase):
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
-            self.__containerList = myIo.readFile(inputFile=self.__pathPdbxDictionary)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, expandItemLinked=False, verbose=self.__verbose)
             for itemName in ['_entity.id', '_entity_poly_seq.num', '_atom_site.label_asym_id',
                              '_struct_asym.id', '_chem_comp.id', 'chem_comp_atom.comp_id', 'chem_comp_bond.comp_id']:
@@ -155,7 +155,7 @@ class DictionaryApiTests(unittest.TestCase):
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
-            self.__containerList = myIo.readFile(inputFile=self.__pathPdbxDictionary)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
             cList = dApi.getCategoryList()
             cI = {}

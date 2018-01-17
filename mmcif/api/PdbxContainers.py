@@ -213,7 +213,7 @@ class ContainerBase(object):
                 if self.exists(nm):
                     filNameList.append(nm)
         else:
-            filNameList = objNameList
+            filNameList = self.__objNameList
 
         return filNameList
 
