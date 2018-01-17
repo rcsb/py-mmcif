@@ -55,7 +55,7 @@ def setup(app):
 import sys
 import os
 # sys.path.insert(0, os.path.abspath('../../mmcif'))
-sys.path.insert(0, os.path.abspath('../../../py-wrap_pybind11'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 # for markdown support --
 from recommonmark.parser import CommonMarkParser
@@ -81,7 +81,7 @@ source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
 # General information about the project.
-project = u'wrap_pybind11'
+project = u'mmcif'
 copyright = u'RCSB'
 author = u'John Westbrook'
 
@@ -108,7 +108,7 @@ html_logo = '_static/onedep-logo-45px.png'
 # theme further.
 html_theme_options = {
     # Navigation bar title. (Default: ``project`` value)
-    'navbar_title': "wrap_pybind11",
+    'navbar_title': "mmcif",
 
     # Tab name for entire site. (Default: "Site")
     #    'navbar_site_name': "wwPDB",
