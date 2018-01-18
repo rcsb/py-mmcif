@@ -24,14 +24,12 @@ endif()
 find_package(PythonInterp)
 find_package(PythonLibs)
 include_directories(${PYTHON_INCLUDE_DIRS})
+message(STATUS "Python include path set to " ${PYTHON_INCLUDE_DIRS})
 #
 #  -- Build a wrapper library  --
 #
 add_subdirectory("modules/pybind11")
 #
-find_package(PythonInterp)
-find_package(PythonLibs)
-include_directories(${PYTHON_INCLUDE_DIRS})
 #
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -45,7 +43,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.8)
         message(FATAL_ERROR "GCC version must be at least 4.8!")
     endif()
-    set(warnings " -Wall -Wno-unused-variable ")
+    set(warnings " -Wall -Wno-unused-variable -Wno-unused-value")
     # set(WRAPPER_DIR_EXT "Linux")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
      if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.1)
