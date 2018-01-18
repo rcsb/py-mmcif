@@ -15,6 +15,14 @@ project(mmciflib)
 # svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/dict-obj-file dict-obj-file Latest
 # svn https://svn-dev.wwpdb.org/svn-rcsb/pdbml/modules/pdbml-parser pdbml-parser Latest
 #
+if (POLICY CMP0048)
+  # cmake warns if loaded from a min-3.0-required parent dir, so silence the warning:
+  cmake_policy(SET CMP0048 NEW)
+endif()
+#
+#  -- Build a wrapper library  --
+#
+add_subdirectory("modules/pybind11")
 #
 find_package(PythonInterp)
 find_package(PythonLibs)
@@ -296,7 +304,7 @@ target_include_directories("mmcif_reader_test_1" PUBLIC ${BUILD_INCLUDE_DIR})
 #
 #  -- Build a wrapper library  --
 #
-add_subdirectory("modules/pybind11")
+#add_subdirectory("modules/pybind11")
 #
 file(GLOB_RECURSE WRAP_SRC_FILES "${WRAP_DIR_1}/*.cpp")
 #file(GLOB_RECURSE EXC_FILES "${WRAP_DIR_1}/std/vector.cpp")
