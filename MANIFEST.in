@@ -1,0 +1,14 @@
+#
+# File: py-mmcif/MANIFEST.in
+#
+include CMakeLists.txt
+include HISTORY.txt
+include modules/cc-regex/include/*
+include modules/cc-regex/src/*
+include modules/cpp-*/include/*.h
+include modules/cpp-*/src/*.C
+include modules/cpp-*/src/*.l
+include modules/cpp-*/src/*.y
+include modules/cpp-*/src/*.cpp
+graft modules/pybind11
+#
