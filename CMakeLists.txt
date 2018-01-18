@@ -20,6 +20,11 @@ if (POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
 endif()
 #
+#
+find_package(PythonInterp)
+find_package(PythonLibs)
+include_directories(${PYTHON_INCLUDE_DIRS})
+#
 #  -- Build a wrapper library  --
 #
 add_subdirectory("modules/pybind11")
@@ -40,8 +45,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.8)
         message(FATAL_ERROR "GCC version must be at least 4.8!")
     endif()
-    set(warnings " -Wall ")
-    set(WRAPPER_DIR_EXT "Linux")
+    set(warnings " -Wall -Wno-unused-variable ")
+    # set(WRAPPER_DIR_EXT "Linux")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
      if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.1)
         message(FATAL_ERROR "Clang version must be at least 8.1!")
