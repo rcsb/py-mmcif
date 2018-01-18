@@ -56,8 +56,12 @@ endif()
 #
 set(mydefines " -DBIG_ENDIAN_PLATFORM  -DHAVE_STRCASECMP -DINCL_TEMPLATE_SRC -DHAVE_PLACEMENT_NEW  ")
 if (NOT CONFIGURED_ONCE)
-    set(CMAKE_CXX_FLAGS "${warnings} ${mydefines}  -fno-common -fvisibility=hidden -fvisibility-inlines-hidden -std=c++14  -flto "
+    #set(CMAKE_CXX_FLAGS "${warnings} ${mydefines}  -fno-common -fvisibility=hidden -fvisibility-inlines-hidden -std=c++14  -flto "
+    #    CACHE STRING "Flags used by the compiler during all build types." FORCE)
+    #
+    set(CMAKE_CXX_FLAGS "${warnings} ${mydefines}  -fno-common -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11  -flto "
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
+    #
     set(CMAKE_C_FLAGS   "${warnings} ${mydefines} -FPIC"
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
 endif()
