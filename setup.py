@@ -151,7 +151,7 @@ setup(
 
     #
     test_suite="tests",
-    # tests_require=[],
+    tests_require=['tox'],
     #
     # Not configured ...
     extras_require={

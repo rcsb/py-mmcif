@@ -62,7 +62,7 @@ if (NOT CONFIGURED_ONCE)
     set(CMAKE_CXX_FLAGS "${warnings} ${mydefines}  -fno-common -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11  -flto "
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
     #
-    set(CMAKE_C_FLAGS   "${warnings} ${mydefines} -FPIC"
+    set(CMAKE_C_FLAGS   "${warnings} ${mydefines}  -fPIC"
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
 endif()
 
