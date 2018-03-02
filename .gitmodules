@@ -19,3 +19,6 @@
 [submodule "modules/cpp-tables"]
 	path = modules/cpp-tables
 	url = https://gitlab.rcsb.rutgers.edu/RCSB-EAST/cpp-tables.git
+[submodule "modules/pybind11"]
+	path = modules/pybind11
+	url = https://github.com/pybind/pybind11.git
