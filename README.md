@@ -1,4 +1,4 @@
-## PDBx/mmCIF Utilities
+## mmCIF Core Access Library
 
 ### Introduction
 

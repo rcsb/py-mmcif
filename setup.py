@@ -116,7 +116,7 @@ if not version:
 setup(
     name=thisPackage,
     version=version,
-    description='PDBx/mmCIF Core Access Library',
+    description='mmCIF Core Access Library',
     long_description="See:  README.md",
     author='John Westbrook',
     author_email='john.westbrook@rcsb.org',
@@ -150,7 +150,7 @@ setup(
     #
 
     #
-    test_suite="tests",
+    test_suite="mmcif.tests",
     tests_require=['tox'],
     #
     # Not configured ...

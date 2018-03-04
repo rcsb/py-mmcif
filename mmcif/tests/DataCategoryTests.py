@@ -30,11 +30,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 HERE = os.path.abspath(os.path.dirname(__file__))
+TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
 try:
     from mmcif import __version__
 except Exception as e:
-    sys.path.insert(0, os.path.dirname(HERE))
+    sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
 
