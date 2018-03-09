@@ -10,6 +10,7 @@
 #   23-Jun-2015 jdw  correct misnamed parameter in formatting method
 #   28-Dec-2017 jdw  port to
 #   13-Jan-2018 jdw  add selection attributes lastInOrder=None, selectOrder=None
+#    8-Mar-2018 jdw  make step calc integer division
 ###
 """
 Utilities for writing mmCIF format data and dictionary containers.
@@ -204,7 +205,7 @@ class PdbxWriter(object):
 
         #    For speed make the following evaluation on a portion of the table
         if self.__rowPartition is not None:
-            numSteps = max(1, myCategory.getRowCount() / self.__rowPartition)
+            numSteps = max(1, myCategory.getRowCount() // self.__rowPartition)
         else:
             numSteps = 1
 
