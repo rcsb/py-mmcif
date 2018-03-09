@@ -6,6 +6,10 @@
 # Setup sphinx documentation tree, auto-generate api documentation, and render
 # documentation as HTML  -
 #
+# Dependencies for Sphinx -
+#   pip install recommonmark
+#   pip install sphinxcontrib-napoleon
+#
 THISDIR="$( builtin cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 topD="$(dirname ${THISDIR})"
 #
