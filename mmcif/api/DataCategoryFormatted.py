@@ -292,6 +292,7 @@ class DataCategoryFormatted(DataCategory):
 
     def getFormatTypeList(self, steps=1):
         try:
+            curFormatTypeList = []
             curDataTypeList = ['DT_NULL_VALUE' for i in range(len(self._attributeNameList))]
             for row in self.data[::steps]:
                 for indx in range(len(self._attributeNameList)):
@@ -316,24 +317,3 @@ class DataCategoryFormatted(DataCategory):
 
         return curFormatTypeList, curDataTypeList
 
-    def getFormatTypeListX(self):
-        curDataTypeList = ['DT_NULL_VALUE' for i in range(len(self._attributeNameList))]
-        for row in self.data:
-            for indx in range(len(self._attributeNameList)):
-                val = row[indx]
-                # print "index ",indx," val ",val
-                dType = self.__dataTypePdbx(val)
-                dIndx = self.__dataTypeList.index(dType)
-                # print "d type", dType, " d type index ",dIndx
-
-                cType = curDataTypeList[indx]
-                cIndx = self.__dataTypeList.index(cType)
-                cIndx = max(cIndx, dIndx)
-                curDataTypeList[indx] = self.__dataTypeList[cIndx]
-
-        # Map the format types to the data types
-        curFormatTypeList = []
-        for dt in curDataTypeList:
-            ii = self.__dataTypeList.index(dt)
-            curFormatTypeList.append(self.__formatTypeList[ii])
-        return curFormatTypeList, curDataTypeList
