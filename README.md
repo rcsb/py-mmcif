@@ -11,7 +11,7 @@ Download the library source software from the project repository:
 
 ```bash
 
-git clone  https://github.com/rcsb/py-mmcif.git
+git clone  --recurse-submodules  https://github.com/rcsb/py-mmcif.git
 
 ```
 
