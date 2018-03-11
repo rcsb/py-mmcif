@@ -47,8 +47,8 @@ __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-
 import sys
+
 
 class CifName(object):
     ''' Class of utilities for CIF-style data names -
@@ -216,6 +216,10 @@ class ContainerBase(object):
             filNameList = self.__objNameList
 
         return filNameList
+
+    def toJSON(self):
+        return self.__objCatalog
+
 
 class DefinitionContainer(ContainerBase):
 

@@ -1,7 +1,7 @@
 ##
 # File:    DictionaryApiTests.py
 # Author:  jdw
-# Date:    8-Aug-2017
+# Date:    8-Mar-2018
 # Version: 0.001
 ##
 """
@@ -47,15 +47,6 @@ class DictionaryApiTests(unittest.TestCase):
     def setUp(self):
         self.__lfh = sys.stderr
         self.__verbose = False
-        # self.__pathMmCifDictionary = "./data/mmcif_std.dic"
-        # self.__pathPdbxDictionary = "./data/mmcif_pdbx_w_methods.dic"
-        # self.__pathPdbxV40Dictionary = "./data/mmcif_pdbx_v40.dic"
-        # self.__pathPdbxV50Dictionary = "./data/mmcif_pdbx_v5_next.dic"
-        # self.__pathNmrStarDictionary = "./data/mmcif_nmr-star.dic"
-        # self.__pathPdbxDictionary=self.__pathPdbxV50Dictionary
-        # self.__pathPdbxDictionary=self.__pathMmCifDictionary
-        # self.__pathPdbxDictionary = self.__pathNmrStarDictionary
-        self.__pathPdbxV50Dictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
         self.__pathPdbxDictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
         self.__startTime = time.time()
         logger.debug("Starting %s at %s" % (self.id(),
@@ -73,7 +64,7 @@ class DictionaryApiTests(unittest.TestCase):
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
-            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxV50Dictionary)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
             #
             eList = dApi.getEnumListAlt(category="pdbx_audit_support", attribute="country")
@@ -93,7 +84,7 @@ class DictionaryApiTests(unittest.TestCase):
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
-            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxV50Dictionary)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
             if self.__verbose:
                 dApi.dumpCategoryIndex(fh=self.__lfh)
