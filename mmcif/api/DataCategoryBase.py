@@ -366,6 +366,7 @@ class DataCategoryBase(UserList):
 
     def __hash__(self):
         """Override the default hash behavior (that returns the id or the object)"""
-        return hash(tuple(sorted(self.__dict__.items())))
+        # return hash(tuple(sorted(self.__dict__.items())))
+        hash(tuple(self.__dict__[k] for k in sorted(self.__dict__)))
 
     #
