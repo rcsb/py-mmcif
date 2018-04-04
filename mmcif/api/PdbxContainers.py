@@ -17,6 +17,7 @@
 #   28-Jun-2013   jdw expose remove method
 #   01-Aug-2017   jdw migrate portions to public repo
 #   14-Jan-2018   jdw add method filterObjectNameList(lastInOrder=None, selectOrder=None)
+#    4-Apr-2018   jdw adding internal __eq__ and __hash__ methods
 ##
 """
 
@@ -105,6 +106,14 @@ class ContainerBase(object):
         # dictionary of DataCategory objects keyed by category name.
         self.__objCatalog = {}
         self.__type = None
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        return self.__name == other.__name and self.__objNameList == other.__objNameList and self.__objCatalog == other.__objCatalog and self.__type == other.__type
+
+    def __hash__(self):
+        return hash((self.__name, self.__objNameList, self.__type, self.__objCatalog))
 
     def getType(self):
         return self.__type
