@@ -113,7 +113,7 @@ class ContainerBase(object):
         return self.__name == other.__name and self.__objNameList == other.__objNameList and self.__objCatalog == other.__objCatalog and self.__type == other.__type
 
     def __hash__(self):
-        return hash((self.__name, self.__objNameList, self.__type, self.__objCatalog))
+        return hash((self.__name, tuple(self.__objNameList), self.__type, self.__objCatalog))
 
     def getType(self):
         return self.__type
