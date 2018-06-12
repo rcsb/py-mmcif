@@ -207,6 +207,18 @@ class DataCategoryBase(UserList):
 
         return False
 
+    def removeRows(self, indexList):
+        try:
+            iL = sorted(indexList, reverse=True)
+            for i in iL:
+                del self.data[i]
+            return True
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
+
+        return False
+
     def removeAttribute(self, attributeName):
         """ Remove the attribute from the attribute list along with any
             corresponding row data.

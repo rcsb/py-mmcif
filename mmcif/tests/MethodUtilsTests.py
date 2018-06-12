@@ -67,7 +67,7 @@ class MethodUtilsTests(unittest.TestCase):
             myIo = IoAdapter(self.__verbose, self.__lfh)
             self.__dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
             mU = MethodUtils(dictContainerList=self.__dictContainerList, verbose=self.__verbose)
-            # mU.dumpMethods(fh=self.__lfh)
+            mU.dumpMethods(fh=self.__lfh)
             mD = mU.getMethods()
             self.assertEqual(len(mD), 5)
         except Exception as e:

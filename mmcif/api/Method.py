@@ -4,6 +4,7 @@
 #
 # Updates:
 #   01-Aug-2017   jdw migrate portions to public repo
+#   12-Jun-2018   jdw add missing accessor for MethodDefinition getCode()
 #
 ##
 """
@@ -35,6 +36,9 @@ class MethodDefinition(object):
 
     def getLanguage(self):
         return self.language
+
+    def getCode(self):
+        return self.code
 
     def getInline(self):
         return self.inline

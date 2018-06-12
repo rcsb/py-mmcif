@@ -935,7 +935,7 @@ sys.stdout.write("Row index %d attribute name  %s value is %s\n" %
 
 method_sum_polymer_fw calculate python_3.6
 ;
-from pdbx_v2.reader.DataCategory import DataCategory
+from mmcif.api.DataCategory import DataCategory
 fwT=0.0
 dObj=self.getObj('entity')
 for row in dObj.getRowList():
