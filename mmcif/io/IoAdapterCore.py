@@ -308,7 +308,7 @@ class IoAdapterCore(IoAdapterBase):
         """
         containerL = containerList if containerList else []
         if len(kwargs):
-                logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
+            logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         try:
             startTime = time.clock()
             logger.debug("write container length %d\n" % len(containerL))

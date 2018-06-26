@@ -3,6 +3,7 @@
  1-Aug-2017  - Initial Git Migration
 15-Jan-2018  - Python packaging overhaul
  4-Apr-2018  - V012 - remove some deprecated code and a few api extensions
+26-Jun-2018  - V013 - add missing method code accessors
 
 
 
