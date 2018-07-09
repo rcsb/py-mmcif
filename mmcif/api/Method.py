@@ -13,14 +13,12 @@ Utility classes for applying dictionary methods on PDBx/mmCIF data files.
 
 from __future__ import absolute_import
 
+import sys
+
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
-
-
-
-import sys
 
 
 class MethodDefinition(object):

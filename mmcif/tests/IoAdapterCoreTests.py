@@ -18,19 +18,11 @@ library of file and dictionary tools conforming to our native Python library.
 """
 from __future__ import absolute_import
 
-__docformat__ = "restructuredtext en"
-__author__ = "John Westbrook"
-__email__ = "john.westbrook@rcsb.org"
-__license__ = "Apache 2.0"
-
-import sys
-import os
-import unittest
-import time
-
 import logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
-logger = logging.getLogger()
+import os
+import sys
+import time
+import unittest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -41,12 +33,18 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-#
 from mmcif.io.IoAdapterCore import IoAdapterCore as IoAdapter
-#
-# How to use the default preference
-# from mmcif.io import IoAdapter
 from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
+
+__docformat__ = "restructuredtext en"
+__author__ = "John Westbrook"
+__email__ = "john.westbrook@rcsb.org"
+__license__ = "Apache 2.0"
+
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 class IoAdapterTests(unittest.TestCase):
@@ -79,6 +77,7 @@ class IoAdapterTests(unittest.TestCase):
 
         self.__pathOutputDir = os.path.join(HERE, "test-output")
         self.__startTime = time.time()
+        logger.debug("Running tests on version %s" % __version__)
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
 
@@ -168,6 +167,7 @@ class IoAdapterTests(unittest.TestCase):
         try:
             io = IoAdapter(raiseExceptions=True)
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
+            self.assertGreaterEqual(len(containerList), 1)
             #
         except SyntaxError as e:
             logger.debug("Expected syntax failure")

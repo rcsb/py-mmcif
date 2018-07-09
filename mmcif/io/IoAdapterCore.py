@@ -20,6 +20,20 @@ Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCI
 
 """
 from __future__ import absolute_import
+
+import logging
+import os
+import sys
+import time
+import warnings
+
+from future.utils import raise_from
+
+from mmcif.api.DataCategory import DataCategory
+from mmcif.api.PdbxContainers import DataContainer
+from mmcif.io.IoAdapterBase import IoAdapterBase
+from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
+
 from six.moves import range
 
 __docformat__ = "restructuredtext en"
@@ -27,22 +41,13 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
-import sys
-import time
-import os
-from future.utils import raise_from
 
-import logging
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 logger = logging.getLogger(__name__)
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
-
-from mmcif.io.IoAdapterBase import IoAdapterBase
-
-from mmcif.api.PdbxContainers import *
-from mmcif.api.DataCategory import DataCategory
-from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 try:
     from mmcif.core.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, type, CifFileReadDef
@@ -176,7 +181,7 @@ class IoAdapterCore(IoAdapterBase):
             elif numErrors:
                 logger.error("%s syntax errors %d  all errors %d" % (inputFilePath, numSyntaxErrors, numErrors))
             if numWarnings:
-                logger.warn("%s warnings %d" % (pdbxFilePath, numWarnings))
+                logger.warn("%s warnings %d" % (inputFilePath, numWarnings))
 
         return diagL
 
@@ -243,7 +248,7 @@ class IoAdapterCore(IoAdapterBase):
 
         """
         #
-        startTime = time.clock()
+        startTime = time.time()
         containerList = []
         diagL = []
         try:
@@ -265,14 +270,14 @@ class IoAdapterCore(IoAdapterBase):
             logger.debug("Diagnostic count %d values %r" % (len(diagL), diagL))
             #
             if self._timing:
-                stepTime1 = time.clock()
+                stepTime1 = time.time()
                 logger.info("Timing parsed %r in %.4f seconds" % (inputFilePath, stepTime1 - startTime))
             #
             containerList = self.__processContent(cifFileObj)
             #
             self._cleanupFile(cleanUp, logFilePath)
             if self._timing:
-                stepTime2 = time.clock()
+                stepTime2 = time.time()
                 logger.info("Timing api load in %.4f seconds read time %.4f seconds\n" %
                             (stepTime2 - stepTime1, stepTime2 - startTime))
             #
@@ -310,7 +315,7 @@ class IoAdapterCore(IoAdapterBase):
         if len(kwargs):
             logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         try:
-            startTime = time.clock()
+            startTime = time.time()
             logger.debug("write container length %d\n" % len(containerL))
             # (CifFile args: placeholder, verbose: bool, caseSense: Char::eCompareType, maxLineLength: int, nullValue: str)
             cF = CifFile(True, self._verbose, 0, maxLineLength, '?')
@@ -343,13 +348,13 @@ class IoAdapterCore(IoAdapterBase):
                     block.WriteTable(table)
             #
             if self._timing:
-                stepTime1 = time.clock()
+                stepTime1 = time.time()
                 logger.info("Timing %d container(s) api loaded in %.4f seconds" % (len(containerL), stepTime1 - startTime))
             if (self._debug):
                 self.__dumpBlocks(cF)
             cF.Write(str(outputFilePath))
             if self._timing:
-                stepTime2 = time.clock()
+                stepTime2 = time.time()
                 logger.info("Timing %d container(s) written in %.4f seconds total time %.4f" %
                             (len(containerList), stepTime2 - stepTime1, stepTime2 - startTime))
             return True

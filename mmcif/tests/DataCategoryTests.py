@@ -15,19 +15,12 @@ Test cases for data category container classes.
 """
 from __future__ import absolute_import
 
-__docformat__ = "restructuredtext en"
-__author__ = "John Westbrook"
-__email__ = "john.westbrook@rcsb.org"
-__license__ = "Apache 2.0"
-
-import sys
-import os
-import unittest
-import time
-
 import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+import os
+import sys
+import time
+import unittest
+from itertools import chain, islice, repeat
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -38,11 +31,18 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.DataCategoryBase import DataCategoryBase
 
-from itertools import chain, repeat, islice
+
+__docformat__ = "restructuredtext en"
+__author__ = "John Westbrook"
+__email__ = "john.westbrook@rcsb.org"
+__license__ = "Apache 2.0"
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def window(seq, size=2, fill=0, fill_left=False, fill_right=False):
@@ -98,6 +98,7 @@ class DataCategoryTests(unittest.TestCase):
             self.__rowListUnicodeMiss.append(tr)
         #
         self.__startTime = time.time()
+        logger.debug("Running tests on version %s" % __version__)
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
 
@@ -439,6 +440,7 @@ class DataCategoryTests(unittest.TestCase):
             dcU = DataCategory('A', self.__attributeList, self.__rowListUnicode)
             dcM = DataCategory('A', self.__attributeListMiss, self.__rowListUnicodeMiss)
             na = dcU.getAttributeList()
+            self.assertGreaterEqual(len(na), 1)
             tupL = dcU.cmpAttributeValues(dcU)
             for tup in tupL:
                 self.assertEqual(tup[1], True)
@@ -517,6 +519,7 @@ def suiteSubclass():
     suiteSelect.addTest(DataCategoryTests("testCondSelectValues"))
     #
     return suiteSelect
+
 
 if __name__ == '__main__':
     #

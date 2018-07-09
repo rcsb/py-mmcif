@@ -17,21 +17,21 @@ A collection of container classes supporting the PDBx/mmCIF storage model.
 
 """
 from __future__ import absolute_import
+
+import logging
+import sys
+
+from mmcif.api.DataCategoryBase import DataCategoryBase
+
+from six.moves import range, zip
+
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-from six.moves import range
-from six.moves import zip
-
-
-import sys
-import logging
 logger = logging.getLogger(__name__)
-
-from mmcif.api.DataCategoryBase import DataCategoryBase
 
 
 class DataCategory(DataCategoryBase):

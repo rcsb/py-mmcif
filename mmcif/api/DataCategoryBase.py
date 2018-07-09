@@ -19,20 +19,20 @@ A collection of container classes supporting the PDBx/mmCIF storage model.
 
 """
 from __future__ import absolute_import
+
+import copy
+import logging
+
+from mmcif.api import __STRING_TYPES__
+
+from six.moves import UserList, range, zip
+
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-from six.moves import range
-from six.moves import zip
-
-
-from six.moves import UserList
-import sys
-import copy
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -65,11 +65,21 @@ class DataCategoryBase(UserList):
         self._catalog = {}
         self._numAttributes = 0
         #
-        self._isPy3 = sys.version_info[0] == 3
-        if self._isPy3:
-            self._string_types = str
-        else:
-            self._string_types = basestring
+        #
+        # try:
+        #    basestring
+        # except NameError:
+        #    basestring = str
+        # self._string_types = basestring
+        # self._isPy3 = sys.version_info[0] == 3
+        # if self._isPy3:
+        #    self._string_types = str
+        # else:
+        #    try:
+        #        self._string_types = basestring
+        #    except Exception as e:
+        #        logger.exception("Unable to assign string type %s" % str(e))
+        self._string_types = __STRING_TYPES__
         self.__setup()
 
     def __setup(self):
@@ -230,11 +240,11 @@ class DataCategoryBase(UserList):
                 for row in self.data:
                     try:
                         del row[idx]
-                    except:
+                    except Exception:
                         pass
                 self.__setup()
                 return True
-            except:
+            except Exception:
                 return False
 
     ##
@@ -323,7 +333,7 @@ class DataCategoryBase(UserList):
                 for k, v in d.items():
                     rL.insert(self._itemNameList.index(k), v)
                 return rL
-        except:
+        except Exception:
             raise IndexError
 
     def cmpAttributeNames(self, dcObj):

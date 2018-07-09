@@ -18,23 +18,24 @@ Python implementation of IoAdapterBase class providing read and write
 """
 from __future__ import absolute_import
 
+import io
+import logging
+import sys
+
+from future.utils import raise_from
+
+from mmcif.io.IoAdapterBase import IoAdapterBase
+from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
+from mmcif.io.PdbxReader import PdbxReader
+from mmcif.io.PdbxWriter import PdbxWriter
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
-import io
-import sys
-from future.utils import raise_from
 
-import logging
 logger = logging.getLogger(__name__)
-
-from mmcif.io.IoAdapterBase import IoAdapterBase
-from mmcif.io.PdbxReader import PdbxReader
-from mmcif.io.PdbxWriter import PdbxWriter
-from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 
 class IoAdapterPy(IoAdapterBase):
@@ -64,7 +65,7 @@ class IoAdapterPy(IoAdapterBase):
 
         """
         if len(kwargs):
-                logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
+            logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         filePath = str(inputFilePath)
         containerList = []
         if enforceAscii:
@@ -145,7 +146,7 @@ class IoAdapterPy(IoAdapterBase):
 
         """
         if len(kwargs):
-                logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
+            logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         try:
             if enforceAscii:
                 encoding = 'ascii'
@@ -173,6 +174,7 @@ class IoAdapterPy(IoAdapterBase):
             if self._raiseExceptions:
                 raise_from(ex, None)
             else:
+                logger.exception("Failing write for %s with %s" % (outputFilePath, str(ex)))
                 logger.error("Failing write for %s with %s" % (outputFilePath, str(ex)))
 
         return False

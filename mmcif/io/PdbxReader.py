@@ -25,8 +25,14 @@ Acknowledgements:
  See:  http://pymmlib.sourceforge.net/
 
 """
-# from __future__ import absolute_import, generator_stop
 from __future__ import absolute_import
+
+import logging
+import re
+
+from mmcif.api.DataCategory import DataCategory
+from mmcif.api.PdbxContainers import DataContainer, DefinitionContainer
+from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -34,15 +40,7 @@ __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-import re
-import sys
-
-import logging
 logger = logging.getLogger(__name__)
-
-from mmcif.api.PdbxContainers import *
-from mmcif.api.DataCategory import DataCategory
-from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 
 class PdbxReader(object):
@@ -135,7 +133,7 @@ class PdbxReader(object):
         try:
             rWord = inWord[:i].lower()
             return rWord, self.__stateDict[rWord]
-        except:
+        except Exception:
             return None, "ST_UNKNOWN"
 
     def __parser(self, tokenizer, containerList, categorySelectionD=None, excludeFlag=False):

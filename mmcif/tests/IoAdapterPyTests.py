@@ -18,19 +18,11 @@ Python library.
 """
 from __future__ import absolute_import
 
-__docformat__ = "restructuredtext en"
-__author__ = "John Westbrook"
-__email__ = "john.westbrook@rcsb.org"
-__license__ = "Apache 2.0"
-
-import sys
-import os
-import unittest
-import time
-
 import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+import os
+import sys
+import time
+import unittest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -41,12 +33,18 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-#
 from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
-#
-# How to use the default preference
-# from mmcif.io import IoAdapter
-from mmcif.io.PdbxReader import SyntaxError, PdbxError
+from mmcif.io.PdbxReader import PdbxError, SyntaxError
+
+__docformat__ = "restructuredtext en"
+__author__ = "John Westbrook"
+__email__ = "john.westbrook@rcsb.org"
+__license__ = "Apache 2.0"
+
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 
 class IoAdapterTests(unittest.TestCase):
@@ -77,6 +75,7 @@ class IoAdapterTests(unittest.TestCase):
 
         self.__pathOutputDir = os.path.join(HERE, "test-output")
         self.__startTime = time.time()
+        logger.debug("Running tests on version %s" % __version__)
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
 
@@ -159,6 +158,7 @@ class IoAdapterTests(unittest.TestCase):
         try:
             io = IoAdapter(raiseExceptions=True)
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
+            logger.debug("Containerlist length %d " % len(containerList))
             #
         except SyntaxError as e:
             logger.debug("Expected syntax failure")
@@ -213,13 +213,13 @@ class IoAdapterTests(unittest.TestCase):
         """Test case -  read and then write PDBx file with selection.
         """
         try:
-            io = IoAdapter(raiseExceptions=True, useCharRefs=True)
+            io = IoAdapter(raiseExceptions=False, useCharRefs=True)
             containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir)
             logger.debug("Read %d data blocks" % len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, enforceAscii=True)
             self.assertTrue(ok)
         except Exception as e:
-            logger.error("Failing with %s" % str(e))
+            logger.exception("Failing input %s and output %s with %s" % (ifp, ofp, str(e)))
             self.fail()
 
 

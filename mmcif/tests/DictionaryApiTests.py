@@ -8,25 +8,14 @@
 Tests cases for Dictionary API.
 
 """
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
-__docformat__ = "restructuredtext en"
-__author__ = "John Westbrook"
-__email__ = "jwest@rcsb.rutgers.edu"
-__license__ = "Creative Commons Attribution 3.0 Unported"
-__version__ = "V0.01"
-
-import sys
-import unittest
-import traceback
-import time
 import json
-import os
-
 import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+import os
+import sys
+import time
+import unittest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -37,9 +26,20 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
 from mmcif.api.DictionaryApi import DictionaryApi
 from mmcif.api.PdbxContainers import CifName
+from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
+
+
+__docformat__ = "restructuredtext en"
+__author__ = "John Westbrook"
+__email__ = "jwest@rcsb.rutgers.edu"
+__license__ = "Apache 2.0"
+
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 class DictionaryApiTests(unittest.TestCase):
@@ -49,6 +49,7 @@ class DictionaryApiTests(unittest.TestCase):
         self.__verbose = False
         self.__pathPdbxDictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
         self.__startTime = time.time()
+        logger.debug("Running tests on version %s" % __version__)
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
 
@@ -206,6 +207,7 @@ def suiteDictionaryApiEnumTests():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(DictionaryApiTests("testDumpEnums"))
     return suiteSelect
+
 
 if __name__ == '__main__':
     if (True):

@@ -17,15 +17,15 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
-import os
 import io
-import time
-import tempfile
-
 import logging
-logger = logging.getLogger(__name__)
+import os
+import tempfile
+import time
 
 from mmcif.io.PdbxExceptions import PdbxError
+
+logger = logging.getLogger(__name__)
 
 
 class IoAdapterBase(object):
@@ -229,7 +229,7 @@ class IoAdapterBase(object):
             errors according to the input settting ('ignore', 'escape', 'xmlcharrefreplace').
         """
         try:
-            startTime = time.clock()
+            startTime = time.time()
             chunk = []
             with io.open(inputFilePath, "r", encoding="utf-8") as r, io.open(outputFilePath, "w", encoding='ascii') as w:
                 for line in r:
@@ -240,7 +240,7 @@ class IoAdapterBase(object):
                         chunk = []
                 w.writelines(chunk)
             if self._timing:
-                stepTime1 = time.clock()
+                stepTime1 = time.time()
                 logger.info("Timing text file %s encoded to as ascii in %.4f seconds" % (inputFilePath, stepTime1 - startTime))
             return True
         except Exception as e:

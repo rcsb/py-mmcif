@@ -9,20 +9,12 @@ Test cases for simple dictionary read and write operations.
 
 """
 from __future__ import absolute_import
-__docformat__ = "restructuredtext en"
-__author__ = "John Westbrook"
-__email__ = "jwest@rcsb.rutgers.edu"
-__license__ = "Creative Commons Attribution 3.0 Unported"
-__version__ = "V0.01"
-
-import sys
-import unittest
-import time
-import os
 
 import logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
-logger = logging.getLogger()
+import os
+import sys
+import time
+import unittest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -34,6 +26,16 @@ except Exception as e:
     from mmcif import __version__
 
 from mmcif.io.IoAdapterPy import IoAdapterPy
+
+__docformat__ = "restructuredtext en"
+__author__ = "John Westbrook"
+__email__ = "jwest@rcsb.rutgers.edu"
+__license__ = "Apache 2.0"
+
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 class DictionaryReadWriteTests(unittest.TestCase):

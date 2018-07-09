@@ -4,6 +4,8 @@
 15-Jan-2018  - Python packaging overhaul
  4-Apr-2018  - V012 - remove some deprecated code and a few api extensions
 26-Jun-2018  - V013 - add missing method code accessors
+ 9-Jul-2018  - V014 - preliminary Py37 support, add coverage and code style tests
+
 
 
 

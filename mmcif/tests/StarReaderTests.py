@@ -9,24 +9,13 @@ Test cases for simple star file reader/writer  --
 
 """
 from __future__ import absolute_import
-__docformat__ = "restructuredtext en"
-__author__ = "John Westbrook"
-__email__ = "jwest@rcsb.rutgers.edu"
-__license__ = "Creative Commons Attribution 3.0 Unported"
-__version__ = "V0.01"
-
-import sys
-import unittest
-import traceback
-
-import time
-import os
-import os.path
-
 
 import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+import os
+import os.path
+import sys
+import time
+import unittest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -37,9 +26,17 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-# from mmcif.api.PdbxContainers import *
-# from mmcif.api.DataCategory import DataCategory
 from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
+
+__docformat__ = "restructuredtext en"
+__author__ = "John Westbrook"
+__email__ = "jwest@rcsb.rutgers.edu"
+__license__ = "Apache 2.0"
+
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 class StarReaderTests(unittest.TestCase):
@@ -49,6 +46,7 @@ class StarReaderTests(unittest.TestCase):
         self.__verbose = False
         self.__pathStarFileList = [os.path.join(HERE, "data", "chemical_shifts_example.str"), os.path.join(HERE, "data", "CCPN_H1GI.nef")]
         self.__startTime = time.time()
+        logger.debug("Running tests on version %s" % __version__)
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
 

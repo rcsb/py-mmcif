@@ -3,17 +3,16 @@
 #
 # Update:  17-Jan-2018 jdw - resolve python virtual env issues with Tox.
 #
-import os
-import re
-import sys
 import glob
+import os
 import platform
+import re
 import subprocess
-
-from setuptools import setup, Extension, find_packages
-
-from setuptools.command.build_ext import build_ext
+import sys
 from distutils.version import LooseVersion
+
+from setuptools import Extension, find_packages, setup
+from setuptools.command.build_ext import build_ext
 
 
 class CMakeExtension(Extension):

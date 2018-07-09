@@ -22,14 +22,13 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
-import sys
 import logging
-logger = logging.getLogger(__name__)
+import sys
 
-
-from mmcif.api.PdbxContainers import *
 from mmcif.api.DataCategoryFormatted import DataCategoryFormatted
 from mmcif.io.PdbxExceptions import PdbxError
+
+logger = logging.getLogger(__name__)
 
 
 class PdbxWriter(object):
@@ -55,10 +54,10 @@ class PdbxWriter(object):
         #
         self.__enforceAscii = False
         self.__isPy3 = sys.version_info[0] == 3
-        if self.__isPy3:
-            self.__string_types = str
-        else:
-            self.__string_types = basestring
+        # if self.__isPy3:
+        #     self.__string_types = str
+        # else:
+        #    self.__string_types = basestring
 
     def setSetEnforceAscii(self, bool):
         self.__enforceAscii = bool
@@ -148,14 +147,14 @@ class PdbxWriter(object):
                     self.__ofh.write(st.decode('ascii'))
                 else:
                     self.__ofh.write(st)
-                    #self.__ofh.write(st.encode('utf-8').decode('utf-8'))
+                    # self.__ofh.write(st.encode('utf-8').decode('utf-8'))
             else:
                 self.__ofh.write(st)
         except Exception as e:
             logger.exception("write fails with %s for %r" % (str(e), st))
 
     def __writeItemValueFormat(self, categoryObj):
-        indS = " " * self.__INDENT_DEFINITION
+        # indS = " " * self.__INDENT_DEFINITION
         myCategory = DataCategoryFormatted(categoryObj, preferDoubleQuotes=self.__preferDoubleQuotes)
         # Compute the maximum item name length within this category -
         attributeNameLengthMax = 0
@@ -308,5 +307,3 @@ class PdbxWriter(object):
         self.__write("\n")
         if self.__useStopTokens:
             self.__write("stop_\n")
-
-

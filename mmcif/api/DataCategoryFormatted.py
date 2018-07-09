@@ -16,22 +16,20 @@ A subclass of DataCategory including additional formatting methods.
 """
 from __future__ import absolute_import
 
+import logging
+import re
+
+from mmcif.api.DataCategory import DataCategory
+
+from six.moves import range
+
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-from six.moves import range
-
-import re
-import sys
-
-import logging
 logger = logging.getLogger(__name__)
-
-
-from mmcif.api.DataCategory import DataCategory
 
 
 class DataCategoryFormatted(DataCategory):
@@ -73,12 +71,12 @@ class DataCategoryFormatted(DataCategory):
         self.__formatTypeList = ['FT_NULL_VALUE', 'FT_NUMBER', 'FT_NUMBER', 'FT_UNQUOTED_STRING',
                                  'FT_QUOTED_STRING', 'FT_QUOTED_STRING', 'FT_QUOTED_STRING', 'FT_MULTI_LINE_STRING']
         #
-        PY3 = sys.version_info[0] == 3
-
-        if PY3:
-            self.__string_types = str
-        else:
-            self.__string_types = basestring
+        # try:
+        #    basestring
+        # except NameError:
+        #    basestring = str
+        #
+        # self.__string_types = basestring
 
     def __formatPdbx(self, inp):
         """ Format input data following PDBx quoting rules -
@@ -93,14 +91,14 @@ class DataCategoryFormatted(DataCategory):
             try:
                 if (isinstance(inp, int) or self.__intRe.search(inp)):
                     return ([str(inp)], 'DT_INTEGER')
-            except:
+            except Exception:
                 pass
 
             # if (isinstance(inp, float) or self.__floatRe.search(str(inp))):
             try:
                 if (isinstance(inp, float) or self.__floatRe.search(inp)):
                     return ([str(inp)], 'DT_FLOAT')
-            except:
+            except Exception:
                 pass
 
             # null value handling -
@@ -214,35 +212,35 @@ class DataCategoryFormatted(DataCategory):
                         return ('DT_MULTI_LINE_STRING')
 
     def __singleQuotedList(self, inp):
-        l = []
-        l.append("'")
-        l.append(inp)
-        l.append("'")
-        return(l)
+        ll = []
+        ll.append("'")
+        ll.append(inp)
+        ll.append("'")
+        return(ll)
 
     def __doubleQuotedList(self, inp):
-        l = []
-        l.append('"')
-        l.append(inp)
-        l.append('"')
-        return(l)
+        ll = []
+        ll.append('"')
+        ll.append(inp)
+        ll.append('"')
+        return(ll)
 
     def __semiColonQuotedList(self, inp):
-        l = []
-        l.append("\n")
+        ll = []
+        ll.append("\n")
         if inp[-1] == '\n':
-            l.append(";")
-            l.append(inp)
-            l.append(";")
-            l.append("\n")
+            ll.append(";")
+            ll.append(inp)
+            ll.append(";")
+            ll.append("\n")
         else:
-            l.append(";")
-            l.append(inp)
-            l.append("\n")
-            l.append(";")
-            l.append("\n")
+            ll.append(";")
+            ll.append(inp)
+            ll.append("\n")
+            ll.append(";")
+            ll.append("\n")
 
-        return(l)
+        return(ll)
 
     def getValueFormatted(self, attributeName=None, rowIndex=None):
         if attributeName is None:
@@ -255,7 +253,7 @@ class DataCategoryFormatted(DataCategory):
         else:
             rowI = rowIndex
 
-        if isinstance(attribute, self.__string_types) and isinstance(rowI, int):
+        if isinstance(attribute, self._string_types) and isinstance(rowI, int):
             try:
                 list, type = self.__formatPdbx(self.data[rowI][self._attributeNameList.index(attribute)])
                 return "".join(list)
@@ -264,7 +262,10 @@ class DataCategoryFormatted(DataCategory):
                 raise IndexError
             except Exception as e:
                 logger.exception(" Failing with %s - AttributeName %s rowI %r rowdata %r\n" % (str(e), attributeName, rowI, self.data[rowI]))
-        raise TypeError(attribute)
+        else:
+            logger.error(" Type error - AttributeName %r rowI %r rowdata %r" % (attributeName, rowI, self.data[rowI]))
+            logger.error(" Type error - string types %r" % (self._string_types))
+            raise TypeError(attribute)
 
     def getValueFormattedByIndex(self, attributeIndex, rowIndex):
         try:
@@ -282,7 +283,7 @@ class DataCategoryFormatted(DataCategory):
         for row in self.data[::steps]:
             for indx in range(len(self._attributeNameList)):
                 val = row[indx]
-                if isinstance(val, self.__string_types):
+                if isinstance(val, self._string_types):
                     tLen = len(val)
                 else:
                     tLen = len(str(val))
@@ -316,4 +317,3 @@ class DataCategoryFormatted(DataCategory):
             logger.exception("Failing with %s " % str(e))
 
         return curFormatTypeList, curDataTypeList
-

@@ -12,15 +12,13 @@ Test cases for reading PDBx/mmCIF data files PdbxReader class -
 
 """
 from __future__ import absolute_import
-import sys
-import unittest
-import time
-import os
-import os.path
 
 import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+import os
+import os.path
+import sys
+import time
+import unittest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -31,10 +29,11 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-
 from mmcif.io.PdbxReader import PdbxReader
 
-# from mmcif.api.PdbxContainers import *
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 class PdbxReaderTests(unittest.TestCase):
@@ -49,6 +48,7 @@ class PdbxReaderTests(unittest.TestCase):
         #
         #
         self.__startTime = time.time()
+        logger.debug("Running tests on version %s" % __version__)
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
 
@@ -104,7 +104,7 @@ class PdbxReaderTests(unittest.TestCase):
             if catObj is None:
                 return False
 
-            nRows = catObj.getRowCount()
+            # nRows = catObj.getRowCount()
             #
             # Get column name index.
             #
@@ -124,12 +124,12 @@ class PdbxReaderTests(unittest.TestCase):
                     f = float(row[idf])
                     sigf = float(row[idsigf])
                     ratio = sigf / f
-                    #self.lfh.write(" %f %f %f\n" % (f,sigf,ratio))
+                    # self.lfh.write(" %f %f %f\n" % (f,sigf,ratio))
                     maxR = max(maxR, ratio)
                     minR = min(minR, ratio)
                     sumR += ratio
                     icount += 1
-                except:
+                except Exception:
                     continue
 
             ifh.close()
@@ -151,6 +151,7 @@ def simpleSuite():
     suiteSelect.addTest(PdbxReaderTests("testReadSmallDataFile"))
     suiteSelect.addTest(PdbxReaderTests("testReadBigDataFile"))
     return suiteSelect
+
 
 if __name__ == '__main__':
     if (True):

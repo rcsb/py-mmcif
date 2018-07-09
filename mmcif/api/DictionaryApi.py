@@ -19,22 +19,22 @@ Accessors for PDBx/mmCIF dictionaries -
 """
 from __future__ import absolute_import
 
+import logging
+import sys
+
+from mmcif.api.DataCategory import DataCategory
+from mmcif.api.Method import MethodDefinition, MethodReference
+from mmcif.api.PdbxContainers import CifName
+
+from six.moves import zip
+
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-from six.moves import zip
-
-import sys
-
-import logging
 logger = logging.getLogger(__name__)
-
-from mmcif.api.PdbxContainers import CifName
-from mmcif.api.DataCategory import DataCategory
-from mmcif.api.Method import MethodDefinition, MethodReference
 
 
 class DictionaryApi(object):
@@ -173,13 +173,13 @@ class DictionaryApi(object):
     def getDictionaryVersion(self):
         try:
             return self.__dictionaryDict['version']
-        except:
+        except Exception:
             return None
 
     def getDictionaryTitle(self):
         try:
             return self.__dictionaryDict['title']
-        except:
+        except Exception:
             return None
 
     def getDictionaryUpdate(self, order='reverse'):
@@ -193,7 +193,7 @@ class DictionaryApi(object):
 
             return tD['update']
 
-        except:
+        except Exception:
             return None
 
     def getDictionaryRevisionCount(self):
@@ -201,7 +201,7 @@ class DictionaryApi(object):
         """
         try:
             return len(self.__dictionaryHistoryList)
-        except:
+        except Exception:
             return 0
 
     def getDictionaryHistory(self, order='reverse'):
@@ -215,7 +215,7 @@ class DictionaryApi(object):
             else:
                 for tD in self.__dictionaryHistoryList:
                     oL.append((tD['version'], tD['update'], tD['revision']))
-        except:
+        except Exception:
             pass
         return oL
 
@@ -246,13 +246,13 @@ class DictionaryApi(object):
     def getCategoryGroupDescription(self, groupName):
         try:
             return self.__categoryGroupDict[groupName]['description']
-        except:
+        except Exception:
             return None
 
     def getCategoryGroupParent(self, groupName):
         try:
             return self.__categoryGroupDict[groupName]['parent_id']
-        except:
+        except Exception:
             return None
 
     def getCategoryGroupCategories(self, groupName):
@@ -260,7 +260,7 @@ class DictionaryApi(object):
             if not self.__groupIndex:
                 self.__makeCategoryGroupIndex()
             return self.__categoryGroupDict[groupName]['categories']
-        except:
+        except Exception:
             logger.exception("DictionaryApi.getCategoryGroupCategories failed for group %s \n" % groupName)
 
         return []
@@ -269,7 +269,7 @@ class DictionaryApi(object):
         try:
             kL = sorted(self.__categoryGroupDict.keys())
             return kL
-        except:
+        except Exception:
             return []
 
     #
@@ -298,8 +298,8 @@ class DictionaryApi(object):
         return list(childCategories)
 
     #
-    def getItemNameList(self):
-        return self.__itemNameList
+    #def XgetItemNameList(self):
+    #    return self.__itemNameList
 
     #
     def definitionExists(self, definitionName):
@@ -512,7 +512,7 @@ class DictionaryApi(object):
             if len(pL) > 0:
                 try:
                     pL.remove(itemName)
-                except:
+                except Exception:
                     pass
             return pL
         else:
@@ -525,14 +525,14 @@ class DictionaryApi(object):
         try:
             itemName = CifName.itemName(category, attribute)
             return self.__fullChildD[itemName]
-        except:
+        except Exception:
             return []
 
     def XgetFullParentList(self, category, attribute):
         try:
             itemName = CifName.itemName(category, attribute)
             return self.__fullParentD[itemName]
-        except:
+        except Exception:
             return []
 
     def getFullParentList(self, category, attribute, stripSelfParent=False):
@@ -543,12 +543,12 @@ class DictionaryApi(object):
                 if len(pL) > 0:
                     try:
                         pL.remove(itemName)
-                    except:
+                    except Exception:
                         pass
                 return pL
             else:
                 return pL
-        except:
+        except Exception:
             return []
 
     def getUnits(self, category, attribute):
@@ -776,7 +776,7 @@ class DictionaryApi(object):
         cAtN = self.__enumD['ITEM_LINKED_CHILD'][1]
 
         for dObj in self.__containerList:
-            #logger.info("\n\nSearching object  %s\n" % dObj.getName())
+            # logger.info("\n\nSearching object  %s\n" % dObj.getName())
             dc = dObj.getObj(self.__enumD['ITEM_LINKED_PARENT'][0])
             if dc is not None:
                 idxP = dc.getIndex(pAtN)
@@ -784,7 +784,7 @@ class DictionaryApi(object):
                 for row in dc.getRowList():
                     pVal = row[idxP]
                     cVal = row[idxC]
-                    #logger.info("%s found parent %s child %s \n" % (dObj.getName(),pVal,cVal))
+                    # logger.info("%s found parent %s child %s \n" % (dObj.getName(),pVal,cVal))
                     if pVal == cVal:
                         continue
                     if cVal not in fullParentD:
@@ -981,14 +981,14 @@ class DictionaryApi(object):
     def getAttributeNameList(self, category):
         try:
             return sorted(self.__catNameIndex[category])
-        except:
+        except Exception:
             pass
         return []
 
     def getItemNameList(self, category):
         try:
             return sorted(self.__catNameItemIndex[category])
-        except:
+        except Exception:
             pass
         return []
 

@@ -42,13 +42,12 @@ data and definition meta data.
 """
 from __future__ import absolute_import
 
+import sys
+
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
-
-
-import sys
 
 
 class CifName(object):
@@ -72,7 +71,7 @@ class CifName(object):
                 return tname
             else:
                 return tname[:i]
-        except:
+        except Exception:
             return tname
 
     @staticmethod
@@ -83,14 +82,14 @@ class CifName(object):
                 return None
             else:
                 return name[i + 1:]
-        except:
+        except Exception:
             return None
 
     @staticmethod
     def itemName(categoryName, attributeName):
         try:
             return '_' + str(categoryName) + '.' + str(attributeName)
-        except:
+        except Exception:
             return None
 
 
@@ -178,7 +177,7 @@ class ContainerBase(object):
             self.__objCatalog[newName] = self.__objCatalog[curName]
             self.__objCatalog[newName].setName(newName)
             return True
-        except:
+        except Exception:
             return False
 
     def remove(self, curName):
@@ -192,7 +191,7 @@ class ContainerBase(object):
                 return True
             else:
                 return False
-        except:
+        except Exception:
             pass
 
         return False

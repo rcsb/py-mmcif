@@ -13,19 +13,16 @@ Test implementing PDBx/mmCIF write and formatting operations.
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "jwest@rcsb.rutgers.edu"
-__license__ = "Creative Commons Attribution 3.0 Unported"
+__license__ = "Apache 2.0"
 __version__ = "V0.01"
 
 
-import sys
-import unittest
-import time
+import logging
 import os
 import os.path
-
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+import sys
+import time
+import unittest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -36,11 +33,14 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-
-from mmcif.io.PdbxReader import PdbxReader
-from mmcif.io.PdbxWriter import PdbxWriter
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.PdbxContainers import DataContainer
+from mmcif.io.PdbxReader import PdbxReader
+from mmcif.io.PdbxWriter import PdbxWriter
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 class PdbxWriterTests(unittest.TestCase):
@@ -55,6 +55,7 @@ class PdbxWriterTests(unittest.TestCase):
         self.__pathOutputFile2 = os.path.join(HERE, "test-output", "testOutputDataFile.cif")
         #
         self.__startTime = time.time()
+        logger.debug("Running tests on version %s" % __version__)
         logger.debug("Starting %s at %s" % (self.id(),
                                             time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
 
