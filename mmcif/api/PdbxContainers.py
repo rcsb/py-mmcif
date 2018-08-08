@@ -18,6 +18,7 @@
 #   01-Aug-2017   jdw migrate portions to public repo
 #   14-Jan-2018   jdw add method filterObjectNameList(lastInOrder=None, selectOrder=None)
 #    4-Apr-2018   jdw adding internal __eq__ and __hash__ methods
+#    6-Aug-2018   jdw add setters/getters for container properties
 ##
 """
 
@@ -104,15 +105,30 @@ class ContainerBase(object):
         self.__objNameList = []
         # dictionary of DataCategory objects keyed by category name.
         self.__objCatalog = {}
+        # dictionary for properties of the container
+        self.__propCatalog = {}
         self.__type = None
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return NotImplemented
-        return self.__name == other.__name and self.__objNameList == other.__objNameList and self.__objCatalog == other.__objCatalog and self.__type == other.__type
+        return self.__name == other.__name and self.__objNameList == other.__objNameList and self.__objCatalog == other.__objCatalog and self.__type == other.__type and self.__propCatalog == other.__propCatalog
 
     def __hash__(self):
-        return hash((self.__name, tuple(self.__objNameList), self.__type, tuple(self.__objCatalog.items())))
+        return hash((self.__name, tuple(self.__objNameList), self.__type, tuple(self.__objCatalog.items()), tuple(self.__propCatalog.items())))
+
+    def setProp(self, propName, value):
+        try:
+            self.__propCatalog[propName] = value
+            return True
+        except Exception:
+            return False
+
+    def getProp(self, propName):
+        try:
+            return self.__propCatalog[propName]
+        except Exception:
+            return None
 
     def getType(self):
         return self.__type

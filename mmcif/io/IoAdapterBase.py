@@ -6,6 +6,7 @@
 #
 # Updates:
 #   13-Jan-2018 jdw move _getCategoryNameList() PdbxContainerBase class
+#    6-Aug-2018 jdw add _setContainerProperties() to assign default container properties
 ##
 """
 Base class presenting essential PDBx/mmCIF IO methods.
@@ -17,11 +18,13 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
+import datetime
 import io
 import logging
 import os
 import tempfile
 import time
+
 
 from mmcif.io.PdbxExceptions import PdbxError
 
@@ -79,6 +82,19 @@ class IoAdapterBase(object):
         """ Return any diagnostics from the last read operation. (abstract)
         """
         raise NotImplementedError("To be implemented in subclass")
+
+    def _setContainerProperties(self, containerList, **kwargs):
+        try:
+            for container in containerList:
+                for kw in kwargs:
+                    container.setProp(kw, kwargs[kw])
+        except Exception:
+            return False
+
+    def _getTimeStamp(self):
+        utcnow = datetime.datetime.utcnow()
+        ts = utcnow.strftime("%Y-%m-%d:%H:%M:%S")
+        return ts
 
     def _getCategoryNameList(self, container, lastInOrder=None, selectOrder=None):
         """ Return an ordered list of categories in the input container subject to

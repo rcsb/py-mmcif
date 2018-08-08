@@ -108,7 +108,7 @@ class DataCategory(DataCategoryBase):
         else:
             rowI = rowIndex
 
-        if isinstance(attribute, str) and isinstance(rowI, int):
+        if isinstance(attribute, self._string_types) and isinstance(rowI, int):
             try:
                 return self.data[rowI][self._attributeNameList.index(attribute)]
             except (IndexError):

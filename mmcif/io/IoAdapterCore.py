@@ -13,6 +13,7 @@
 # 15-Feb-2017 ep  Correct variable name in exception in __readDataSelect()
 #  8-Jan-2018 jdw adapt to new pybind11 bindings -  change logging framework -- handle py2->3
 # 10-Jan-2018 jdw complete rewrite for new mmciflib framework.
+#  6-Aug-2018 jdw set default container properties (locator and load_date)
 #
 ##
 """
@@ -111,6 +112,7 @@ class IoAdapterCore(IoAdapterBase):
             containerL, diagL = self.__readData(tPath, readDef=readDef, cleanUp=cleanUp, logFilePath=lPath, maxLineLength=self._maxInputLineLength)
             #
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
+            self._setContainerProperties(containerL, locator=filePath, load_date=self._getTimeStamp())
             #
             return containerL
         except (PdbxError, SyntaxError) as ex:

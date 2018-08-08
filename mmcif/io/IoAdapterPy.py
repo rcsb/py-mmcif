@@ -10,6 +10,7 @@
 # 15-Aug-2016 rps readFile() updated to accept optional "logtag" parameter for consistency with IoAdapterCore API
 # 01-Aug-2017 jdw migrate portions to public repo
 # 12-Jan-2018 jdw start to unify api features -
+#  6-Aug-2018 jdw set default container properties (locator and load_date)
 ##
 """
 Python implementation of IoAdapterBase class providing read and write
@@ -98,7 +99,7 @@ class IoAdapterPy(IoAdapterBase):
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
 
             self._cleanupFile(lPath and cleanUp, lPath)
-
+            self._setContainerProperties(containerList, locator=filePath, load_date=self._getTimeStamp())
         except (PdbxError, SyntaxError) as ex:
             msg = "File %r with %s" % (filePath, str(ex))
             self._appendToLog([msg])

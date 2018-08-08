@@ -1,19 +1,13 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(mmciflib)
 #
-# Using submodules -
-# https://github.com/RosettaCommons/pybind11.git
+# File: CMakeLists.txt -
+# Date: 1-Aug-2017
 #
+# Updates:
+#   8-Aug-2018 jdw fix Ubuntu loading problems
 #
-#  These svn modules have been used -
-# svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/common common Latest
-# svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/tables tables Latest
-# svn https://svn-dev.wwpdb.org/svn-rcsb/third-party/modules/regex regex Latest
-# svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/cif-file cif-file Latest
-# svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/cif-parser cif-parser Latest
-# svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/cif-file-util cif-file-util Latest
-# svn https://svn-dev.wwpdb.org/svn-rcsb/core/modules/dict-obj-file dict-obj-file Latest
-# svn https://svn-dev.wwpdb.org/svn-rcsb/pdbml/modules/pdbml-parser pdbml-parser Latest
+# C++ wrappers using  https://github.com/RosettaCommons/pybind11.git
 #
 if (POLICY CMP0048)
   # cmake warns if loaded from a min-3.0-required parent dir, so silence the warning:
@@ -67,6 +61,11 @@ if (NOT CONFIGURED_ONCE)
     #
     set(CMAKE_C_FLAGS   "${warnings} ${mydefines}  -fPIC"
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
+    #
+    SET(CMAKE_AR  "gcc-ar")
+    SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
+    SET(CMAKE_CXX_ARCHIVE_FINISH   true)
+
 endif()
 
 message(STATUS "Compiler flags " ${CMAKE_CXX_FLAGS})
