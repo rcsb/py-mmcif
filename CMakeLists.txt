@@ -62,9 +62,11 @@ if (NOT CONFIGURED_ONCE)
     set(CMAKE_C_FLAGS   "${warnings} ${mydefines}  -fPIC"
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
     #
-    SET(CMAKE_AR  "gcc-ar")
-    SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
-    SET(CMAKE_CXX_ARCHIVE_FINISH   true)
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        SET(CMAKE_AR  "gcc-ar")
+        SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
+        SET(CMAKE_CXX_ARCHIVE_FINISH   true)
+    endif()
 
 endif()
 
