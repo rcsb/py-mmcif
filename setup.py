@@ -2,6 +2,7 @@
 # Date: 17-Dec-2017
 #
 # Update:  17-Jan-2018 jdw - resolve python virtual env issues with Tox.
+#           8-Aug-2018 jdw - add py3.7
 #
 import glob
 import os
@@ -133,6 +134,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
     ),
     # entry_points={
     #    'console_scripts': [
