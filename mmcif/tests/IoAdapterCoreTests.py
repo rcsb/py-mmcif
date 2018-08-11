@@ -56,7 +56,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__verbose = True
         #
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "1kip.cif")
-        self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif")
+        self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif.gz")
         self.__pathPdbxDictFile = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
         self.__testBlockCount = 7350
         self.__pathErrPdbxDataFile = os.path.join(HERE, "data", "1bna-errors.cif")

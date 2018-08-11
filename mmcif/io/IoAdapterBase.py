@@ -7,6 +7,7 @@
 # Updates:
 #   13-Jan-2018 jdw move _getCategoryNameList() PdbxContainerBase class
 #    6-Aug-2018 jdw add _setContainerProperties() to assign default container properties
+#   10-Aug-2018 jdw add _uncompress() method (suppress xz as lzma is not support in py27)
 ##
 """
 Base class presenting essential PDBx/mmCIF IO methods.
@@ -18,13 +19,17 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
+import bz2
 import datetime
+import gzip
 import io
 import logging
+# import lzma
 import os
+import shutil
 import tempfile
 import time
-
+import zipfile
 
 from mmcif.io.PdbxExceptions import PdbxError
 
@@ -267,3 +272,46 @@ class IoAdapterBase(object):
                 raise PdbxError(msg)
         #
         return False
+
+    def _uncompress(self, inputFilePath, outputDir):
+        """ Uncompress the input file if the path name has a recognized compression type file extension.file
+
+            Return the file name ofthe uncompressed file (in outDir) or the original input file path.
+
+        """
+        try:
+            startTime = time.time()
+            fp, fn = os.path.split(inputFilePath)
+            bn, fx = os.path.splitext(fn)
+            outputFilePath = os.path.join(outputDir, bn)
+            if inputFilePath.endswith(".gz"):
+                with gzip.open(inputFilePath, mode='rb') as inp_f:
+                    with io.open(outputFilePath, "wb") as out_f:
+                        shutil.copyfileobj(inp_f, out_f)
+            elif inputFilePath.endswith(".bz2"):
+                with bz2.open(inputFilePath, mode='rb') as inp_f:
+                    with io.open(outputFilePath, "wb") as out_f:
+                        shutil.copyfileobj(inp_f, out_f)
+            #elif inputFilePath.endswith(".xz"):
+            #    with lzma.open(inputFilePath, mode="rb") as inp_f:
+            #        with io.open(outputFilePath, "wb") as out_f:
+            #            shutil.copyfileobj(inp_f, out_f)
+            elif inputFilePath.endswith(".zip"):
+                with zipfile.ZipFile(inputFilePath, mode='rb') as inp_f:
+                    with io.open(outputFilePath, "wb") as out_f:
+                        shutil.copyfileobj(inp_f, out_f)
+            else:
+                outputFilePath = inputFilePath
+            if self._timing:
+                stepTime1 = time.time()
+                logger.info("Timing text file %s uncompressed in %.4f seconds" % (inputFilePath, stepTime1 - startTime))
+            #
+        except Exception as e:
+            msg = "Failing uncompress for file %s with %s" % (inputFilePath, str(e))
+            self._appendToLog([msg])
+            logger.exception(msg)
+            if self._raiseExceptions:
+                raise PdbxError(msg)
+
+        logger.debug("Returning file path %r" % outputFilePath)
+        return outputFilePath

@@ -42,9 +42,9 @@ __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 class IoAdapterTests(unittest.TestCase):
@@ -54,7 +54,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__verbose = True
         #
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "1kip.cif")
-        self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif")
+        self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif.gz")
         self.__pathPdbxDictFile = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
         self.__testBlockCount = 7350
         self.__pathErrPdbxDataFile = os.path.join(HERE, "data", "1bna-errors.cif")

@@ -8,6 +8,7 @@
 26-Jul-2018  - V015 - further changes to support Py2/Py3 compatibility in dictionar API module
  6-Aug-2018  - V016 - Add methods to set and get generic properties on base containers.
  8-Aug-2018  - V017 - Add support for Ubuntu  16.04.5 & GCC 5.4
+10-Aug-2018  - V018 - Detect uncompress gz, bz2, xz and zip input files
 
 
 

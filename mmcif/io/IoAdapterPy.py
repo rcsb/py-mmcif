@@ -68,6 +68,7 @@ class IoAdapterPy(IoAdapterBase):
         if len(kwargs):
             logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         filePath = str(inputFilePath)
+        oPath = outDirPath if outDirPath else '.'
         containerList = []
         if enforceAscii:
             encoding = 'ascii'
@@ -77,13 +78,14 @@ class IoAdapterPy(IoAdapterBase):
             #
             lPath = logFilePath
             if not lPath:
-                lPath = self._getDefaultFileName(filePath, fileType='cif-parser-log', outDirPath=outDirPath)
+                lPath = self._getDefaultFileName(filePath, fileType='cif-parser-log', outDirPath=oPath)
             #
             self._setLogFilePath(lPath)
             #
             if not self._fileExists(filePath):
                 return []
-
+            filePath = self._uncompress(filePath, oPath)
+            #
             if sys.version_info[0] > 2:
                 with open(filePath, 'r', encoding=encoding) as ifh:
                     pRd = PdbxReader(ifh)
@@ -97,8 +99,9 @@ class IoAdapterPy(IoAdapterBase):
                     with open(filePath, 'r') as ifh:
                         pRd = PdbxReader(ifh)
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-
-            self._cleanupFile(lPath and cleanUp, lPath)
+            if cleanUp:
+                self._cleanupFile(lPath, lPath)
+                self._cleanupFile(filePath != str(inputFilePath), filePath)
             self._setContainerProperties(containerList, locator=filePath, load_date=self._getTimeStamp())
         except (PdbxError, SyntaxError) as ex:
             msg = "File %r with %s" % (filePath, str(ex))

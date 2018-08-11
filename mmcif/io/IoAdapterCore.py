@@ -85,20 +85,22 @@ class IoAdapterCore(IoAdapterBase):
             logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         asciiFilePath = None
         filePath = str(inputFilePath)
+        oPath = outDirPath if outDirPath else '.'
         try:
             #
             lPath = logFilePath
             if not lPath:
-                lPath = self._getDefaultFileName(filePath, fileType='cif-parser-log', outDirPath=outDirPath)
+                lPath = self._getDefaultFileName(filePath, fileType='cif-parser-log', outDirPath=oPath)
             #
             self._setLogFilePath(lPath)
             #
             if not self._fileExists(filePath):
                 return []
             #
+            filePath = self._uncompress(filePath, oPath)
             tPath = filePath
             if enforceAscii:
-                asciiFilePath = self._getDefaultFileName(filePath, fileType='cif-parser-ascii', fileExt='cif', outDirPath=outDirPath)
+                asciiFilePath = self._getDefaultFileName(filePath, fileType='cif-parser-ascii', fileExt='cif', outDirPath=oPath)
                 encodingErrors = 'xmlcharrefreplace' if self._useCharRefs else 'ignore'
                 logger.debug("Filtering input file to %s using encoding errors as %s" % (asciiFilePath, encodingErrors))
                 ok = self._toAscii(filePath, asciiFilePath, chunkSize=5000, encodingErrors=encodingErrors)
@@ -111,7 +113,9 @@ class IoAdapterCore(IoAdapterBase):
             #
             containerL, diagL = self.__readData(tPath, readDef=readDef, cleanUp=cleanUp, logFilePath=lPath, maxLineLength=self._maxInputLineLength)
             #
-            self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
+            if cleanUp:
+                self._cleanupFile(asciiFilePath, asciiFilePath)
+                self._cleanupFile(filePath != str(inputFilePath), filePath)
             self._setContainerProperties(containerL, locator=filePath, load_date=self._getTimeStamp())
             #
             return containerL
