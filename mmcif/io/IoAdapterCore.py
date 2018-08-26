@@ -14,6 +14,7 @@
 #  8-Jan-2018 jdw adapt to new pybind11 bindings -  change logging framework -- handle py2->3
 # 10-Jan-2018 jdw complete rewrite for new mmciflib framework.
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
+# 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
 #
 ##
 """
@@ -116,7 +117,7 @@ class IoAdapterCore(IoAdapterBase):
             if cleanUp:
                 self._cleanupFile(asciiFilePath, asciiFilePath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
-            self._setContainerProperties(containerL, locator=filePath, load_date=self._getTimeStamp())
+            self._setContainerProperties(containerL, locator=str(inputFilePath), load_date=self._getTimeStamp())
             #
             return containerL
         except (PdbxError, SyntaxError) as ex:

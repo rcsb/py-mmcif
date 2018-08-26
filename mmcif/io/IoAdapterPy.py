@@ -11,6 +11,7 @@
 # 01-Aug-2017 jdw migrate portions to public repo
 # 12-Jan-2018 jdw start to unify api features -
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
+# 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
 ##
 """
 Python implementation of IoAdapterBase class providing read and write
@@ -102,7 +103,7 @@ class IoAdapterPy(IoAdapterBase):
             if cleanUp:
                 self._cleanupFile(lPath, lPath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
-            self._setContainerProperties(containerList, locator=filePath, load_date=self._getTimeStamp())
+            self._setContainerProperties(containerList, locator=str(inputFilePath), load_date=self._getTimeStamp())
         except (PdbxError, SyntaxError) as ex:
             msg = "File %r with %s" % (filePath, str(ex))
             self._appendToLog([msg])
