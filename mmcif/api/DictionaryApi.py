@@ -12,6 +12,7 @@
 #  10-Dec-2013  jdw return sorted unique list of enumerations with details.
 #  14-Feb-2014  jdw fix atribute index lookup.
 #  08-Mar-2014  jdw add method getEnumerationClosedFlag(self,category,attribute)
+#   9-Sep-2018  jdw add priority to method definition constructor
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -1005,9 +1006,10 @@ class DictionaryApi(object):
             if (ob.getType() == 'data'):
                 ml = ob.getObj('method_list')
                 if ml is not None:
-                    for row in ml.getRowList():
+                    # Use row order as priority
+                    for ii, row in enumerate(ml.getRowList(), 1):
                         if ml.hasAttribute('id') and ml.hasAttribute('inline'):
-                            mth = MethodDefinition(row[ml.getIndex('id')], row[ml.getIndex('code')], row[ml.getIndex('language')], row[ml.getIndex('inline')])
+                            mth = MethodDefinition(row[ml.getIndex('id')], row[ml.getIndex('code')], row[ml.getIndex('language')], row[ml.getIndex('inline')], ii)
                             self.__methodDict[row[ml.getIndex('id')]] = mth
 
                 ml = ob.getObj('datablock_methods')

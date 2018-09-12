@@ -200,12 +200,15 @@ class DataCategoryBase(UserList):
     def getAttributeValueList(self, attributeName):
         """ Return a list of
         """
+        rL = []
         try:
             idx = self.getAttributeIndex(attributeName)
             rL = [row[idx] for row in self.data]
             return rL
         except Exception as e:
-            raise e
+            if self._raiseExceptions:
+                raise e
+        return rL
 
     def removeRow(self, index):
         try:

@@ -9,7 +9,9 @@
  6-Aug-2018  - V016 - Add methods to set and get generic properties on base containers.
  8-Aug-2018  - V017 - Add support for Ubuntu  16.04.5 & GCC 5.4
 10-Aug-2018  - V018 - Detect uncompress gz, bz2, xz and zip input files
-25-Aug-2028  - V019 - Record the compressed file names and fix tox coverage test runner
+25-Aug-2018  - V019 - Record the compressed file names and fix tox coverage test runner
+ 9-Sep-2018  - V020 - Adjust return types for failing Container and DataCategory methods
+                      Add implicit method execution priority based method order in category method_list.
 
 
 
