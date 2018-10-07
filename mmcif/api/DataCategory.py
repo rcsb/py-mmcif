@@ -10,6 +10,7 @@
 #   10-Apr-2013   jdw add convenience method getValueOrDefault()
 #   20-Jul-2015   jdw add selectIndicesFromList()
 #   01-Aug-2017   jdw migrate portions to public repo
+#    4-Oct-2018   jdw add optional method parameter returnCount=0 to selectValuesWhere() and selectValueListWhere()
 ##
 """
 
@@ -278,26 +279,31 @@ class DataCategory(DataCategoryBase):
 
         return rL
 
-    def selectValuesWhere(self, attributeName, attributeValueWhere, attributeNameWhere):
+    def selectValuesWhere(self, attributeName, attributeValueWhere, attributeNameWhere, returnCount=0):
         rL = []
         try:
+            iCount = 0
             ind = self._attributeNameList.index(attributeName)
             indWhere = self._attributeNameList.index(attributeNameWhere)
             for ii, row in enumerate(self.data):
                 if attributeValueWhere == row[indWhere]:
                     rL.append(row[ind])
+                    iCount += 1
+                    if returnCount and (iCount >= returnCount):
+                        break
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")
             raise e
         return rL
 
-    def selectValueListWhere(self, attributeNameList, attributeValueWhere, attributeNameWhere):
+    def selectValueListWhere(self, attributeNameList, attributeValueWhere, attributeNameWhere, returnCount=0):
         """ Return a  list of lists containing the values of input attributeNameList
             satisfiying the attribute value where condition.
         """
         rL = []
         try:
+            iCount = 0
             indList = []
             for at in attributeNameList:
                 indList.append(self._attributeNameList.index(at))
@@ -305,6 +311,9 @@ class DataCategory(DataCategoryBase):
             for ii, row in enumerate(self.data):
                 if attributeValueWhere == row[indWhere]:
                     rL.append([row[jj] for jj in indList])
+                    iCount += 1
+                    if returnCount and (iCount >= returnCount):
+                        break
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")

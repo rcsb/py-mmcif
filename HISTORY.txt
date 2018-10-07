@@ -12,6 +12,7 @@
 25-Aug-2018  - V019 - Record the compressed file names and fix tox coverage test runner
  9-Sep-2018  - V020 - Adjust return types for failing Container and DataCategory methods
                       Add implicit method execution priority based method order in category method_list.
+ 4-Oct-2018  - V021 - Add optional method parameter returnCount=0 to selectValueListWhere()
 
 
 
