@@ -15,6 +15,7 @@
  4-Oct-2018  - V021 - Add optional method parameter returnCount=0 to selectValueListWhere()
 12-Oct-2018  - V022 - Update language binding code
 19-Oct-2018  - V023 - Add dictionary definition Markdown rendering example
+29-Oct-2018  - V024 - Add support for legacy CifFile() API
 
 
 
