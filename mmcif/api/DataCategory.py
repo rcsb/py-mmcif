@@ -11,6 +11,7 @@
 #   20-Jul-2015   jdw add selectIndicesFromList()
 #   01-Aug-2017   jdw migrate portions to public repo
 #    4-Oct-2018   jdw add optional method parameter returnCount=0 to selectValuesWhere() and selectValueListWhere()
+#   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
 ##
 """
 
@@ -43,10 +44,11 @@ class DataCategory(DataCategoryBase):
         """Summary
 
         Args:
-            name (TYPE): Description
-            attributeNameList (None, optional): Description
-            rowList (None, optional): Description
-            raiseExceptions (bool, optional): Description
+            name (TYPE): Category name
+            attributeNameList (None, optional):  Initial attribute names
+            rowList (None, optional): Initial category data organized in rows corresponding to the attribute name list
+            raiseExceptions (bool, optional): Flag to control if expections are raised or handled internally
+            copyInputData (bool, optional):  Copy rather than reference input data
         """
         super(DataCategory, self).__init__(name, attributeNameList, rowList, raiseExceptions=raiseExceptions, copyInputData=copyInputData)
         #
@@ -113,8 +115,12 @@ class DataCategory(DataCategoryBase):
             try:
                 return self.data[rowI][self._attributeNameList.index(attribute)]
             except (IndexError):
-                raise IndexError
-        raise IndexError(attribute)
+                if self._raiseExceptions:
+                    raise IndexError
+        if self._raiseExceptions:
+            raise IndexError(attribute)
+        else:
+            return None
 
     def getValueOrDefault(self, attributeName=None, rowIndex=None, defaultValue=''):
         """  Within the current category return the value of input attribute in the input rowIndex [0-based].
@@ -141,9 +147,11 @@ class DataCategory(DataCategoryBase):
                     return tV
             except Exception as e:
                 # logger.exception("Failing attributeName %s rowIndex %r defaultValue %r" % (attributeName, rowIndex, defaultValue))
-                raise e
+                if self._raiseExceptions:
+                    raise e
         else:
-            raise ValueError
+            if self._raiseExceptions:
+                raise ValueError
         #
         return defaultValue
 
@@ -160,7 +168,8 @@ class DataCategory(DataCategoryBase):
                     else:
                         return tV
         except Exception as e:
-            raise e
+            if self._raiseExceptions:
+                raise e
 
         return defaultValue
 
@@ -201,15 +210,18 @@ class DataCategory(DataCategoryBase):
                     logger.debug("DataCategory(setvalue) attribute %r length attribute list %d \n" % (attribute, len(self._attributeNameList)))
                     for ii, a in enumerate(self._attributeNameList):
                         logger.debug("DataCategory(setvalue) %d attributeName %r\n" % (ii, a))
-
-                raise IndexError
+                if self._raiseExceptions:
+                    raise IndexError
             except (ValueError):
                 if self.__verbose:
                     logger.exception("DataCategory(setvalue) value error category %s attribute %s row index %d value %r\n" %
                                      (self._name, attribute, rowI, value))
-                raise ValueError
+                if self._raiseExceptions:
+                    raise ValueError
         else:
-            raise ValueError
+            if self._raiseExceptions:
+                raise ValueError
+        return False
 
     def __emptyRow(self):
         return [None for ii in range(len(self._attributeNameList))]
@@ -226,7 +238,9 @@ class DataCategory(DataCategoryBase):
                     numReplace += 1
             return numReplace
         except Exception as e:
-            raise e
+            if self._raiseExceptions:
+                raise e
+        return numReplace
 
     def replaceSubstring(self, oldValue, newValue, attributeName):
         try:
@@ -241,7 +255,9 @@ class DataCategory(DataCategoryBase):
                     numReplace += 1
             return numReplace
         except Exception as e:
-            raise e
+            if self._raiseExceptions:
+                raise e
+        return numReplace
 
     def selectIndices(self, attributeValue, attributeName):
         try:
@@ -254,7 +270,9 @@ class DataCategory(DataCategoryBase):
                     rL.append(ii)
             return rL
         except Exception as e:
-            raise e
+            if self._raiseExceptions:
+                raise e
+        return rL
 
     def selectIndicesFromList(self, attributeValueList, attributeNameList):
         rL = []
@@ -275,7 +293,8 @@ class DataCategory(DataCategoryBase):
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection/index failure for values %r" % attributeValueList)
-            raise e
+            if self._raiseExceptions:
+                raise e
 
         return rL
 
@@ -294,7 +313,8 @@ class DataCategory(DataCategoryBase):
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")
-            raise e
+            if self._raiseExceptions:
+                raise e
         return rL
 
     def selectValueListWhere(self, attributeNameList, attributeValueWhere, attributeNameWhere, returnCount=0):
@@ -317,7 +337,8 @@ class DataCategory(DataCategoryBase):
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")
-            raise e
+            if self._raiseExceptions:
+                raise e
         return rL
 
     def invokeAttributeMethod(self, attributeName, type, method, db):

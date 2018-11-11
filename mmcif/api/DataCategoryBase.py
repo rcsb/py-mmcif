@@ -12,6 +12,7 @@
 #   29-Jun-2013   jdw add removeRow()
 #   24-Jun-2015   jdw add getRowAttributeDict(self, index) and getRowItemDict(self, index)
 #   01-Aug-2017   jdw migrate portions to public repo
+#   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
 ##
 """
 
@@ -337,7 +338,9 @@ class DataCategoryBase(UserList):
                     rL.insert(self._itemNameList.index(k), v)
                 return rL
         except Exception:
-            raise IndexError
+            if self._raiseExceptions:
+                raise IndexError
+        return None
 
     def cmpAttributeNames(self, dcObj):
         """ Compare the attributeNameList in current data category (dca) and input data category .
@@ -360,8 +363,8 @@ class DataCategoryBase(UserList):
             >>> import collections
             >>> compare = lambda x, y: collections.Counter(x) == collections.Counter(y)
         """
+        rL = []
         try:
-            rL = []
             sa = set(self.getAttributeList())
             sb = set(dcObj.getAttributeList())
             atComList = list(sa & sb)
@@ -375,7 +378,9 @@ class DataCategoryBase(UserList):
                 rL.append((at, same))
             return rL
         except Exception as e:
-            raise e
+            if self._raiseExceptions:
+                raise e
+        return rL
 
     def __eq__(self, other):
         """Override the default Equals behavior"""

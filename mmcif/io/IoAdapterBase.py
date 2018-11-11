@@ -8,6 +8,7 @@
 #   13-Jan-2018 jdw move _getCategoryNameList() PdbxContainerBase class
 #    6-Aug-2018 jdw add _setContainerProperties() to assign default container properties
 #   10-Aug-2018 jdw add _uncompress() method (suppress xz as lzma is not support in py27)
+#   11-Nov-2018 jdw add method to _chooseTemporaryPath()
 ##
 """
 Base class presenting essential PDBx/mmCIF IO methods.
@@ -182,6 +183,20 @@ class IoAdapterBase(object):
         """
         return str(int(time.time() * 10000))
 
+    def _chooseTemporaryPath(self, filePath, outDirPath=None):
+        """ Select a path for temporary files in the priority order
+            outDirpath, directory containing the input filePath, current working directory,
+            dynamically created temporary directory.
+
+            These choices harmonize various legacy api behaviors.
+        """
+        if outDirPath:
+            return outDirPath
+        #
+        for oPath in [os.path.dirname(filePath), '.', tempfile.gettempdir()]:
+            if os.access(oPath, os.W_OK):
+                return oPath
+
     def _getDefaultFileName(self, filePath, fileType='cif-parser', fileExt='log', outDirPath=None, verify=True):
         """ Return default file path for the target input file subject to input attributes and the output path.
         """
@@ -195,7 +210,8 @@ class IoAdapterBase(object):
             #
             sf = '_' + ft + '_P' + self.__getDiscriminator() + '.' + fex
             #
-            pth = outDirPath if outDirPath else '.'
+            # pth = outDirPath if outDirPath else '.'
+            pth = self._chooseTemporaryPath(filePath, outDirPath=outDirPath)
             #
             if verify:
                 # test if pth is actually writable ?  Throw exception otherwise -
@@ -292,7 +308,7 @@ class IoAdapterBase(object):
                 with bz2.open(inputFilePath, mode='rb') as inp_f:
                     with io.open(outputFilePath, "wb") as out_f:
                         shutil.copyfileobj(inp_f, out_f)
-            #elif inputFilePath.endswith(".xz"):
+            # elif inputFilePath.endswith(".xz"):
             #    with lzma.open(inputFilePath, mode="rb") as inp_f:
             #        with io.open(outputFilePath, "wb") as out_f:
             #            shutil.copyfileobj(inp_f, out_f)

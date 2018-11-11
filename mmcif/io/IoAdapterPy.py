@@ -69,7 +69,8 @@ class IoAdapterPy(IoAdapterBase):
         if len(kwargs):
             logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         filePath = str(inputFilePath)
-        oPath = outDirPath if outDirPath else '.'
+        # oPath = outDirPath if outDirPath else '.'
+        oPath = self._chooseTemporaryPath(inputFilePath, outDirPath=outDirPath)
         containerList = []
         if enforceAscii:
             encoding = 'ascii'

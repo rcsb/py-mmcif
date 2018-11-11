@@ -127,7 +127,7 @@ class DictionayMarkdownTests(unittest.TestCase):
     def __testMarkupCategoryGroup(self, oFile, groupSelectList=None):
         """Test case -  extract the content to be rendered -
         """
-        startTime = time.clock()
+        startTime = time.time()
         logger.debug("\nStarting %s %s at %s\n" % (self.__class__.__name__,
                                                    sys._getframe().f_code.co_name,
                                                    time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
@@ -269,7 +269,7 @@ class DictionayMarkdownTests(unittest.TestCase):
             logger.Exception("Failing with %s" % str(e))
             self.fail()
 
-        endTime = time.clock()
+        endTime = time.time()
         logger.debug("\nCompleted %s %s at %s (%.2f seconds)\n" % (self.__class__.__name__,
                                                                    sys._getframe().f_code.co_name,
                                                                    time.strftime("%Y %m %d %H:%M:%S", time.localtime()),

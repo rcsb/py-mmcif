@@ -86,7 +86,8 @@ class IoAdapterCore(IoAdapterBase):
             logger.warn("Unsupported keyword arguments %s" % kwargs.keys())
         asciiFilePath = None
         filePath = str(inputFilePath)
-        oPath = outDirPath if outDirPath else '.'
+        # oPath = outDirPath if outDirPath else '.'
+        oPath = self._chooseTemporaryPath(inputFilePath, outDirPath=outDirPath)
         try:
             #
             lPath = logFilePath

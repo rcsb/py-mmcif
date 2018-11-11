@@ -4,6 +4,7 @@
 #
 # Older deprecated API
 #
+#
 ##
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -56,3 +57,4 @@ class CifFile(object):
     @classmethod
     def read(cls, fileName):
         return cls(fileName)
+

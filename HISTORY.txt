@@ -16,6 +16,8 @@
 12-Oct-2018  - V022 - Update language binding code
 19-Oct-2018  - V023 - Add dictionary definition Markdown rendering example
 29-Oct-2018  - V024 - Add support for legacy CifFile() API
+11-Nov-2018  - V025 - Update DataCategory/DataCategoryBase with more consistent handling of raiseExceptions flag,
+                      and harmonize selection of temporary and log file paths.
 
 
 
