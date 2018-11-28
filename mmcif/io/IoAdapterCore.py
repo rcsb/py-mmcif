@@ -15,6 +15,7 @@
 # 10-Jan-2018 jdw complete rewrite for new mmciflib framework.
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
+# 27-Nov-2018 jdw propagate raise exception flag on all DataCategory instantiations.
 #
 ##
 """
@@ -230,7 +231,7 @@ class IoAdapterCore(IoAdapterBase):
                         # row = table.GetRow(iRow).decode('unicode_escape').encode('utf-8')
                         # row = [p.encode('ascii', 'xmlcharrefreplace') for p in table.GetRow(iRow)]
                         rowList.append(list(row))
-                    aCategory = DataCategory(tableName, attributeNameList, rowList, copyInputData=False)
+                    aCategory = DataCategory(tableName, attributeNameList, rowList, copyInputData=False, raiseExceptions=self._raiseExceptions)
                     aContainer.append(aCategory)
                 containerList.append(aContainer)
         except Exception as e:

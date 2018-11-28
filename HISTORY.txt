@@ -18,6 +18,7 @@
 29-Oct-2018  - V024 - Add support for legacy CifFile() API
 11-Nov-2018  - V025 - Update DataCategory/DataCategoryBase with more consistent handling of raiseExceptions flag,
                       and harmonize selection of temporary and log file paths.
+27-Nov-2018  - V026 - Adjust exception handling in IoCoreAdapter().
 
 
 
