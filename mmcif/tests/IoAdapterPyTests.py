@@ -144,7 +144,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__testFileReaderExceptionHandler1(self.__pathErrPdbxDataFile, enforceAscii=False)
 
     def testFileWIthUnicodeErrorHander2(self):
-        self.__testFileReaderExceptionHandler2(self.__pathUnicodePdbxFile, enforceAscii=True)
+        self.__testFileReaderExceptionHandler2(self.__pathUnicodePdbxFile, enforceAscii=True, readEncodingErrors=None)
 
     def __testFileReaderExceptionHandler1(self, fp, enforceAscii=False):
         """Test case -  read selected categories from PDBx file and handle exceptions
@@ -152,11 +152,11 @@ class IoAdapterTests(unittest.TestCase):
         io = IoAdapter(raiseExceptions=True)
         self.assertRaises(SyntaxError, io.readFile, fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
 
-    def __testFileReaderExceptionHandler2(self, fp, enforceAscii=False):
+    def __testFileReaderExceptionHandler2(self, fp, enforceAscii=False, readEncodingErrors='ignore'):
         """Test case -  read selected categories from PDBx and handle exceptions
         """
         try:
-            io = IoAdapter(raiseExceptions=True)
+            io = IoAdapter(raiseExceptions=True, readEncodingErrors=readEncodingErrors)
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
             logger.debug("Containerlist length %d " % len(containerList))
             #

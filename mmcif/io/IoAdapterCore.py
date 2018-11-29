@@ -106,7 +106,7 @@ class IoAdapterCore(IoAdapterBase):
                 asciiFilePath = self._getDefaultFileName(filePath, fileType='cif-parser-ascii', fileExt='cif', outDirPath=oPath)
                 encodingErrors = 'xmlcharrefreplace' if self._useCharRefs else 'ignore'
                 logger.debug("Filtering input file to %s using encoding errors as %s" % (asciiFilePath, encodingErrors))
-                ok = self._toAscii(filePath, asciiFilePath, chunkSize=5000, encodingErrors=encodingErrors)
+                ok = self._toAscii(filePath, asciiFilePath, chunkSize=5000, encodingErrors=encodingErrors, readEncodingErrors=self._readEncodingErrors)
                 if ok:
                     tPath = asciiFilePath
             #

@@ -89,12 +89,12 @@ class IoAdapterPy(IoAdapterBase):
             filePath = self._uncompress(filePath, oPath)
             #
             if sys.version_info[0] > 2:
-                with open(filePath, 'r', encoding=encoding) as ifh:
+                with open(filePath, 'r', encoding=encoding, errors=self._readEncodingErrors) as ifh:
                     pRd = PdbxReader(ifh)
                     pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             else:
                 if enforceAscii:
-                    with io.open(filePath, 'r', encoding=encoding) as ifh:
+                    with io.open(filePath, 'r', encoding=encoding, errors=self._readEncodingErrors) as ifh:
                         pRd = PdbxReader(ifh)
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:

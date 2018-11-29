@@ -48,6 +48,7 @@ class IoAdapterBase(object):
             raiseExceptions (bool, optional): Flag to indicate that API errors should generate exceptions (True) or catch and log errors (default=False)
             maxInputLineLength (int, optional):  Default maximum input line length (default=4096)
             useCharRefs (bool, optional): Replace non-ascii characters with XML Character References (default=True)
+            readEncodingErrors (str, optional): treatment of encoding errors at read time (default='ignore')
             timing (bool, optional):  log timing details for parsing and processing steps (default=False)
             verbose (bool,optional):  log verbose output from wrapped libraries
 
@@ -59,6 +60,7 @@ class IoAdapterBase(object):
         self._debug = kwargs.get('debug', False)
         self._timing = kwargs.get('timing', False)
         self._verbose = kwargs.get('verbose', True)
+        self._readEncodingErrors = kwargs.get('readEncodingErrors', 'ignore')
 
     def readFile(self, inputFilePath, **kwargs):
         """ Read file method. (abstract)
@@ -261,14 +263,14 @@ class IoAdapterBase(object):
         except Exception:
             pass
 
-    def _toAscii(self, inputFilePath, outputFilePath, chunkSize=5000, encodingErrors='ignore'):
+    def _toAscii(self, inputFilePath, outputFilePath, chunkSize=5000, encodingErrors='ignore', readEncodingErrors='ignore'):
         """ Encode input file to Ascii and write this to the target output file.   Handle encoding
             errors according to the input settting ('ignore', 'escape', 'xmlcharrefreplace').
         """
         try:
             startTime = time.time()
             chunk = []
-            with io.open(inputFilePath, "r", encoding="utf-8") as r, io.open(outputFilePath, "w", encoding='ascii') as w:
+            with io.open(inputFilePath, "r", encoding="utf-8", errors=readEncodingErrors) as r, io.open(outputFilePath, "w", encoding='ascii') as w:
                 for line in r:
                     # chunk.append(line.encode('ascii', 'xmlcharrefreplace').decode('ascii'))
                     chunk.append(line.encode('ascii', encodingErrors).decode('ascii'))
