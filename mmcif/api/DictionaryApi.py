@@ -13,6 +13,8 @@
 #  14-Feb-2014  jdw fix atribute index lookup.
 #  08-Mar-2014  jdw add method getEnumerationClosedFlag(self,category,attribute)
 #   9-Sep-2018  jdw add priority to method definition constructor
+#   7-Dec-2018  jdw add constructor parameter replaceDefinition=False to allow replacing
+#                   defintions during consolidation
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -40,11 +42,12 @@ logger = logging.getLogger(__name__)
 
 class DictionaryApi(object):
 
-    def __init__(self, containerList, consolidate=True, expandItemLinked=False, verbose=False):
+    def __init__(self, containerList, consolidate=True, expandItemLinked=False, replaceDefinition=False, verbose=False):
         self.__verbose = verbose
         self.__debug = False
         #
         self.__containerList = containerList
+        self.__replaceDefinition = replaceDefinition
         #
         if (consolidate):
             self.__consolidateDefinitions()
@@ -299,7 +302,7 @@ class DictionaryApi(object):
         return list(childCategories)
 
     #
-    #def XgetItemNameList(self):
+    # def XgetItemNameList(self):
     #    return self.__itemNameList
 
     #
@@ -1412,9 +1415,13 @@ class DictionaryApi(object):
                     for nm in xList:
                         if nm not in dObjL[0].getObjNameList():
                             if (self.__debug):
-                                logger.info("+DictionaryApi().__consolidateDefinitions() adding %s to %s\n" % (nm, name))
+                                logger.debug("Adding %s to %s\n" % (nm, name))
                             catObj = d.getObj(nm)
                             dObjL[0].append(catObj)
+                        elif self.__replaceDefinition:
+                            logger.debug("Replacing dictionary %s in %s" % (nm, name))
+                            catObj = d.getObj(nm)
+                            dObjL[0].replace(catObj)
 
         # create a new list of consolidated objects in original list order
         dList = []
