@@ -379,7 +379,7 @@ class DataCategory(DataCategoryBase):
             #
             if len(row) == len(self._attributeNameList):
                 for ii, v in enumerate(row):
-                    fh.write("        %30s: %s ...\n" % (self._attributeNameList[ii], str(v)[:30]))
+                    fh.write("       %30s: %s ...\n" % (self._attributeNameList[ii], str(v)[:30]))
             else:
                 fh.write("+WARNING - %s data length %d attribute name length %s mismatched\n" %
                          (self._name, len(row), len(self._attributeNameList)))
@@ -392,8 +392,8 @@ class DataCategory(DataCategoryBase):
             fh.write("  Category: %s attribute: %s\n" % (self._name, at))
 
         fh.write("  Value list length: %d\n" % len(self.data))
-        for row in self.data:
+        for jj, row in enumerate(self.data):
             for ii, v in enumerate(row):
-                fh.write("        %30s: %s\n" % (self._attributeNameList[ii], v))
+                fh.write("%4d        %30s: %s\n" % (jj, self._attributeNameList[ii], v))
 ##
 ##

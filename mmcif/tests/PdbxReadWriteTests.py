@@ -5,6 +5,7 @@
 # Version: 0.001
 #
 # Updated:
+# 28-Jan-2019  jdw add row dictionary initialization append/extend tests
 #
 ##
 """  Various tests cases for PDBx/mmCIF data file and dictionary reader and writer.
@@ -59,6 +60,8 @@ class PdbxReadWriteTests(unittest.TestCase):
         self.__pathOutputFile1 = os.path.join(HERE, "test-output", "testOutputDataFile1.cif")
         self.__pathOutputFile2 = os.path.join(HERE, "test-output", "testOutputDataFile2.cif")
         self.__pathOutputFile3 = os.path.join(HERE, "test-output", "testOutputDataFileStopToken3.cif")
+        self.__pathOutputFile4 = os.path.join(HERE, "test-output", "testOutputDataFile4.cif")
+        self.__pathOutputFile5 = os.path.join(HERE, "test-output", "testOutputDataFile5.cif")
         #
         self.__pathTestFile = os.path.join(HERE, "data", "testSingleRow.cif")
         self.__pathTestFileStop = os.path.join(HERE, "data", "testFileWithStopTokens.cif")
@@ -141,12 +144,12 @@ class PdbxReadWriteTests(unittest.TestCase):
             logger.exception("Failing with %s" % str(e))
             self.fail()
 
-    def testSimpleInitialization(self):
-        """Test case -  Simple initialization of a data category and data block
+    def testRowListInitialization(self):
+        """Test case -  Row list initialization of a data category and data block
         """
         try:
             #
-            fn = self.__pathOutputFile1
+            fn = self.__pathOutputFile4
             attributeNameList = ['aOne', 'aTwo', 'aThree', 'aFour', 'aFive', 'aSix', 'aSeven', 'aEight', 'aNine', 'aTen']
             rowList = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -431,11 +434,59 @@ class PdbxReadWriteTests(unittest.TestCase):
             logger.exception("Failing with %s" % str(e))
             self.fail()
 
+    def testRowDictInitialization(self):
+        """Test case -  Row dictionary initialization of a data category and data block
+        """
+        try:
+            #
+            rLen = 10
+            fn = self.__pathOutputFile5
+            attributeNameList = ['a', 'b', 'c', 'd']
+            rowList = [{'a': 1, 'b': 2, 'c': 3, 'd': 4} for i in range(rLen)]
+            nameCat = 'myCategory'
+            #
+            #
+            curContainer = DataContainer("myblock")
+            aCat = DataCategory(nameCat, attributeNameList, rowList)
+            aCat.append({'a': 1, 'b': 2, 'c': 3, 'd': 4})
+            aCat.append({'a': 1, 'b': 2, 'c': 3, 'd': 4})
+            aCat.extend(rowList)
+            curContainer.append(aCat)
+            aCat.renameAttributes({'a': 'aa', 'b': 'bb', 'c': 'cc', 'd': 'dd'})
+            aCat.setName('renamedCategory')
+            #
+            #
+            myContainerList = []
+            myContainerList.append(curContainer)
+            ofh = open(fn, "w")
+            pdbxW = PdbxWriter(ofh)
+            pdbxW.write(myContainerList)
+            ofh.close()
+
+            myContainerList = []
+            ifh = open(fn, "r")
+            pRd = PdbxReader(ifh)
+            pRd.read(myContainerList)
+            ifh.close()
+            for container in myContainerList:
+                for objName in container.getObjNameList():
+                    name, aList, rList = container.getObj(objName).get()
+                    logger.debug("Recovered data category  %s\n" % name)
+                    logger.debug("Attribute list           %r\n" % repr(aList))
+                    logger.debug("Row list                 %r\n" % repr(rList))
+            self.assertEqual(len(myContainerList), 1)
+            self.assertEqual(len(rList), 2 * rLen + 2)
+        except Exception as e:
+            logger.exception("Failing with %s" % str(e))
+            self.fail()
+
 
 def simpleSuite():
     suiteSelect = unittest.TestSuite()
     # suiteSelect.addTest(PdbxReadWriteTests("testWriteDataFile"))
     suiteSelect.addTest(PdbxReadWriteTests("testUpdateDataFile"))
+    suiteSelect.addTest(PdbxReadWriteTests("testRowListInitialization"))
+    suiteSelect.addTest(PdbxReadWriteTests("testRowDictInitialization"))
     return suiteSelect
 
 

@@ -13,6 +13,7 @@
 #   24-Jun-2015   jdw add getRowAttributeDict(self, index) and getRowItemDict(self, index)
 #   01-Aug-2017   jdw migrate portions to public repo
 #   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
+#   28-Jan-2019   jdw add row dictionary initialization, append, and extend methods
 ##
 """
 
@@ -50,10 +51,43 @@ class DataCategoryBase(UserList):
         self._name = name
         if copyInputData:
             self._attributeNameList = copy.deepcopy(attributeNameList) if attributeNameList is not None else []
-            self.data = copy.deepcopy(rowList) if rowList is not None else []
+            # self.data = copy.deepcopy(rowList) if rowList is not None else []
         else:
             self._attributeNameList = attributeNameList if attributeNameList is not None else []
-            self.data = rowList if rowList is not None else []
+            # self.data = rowList if rowList is not None else []
+        #
+        # -------
+        if rowList is None:
+            self.data = []
+        elif isinstance(rowList, list) and len(rowList) > 0:
+            if isinstance(rowList[0], (list, tuple)):
+                if copyInputData:
+                    self.data = copy.deepcopy(rowList) if rowList is not None else []
+                else:
+                    self.data = rowList if rowList is not None else []
+
+            elif isinstance(rowList[0], dict):
+                rL = []
+                for rowD in rowList:
+                    rL.append([rowD[k] for k in self._attributeNameList])
+                if copyInputData:
+                    self.data = copy.deepcopy(rL)
+                else:
+                    self.data = rL
+
+            else:
+                if raiseExceptions:
+                    raise ValueError
+                else:
+                    logger.error("Initialization failure")
+        else:
+            if raiseExceptions:
+                raise ValueError
+            else:
+                logger.error("Initialization failure")
+
+        # -------
+        #
         self._itemNameList = []
         self.__mappingType = "DATA"
         self._raiseExceptions = raiseExceptions
@@ -89,6 +123,59 @@ class DataCategoryBase(UserList):
         for attributeName in self._attributeNameList:
             attributeNameLC = attributeName.lower()
             self._catalog[attributeNameLC] = attributeName
+        self.__updateItemLabels()
+
+    # Add append/extend methods to accept row lists and dictionaries -
+    #
+
+    def append(self, row):
+        if isinstance(row, (list, tuple)):
+            self.data.append(row)
+            return True
+        elif isinstance(row, dict):
+            try:
+                # row dictionary must completely cover the current attribute space -
+                self.data.append([row[k] for k in self._attributeNameList])
+                return False
+            except Exception as e:
+                if self._raiseExceptions:
+                    raise e
+                else:
+                    logger.error("Row processing failing with %s" % str(e))
+        else:
+            if self._raiseExceptions:
+                raise ValueError
+            else:
+                logger.error("Unsupported row type")
+        return False
+
+    def extend(self, rowList):
+        if isinstance(rowList, list) and len(rowList) > 0:
+            if isinstance(rowList[0], (list, tuple)):
+                if self._copyInputData:
+                    self.data.extend(copy.deepcopy(rowList))
+                else:
+                    self.data.extend(rowList)
+                return True
+            elif isinstance(rowList[0], dict):
+                rL = []
+                for rowD in rowList:
+                    # row dictionary must completely cover the current attribute space -
+                    rL.append([rowD[k] for k in self._attributeNameList])
+                if self._copyInputData:
+                    self.data.extend(copy.deepcopy(rL))
+                else:
+                    self.data.extend(rL)
+                return True
+            else:
+                if self._raiseExceptions:
+                    raise ValueError
+                else:
+                    logger.error("unexpected row data type")
+        else:
+            logger.error("unexpected input data type")
+        return False
+
     #
     # Setters/appenders
     #
@@ -121,6 +208,16 @@ class DataCategoryBase(UserList):
             #
         self._numAttributes = len(self._attributeNameList)
         return self._numAttributes
+
+    def renameAttributes(self, mapDict):
+        """ Rename attributes according to mapping information in the input mapping dictionary {oldName: newName}
+        """
+        atL = []
+        for atName in self._attributeNameList:
+            atL.append(mapDict[atName] if atName in mapDict else atName)
+        self._attributeNameList = atL
+        self.__setup()
+        return True
 
     ##
     # Getters
