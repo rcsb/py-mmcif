@@ -22,7 +22,8 @@
 29-Nov-2018. - V027 - Add explicit option to better control read encoding errors separate from ascii encoding errors.
  7-Dec-2018    V028 - Add constructor parameter replaceDefinition=False to allow replacing
                       defintions during consolidation
-28-Jan-2019    V029 - Add row dictionary initialization, append, and extend methods
+27-Jan-2019    V029 - Add row dictionary initialization, append, and extend methods
+28-Jan-2019    V030 - Relax attribute coverage requirements on dictionary initialization
 
 
 

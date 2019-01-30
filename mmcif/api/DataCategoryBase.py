@@ -69,7 +69,7 @@ class DataCategoryBase(UserList):
             elif isinstance(rowList[0], dict):
                 rL = []
                 for rowD in rowList:
-                    rL.append([rowD[k] for k in self._attributeNameList])
+                    rL.append([rowD[k] if k in rowD else None for k in self._attributeNameList])
                 if copyInputData:
                     self.data = copy.deepcopy(rL)
                 else:
@@ -134,8 +134,8 @@ class DataCategoryBase(UserList):
             return True
         elif isinstance(row, dict):
             try:
-                # row dictionary must completely cover the current attribute space -
-                self.data.append([row[k] for k in self._attributeNameList])
+                # -
+                self.data.append([row[k] if k in row else None for k in self._attributeNameList])
                 return False
             except Exception as e:
                 if self._raiseExceptions:
@@ -160,8 +160,8 @@ class DataCategoryBase(UserList):
             elif isinstance(rowList[0], dict):
                 rL = []
                 for rowD in rowList:
-                    # row dictionary must completely cover the current attribute space -
-                    rL.append([rowD[k] for k in self._attributeNameList])
+                    #  -
+                    rL.append([rowD[k] if k in rowD else None for k in self._attributeNameList])
                 if self._copyInputData:
                     self.data.extend(copy.deepcopy(rL))
                 else:
