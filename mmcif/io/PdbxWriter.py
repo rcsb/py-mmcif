@@ -11,6 +11,7 @@
 #   28-Dec-2017 jdw  port to
 #   13-Jan-2018 jdw  add selection attributes lastInOrder=None, selectOrder=None
 #    8-Mar-2018 jdw  make step calc integer division
+#    2-Feb-2019 jdw  adjust formatting removing spurious comments and newlines
 ###
 """
 Utilities for writing mmCIF format data and dictionary containers.
@@ -93,9 +94,10 @@ class PdbxWriter(object):
     def writeContainer(self, container, lastInOrder=None, selectOrder=None):
         indS = " " * self.__INDENT_DEFINITION
         if container.getType() == 'definition':
-            self.__write("save_%s\n" % container.getName())
+            self.__write("save_%s" % container.getName())
+            # self.__write("save_%s\n" % container.getName())
             self.__doDefinitionIndent = True
-            self.__write(indS + "#\n")
+            # self.__write(indS + "#\n")
         elif container.getType() == 'data':
             if (container.getGlobal()):
                 self.__write("global_\n")
@@ -104,7 +106,7 @@ class PdbxWriter(object):
             else:
                 self.__write("data_%s\n" % container.getName())
                 self.__doDefinitionIndent = False
-                self.__write("#\n")
+                # self.__write("#\n")
 
         nmL = container.filterObjectNameList(lastInOrder=lastInOrder, selectOrder=selectOrder)
         for nm in nmL:
@@ -184,10 +186,10 @@ class PdbxWriter(object):
         # Write the declaration of the loop_
         #
         lineList = []
-        lineList.append(indS + '#\n')
+        # lineList.append(indS + '#\n')
         if self.__doDefinitionIndent:
             lineList.append(self.__indentSpace)
-        lineList.append("loop_")
+        lineList.append("\nloop_")
         for attributeName in myCategory.getAttributeList():
             lineList.append('\n')
             if self.__doDefinitionIndent:

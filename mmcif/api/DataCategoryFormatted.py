@@ -232,13 +232,13 @@ class DataCategoryFormatted(DataCategory):
             ll.append(";")
             ll.append(inp)
             ll.append(";")
-            ll.append("\n")
+            #ll.append("\n")
         else:
             ll.append(";")
             ll.append(inp)
             ll.append("\n")
             ll.append(";")
-            ll.append("\n")
+            #ll.append("\n")
 
         return(ll)
 

@@ -24,6 +24,7 @@
                       defintions during consolidation
 27-Jan-2019    V029 - Add row dictionary initialization, append, and extend methods
 28-Jan-2019    V030 - Relax attribute coverage requirements on dictionary initialization
+ 2-Feb-2019    V031 - Adjust formatting removing spurious comments and newlines and API method getFullDecendentList()
 
 
 

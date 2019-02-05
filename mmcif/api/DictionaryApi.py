@@ -15,6 +15,7 @@
 #   9-Sep-2018  jdw add priority to method definition constructor
 #   7-Dec-2018  jdw add constructor parameter replaceDefinition=False to allow replacing
 #                   defintions during consolidation
+#   3-Feb-2019  jdw add method getFullDecendentList()
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -228,7 +229,7 @@ class DictionaryApi(object):
         # add categories in group to self.__categoryGroupDict[<groupName>]['categories']
         for catName in catNameList:
             groupNameList = self.getCategoryGroupList(catName)
-            #logger.info("Category %s group list %r\n" % (catName,groupNameList))
+            # logger.info("Category %s group list %r\n" % (catName,groupNameList))
             for groupName in groupNameList:
                 if groupName not in self.__categoryGroupDict:
                     #  handle undefined category group ?
@@ -241,7 +242,7 @@ class DictionaryApi(object):
                 self.__categoryGroupDict[groupName]['categories'].append(catName)
         #
         for groupName in self.__categoryGroupDict.keys():
-            #logger.info("Group %s count %r\n" % (groupName, len(self.__categoryGroupDict[groupName]['categories'])))
+            # logger.info("Group %s count %r\n" % (groupName, len(self.__categoryGroupDict[groupName]['categories'])))
             if 'categories' in self.__categoryGroupDict[groupName]:
                 self.__categoryGroupDict[groupName]['categories'].sort()
         self.__groupIndex = True
@@ -531,6 +532,28 @@ class DictionaryApi(object):
             return self.__fullChildD[itemName]
         except Exception:
             return []
+
+    def getFullDecendentList(self, category, attribute):
+        itemNameL = []
+        try:
+            itemName = CifName.itemName(category, attribute)
+            itemNameL = self.__fullChildD[itemName] if itemName in self.__fullChildD else []
+            itemNameL = list(set(itemNameL))
+            if len(itemNameL) > 0:
+                begLen = 0
+                endLen = 1
+                #
+                while (endLen > begLen):
+                    begLen = len(itemNameL)
+                    for itemName in itemNameL:
+                        if itemName in self.__fullChildD:
+                            itemNameL.extend(self.__fullChildD[itemName])
+                    itemNameL = list(set(itemNameL))
+                    endLen = len(itemNameL)
+
+        except Exception as e:
+            logger.exception("Failing for %s %s with %s" % (category, attribute, str(e)))
+        return itemNameL
 
     def XgetFullParentList(self, category, attribute):
         try:
