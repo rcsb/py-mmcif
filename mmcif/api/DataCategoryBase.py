@@ -14,6 +14,7 @@
 #   01-Aug-2017   jdw migrate portions to public repo
 #   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
 #   28-Jan-2019   jdw add row dictionary initialization, append, and extend methods
+#    7-Feb-2019   jdw adjust initialization error checking to allow empty list
 ##
 """
 
@@ -57,7 +58,7 @@ class DataCategoryBase(UserList):
             # self.data = rowList if rowList is not None else []
         #
         # -------
-        if rowList is None:
+        if rowList is None or (isinstance(rowList, list) and len(rowList) < 1):
             self.data = []
         elif isinstance(rowList, list) and len(rowList) > 0:
             if isinstance(rowList[0], (list, tuple)):

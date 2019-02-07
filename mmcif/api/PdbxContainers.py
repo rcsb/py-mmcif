@@ -19,6 +19,7 @@
 #   14-Jan-2018   jdw add method filterObjectNameList(lastInOrder=None, selectOrder=None)
 #    4-Apr-2018   jdw adding internal __eq__ and __hash__ methods
 #    6-Aug-2018   jdw add setters/getters for container properties
+#    5-Feb-2019   jdw add merge method and logging
 ##
 """
 
@@ -43,12 +44,15 @@ data and definition meta data.
 """
 from __future__ import absolute_import
 
+import logging
 import sys
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
+
+logger = logging.getLogger(__name__)
 
 
 class CifName(object):
@@ -211,6 +215,18 @@ class ContainerBase(object):
             pass
 
         return False
+
+    def merge(self, container):
+        """ Merge the contents of the input container with the contents of the current container.
+        """
+        try:
+            objNameList = container.getObjNameList()
+            for objName in objNameList:
+                self.append(container.getObj(objName))
+        except Exception as e:
+            logger.exception("Failing with %s" % str(e))
+            return False
+        return True
 
     def filterObjectNameList(self, lastInOrder=None, selectOrder=None):
         """ Return an ordered list of categories in the input container subject to
