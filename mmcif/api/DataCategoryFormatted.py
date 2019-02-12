@@ -8,6 +8,7 @@
 #   17-Nov-2012   jdw self._rowList becomes data -
 #   17-Dec-2012   jdw add quoting preference as constructor option.
 #   01-Aug-2017   jdw migrate portions to public repo
+#   12-Feb-2019   jdw tweak semi-colon quoted string formatting
 ##
 """
 
@@ -232,13 +233,13 @@ class DataCategoryFormatted(DataCategory):
             ll.append(";")
             ll.append(inp)
             ll.append(";")
-            #ll.append("\n")
+            ll.append("\n")
         else:
             ll.append(";")
             ll.append(inp)
             ll.append("\n")
             ll.append(";")
-            #ll.append("\n")
+            ll.append("\n")
 
         return(ll)
 
