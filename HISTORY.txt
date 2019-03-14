@@ -28,5 +28,6 @@
  5-Feb-2019    V032 - Add container merge method.
  7-Feb-2019    V033 - Adjust initialization error checking to allow empty list
 12-Feb-2019    V034 - Back off some reformatting from V32.
+11-Mar-2019    V035 - Add method getAttributeUniqueValueList().
 
 

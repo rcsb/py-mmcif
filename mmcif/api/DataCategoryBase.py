@@ -15,6 +15,7 @@
 #   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
 #   28-Jan-2019   jdw add row dictionary initialization, append, and extend methods
 #    7-Feb-2019   jdw adjust initialization error checking to allow empty list
+#   11-Mar-2019   jdw add getAttributeUniqueValueList()
 ##
 """
 
@@ -297,13 +298,27 @@ class DataCategoryBase(UserList):
         return rD
 
     def getAttributeValueList(self, attributeName):
-        """ Return a list of
+        """ Return a list of attribute values.
         """
         rL = []
         try:
             idx = self.getAttributeIndex(attributeName)
             rL = [row[idx] for row in self.data]
             return rL
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
+        return rL
+
+    def getAttributeUniqueValueList(self, attributeName):
+        """ Return a sorted list of unique attribute values.
+        """
+        rL = []
+        try:
+            rD = {}
+            idx = self.getAttributeIndex(attributeName)
+            rD = {row[idx]: True for row in self.data}
+            return sorted(rD.keys())
         except Exception as e:
             if self._raiseExceptions:
                 raise e
