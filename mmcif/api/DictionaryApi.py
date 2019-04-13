@@ -16,6 +16,7 @@
 #   7-Dec-2018  jdw add constructor parameter replaceDefinition=False to allow replacing
 #                   defintions during consolidation
 #   3-Feb-2019  jdw add method getFullDecendentList()
+#  12-Apr-2019  jdw add methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -143,6 +144,7 @@ class DictionaryApi(object):
 
                         'ITEM_DEPENDENT_DEPENDENT_NAME': ('item_dependent', 'dependent_name'),
                         'ITEM_SUB_CATEGORY_ID': ('item_sub_category', 'id'),
+                        'ITEM_SUB_CATEGORY_LABEL': ('item_sub_category', 'pdbx_label'),
                         'ITEM_TYPE_CONDITIONS_CODE': ('item_type_conditions', 'code')
                         }
         #
@@ -320,6 +322,27 @@ class DictionaryApi(object):
 
     def getItemSubCategoryIdList(self, category, attribute):
         return self.__getList('ITEM_SUB_CATEGORY_ID', category, attribute)
+
+    def getItemSubCategoryLabelList(self, category, attribute):
+        return self.__getList('ITEM_SUB_CATEGORY_LABEL', category, attribute)
+
+    def getItemSubCategoryList(self, category, attribute):
+        aL = []
+
+        itemName = CifName.itemName(category, attribute)
+
+        obL = self.__definitionIndex[itemName] if itemName in self.__definitionIndex else None
+        for ob in obL:
+            tObj = ob.getObj(self.__enumD['ITEM_SUB_CATEGORY_ID'][0])
+            if tObj is not None:
+                atId = self.__enumD['ITEM_SUB_CATEGORY_ID'][1]
+                atLabel = self.__enumD['ITEM_SUB_CATEGORY_LABEL'][1]
+                for row in tObj.getRowList():
+                    # logger.info("subcategories for %s row is %r" % (itemName, row))
+                    idVal = row[tObj.getIndex(atId)] if tObj.hasAttribute(atId) else None
+                    labVal = row[tObj.getIndex(atLabel)] if tObj.hasAttribute(atLabel) else None
+                    aL.append((idVal, labVal))
+        return aL
 
     def getItemAliasList(self, category, attribute):
         aNL = self.__getListAll('ITEM_ALIAS_ALIAS_NAME', category, attribute)

@@ -29,5 +29,6 @@
  7-Feb-2019    V033 - Adjust initialization error checking to allow empty list
 12-Feb-2019    V034 - Back off some reformatting from V32.
 11-Mar-2019    V035 - Add method getAttributeUniqueValueList().
+12-Apr-2019    V036 - Add dictionary api methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
 
 
