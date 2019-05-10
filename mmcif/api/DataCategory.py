@@ -12,6 +12,7 @@
 #   01-Aug-2017   jdw migrate portions to public repo
 #    4-Oct-2018   jdw add optional method parameter returnCount=0 to selectValuesWhere() and selectValueListWhere()
 #   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
+#    5-May-2019   jdw add selectValuesWhereConditions() and countValuesWhereConditions()
 ##
 """
 
@@ -340,6 +341,72 @@ class DataCategory(DataCategoryBase):
             if self._raiseExceptions:
                 raise e
         return rL
+
+    def selectValuesWhereConditions(self, attributeName, conditionsD, returnCount=0):
+        rL = []
+        try:
+            iCount = 0
+            ind = self._attributeNameList.index(attributeName)
+            idxD = {k: self._attributeNameList.index(k) for k, v in conditionsD.items()}
+            #
+            #
+            for ii, row in enumerate(self.data):
+                ok = True
+                for k, v in conditionsD.items():
+                    ok = (v == row[idxD[k]]) and ok
+                if ok:
+                    rL.append(row[ind])
+                    iCount += 1
+                    if returnCount and (iCount >= returnCount):
+                        break
+        except Exception as e:
+            if self.__verbose:
+                logger.exception("Selection failure")
+            if self._raiseExceptions:
+                raise e
+        return rL
+
+    def countValuesWhereConditions(self, conditionsD):
+        try:
+            iCount = 0
+            idxD = {k: self._attributeNameList.index(k) for k, v in conditionsD.items()}
+            #
+            for ii, row in enumerate(self.data):
+                ok = True
+                for k, v in conditionsD.items():
+                    ok = (v == row[idxD[k]]) and ok
+                if ok:
+                    iCount += 1
+
+        except Exception as e:
+            if self.__verbose:
+                logger.exception("Selection failure")
+            if self._raiseExceptions:
+                raise e
+        return iCount
+
+    #
+    def getCombinationCounts(self, attributeList):
+        """ Count the value occurences of the input attributeList in the category.
+
+            Returns:
+
+                cD[(attribute value, ... )] = count
+
+        """
+        cD = {}
+        try:
+            idxL = [self._attributeNameList.index(atName) for atName in attributeList]
+            #
+            for row in self.data:
+                ky = tuple([row[jj] for jj in idxL])
+                cD[ky] = cD[ky] + 1 if ky in cD else 1
+        except Exception as e:
+            if self.__verbose:
+                logger.exception("Selection failure")
+            if self._raiseExceptions:
+                raise e
+        return cD
 
     def invokeAttributeMethod(self, attributeName, type, method, db):
         self._currentRowIndex = 0

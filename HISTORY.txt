@@ -30,5 +30,6 @@
 12-Feb-2019    V034 - Back off some reformatting from V32.
 11-Mar-2019    V035 - Add method getAttributeUniqueValueList().
 12-Apr-2019    V036 - Add dictionary api methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
+ 5-May-2019    V037 - Add selectValuesWhereConditions() and countValuesWhereConditions()
 
 
