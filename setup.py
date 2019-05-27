@@ -123,7 +123,7 @@ setup(
     url='http://mmcif.wwpdb.org',
     #
     license='Apache 2.0',
-    classifiers=(
+    classifiers=[
         'Development Status :: 3 - Alpha',
         # 'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -132,10 +132,8 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'
-    ),
+    ],
     # entry_points={
     #    'console_scripts': [
     #        'onedep_validate_cli=onedep.cli.validate_cli:run',

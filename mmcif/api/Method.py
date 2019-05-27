@@ -24,12 +24,14 @@ __license__ = "Apache 2.0"
 
 class MethodDefinition(object):
 
-    def __init__(self, method_id, code='calculate', language='Python', inline=None, priority=None):
+    def __init__(self, method_id, code='calculate', language='Python', inline=None, priority=None, implementation=None, implementationSource='inline'):
         self.method_id = method_id
         self.language = language
         self.code = code
         self.inline = inline
         self.priority = priority if priority else 1
+        self.implementationSource = implementationSource
+        self.implementation = implementation
 
     def getId(self):
         return self.method_id
@@ -43,16 +45,36 @@ class MethodDefinition(object):
     def getInline(self):
         return self.inline
 
+    def getImplementation(self):
+        return self.implementation
+
+    def getImplementationSource(self):
+        return self.implementationSource
+
     def getPriority(self):
         return self.priority
 
     def printIt(self, fh=sys.stdout):
         fh.write("------------- Method definition -------------\n")
-        fh.write("Id:           %s\n" % self.method_id)
-        fh.write("Code:         %s\n" % self.code)
-        fh.write("Language:     %s\n" % str(self.language))
-        fh.write("Inline text:  %s\n" % str(self.inline))
-        fh.write("Priority:     %d\n" % self.priority)
+        fh.write("Id:                      %s\n" % self.method_id)
+        fh.write("Code:                    %s\n" % self.code)
+        fh.write("Language:                %s\n" % str(self.language))
+        fh.write("Inline text:             %s\n" % str(self.inline))
+        fh.write("Imlementation:           %s\n" % str(self.implementation))
+        fh.write("Implementation source:   %s\n" % str(self.implementationSource))
+        fh.write("Priority:                %d\n" % self.priority)
+
+    def __repr__(self):
+        oL = []
+        oL.append("------------- Method definition -------------")
+        oL.append("Id:                      %s" % self.method_id)
+        oL.append("Code:                    %s" % self.code)
+        oL.append("Language:                %s" % str(self.language))
+        oL.append("Inline text:             %s" % str(self.inline))
+        oL.append("Imlementation:           %s" % str(self.implementation))
+        oL.append("Implementation source:   %s" % str(self.implementationSource))
+        oL.append("Priority:                %d" % self.priority)
+        return('\n'.join(oL))
 
 
 class MethodReference(object):
@@ -81,3 +103,12 @@ class MethodReference(object):
         fh.write("Type:           %s\n" % self.type)
         fh.write("Category name:  %s\n" % str(self.categoryName))
         fh.write("Attribute name: %s\n" % str(self.attributeName))
+
+    def __repr__(self):
+        oL = []
+        oL.append("--------------- Method Reference -----------------")
+        oL.append("Id:             %s" % self.method_id)
+        oL.append("Type:           %s" % self.type)
+        oL.append("Category name:  %s" % str(self.categoryName))
+        oL.append("Attribute name: %s" % str(self.attributeName))
+        return '\n'.join(oL)

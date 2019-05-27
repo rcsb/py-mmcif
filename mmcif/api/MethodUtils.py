@@ -6,7 +6,7 @@
 #   01-Aug-2017   jdw migrate portions to public repo
 ##
 """
-Utility classes for applying dictionary methods on PDBx/mmCIF data files.
+Utility classes for applying inline dictionary methods on PDBx/mmCIF data files.
 """
 from __future__ import absolute_import
 

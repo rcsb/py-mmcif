@@ -17,6 +17,7 @@
 #                   defintions during consolidation
 #   3-Feb-2019  jdw add method getFullDecendentList()
 #  12-Apr-2019  jdw add methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
+#  26-May-2019  jdw extend api for mehhods
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -1057,8 +1058,11 @@ class DictionaryApi(object):
                 if ml is not None:
                     # Use row order as priority
                     for ii, row in enumerate(ml.getRowList(), 1):
-                        if ml.hasAttribute('id') and ml.hasAttribute('inline'):
-                            mth = MethodDefinition(row[ml.getIndex('id')], row[ml.getIndex('code')], row[ml.getIndex('language')], row[ml.getIndex('inline')], ii)
+                        if ml.hasAttribute('id') and ml.hasAttribute('code') and ml.hasAttribute('language') and ml.hasAttribute('implementation_source'):
+                            tInline = row[ml.getIndex('inline')] if ml.hasAttribute('inline') else None
+                            tImpl = row[ml.getIndex('implementation')] if ml.hasAttribute('implementation') else None
+                            mth = MethodDefinition(row[ml.getIndex('id')], row[ml.getIndex('code')], row[ml.getIndex('language')],
+                                                   tInline, ii, tImpl, row[ml.getIndex('implementation_source')])
                             self.__methodDict[row[ml.getIndex('id')]] = mth
 
                 ml = ob.getObj('datablock_methods')
