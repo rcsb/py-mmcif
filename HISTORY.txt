@@ -32,5 +32,6 @@
 12-Apr-2019    V036 - Add dictionary api methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
  5-May-2019    V037 - Add selectValuesWhereConditions() and countValuesWhereConditions()
 26-May-2019    V038 - Extend method API to support DDL 2.2.1 extensions
+ 5-Jun-2019    V039 - Incorporate DictMethodRunner class change test naming conventions
 
 

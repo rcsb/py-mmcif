@@ -23,8 +23,9 @@ __license__ = "Apache 2.0"
 
 
 class MethodDefinition(object):
-
-    def __init__(self, method_id, code='calculate', language='Python', inline=None, priority=None, implementation=None, implementationSource='inline'):
+    def __init__(
+        self, method_id, code="calculate", language="Python", inline=None, priority=None, implementation=None, implementationSource="inline"
+    ):
         self.method_id = method_id
         self.language = language
         self.code = code
@@ -66,7 +67,7 @@ class MethodDefinition(object):
 
     def __repr__(self):
         oL = []
-        oL.append("------------- Method definition -------------")
+        oL.append("\n------------- Method definition -------------")
         oL.append("Id:                      %s" % self.method_id)
         oL.append("Code:                    %s" % self.code)
         oL.append("Language:                %s" % str(self.language))
@@ -74,12 +75,11 @@ class MethodDefinition(object):
         oL.append("Imlementation:           %s" % str(self.implementation))
         oL.append("Implementation source:   %s" % str(self.implementationSource))
         oL.append("Priority:                %d" % self.priority)
-        return('\n'.join(oL))
+        return "\n".join(oL)
 
 
 class MethodReference(object):
-
-    def __init__(self, method_id, type='attribute', category=None, attribute=None):
+    def __init__(self, method_id, type="attribute", category=None, attribute=None):
         self.method_id = method_id
         self.type = type
         self.categoryName = category
@@ -111,4 +111,4 @@ class MethodReference(object):
         oL.append("Type:           %s" % self.type)
         oL.append("Category name:  %s" % str(self.categoryName))
         oL.append("Attribute name: %s" % str(self.attributeName))
-        return '\n'.join(oL)
+        return "\n".join(oL)

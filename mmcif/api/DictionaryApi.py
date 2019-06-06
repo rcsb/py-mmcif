@@ -92,9 +92,7 @@ class DictionaryApi(object):
                         'ITEM_MANDATORY_CODE': ('item', 'mandatory_code'),
                         'ITEM_DESCRIPTION': ('item_description', 'description'),
                         'ITEM_UNITS': ('item_units', 'code'),
-                        'ITEM_MANDATORY_CODE': ('item', 'mandatory_code'),
                         'ITEM_DEFAULT_VALUE': ('item_default', 'value'),
-
                         'ITEM_EXAMPLE_CASE': ('item_examples', 'case'),
                         'ITEM_EXAMPLE_DETAIL': ('item_examples', 'detail'),
                         'ITEM_RANGE_MAXIMUM': ('item_range', 'maximum'),
@@ -1069,7 +1067,8 @@ class DictionaryApi(object):
                 if ml is not None:
                     for row in ml.getRowList():
                         if ml.hasAttribute('method_id'):
-                            mth = MethodReference(row[ml.getIndex('method_id')], 'datablock', ob.getName(), None)
+                            #mth = MethodReference(row[ml.getIndex('method_id')], 'datablock', ob.getName(), None)
+                            mth = MethodReference(row[ml.getIndex('method_id')], 'datablock', None, None)
                             if (ob.getName() in self.__methodIndex):
                                 self.__methodIndex[ob.getName()].append(mth)
                             else:
@@ -1115,11 +1114,18 @@ class DictionaryApi(object):
             for v in vL:
                 v.printIt(fh)
         #
+        fh.write("Inline method details\n")
         for k, vL in self.__methodIndex.items():
             fh.write("\n------------------------------------\n")
-            fh.write("Method inline text: %s\n" % k)
+            fh.write("Method index key: %s\n" % k)
             for v in vL:
-                fh.write("Method text: %s\n" % self.getMethod(v.getId()).getInline())
+                fh.write("Method ID: %r\n" % v.getId())
+                if self.getMethod(v.getId()):
+                    fh.write("%r" % v)
+                    #fh.write("Method text: %s\n" % self.getMethod(v.getId()).getInline())
+                else:
+                    fh.write("Missing method for %r" % v.getId())
+                    
 
     def dumpEnumFeatures(self, fh=sys.stdout):
         for k, vL in self.__catNameIndex.items():
