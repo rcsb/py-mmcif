@@ -36,13 +36,12 @@ __email__ = "jwest@rcsb.rutgers.edu"
 __license__ = "Apache 2.0"
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 class MethodUtilsTests(unittest.TestCase):
-
     def setUp(self):
         self.__lfh = sys.stdout
         self.__verbose = False
@@ -57,9 +56,9 @@ class MethodUtilsTests(unittest.TestCase):
 
     def tearDown(self):
         endTime = time.time()
-        logger.debug("Completed %s at %s (%.4f seconds)\n" % (self.id(),
-                                                              time.strftime("%Y %m %d %H:%M:%S", time.localtime()),
-                                                              endTime - self.__startTime))
+        logger.debug(
+            "Completed %s at %s (%.4f seconds)\n" % (self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
+        )
 
     def testGetDictionaryMethods(self):
         """Test case -  dump methods for dictionary metadata
@@ -69,6 +68,7 @@ class MethodUtilsTests(unittest.TestCase):
             self.__dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
             mU = MethodUtils(dictContainerList=self.__dictContainerList, verbose=self.__verbose)
             mU.dumpMethods(fh=self.__lfh)
+            #
             mD = mU.getMethods()
             self.assertEqual(len(mD), 5)
         except Exception as e:
@@ -104,7 +104,7 @@ def suiteMethodUtilsTests():
     return suiteSelect
 
 
-if __name__ == '__main__':
-    if (True):
+if __name__ == "__main__":
+    if True:
         mySuite = suiteMethodUtilsTests()
         unittest.TextTestRunner(verbosity=2).run(mySuite)
