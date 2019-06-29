@@ -25,6 +25,7 @@ import datetime
 import gzip
 import io
 import logging
+
 # import lzma
 import os
 import shutil
@@ -53,16 +54,17 @@ class IoAdapterBase(object):
             verbose (bool,optional):  log verbose output from wrapped libraries
 
         """
-        self._raiseExceptions = kwargs.get('raiseExceptions', False)
-        self._maxInputLineLength = kwargs.get('maxInputLineLength', 4096)
-        self._useCharRefs = kwargs.get('useCharRefs', True)
+        _ = args
+        self._raiseExceptions = kwargs.get("raiseExceptions", False)
+        self._maxInputLineLength = kwargs.get("maxInputLineLength", 4096)
+        self._useCharRefs = kwargs.get("useCharRefs", True)
         self.__logFilePath = None
-        self._debug = kwargs.get('debug', False)
-        self._timing = kwargs.get('timing', False)
-        self._verbose = kwargs.get('verbose', True)
-        self._readEncodingErrors = kwargs.get('readEncodingErrors', 'ignore')
+        self._debug = kwargs.get("debug", False)
+        self._timing = kwargs.get("timing", False)
+        self._verbose = kwargs.get("verbose", True)
+        self._readEncodingErrors = kwargs.get("readEncodingErrors", "ignore")
 
-    def readFile(self, inputFilePath, **kwargs):
+    def readFile(self, *args, **kwargs):
         """ Read file method. (abstract)
 
          Args:
@@ -149,12 +151,14 @@ class IoAdapterBase(object):
         """ Append input string list to the current log file -
         """
         if not self.__logFilePath:
-            return
+            return False
         try:
-            with open(self.__logFilePath, 'a') as ofh:
-                ofh.write("%s\n" % '\n'.join(stList))
+            with open(self.__logFilePath, "a") as ofh:
+                ofh.write("%s\n" % "\n".join(stList))
+            return True
         except Exception as e:
-            pass
+            logger.debug("Failing with %s", str(e))
+        return True
 
     def _logError(self, msg):
         """ Convenience method to log error messages and optionally raise general exceptions (PdbxError).
@@ -170,11 +174,11 @@ class IoAdapterBase(object):
         """
         diagL = []
         try:
-            with open(self.__logFilePath, 'r') as ifh:
+            with open(self.__logFilePath, "r") as ifh:
                 for line in ifh:
                     diagL.append(line[:-1])
         except Exception as e:
-            msg = "No logfile found %s" % self.__logFilePath
+            msg = "No logfile found %s (%s)" % (self.__logFilePath, str(e))
             diagL.append(msg)
             logger.debug(msg)
 
@@ -195,22 +199,22 @@ class IoAdapterBase(object):
         if outDirPath:
             return outDirPath
         #
-        for oPath in [os.path.dirname(filePath), '.', tempfile.gettempdir()]:
+        for oPath in [os.path.dirname(filePath), ".", tempfile.gettempdir()]:
             if os.access(oPath, os.W_OK):
                 return oPath
 
-    def _getDefaultFileName(self, filePath, fileType='cif-parser', fileExt='log', outDirPath=None, verify=True):
+    def _getDefaultFileName(self, filePath, fileType="cif-parser", fileExt="log", outDirPath=None, verify=True):
         """ Return default file path for the target input file subject to input attributes and the output path.
         """
         returnFilePath = None
         try:
-            dn, fn = os.path.split(filePath)
-            bn, ext = os.path.splitext(fn)
+            _, fn = os.path.split(filePath)
+            bn, _ = os.path.splitext(fn)
             #
-            ft = fileType if fileType else 'temp'
-            fex = fileExt if fileExt else 'tmp'
+            ft = fileType if fileType else "temp"
+            fex = fileExt if fileExt else "tmp"
             #
-            sf = '_' + ft + '_P' + self.__getDiscriminator() + '.' + fex
+            sf = "_" + ft + "_P" + self.__getDiscriminator() + "." + fex
             #
             # pth = outDirPath if outDirPath else '.'
             pth = self._chooseTemporaryPath(filePath, outDirPath=outDirPath)
@@ -226,7 +230,7 @@ class IoAdapterBase(object):
             if self._raiseExceptions:
                 raise e
             else:
-                logger.error("Failed creating default filename for %s type %s with %s" % (filePath, fileType, str(e)))
+                logger.error("Failed creating default filename for %s type %s with %s", filePath, fileType, str(e))
 
         return returnFilePath
 
@@ -234,7 +238,7 @@ class IoAdapterBase(object):
         """ Verify that input file path exists and is readable.
         """
         try:
-            if (not os.access(filePath, os.R_OK)):
+            if not os.access(filePath, os.R_OK):
                 msg = "Missing file %r" % filePath
                 self._appendToLog([msg])
                 logger.error(msg)
@@ -243,7 +247,7 @@ class IoAdapterBase(object):
                     raise PdbxError(msg)
                 return False
             else:
-                logger.debug("Reading from file path %s" % filePath)
+                logger.debug("Reading from file path %s", filePath)
                 return True
         except Exception as e:
             msg = "File check error for %r with %s " % (filePath, str(e))
@@ -263,24 +267,24 @@ class IoAdapterBase(object):
         except Exception:
             pass
 
-    def _toAscii(self, inputFilePath, outputFilePath, chunkSize=5000, encodingErrors='ignore', readEncodingErrors='ignore'):
+    def _toAscii(self, inputFilePath, outputFilePath, chunkSize=5000, encodingErrors="ignore", readEncodingErrors="ignore"):
         """ Encode input file to Ascii and write this to the target output file.   Handle encoding
             errors according to the input settting ('ignore', 'escape', 'xmlcharrefreplace').
         """
         try:
             startTime = time.time()
             chunk = []
-            with io.open(inputFilePath, "r", encoding="utf-8", errors=readEncodingErrors) as r, io.open(outputFilePath, "w", encoding='ascii') as w:
-                for line in r:
+            with io.open(inputFilePath, "r", encoding="utf-8", errors=readEncodingErrors) as ifh, io.open(outputFilePath, "w", encoding="ascii") as ofh:
+                for line in ifh:
                     # chunk.append(line.encode('ascii', 'xmlcharrefreplace').decode('ascii'))
-                    chunk.append(line.encode('ascii', encodingErrors).decode('ascii'))
+                    chunk.append(line.encode("ascii", encodingErrors).decode("ascii"))
                     if len(chunk) == chunkSize:
-                        w.writelines(chunk)
+                        ofh.writelines(chunk)
                         chunk = []
-                w.writelines(chunk)
+                ofh.writelines(chunk)
             if self._timing:
                 stepTime1 = time.time()
-                logger.info("Timing text file %s encoded to as ascii in %.4f seconds" % (inputFilePath, stepTime1 - startTime))
+                logger.info("Timing text file %s encoded to as ascii in %.4f seconds", inputFilePath, stepTime1 - startTime)
             return True
         except Exception as e:
             msg = "Failing text ascii encoding for %s with %s" % (inputFilePath, str(e))
@@ -299,30 +303,30 @@ class IoAdapterBase(object):
         """
         try:
             startTime = time.time()
-            fp, fn = os.path.split(inputFilePath)
-            bn, fx = os.path.splitext(fn)
+            _, fn = os.path.split(inputFilePath)
+            bn, _ = os.path.splitext(fn)
             outputFilePath = os.path.join(outputDir, bn)
             if inputFilePath.endswith(".gz"):
-                with gzip.open(inputFilePath, mode='rb') as inp_f:
-                    with io.open(outputFilePath, "wb") as out_f:
-                        shutil.copyfileobj(inp_f, out_f)
+                with gzip.open(inputFilePath, mode="rb") as inpF:
+                    with io.open(outputFilePath, "wb") as outF:
+                        shutil.copyfileobj(inpF, outF)
             elif inputFilePath.endswith(".bz2"):
-                with bz2.open(inputFilePath, mode='rb') as inp_f:
-                    with io.open(outputFilePath, "wb") as out_f:
-                        shutil.copyfileobj(inp_f, out_f)
+                with bz2.open(inputFilePath, mode="rb") as inpF:
+                    with io.open(outputFilePath, "wb") as outF:
+                        shutil.copyfileobj(inpF, outF)
             # elif inputFilePath.endswith(".xz"):
-            #    with lzma.open(inputFilePath, mode="rb") as inp_f:
-            #        with io.open(outputFilePath, "wb") as out_f:
-            #            shutil.copyfileobj(inp_f, out_f)
+            #    with lzma.open(inputFilePath, mode="rb") as inpF:
+            #        with io.open(outputFilePath, "wb") as outF:
+            #            shutil.copyfileobj(inpF, outF)
             elif inputFilePath.endswith(".zip"):
-                with zipfile.ZipFile(inputFilePath, mode='rb') as inp_f:
-                    with io.open(outputFilePath, "wb") as out_f:
-                        shutil.copyfileobj(inp_f, out_f)
+                with zipfile.ZipFile(inputFilePath, mode="rb") as inpF:
+                    with io.open(outputFilePath, "wb") as outF:
+                        shutil.copyfileobj(inpF, outF)
             else:
                 outputFilePath = inputFilePath
             if self._timing:
                 stepTime1 = time.time()
-                logger.info("Timing text file %s uncompressed in %.4f seconds" % (inputFilePath, stepTime1 - startTime))
+                logger.info("Timing text file %s uncompressed in %.4f seconds", inputFilePath, stepTime1 - startTime)
             #
         except Exception as e:
             msg = "Failing uncompress for file %s with %s" % (inputFilePath, str(e))
@@ -331,5 +335,5 @@ class IoAdapterBase(object):
             if self._raiseExceptions:
                 raise PdbxError(msg)
 
-        logger.debug("Returning file path %r" % outputFilePath)
+        logger.debug("Returning file path %r", outputFilePath)
         return outputFilePath

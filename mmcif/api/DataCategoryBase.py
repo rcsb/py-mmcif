@@ -27,8 +27,8 @@ from __future__ import absolute_import
 import copy
 import logging
 
-from mmcif.api import __STRING_TYPES__
-
+# from mmcif.api import __STRING_TYPES__
+from past.builtins import basestring
 from six.moves import UserList, range, zip
 
 __docformat__ = "restructuredtext en"
@@ -39,7 +39,7 @@ __license__ = "Apache 2.0"
 
 logger = logging.getLogger(__name__)
 
-
+# pylint: disable=arguments-differ
 class DataCategoryBase(UserList):
 
     """ Base object definition for a data category -
@@ -59,9 +59,9 @@ class DataCategoryBase(UserList):
             # self.data = rowList if rowList is not None else []
         #
         # -------
-        if rowList is None or (isinstance(rowList, list) and len(rowList) < 1):
+        if rowList is None or (isinstance(rowList, list) and not rowList):
             self.data = []
-        elif isinstance(rowList, list) and len(rowList) > 0:
+        elif isinstance(rowList, list) and rowList:
             if isinstance(rowList[0], (list, tuple)):
                 if copyInputData:
                     self.data = copy.deepcopy(rowList) if rowList is not None else []
@@ -102,21 +102,7 @@ class DataCategoryBase(UserList):
         self._catalog = {}
         self._numAttributes = 0
         #
-        #
-        # try:
-        #    basestring
-        # except NameError:
-        #    basestring = str
-        # self._string_types = basestring
-        # self._isPy3 = sys.version_info[0] == 3
-        # if self._isPy3:
-        #    self._string_types = str
-        # else:
-        #    try:
-        #        self._string_types = basestring
-        #    except Exception as e:
-        #        logger.exception("Unable to assign string type %s" % str(e))
-        self._string_types = __STRING_TYPES__
+        self._stringTypes = basestring
         self.__setup()
 
     def __setup(self):
@@ -143,7 +129,7 @@ class DataCategoryBase(UserList):
                 if self._raiseExceptions:
                     raise e
                 else:
-                    logger.error("Row processing failing with %s" % str(e))
+                    logger.error("Row processing failing with %s", str(e))
         else:
             if self._raiseExceptions:
                 raise ValueError
@@ -152,7 +138,7 @@ class DataCategoryBase(UserList):
         return False
 
     def extend(self, rowList):
-        if isinstance(rowList, list) and len(rowList) > 0:
+        if isinstance(rowList, list) and rowList:
             if isinstance(rowList[0], (list, tuple)):
                 if self._copyInputData:
                     self.data.extend(copy.deepcopy(rowList))
@@ -240,7 +226,8 @@ class DataCategoryBase(UserList):
         try:
             return self._attributeNameList.index(attributeName)
         except Exception as e:
-            pass
+            logger.debug("Fails for %s with %s", attributeName, str(e))
+
         return -1
 
     def getAttributeIndexDict(self):
@@ -262,7 +249,7 @@ class DataCategoryBase(UserList):
         return self.data
 
     def getRowCount(self):
-        return (len(self.data))
+        return len(self.data)
 
     def getRow(self, index):
         try:
@@ -401,22 +388,22 @@ class DataCategoryBase(UserList):
              ITEM      = row returned as a dictionary with item key
 
         """
-        if mType in ['DATA', 'ATTRIBUTE', 'ITEM']:
+        if mType in ["DATA", "ATTRIBUTE", "ITEM"]:
             self.__mappingType = mType
             return True
         else:
             return False
 
     def __str__(self):
-        ans = 'name:%r\nattrbuteList: %r\nData: %r\n' % (self._name, self._attributeNameList, list(self.data),)
+        ans = "name:%r\nattrbuteList: %r\nData: %r\n" % (self._name, self._attributeNameList, list(self.data))
         return ans
 
     def __repr__(self):
-        return self.__class__.__name__ + '(' + str(self) + ')'
+        return self.__class__.__name__ + "(" + str(self) + ")"
 
     def __iter__(self):
-        for d in self.data:
-            yield self.__applyMapping(d)
+        for dD in self.data:
+            yield self.__applyMapping(dD)
 
     def __getitem__(self, idx):
         return self.__applyMapping(self.data[idx])
@@ -425,29 +412,29 @@ class DataCategoryBase(UserList):
         dL = self.__extractMapping(value)
         self.data[idx] = dL
 
-    def __applyMapping(self, d):
+    def __applyMapping(self, dD):
         if self.__mappingType == "DATA":
-            return d
+            return dD
         elif self.__mappingType == "ATTRIBUTE":
-            self.__alignLabels(d)
-            return dict(list(zip(self._attributeNameList, d)))
+            self.__alignLabels(dD)
+            return dict(list(zip(self._attributeNameList, dD)))
         elif self.__mappingType == "ITEM":
-            self.__alignLabels(d)
+            self.__alignLabels(dD)
             self.__updateItemLabels()
-            return dict(list(zip(self._itemNameList, d)))
+            return dict(list(zip(self._itemNameList, dD)))
 
-    def __extractMapping(self, d):
+    def __extractMapping(self, dD):
         try:
             if self.__mappingType == "DATA":
-                return d
+                return dD
             elif self.__mappingType == "ATTRIBUTE":
                 rL = []
-                for k, v in d.items():
+                for k, v in dD.items():
                     rL.insert(self._attributeNameList.index(k), v)
                 return rL
             elif self.__mappingType == "ITEM":
                 rL = []
-                for k, v in d.items():
+                for k, v in dD.items():
                     rL.insert(self._itemNameList.index(k), v)
                 return rL
         except Exception:

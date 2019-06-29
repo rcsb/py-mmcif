@@ -32,7 +32,7 @@ import re
 
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.PdbxContainers import DataContainer, DefinitionContainer
-from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
+from mmcif.io.PdbxExceptions import PdbxError, PdbxSyntaxError
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -54,11 +54,7 @@ class PdbxReader(object):
         #
         self.__curLineNumber = 0
         self.__ifh = ifh
-        self.__stateDict = {"data": "ST_DATA_CONTAINER",
-                            "loop": "ST_TABLE",
-                            "global": "ST_GLOBAL_CONTAINER",
-                            "save": "ST_DEFINITION",
-                            "stop": "ST_STOP"}
+        self.__stateDict = {"data": "ST_DATA_CONTAINER", "loop": "ST_TABLE", "global": "ST_GLOBAL_CONTAINER", "save": "ST_DEFINITION", "stop": "ST_STOP"}
 
     def read(self, containerList, selectList=None, excludeFlag=False):
         """
@@ -74,15 +70,15 @@ class PdbxReader(object):
             self.__parser(self.__tokenizer(self.__ifh), containerList, categorySelectionD=catSelectD, excludeFlag=excludeFlag)
         except RuntimeError as e:
             # will be raised at the end of token iterator - not an error -
-            logger.debug("Normal termination after reading %d lines with %s" % (self.__curLineNumber, str(e)))
+            logger.debug("Normal termination after reading %d lines with %s", self.__curLineNumber, str(e))
         except StopIteration:
             # will be raised at the end of token iterator - not an error -
-            logger.debug("Normal termination after reading %d lines" % self.__curLineNumber)
-        except SyntaxError as e:
-            logger.debug("Caught syntax exception at %d" % self.__curLineNumber)
+            logger.debug("Normal termination after reading %d lines", self.__curLineNumber)
+        except PdbxSyntaxError as e:
+            logger.debug("Caught syntax exception at %d", self.__curLineNumber)
             raise e
         except UnicodeDecodeError as e:
-            logger.debug("Caught character encoding exception at %d" % self.__curLineNumber)
+            logger.debug("Caught character encoding exception at %d", self.__curLineNumber)
             raise PdbxError("Character encoding error at line %d" % self.__curLineNumber)
         except Exception as e:
             raise PdbxError("Failing at line %d with %s" % (self.__curLineNumber, str(e)))
@@ -100,7 +96,7 @@ class PdbxReader(object):
                     ok = False
                 else:
                     ok = True
-                    logger.debug("nl %d length catSelectD %d returning %r" % (len(nl), len(catSelectD), ok))
+                    logger.debug("nl %d length catSelectD %d returning %r", len(nl), len(catSelectD), ok)
             except Exception:
                 ok = False
         else:
@@ -109,7 +105,7 @@ class PdbxReader(object):
 
     def __syntaxError(self, errText):
         msg = " [Line: %d] %s" % (self.__curLineNumber, errText)
-        raise SyntaxError(msg)
+        raise PdbxSyntaxError(msg)
 
     def __getContainerName(self, inWord):
         """ Returns the name of the data block or saveframe container
@@ -150,7 +146,7 @@ class PdbxReader(object):
                     The input containerList is appended with data and definition objects -
         """
         catSelectD = categorySelectionD if categorySelectionD is not None else {}
-        logger.debug("Exclude Flag %r Category selection %r" % (excludeFlag, catSelectD))
+        logger.debug("Exclude Flag %r Category selection %r", excludeFlag, catSelectD)
         # Working container - data or definition
         curContainer = None
         # the last container of type data -
@@ -208,7 +204,7 @@ class PdbxReader(object):
                             elif excludeFlag and curCatName not in catSelectD:
                                 curContainer.append(curCategory)
                             else:
-                                logger.debug("Skipped unselected/excluded category %s" % curCatName)
+                                logger.debug("Skipped unselected/excluded category %s", curCatName)
                         else:
                             curContainer.append(curCategory)
                     except AttributeError:
@@ -234,7 +230,7 @@ class PdbxReader(object):
                     curCategory.appendAttribute(curAttName)
 
                 # Get the data for this attribute from the next token
-                tCat, tAtt, curQuotedString, curWord = next(tokenizer)
+                tCat, _, curQuotedString, curWord = next(tokenizer)
 
                 if tCat is not None or (curQuotedString is None and curWord is None):
                     self.__syntaxError("Missing data for item _%s.%s" % (curCatName, curAttName))
@@ -289,7 +285,7 @@ class PdbxReader(object):
                         elif excludeFlag and curCatName not in catSelectD:
                             curContainer.append(curCategory)
                         else:
-                            logger.debug("Skipped unselected/excluded category %s" % curCatName)
+                            logger.debug("Skipped unselected/excluded category %s", curCatName)
                     else:
                         curContainer.append(curCategory)
                 except AttributeError:
@@ -325,7 +321,7 @@ class PdbxReader(object):
                     curRow = []
                     curCategory.append(curRow)
 
-                    for tAtt in curCategory.getAttributeList():
+                    for _ in curCategory.getAttributeList():
                         if curWord is not None:
                             curRow.append(curWord)
                         elif curQuotedString is not None:
@@ -350,7 +346,7 @@ class PdbxReader(object):
             elif state == "ST_DEFINITION":
                 # Ignore trailing unnamed saveframe delimiters e.g. 'save'
                 sName = self.__getContainerName(curWord)
-                if (len(sName) > 0):
+                if sName:
                     curContainer = DefinitionContainer(sName)
                     containerList.append(curContainer)
                     categoryIndex = {}
@@ -364,7 +360,7 @@ class PdbxReader(object):
             elif state == "ST_DATA_CONTAINER":
                 #
                 dName = self.__getContainerName(curWord)
-                if len(dName) == 0:
+                if not dName:
                     dName = "unidentified"
                 curContainer = DataContainer(dName)
                 containerList.append(curContainer)
@@ -407,17 +403,17 @@ class PdbxReader(object):
         #
         mmcifRe = re.compile(
             r"(?:"
-
-            "(?:_(.+?)[.](\S+))"               "|"  # _category.attribute
-
-            "(?:['](.*?)(?:[']\s|[']$))"       "|"  # single quoted strings
-            "(?:[\"](.*?)(?:[\"]\s|[\"]$))"    "|"  # double quoted strings
-
-            "(?:\s*#.*$)"                      "|"  # comments (dumped)
-
-            "(\S+)"                                 # unquoted words
-
-            ")")
+            r"(?:_(.+?)[.](\S+))"
+            r"|"  # _category.attribute
+            r"(?:['](.*?)(?:[']\s|[']$))"
+            r"|"  # single quoted strings
+            r'(?:["](.*?)(?:["]\s|["]$))'
+            r"|"  # double quoted strings
+            r"(?:\s*#.*$)"
+            r"|"  # comments (dumped)
+            r"(\S+)"  # unquoted words
+            r")"
+        )
 
         fileIter = iter(ifh)
 
@@ -457,7 +453,7 @@ class PdbxReader(object):
                 for it in mmcifRe.finditer(line):
                     tgroups = it.groups()
                     #
-                    if tgroups[4] is not None and tgroups[4].lower() == 'stop_':
+                    if tgroups[4] is not None and tgroups[4].lower() == "stop_":
                         continue
                     if tgroups != (None, None, None, None, None):
                         if tgroups[2] is not None:

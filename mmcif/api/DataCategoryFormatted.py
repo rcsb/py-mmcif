@@ -39,7 +39,7 @@ class DataCategoryFormatted(DataCategory):
 
     def __init__(self, dataCategoryObj, preferDoubleQuotes=True):
         self.__dcObj = dataCategoryObj
-        super(DataCategory, self).__init__(self.__dcObj._name, self.__dcObj._attributeNameList, self.__dcObj.data)
+        super(DataCategoryFormatted, self).__init__(self.__dcObj.getName(), self.__dcObj.getAttributeList(), self.__dcObj.data)
         #
         self._currentRowIndex = 0
         self._currentAttribute = None
@@ -64,13 +64,29 @@ class DataCategoryFormatted(DataCategory):
         self.__dqRe = re.compile(r'["]')
         self.__dqWsRe = re.compile(r'("\s)|(\s")')
         #
-        self.__intRe = re.compile(r'^[0-9]+$')
-        self.__floatRe = re.compile(r'^-?(([0-9]+)[.]?|([0-9]*[.][0-9]+))([(][0-9]+[)])?([eE][+-]?[0-9]+)?$')
+        self.__intRe = re.compile(r"^[0-9]+$")
+        self.__floatRe = re.compile(r"^-?(([0-9]+)[.]?|([0-9]*[.][0-9]+))([(][0-9]+[)])?([eE][+-]?[0-9]+)?$")
         #
-        self.__dataTypeList = ['DT_NULL_VALUE', 'DT_INTEGER', 'DT_FLOAT', 'DT_UNQUOTED_STRING', 'DT_ITEM_NAME',
-                               'DT_DOUBLE_QUOTED_STRING', 'DT_SINGLE_QUOTED_STRING', 'DT_MULTI_LINE_STRING']
-        self.__formatTypeList = ['FT_NULL_VALUE', 'FT_NUMBER', 'FT_NUMBER', 'FT_UNQUOTED_STRING',
-                                 'FT_QUOTED_STRING', 'FT_QUOTED_STRING', 'FT_QUOTED_STRING', 'FT_MULTI_LINE_STRING']
+        self.__dataTypeList = [
+            "DT_NULL_VALUE",
+            "DT_INTEGER",
+            "DT_FLOAT",
+            "DT_UNQUOTED_STRING",
+            "DT_ITEM_NAME",
+            "DT_DOUBLE_QUOTED_STRING",
+            "DT_SINGLE_QUOTED_STRING",
+            "DT_MULTI_LINE_STRING",
+        ]
+        self.__formatTypeList = [
+            "FT_NULL_VALUE",
+            "FT_NUMBER",
+            "FT_NUMBER",
+            "FT_UNQUOTED_STRING",
+            "FT_QUOTED_STRING",
+            "FT_QUOTED_STRING",
+            "FT_QUOTED_STRING",
+            "FT_MULTI_LINE_STRING",
+        ]
         #
         # try:
         #    basestring
@@ -83,153 +99,153 @@ class DataCategoryFormatted(DataCategory):
         """ Format input data following PDBx quoting rules -
         """
         try:
-            if (inp is None):
-                return ("?", 'DT_NULL_VALUE')
+            if inp is None:
+                return ("?", "DT_NULL_VALUE")
 
             # pure numerical values are returned as unquoted strings
             # if (isinstance(inp, int) or self.__intRe.search(str(inp))):
             #
             try:
-                if (isinstance(inp, int) or self.__intRe.search(inp)):
-                    return ([str(inp)], 'DT_INTEGER')
+                if isinstance(inp, int) or self.__intRe.search(inp):
+                    return ([str(inp)], "DT_INTEGER")
             except Exception:
                 pass
 
             # if (isinstance(inp, float) or self.__floatRe.search(str(inp))):
             try:
-                if (isinstance(inp, float) or self.__floatRe.search(inp)):
-                    return ([str(inp)], 'DT_FLOAT')
+                if isinstance(inp, float) or self.__floatRe.search(inp):
+                    return ([str(inp)], "DT_FLOAT")
             except Exception:
                 pass
 
             # null value handling -
 
-            if (inp == "." or inp == "?"):
-                return ([inp], 'DT_NULL_VALUE')
+            if inp == "." or inp == "?":
+                return ([inp], "DT_NULL_VALUE")
 
-            if (inp == ""):
-                return (["."], 'DT_NULL_VALUE')
+            if inp == "":
+                return (["."], "DT_NULL_VALUE")
 
             # Contains white space or quotes ?
             if not self.__wsAndQuotesRe.search(inp):
                 # if inp.startswith("_"):
-                if inp[0] in ['_']:
-                    return (self.__doubleQuotedList(inp), 'DT_ITEM_NAME')
-                elif inp[0] in ['[', ']', '$', '#', ';']:
-                    return (self.__doubleQuotedList(inp), 'DT_DOUBLE_QUOTED_STRING')
-                elif inp[:5] in ['data_', 'loop_', 'save_']:
-                    return (self.__doubleQuotedList(inp), 'DT_DOUBLE_QUOTED_STRING')
+                if inp[0] in ["_"]:
+                    return (self.__doubleQuotedList(inp), "DT_ITEM_NAME")
+                elif inp[0] in ["[", "]", "$", "#", ";"]:
+                    return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
+                elif inp[:5] in ["data_", "loop_", "save_"]:
+                    return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
                 else:
-                    return ([str(inp)], 'DT_UNQUOTED_STRING')
+                    return ([str(inp)], "DT_UNQUOTED_STRING")
             else:
                 if self.__nlRe.search(inp):
-                    return (self.__semiColonQuotedList(inp), 'DT_MULTI_LINE_STRING')
+                    return (self.__semiColonQuotedList(inp), "DT_MULTI_LINE_STRING")
                 else:
-                    if (self.__preferDoubleQuotes):
-                        if (self.__avoidEmbeddedQuoting):
+                    if self.__preferDoubleQuotes:
+                        if self.__avoidEmbeddedQuoting:
                             # change priority to choose double quoting where possible.
                             if not self.__dqRe.search(inp) and not self.__sqWsRe.search(inp):
-                                return (self.__doubleQuotedList(inp), 'DT_DOUBLE_QUOTED_STRING')
+                                return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
                             elif not self.__sqRe.search(inp) and not self.__dqWsRe.search(inp):
-                                return (self.__singleQuotedList(inp), 'DT_SINGLE_QUOTED_STRING')
+                                return (self.__singleQuotedList(inp), "DT_SINGLE_QUOTED_STRING")
                             else:
-                                return (self.__semiColonQuotedList(inp), 'DT_MULTI_LINE_STRING')
+                                return (self.__semiColonQuotedList(inp), "DT_MULTI_LINE_STRING")
                         else:
                             # change priority to choose double quoting where possible.
                             if not self.__dqRe.search(inp):
-                                return (self.__doubleQuotedList(inp), 'DT_DOUBLE_QUOTED_STRING')
+                                return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
                             elif not self.__sqRe.search(inp):
-                                return (self.__singleQuotedList(inp), 'DT_SINGLE_QUOTED_STRING')
+                                return (self.__singleQuotedList(inp), "DT_SINGLE_QUOTED_STRING")
                             else:
-                                return (self.__semiColonQuotedList(inp), 'DT_MULTI_LINE_STRING')
+                                return (self.__semiColonQuotedList(inp), "DT_MULTI_LINE_STRING")
                     else:
-                        if (self.__avoidEmbeddedQuoting):
+                        if self.__avoidEmbeddedQuoting:
                             # change priority to choose double quoting where possible.
                             if not self.__sqRe.search(inp) and not self.__dqWsRe.search(inp):
-                                return (self.__singleQuotedList(inp), 'DT_SINGLE_QUOTED_STRING')
+                                return (self.__singleQuotedList(inp), "DT_SINGLE_QUOTED_STRING")
                             elif not self.__dqRe.search(inp) and not self.__sqWsRe.search(inp):
-                                return (self.__doubleQuotedList(inp), 'DT_DOUBLE_QUOTED_STRING')
+                                return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
                             else:
-                                return (self.__semiColonQuotedList(inp), 'DT_MULTI_LINE_STRING')
+                                return (self.__semiColonQuotedList(inp), "DT_MULTI_LINE_STRING")
                         else:
                             # change priority to choose double quoting where possible.
                             if not self.__sqRe.search(inp):
-                                return (self.__singleQuotedList(inp), 'DT_SINGLE_QUOTED_STRING')
+                                return (self.__singleQuotedList(inp), "DT_SINGLE_QUOTED_STRING")
                             elif not self.__dqRe.search(inp):
-                                return (self.__doubleQuotedList(inp), 'DT_DOUBLE_QUOTED_STRING')
+                                return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
                             else:
-                                return (self.__semiColonQuotedList(inp), 'DT_MULTI_LINE_STRING')
+                                return (self.__semiColonQuotedList(inp), "DT_MULTI_LINE_STRING")
         except Exception as e:
-            logger.exception("Failing with %s on input %r %r" % (str(e), inp, type(inp)))
+            logger.exception("Failing with %s on input %r %r", str(e), inp, type(inp))
 
-        return ("?", 'DT_NULL_VALUE')
+        return ("?", "DT_NULL_VALUE")
 
     def __dataTypePdbx(self, inp):
         """ Detect the PDBx data type -
         """
-        if (inp is None):
-            return ('DT_NULL_VALUE')
+        if inp is None:
+            return "DT_NULL_VALUE"
 
         # pure numerical values are returned as unquoted strings
         # if isinstance(inp, int) or self.__intRe.search(str(inp)):
         if isinstance(inp, int) or self.__intRe.search(inp):
-            return ('DT_INTEGER')
+            return "DT_INTEGER"
 
         # if isinstance(inp, float) or self.__floatRe.search(str(inp)):
         if isinstance(inp, float) or self.__floatRe.search(inp):
-            return ('DT_FLOAT')
+            return "DT_FLOAT"
 
         # null value handling -
 
-        if (inp == "." or inp == "?"):
-            return ('DT_NULL_VALUE')
+        if inp == "." or inp == "?":
+            return "DT_NULL_VALUE"
 
-        if (inp == ""):
-            return ('DT_NULL_VALUE')
+        if inp == "":
+            return "DT_NULL_VALUE"
 
         # Contains white space or quotes ?
         if not self.__wsAndQuotesRe.search(inp):
             if inp.startswith("_"):
-                return ('DT_ITEM_NAME')
+                return "DT_ITEM_NAME"
             else:
-                return ('DT_UNQUOTED_STRING')
+                return "DT_UNQUOTED_STRING"
         else:
             if self.__nlRe.search(inp):
-                return ('DT_MULTI_LINE_STRING')
+                return "DT_MULTI_LINE_STRING"
             else:
-                if (self.__avoidEmbeddedQuoting):
+                if self.__avoidEmbeddedQuoting:
                     if not self.__sqRe.search(inp) and not self.__dqWsRe.search(inp):
-                        return ('DT_DOUBLE_QUOTED_STRING')
+                        return "DT_DOUBLE_QUOTED_STRING"
                     elif not self.__dqRe.search(inp) and not self.__sqWsRe.search(inp):
-                        return ('DT_SINGLE_QUOTED_STRING')
+                        return "DT_SINGLE_QUOTED_STRING"
                     else:
-                        return ('DT_MULTI_LINE_STRING')
+                        return "DT_MULTI_LINE_STRING"
                 else:
                     if not self.__sqRe.search(inp):
-                        return ('DT_DOUBLE_QUOTED_STRING')
+                        return "DT_DOUBLE_QUOTED_STRING"
                     elif not self.__dqRe.search(inp):
-                        return ('DT_SINGLE_QUOTED_STRING')
+                        return "DT_SINGLE_QUOTED_STRING"
                     else:
-                        return ('DT_MULTI_LINE_STRING')
+                        return "DT_MULTI_LINE_STRING"
 
     def __singleQuotedList(self, inp):
         ll = []
         ll.append("'")
         ll.append(inp)
         ll.append("'")
-        return(ll)
+        return ll
 
     def __doubleQuotedList(self, inp):
         ll = []
         ll.append('"')
         ll.append(inp)
         ll.append('"')
-        return(ll)
+        return ll
 
     def __semiColonQuotedList(self, inp):
         ll = []
         ll.append("\n")
-        if inp[-1] == '\n':
+        if inp[-1] == "\n":
             ll.append(";")
             ll.append(inp)
             ll.append(";")
@@ -241,7 +257,7 @@ class DataCategoryFormatted(DataCategory):
             ll.append(";")
             ll.append("\n")
 
-        return(ll)
+        return ll
 
     def getValueFormatted(self, attributeName=None, rowIndex=None):
         if attributeName is None:
@@ -254,29 +270,29 @@ class DataCategoryFormatted(DataCategory):
         else:
             rowI = rowIndex
 
-        if isinstance(attribute, self._string_types) and isinstance(rowI, int):
+        if isinstance(attribute, self._stringTypes) and isinstance(rowI, int):
             try:
-                list, type = self.__formatPdbx(self.data[rowI][self._attributeNameList.index(attribute)])
-                return "".join(list)
-            except (IndexError):
-                logger.exception("attributeName %s rowI %r rowdata %r\n" % (attributeName, rowI, self.data[rowI]))
+                fList, _ = self.__formatPdbx(self.data[rowI][self._attributeNameList.index(attribute)])
+                return "".join(fList)
+            except IndexError:
+                logger.exception("attributeName %s rowI %r rowdata %r", attributeName, rowI, self.data[rowI])
                 raise IndexError
             except Exception as e:
-                logger.exception(" Failing with %s - AttributeName %s rowI %r rowdata %r\n" % (str(e), attributeName, rowI, self.data[rowI]))
+                logger.exception(" Failing with %s - AttributeName %s rowI %r rowdata %r", str(e), attributeName, rowI, self.data[rowI])
         else:
-            logger.error(" Type error - AttributeName %r rowI %r rowdata %r" % (attributeName, rowI, self.data[rowI]))
-            logger.error(" Type error - string types %r" % (self._string_types))
+            logger.error(" Type error - AttributeName %r rowI %r rowdata %r", attributeName, rowI, self.data[rowI])
+            logger.error(" Type error - string types %r", self._stringTypes)
             raise TypeError(attribute)
 
     def getValueFormattedByIndex(self, attributeIndex, rowIndex):
         try:
-            list, type = self.__formatPdbx(self.data[rowIndex][attributeIndex])
-            return "".join(list)
-        except (IndexError):
-            logger.exception("attributeIndex %r rowIndex %r rowdata %r\n" % (attributeIndex, rowIndex, self.data[rowIndex][attributeIndex]))
+            fList, _ = self.__formatPdbx(self.data[rowIndex][attributeIndex])
+            return "".join(fList)
+        except IndexError:
+            logger.exception("attributeIndex %r rowIndex %r rowdata %r", attributeIndex, rowIndex, self.data[rowIndex][attributeIndex])
             raise IndexError
         except Exception as e:
-            logger.exception("Failing with %s  - attributeIndex %r rowIndex %r rowdata %r\n" % (str(e), attributeIndex, rowIndex, self.data[rowIndex][attributeIndex]))
+            logger.exception("Failing with %s  - attributeIndex %r rowIndex %r rowdata %r", str(e), attributeIndex, rowIndex, self.data[rowIndex][attributeIndex])
             raise e
 
     def getAttributeValueMaxLengthList(self, steps=1):
@@ -284,7 +300,7 @@ class DataCategoryFormatted(DataCategory):
         for row in self.data[::steps]:
             for indx in range(len(self._attributeNameList)):
                 val = row[indx]
-                if isinstance(val, self._string_types):
+                if isinstance(val, self._stringTypes):
                     tLen = len(val)
                 else:
                     tLen = len(str(val))
@@ -295,7 +311,7 @@ class DataCategoryFormatted(DataCategory):
     def getFormatTypeList(self, steps=1):
         try:
             curFormatTypeList = []
-            curDataTypeList = ['DT_NULL_VALUE' for i in range(len(self._attributeNameList))]
+            curDataTypeList = ["DT_NULL_VALUE" for i in range(len(self._attributeNameList))]
             for row in self.data[::steps]:
                 for indx in range(len(self._attributeNameList)):
                     val = row[indx]
@@ -315,6 +331,6 @@ class DataCategoryFormatted(DataCategory):
                 ii = self.__dataTypeList.index(dt)
                 curFormatTypeList.append(self.__formatTypeList[ii])
         except Exception as e:
-            logger.exception("Failing with %s " % str(e))
+            logger.exception("Failing with %s", str(e))
 
         return curFormatTypeList, curDataTypeList

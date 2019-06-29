@@ -17,6 +17,8 @@ import sys
 import time
 import unittest
 
+from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
@@ -26,7 +28,6 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -34,27 +35,23 @@ __email__ = "jwest@rcsb.rutgers.edu"
 __license__ = "Apache 2.0"
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 class StarReaderTests(unittest.TestCase):
-
     def setUp(self):
         self.__lfh = sys.stdout
         self.__verbose = False
         self.__pathStarFileList = [os.path.join(HERE, "data", "chemical_shifts_example.str"), os.path.join(HERE, "data", "CCPN_H1GI.nef")]
         self.__startTime = time.time()
-        logger.debug("Running tests on version %s" % __version__)
-        logger.debug("Starting %s at %s" % (self.id(),
-                                            time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
+        logger.debug("Running tests on version %s", __version__)
+        logger.debug("Starting %s at %s", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
 
     def tearDown(self):
         endTime = time.time()
-        logger.debug("Completed %s at %s (%.4f seconds)\n" % (self.id(),
-                                                              time.strftime("%Y %m %d %H:%M:%S", time.localtime()),
-                                                              endTime - self.__startTime))
+        logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testReadStarFile(self):
         """Test case -  read star file -
@@ -62,16 +59,16 @@ class StarReaderTests(unittest.TestCase):
         try:
             for fp in self.__pathStarFileList:
                 myIo = IoAdapter(self.__verbose, self.__lfh)
-                self.__containerList = myIo.readFile(inputFilePath=fp)
-                logger.debug("container list is  %r\n" % ([(c.getName(), c.getType()) for c in self.__containerList]))
-                for c in self.__containerList:
-                    c.setType('data')
-                dir, fnOut = os.path.split(fp)
+                containerList = myIo.readFile(inputFilePath=fp)
+                logger.debug("container list is  %r", [(cV.getName(), cV.getType()) for cV in containerList])
+                for cV in containerList:
+                    cV.setType("data")
+                _, fnOut = os.path.split(fp)
                 ofn = os.path.join(HERE, "test-output", fnOut + ".cif")
-                ok = myIo.writeFile(outputFilePath=ofn, containerList=self.__containerList[1:])
+                ok = myIo.writeFile(outputFilePath=ofn, containerList=containerList[1:])
                 self.assertEqual(ok, True)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testReadWriteStarFile(self):
@@ -80,7 +77,7 @@ class StarReaderTests(unittest.TestCase):
         try:
             for fp in self.__pathStarFileList:
                 myIo = IoAdapter(self.__verbose, self.__lfh)
-                self.__containerList = myIo.readFile(inputFilePath=fp)
+                containerList = myIo.readFile(inputFilePath=fp)
                 #
                 # containerList is a flat list of containers in the order parsed.
                 #
@@ -95,7 +92,7 @@ class StarReaderTests(unittest.TestCase):
                 iD = {}
                 iDN = {}
                 dL = []
-                for container in self.__containerList:
+                for container in containerList:
                     if container.getType() == "data":
                         dL.append(container)
                         if container.getName() not in iD:
@@ -103,7 +100,7 @@ class StarReaderTests(unittest.TestCase):
                             iD[curContainerName] = []
                             iDN[curContainerName] = []
                         else:
-                            logger.debug("Duplicate data block %s\n" % container.getName())
+                            logger.debug("Duplicate data block %s", container.getName())
                     else:
                         iD[curContainerName].append(container)
                         iDN[curContainerName].append(container.getName())
@@ -112,22 +109,22 @@ class StarReaderTests(unittest.TestCase):
                 #
                 if len(dL) > 1:
                     c1 = dL[1]
-                    if 'chemical_shift_reference_1' in iDN[c1.getName()]:
-                        idx = iDN[c1.getName()].index('chemical_shift_reference_1')
+                    if "chemical_shift_reference_1" in iDN[c1.getName()]:
+                        idx = iDN[c1.getName()].index("chemical_shift_reference_1")
                         sf0 = iD[c1.getName()][idx]
-                        catObj = sf0.getObj('Chem_shift_ref')
+                        catObj = sf0.getObj("Chem_shift_ref")
                         aL = catObj.getAttributeList()
                         rowL = catObj.getRowList()
-                        logger.debug("Attribute list %s\n" % aL)
+                        logger.debug("Attribute list %s", aL)
                         rowL = catObj.getRowList()
                         for ii, row in enumerate(rowL):
-                            logger.debug("  %4d  %r\n" % (ii, row))
-                dir, fnOut = os.path.split(fp)
+                            logger.debug("  %4d  %r", ii, row)
+                _, fnOut = os.path.split(fp)
                 ofn = os.path.join(HERE, "test-output", fnOut + ".out")
-                ok = myIo.writeFile(outputFilePath=ofn, containerList=self.__containerList, useStopTokens=True)
+                ok = myIo.writeFile(outputFilePath=ofn, containerList=containerList, useStopTokens=True)
                 self.assertEqual(ok, True)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
 
@@ -138,7 +135,7 @@ def suiteStarReaderTests():
     return suiteSelect
 
 
-if __name__ == '__main__':
-    if (True):
-        mySuite = suiteStarReaderTests()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
+if __name__ == "__main__":
+
+    mySuite = suiteStarReaderTests()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)

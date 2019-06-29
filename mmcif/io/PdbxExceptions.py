@@ -13,14 +13,18 @@ class PdbxError(Exception):
     """ Class for catch general errors
     """
 
-    def __init__(self, msg):
-        super(PdbxError, self).__init__(msg)
+
+#    def __init__(self, msg):
+#        super(PdbxError, self).__init__(msg)
 
 
-class SyntaxError(Exception):
+class PdbxSyntaxError(Exception):
     """ Class for catching syntax errors
     """
 
-    def __init__(self, msg):
-        super(SyntaxError, self).__init__(msg)
+
+#    def __init__(self, msg):
+#        super(PdbxSyntaxError, self).__init__(msg)
+
+
 #

@@ -20,6 +20,14 @@ import sys
 import time
 import unittest
 
+from six.moves import range
+
+from mmcif.api.DataCategory import DataCategory
+from mmcif.api.DataCategoryBase import DataCategoryBase
+from mmcif.api.PdbxContainers import DataContainer
+from mmcif.io.PdbxReader import PdbxReader
+from mmcif.io.PdbxWriter import PdbxWriter
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
@@ -29,27 +37,18 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-from mmcif.api.DataCategory import DataCategory
-from mmcif.api.DataCategoryBase import DataCategoryBase
-from mmcif.api.PdbxContainers import DataContainer
-from mmcif.io.PdbxReader import PdbxReader
-from mmcif.io.PdbxWriter import PdbxWriter
-
-from six.moves import range
-
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
 __email__ = "jwest@rcsb.rutgers.edu"
 __license__ = "Apache 2.0"
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 class PdbxReadWriteTests(unittest.TestCase):
-
     def setUp(self):
         self.lfh = sys.stdout
         self.verbose = False
@@ -67,15 +66,12 @@ class PdbxReadWriteTests(unittest.TestCase):
         self.__pathTestFileStop = os.path.join(HERE, "data", "testFileWithStopTokens.cif")
         #
         self.__startTime = time.time()
-        logger.debug("Running tests on version %s" % __version__)
-        logger.debug("Starting %s at %s" % (self.id(),
-                                            time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
+        logger.debug("Running tests on version %s", __version__)
+        logger.debug("Starting %s at %s", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
 
     def tearDown(self):
         endTime = time.time()
-        logger.debug("Completed %s at %s (%.4f seconds)\n" % (self.id(),
-                                                              time.strftime("%Y %m %d %H:%M:%S", time.localtime()),
-                                                              endTime - self.__startTime))
+        logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testSingleRow(self):
         """Test case -  read /write single row and null row in data file
@@ -94,17 +90,17 @@ class PdbxReadWriteTests(unittest.TestCase):
             aCat.appendAttribute("ref_mon_id")
             aCat.appendAttribute("ref_mon_num")
             aCat.appendAttribute("details")
-            aCat.append([1, 2, 3, 4, 5, 6, 7, 'data_my_big_data_file'])
-            aCat.append([1, 2, 3, 4, 5, 6, 7, 'loop_my_big_data_loop'])
-            aCat.append([1, 2, 3, 4, 5, 6, 7, 'save_my_big_data_saveframe'])
-            aCat.append([1, 2, 3, 4, 5, 6, 7, '_category.item'])
+            aCat.append([1, 2, 3, 4, 5, 6, 7, "data_my_big_data_file"])
+            aCat.append([1, 2, 3, 4, 5, 6, 7, "loop_my_big_data_loop"])
+            aCat.append([1, 2, 3, 4, 5, 6, 7, "save_my_big_data_saveframe"])
+            aCat.append([1, 2, 3, 4, 5, 6, 7, "_category.item"])
             # aCat.dumpIt()
             curContainer.append(aCat)
             #
             bCat = curContainer.getObj("pdbx_seqtool_mapping_ref")
-            logger.debug("----attribute list %r\n" % bCat.getAttributeList())
+            logger.debug("----attribute list %r", bCat.getAttributeList())
             row = bCat.getRow(0)
-            logger.debug("----ROW %r\n" % row)
+            logger.debug("----ROW %r", row)
             #
             with open(self.__pathOutputFile2, "w") as ofh:
                 myDataList.append(curContainer)
@@ -113,7 +109,7 @@ class PdbxReadWriteTests(unittest.TestCase):
 
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testSingleRowFile(self):
@@ -128,10 +124,10 @@ class PdbxReadWriteTests(unittest.TestCase):
             ifh.close()
 
             myBlock = myDataList[0]
-            myCat = myBlock.getObj('symmetry')
-            logger.debug("----attribute list %r\n" % myCat.getAttributeList())
+            myCat = myBlock.getObj("symmetry")
+            logger.debug("----attribute list %r", myCat.getAttributeList())
             row = myCat.getRow(0)
-            logger.debug("----ROW %r\n" % row)
+            logger.debug("----ROW %r", row)
             #
             # myCat.dumpIt()
 
@@ -141,7 +137,7 @@ class PdbxReadWriteTests(unittest.TestCase):
 
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testRowListInitialization(self):
@@ -150,19 +146,20 @@ class PdbxReadWriteTests(unittest.TestCase):
         try:
             #
             fn = self.__pathOutputFile4
-            attributeNameList = ['aOne', 'aTwo', 'aThree', 'aFour', 'aFive', 'aSix', 'aSeven', 'aEight', 'aNine', 'aTen']
-            rowList = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                       ]
-            nameCat = 'myCategory'
+            attributeNameList = ["aOne", "aTwo", "aThree", "aFour", "aFive", "aSix", "aSeven", "aEight", "aNine", "aTen"]
+            rowList = [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            ]
+            nameCat = "myCategory"
             #
             #
             curContainer = DataContainer("myblock")
@@ -186,12 +183,12 @@ class PdbxReadWriteTests(unittest.TestCase):
             for container in myContainerList:
                 for objName in container.getObjNameList():
                     name, aList, rList = container.getObj(objName).get()
-                    logger.debug("Recovered data category  %s\n" % name)
-                    logger.debug("Attribute list           %r\n" % repr(aList))
-                    logger.debug("Row list                 %r\n" % repr(rList))
+                    logger.debug("Recovered data category  %s", name)
+                    logger.debug("Attribute list           %r", repr(aList))
+                    logger.debug("Row list                 %r", repr(rList))
             self.assertEqual(len(myContainerList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testWriteDataFile(self):
@@ -224,7 +221,7 @@ class PdbxReadWriteTests(unittest.TestCase):
                 pdbxW.write(myDataList)
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testUpdateDataFile(self):
@@ -267,11 +264,11 @@ class PdbxReadWriteTests(unittest.TestCase):
             #
             myBlock = myDataList[0]
             # myBlock.printIt()
-            myCat = myBlock.getObj('pdbx_seqtool_mapping_ref')
+            myCat = myBlock.getObj("pdbx_seqtool_mapping_ref")
             # myCat.printIt()
             for iRow in range(0, myCat.getRowCount()):
-                myCat.setValue('some value', 'ref_mon_id', iRow)
-                myCat.setValue(100, 'ref_mon_num', iRow)
+                myCat.setValue("some value", "ref_mon_id", iRow)
+                myCat.setValue(100, "ref_mon_num", iRow)
             with open(self.__pathOutputFile2, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
@@ -279,7 +276,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             #
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testReadDataFile(self):
@@ -294,7 +291,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             ifh.close()
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testReadWriteDataFile(self):
@@ -311,14 +308,14 @@ class PdbxReadWriteTests(unittest.TestCase):
                 pWr.write(myDataList)
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testReadWriteListAccessors(self):
         """Test cases -  for list style data access.
         """
         try:
-            dc = DataCategoryBase('test', attributeNameList=['a', 'b', 'c', 'd'])
+            dc = DataCategoryBase("test", attributeNameList=["a", "b", "c", "d"])
 
             dc.append([1, 2, 3, 4])
             dc.append([1, 2, 3, 4])
@@ -328,58 +325,58 @@ class PdbxReadWriteTests(unittest.TestCase):
 
             dc.insert(0, [4, 3, 2, 1])
 
-            logger.debug("Full  %r\n" % dc)
-            logger.debug("slice %r\n" % dc[2:4])
-            logger.debug("last  %r\n" % dc[-1])
+            logger.debug("Full  %r", dc)
+            logger.debug("slice %r", dc[2:4])
+            logger.debug("last  %r", dc[-1])
 
-            for r in dc:
-                logger.debug("row data %r\n" % r)
+            for rV in dc:
+                logger.debug("row data %r", rV)
 
-            dc.setMapping('ATTRIBUTE')
-            for r in dc:
-                logger.debug("row attrib dict %r\n" % r)
+            dc.setMapping("ATTRIBUTE")
+            for rV in dc:
+                logger.debug("row attrib dict %r", rV)
 
-            dc.setMapping('ITEM')
-            for r in dc:
-                logger.debug("row item dict %r\n" % r)
+            dc.setMapping("ITEM")
+            for rV in dc:
+                logger.debug("row item dict %r", rV)
 
-            dc.setMapping('DATA')
+            dc.setMapping("DATA")
 
-            logger.debug("row 3 %r\n" % dc[3])
+            logger.debug("row 3 %r", dc[3])
             tmp = dc[3]
             dc[3] = []
-            logger.debug("row 3 %r\n" % dc[3])
+            logger.debug("row 3 %r", dc[3])
             dc[3] = tmp
-            logger.debug("row 3 %r\n" % dc[3])
+            logger.debug("row 3 %r", dc[3])
 
-            dc.setMapping('ATTRIBUTE')
+            dc.setMapping("ATTRIBUTE")
             tmp = dc[3]
 
             dt = {}
-            for k, v in tmp.items():
+            for k, _ in tmp.items():
                 dt[k] = 10000
-            logger.debug("row dict %r\n" % dt)
+            logger.debug("row dict %r", dt)
 
             dc[3] = dt
-            logger.debug("row 3%r\n" % dc[3])
+            logger.debug("row 3%r", dc[3])
             dc[3] = tmp
 
-            dc.setMapping('ITEM')
+            dc.setMapping("ITEM")
             tmp = dc[3]
 
             dt = {}
-            for k, v in tmp.items():
+            for k, _ in tmp.items():
                 dt[k] = 10001
-            logger.debug("row dict %r\n" % dt)
+            logger.debug("row dict %r", dt)
 
             dc[3] = dt
-            logger.debug("row 3 %r\n" % dc[3])
+            logger.debug("row 3 %r", dc[3])
 
-            logger.debug("print raw     %r\n" % dc)
-            logger.debug("print string  %s\n" % dc)
+            logger.debug("print raw     %r", dc)
+            logger.debug("print string  %s", dc)
             self.assertEqual(1, 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testUpdateAttribute(self):
@@ -395,18 +392,18 @@ class PdbxReadWriteTests(unittest.TestCase):
                 pRd.read(myContainerList)
             #
             dsId = "D_000000"
-            atName = 'entry_id'
+            atName = "entry_id"
             for container in myContainerList:
                 container.setName(dsId)
                 # remove category citation
-                container.remove('citation')
+                container.remove("citation")
                 for objName in container.getObjNameList():
                     dcObj = container.getObj(objName)
                     if dcObj.hasAttribute(atName):
                         for iRow in range(0, dcObj.getRowCount()):
                             dcObj.setValue(dsId, attributeName=atName, rowIndex=iRow)
-                    elif objName.lower() == 'entry':
-                        dcObj.setValue(dsId, attributeName='id', rowIndex=0)
+                    elif objName.lower() == "entry":
+                        dcObj.setValue(dsId, attributeName="id", rowIndex=0)
 
             #
             with open(ofn, "w") as ofh:
@@ -414,7 +411,7 @@ class PdbxReadWriteTests(unittest.TestCase):
                 pWr.write(myContainerList)
             self.assertEqual(len(myContainerList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testReadWriteDataFileStop(self):
@@ -431,7 +428,7 @@ class PdbxReadWriteTests(unittest.TestCase):
                 pWr.write(myDataList)
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testRowDictInitialization(self):
@@ -441,19 +438,19 @@ class PdbxReadWriteTests(unittest.TestCase):
             #
             rLen = 10
             fn = self.__pathOutputFile5
-            attributeNameList = ['a', 'b', 'c', 'd']
-            rowList = [{'a': 1, 'b': 2, 'c': 3, 'd': 4} for i in range(rLen)]
-            nameCat = 'myCategory'
+            attributeNameList = ["a", "b", "c", "d"]
+            rowList = [{"a": 1, "b": 2, "c": 3, "d": 4} for i in range(rLen)]
+            nameCat = "myCategory"
             #
             #
             curContainer = DataContainer("myblock")
             aCat = DataCategory(nameCat, attributeNameList, rowList)
-            aCat.append({'a': 1, 'b': 2, 'c': 3, 'd': 4})
-            aCat.append({'a': 1, 'b': 2, 'c': 3, 'd': 4})
+            aCat.append({"a": 1, "b": 2, "c": 3, "d": 4})
+            aCat.append({"a": 1, "b": 2, "c": 3, "d": 4})
             aCat.extend(rowList)
             curContainer.append(aCat)
-            aCat.renameAttributes({'a': 'aa', 'b': 'bb', 'c': 'cc', 'd': 'dd'})
-            aCat.setName('renamedCategory')
+            aCat.renameAttributes({"a": "aa", "b": "bb", "c": "cc", "d": "dd"})
+            aCat.setName("renamedCategory")
             #
             #
             myContainerList = []
@@ -471,13 +468,13 @@ class PdbxReadWriteTests(unittest.TestCase):
             for container in myContainerList:
                 for objName in container.getObjNameList():
                     name, aList, rList = container.getObj(objName).get()
-                    logger.debug("Recovered data category  %s\n" % name)
-                    logger.debug("Attribute list           %r\n" % repr(aList))
-                    logger.debug("Row list                 %r\n" % repr(rList))
+                    logger.debug("Recovered data category  %s", name)
+                    logger.debug("Attribute list           %r", repr(aList))
+                    logger.debug("Row list                 %r", repr(rList))
             self.assertEqual(len(myContainerList), 1)
             self.assertEqual(len(rList), 2 * rLen + 2)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
 
@@ -523,23 +520,23 @@ def suiteReadWithStopTokens():
     return suiteSelect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     #
-    if (True):
-        mySuite = simpleSuite()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
-        #
-        mySuite = simpleSuite2()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
-        #
-        mySuite = simpleSuite3()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
-        #
-        mySuite = quotingCasesSuite()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
 
-        mySuite = attributeUpdateSuite()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
+    mySuite = simpleSuite()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)
+    #
+    mySuite = simpleSuite2()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)
+    #
+    mySuite = simpleSuite3()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)
+    #
+    mySuite = quotingCasesSuite()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)
 
-        mySuite = suiteReadWithStopTokens()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
+    mySuite = attributeUpdateSuite()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)
+
+    mySuite = suiteReadWithStopTokens()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)

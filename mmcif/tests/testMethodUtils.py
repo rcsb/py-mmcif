@@ -18,6 +18,9 @@ import sys
 import time
 import unittest
 
+from mmcif.api.MethodUtils import MethodUtils
+from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
@@ -27,8 +30,6 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-from mmcif.api.MethodUtils import MethodUtils
-from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -51,28 +52,26 @@ class MethodUtilsTests(unittest.TestCase):
         self.__pathOutFile = os.path.join(HERE, "test-output", "test-after-invoke-methods.cif")
 
         self.__startTime = time.time()
-        logger.debug("Running tests on version %s" % __version__)
-        logger.debug("Starting %s at %s" % (self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
+        logger.debug("Running tests on version %s", __version__)
+        logger.debug("Starting %s at %s", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
 
     def tearDown(self):
         endTime = time.time()
-        logger.debug(
-            "Completed %s at %s (%.4f seconds)\n" % (self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
-        )
+        logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testGetDictionaryMethods(self):
         """Test case -  dump methods for dictionary metadata
         """
         try:
             myIo = IoAdapter(self.__verbose, self.__lfh)
-            self.__dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
-            mU = MethodUtils(dictContainerList=self.__dictContainerList, verbose=self.__verbose)
+            dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
+            mU = MethodUtils(dictContainerList=dictContainerList, verbose=self.__verbose)
             mU.dumpMethods(fh=self.__lfh)
             #
             mD = mU.getMethods()
             self.assertEqual(len(mD), 5)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testInvokeDictionaryMethods(self):
@@ -80,12 +79,12 @@ class MethodUtilsTests(unittest.TestCase):
         """
         try:
             myIo = IoAdapter(self.__verbose, self.__lfh)
-            self.__dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
-            self.__dataContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDataFile)
+            dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
+            dataContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDataFile)
 
             #
-            mU = MethodUtils(dictContainerList=self.__dictContainerList, verbose=self.__verbose)
-            mU.setDataContainerList(dataContainerList=self.__dataContainerList)
+            mU = MethodUtils(dictContainerList=dictContainerList, verbose=self.__verbose)
+            mU.setDataContainerList(dataContainerList=dataContainerList)
             mU.invokeMethods()
             logger.debug("Write data file after invoking methods")
             dataContainerList = mU.getDataContainerList()
@@ -93,7 +92,7 @@ class MethodUtilsTests(unittest.TestCase):
             #
             self.assertEqual(ok, True)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
 
@@ -105,6 +104,6 @@ def suiteMethodUtilsTests():
 
 
 if __name__ == "__main__":
-    if True:
-        mySuite = suiteMethodUtilsTests()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
+
+    mySuite = suiteMethodUtilsTests()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)

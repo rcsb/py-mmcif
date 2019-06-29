@@ -24,6 +24,11 @@ import sys
 import time
 import unittest
 
+from mmcif.api.DataCategory import DataCategory
+from mmcif.api.PdbxContainers import DataContainer
+from mmcif.io.PdbxReader import PdbxReader
+from mmcif.io.PdbxWriter import PdbxWriter
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
@@ -33,18 +38,13 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-from mmcif.api.DataCategory import DataCategory
-from mmcif.api.PdbxContainers import DataContainer
-from mmcif.io.PdbxReader import PdbxReader
-from mmcif.io.PdbxWriter import PdbxWriter
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 class PdbxWriterTests(unittest.TestCase):
-
     def setUp(self):
         self.lfh = sys.stderr
         self.verbose = False
@@ -55,15 +55,12 @@ class PdbxWriterTests(unittest.TestCase):
         self.__pathOutputFile2 = os.path.join(HERE, "test-output", "testOutputDataFile.cif")
         #
         self.__startTime = time.time()
-        logger.debug("Running tests on version %s" % __version__)
-        logger.debug("Starting %s at %s" % (self.id(),
-                                            time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
+        logger.debug("Running tests on version %s", __version__)
+        logger.debug("Starting %s at %s", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
 
     def tearDown(self):
         endTime = time.time()
-        logger.debug("Completed %s at %s (%.4f seconds)\n" % (self.id(),
-                                                              time.strftime("%Y %m %d %H:%M:%S", time.localtime()),
-                                                              endTime - self.__startTime))
+        logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testWriteDataFile(self):
         """Test case -  write data file
@@ -81,10 +78,10 @@ class PdbxWriterTests(unittest.TestCase):
             aCat.appendAttribute("pdb_chain_id")
             aCat.appendAttribute("ref_mon_id")
             aCat.appendAttribute("ref_mon_num")
-            aCat.append((1, 2, 3, 4, '55555555555555555555555555555555555555555555', 6, 7))
-            aCat.append((1, 2, 3, 4, '5555', 6, 7))
-            aCat.append((1, 2, 3, 4, '5555555555', 6, 7))
-            aCat.append((1, 2, 3, 4, '5', 6, 7))
+            aCat.append((1, 2, 3, 4, "55555555555555555555555555555555555555555555", 6, 7))
+            aCat.append((1, 2, 3, 4, "5555", 6, 7))
+            aCat.append((1, 2, 3, 4, "5555555555", 6, 7))
+            aCat.append((1, 2, 3, 4, "5", 6, 7))
             curContainer.append(aCat)
             myDataList.append(curContainer)
             with open(self.__pathOutputFile1, "w") as ofh:
@@ -93,7 +90,7 @@ class PdbxWriterTests(unittest.TestCase):
                 pdbxW.write(myDataList)
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testUpdateDataFile(self):
@@ -132,17 +129,17 @@ class PdbxWriterTests(unittest.TestCase):
             #
             myBlock = myDataList[0]
             # myBlock.printIt()
-            myCat = myBlock.getObj('pdbx_seqtool_mapping_ref')
+            myCat = myBlock.getObj("pdbx_seqtool_mapping_ref")
             # myCat.printIt()
             for iRow in range(0, myCat.getRowCount()):
-                myCat.setValue('some value', 'ref_mon_id', iRow)
-                myCat.setValue(100, 'ref_mon_num', iRow)
+                myCat.setValue("some value", "ref_mon_id", iRow)
+                myCat.setValue(100, "ref_mon_num", iRow)
             with open(self.__pathOutputFile2, "w") as ofh:
                 pdbxW = PdbxWriter(ofh)
                 pdbxW.write(myDataList)
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testReadWriteDataFile(self):
@@ -162,7 +159,7 @@ class PdbxWriterTests(unittest.TestCase):
 
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
 
@@ -174,8 +171,7 @@ def writerSuite():
     return suiteSelect
 
 
-if __name__ == '__main__':
-    if (True):
-        mySuite = writerSuite()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
-    #
+if __name__ == "__main__":
+    mySuite = writerSuite()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)
+#

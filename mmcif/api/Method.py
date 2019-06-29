@@ -23,10 +23,8 @@ __license__ = "Apache 2.0"
 
 
 class MethodDefinition(object):
-    def __init__(
-        self, method_id, code="calculate", language="Python", inline=None, priority=None, implementation=None, implementationSource="inline"
-    ):
-        self.method_id = method_id
+    def __init__(self, methodId, code="calculate", language="Python", inline=None, priority=None, implementation=None, implementationSource="inline"):
+        self.methodId = methodId
         self.language = language
         self.code = code
         self.inline = inline
@@ -35,7 +33,7 @@ class MethodDefinition(object):
         self.implementation = implementation
 
     def getId(self):
-        return self.method_id
+        return self.methodId
 
     def getLanguage(self):
         return self.language
@@ -57,7 +55,7 @@ class MethodDefinition(object):
 
     def printIt(self, fh=sys.stdout):
         fh.write("------------- Method definition -------------\n")
-        fh.write("Id:                      %s\n" % self.method_id)
+        fh.write("Id:                      %s\n" % self.methodId)
         fh.write("Code:                    %s\n" % self.code)
         fh.write("Language:                %s\n" % str(self.language))
         fh.write("Inline text:             %s\n" % str(self.inline))
@@ -68,7 +66,7 @@ class MethodDefinition(object):
     def __repr__(self):
         oL = []
         oL.append("\n------------- Method definition -------------")
-        oL.append("Id:                      %s" % self.method_id)
+        oL.append("Id:                      %s" % self.methodId)
         oL.append("Code:                    %s" % self.code)
         oL.append("Language:                %s" % str(self.language))
         oL.append("Inline text:             %s" % str(self.inline))
@@ -79,14 +77,14 @@ class MethodDefinition(object):
 
 
 class MethodReference(object):
-    def __init__(self, method_id, type="attribute", category=None, attribute=None):
-        self.method_id = method_id
-        self.type = type
+    def __init__(self, methodId, mType="attribute", category=None, attribute=None):
+        self.methodId = methodId
+        self.type = mType
         self.categoryName = category
         self.attributeName = attribute
 
     def getId(self):
-        return self.method_id
+        return self.methodId
 
     def getType(self):
         return self.type
@@ -99,7 +97,7 @@ class MethodReference(object):
 
     def printIt(self, fh=sys.stdout):
         fh.write("--------------- Method Reference -----------------\n")
-        fh.write("Id:             %s\n" % self.method_id)
+        fh.write("Id:             %s\n" % self.methodId)
         fh.write("Type:           %s\n" % self.type)
         fh.write("Category name:  %s\n" % str(self.categoryName))
         fh.write("Attribute name: %s\n" % str(self.attributeName))
@@ -107,7 +105,7 @@ class MethodReference(object):
     def __repr__(self):
         oL = []
         oL.append("--------------- Method Reference -----------------")
-        oL.append("Id:             %s" % self.method_id)
+        oL.append("Id:             %s" % self.methodId)
         oL.append("Type:           %s" % self.type)
         oL.append("Category name:  %s" % str(self.categoryName))
         oL.append("Attribute name: %s" % str(self.attributeName))

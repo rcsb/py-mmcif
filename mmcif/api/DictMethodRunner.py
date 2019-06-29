@@ -22,7 +22,7 @@ import logging
 import sys
 from operator import itemgetter
 
-from mmcif.api.DictionaryApi import DictionaryApi
+# from mmcif.api.DictionaryApi import DictionaryApi
 
 logger = logging.getLogger(__name__)
 
@@ -32,11 +32,11 @@ class DictMethodRunner(object):
     """
 
     def __init__(self, dictionaryApi, modulePathMap=None, **kwargs):
-        """Manage invocation of dictionary methods referenced in external modules. 
-        
+        """Manage invocation of dictionary methods referenced in external modules.
+
         Arguments:
             dictionaryApi {object} -- instance of DictionaryApi() for dictionary with target method definitions
-        
+
         Keyword Arguments:
             modulePathMap {dict str} -- mapping between dictionary module path and execution path (default: {None})
             cacheModuleFlag {bool} -- flag to cache module instances (defaullt: True)
@@ -55,12 +55,13 @@ class DictMethodRunner(object):
         self.__moduleCache = {}
         #
         self.__methodD = self.__getMethodInfo(implementationSource=implementationSource, methodCodes=methodCodes)
-        logger.debug("Method index %r" % self.__methodD.items())
+        logger.debug("Method index %r", self.__methodD.items())
 
-    def __getMethodInfo(self, implementationSource="reference", methodCodes=["calculation"]):
+    def __getMethodInfo(self, implementationSource="reference", methodCodes=None):
         """ Get method implementation with the input implementation source.
 
         """
+        methodCodes = methodCodes if methodCodes else ["calculation"]
         methodD = {}
         try:
             methodIndex = self.__dApi.getMethodIndex()
@@ -73,26 +74,20 @@ class DictMethodRunner(object):
                     if (catName, atName) not in methodD:
                         methodD[(catName, atName)] = []
                     methDef = self.__dApi.getMethod(mId)
-                    logger.debug("Category %s attribute %s mId %r type %r methDef %r" % (catName, atName, mId, mType, methDef))
+                    logger.debug("Category %s attribute %s mId %r type %r methDef %r", catName, atName, mId, mType, methDef)
                     mSource = methDef.getImplementationSource()
                     mCode = methDef.getCode()
                     if mSource == implementationSource and mCode in methodCodes:
                         mPriority = methDef.getPriority()
                         mLang = methDef.getLanguage()
                         mImplement = methDef.getImplementation()
-                        d = {
-                            "METHOD_LANGUAGE": mLang,
-                            "METHOD_IMPLEMENT": mImplement,
-                            "METHOD_TYPE": mType,
-                            "METHOD_CODE": mCode,
-                            "METHOD_PRIORITY": mPriority,
-                        }
-                        methodD[(catName, atName)].append(d)
+                        dD = {"METHOD_LANGUAGE": mLang, "METHOD_IMPLEMENT": mImplement, "METHOD_TYPE": mType, "METHOD_CODE": mCode, "METHOD_PRIORITY": mPriority}
+                        methodD[(catName, atName)].append(dD)
                 #
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
         ##
-        logger.debug("Method dictionary %r" % methodD)
+        logger.debug("Method dictionary %r", methodD)
         return methodD
 
     def __invokeAttributeMethod(self, methodPath, dataContainer, catName, atName, **kwargs):
@@ -105,7 +100,7 @@ class DictMethodRunner(object):
             theMeth = getattr(mObj, methodName, None)
             ok = theMeth(dataContainer, catName, atName, **kwargs)
         except Exception as e:
-            logger.exception("Failed invoking attribute %s %s method %r with %s" % (catName, atName, methodPath, str(e)))
+            logger.exception("Failed invoking attribute %s %s method %r with %s", catName, atName, methodPath, str(e))
         return ok
 
     def __invokeCategoryMethod(self, methodPath, dataContainer, catName, **kwargs):
@@ -118,7 +113,7 @@ class DictMethodRunner(object):
             theMeth = getattr(mObj, methodName, None)
             ok = theMeth(dataContainer, catName, **kwargs)
         except Exception as e:
-            logger.exception("Failed invoking category %s method %r with %s" % (catName, methodPath, str(e)))
+            logger.exception("Failed invoking category %s method %r with %s", catName, methodPath, str(e))
         return ok
 
     def __invokeDatablockMethod(self, methodPath, dataContainer, blockName, **kwargs):
@@ -131,7 +126,7 @@ class DictMethodRunner(object):
             theMeth = getattr(mObj, methodName, None)
             ok = theMeth(dataContainer, blockName, **kwargs)
         except Exception as e:
-            logger.exception("Failed invoking block %s method %r with %s" % (blockName, methodPath, str(e)))
+            logger.exception("Failed invoking block %s method %r with %s", blockName, methodPath, str(e))
         return ok
 
     def apply(self, dataContainer):
@@ -139,17 +134,17 @@ class DictMethodRunner(object):
         """
         kwargs = self.__kwargs
         mTupL = self.__getCategoryMethods()
-        logger.debug("Category methods %r" % mTupL)
+        logger.debug("Category methods %r", mTupL)
         for catName, _, methodPath, _ in mTupL:
             self.__invokeCategoryMethod(methodPath, dataContainer, catName, **kwargs)
 
         mTupL = self.__getAttributeMethods()
-        logger.debug("Attribute methods %r" % mTupL)
+        logger.debug("Attribute methods %r", mTupL)
         for catName, atName, methodPath, _ in mTupL:
             self.__invokeAttributeMethod(methodPath, dataContainer, catName, atName, **kwargs)
 
         mTupL = self.__getDatablockMethods()
-        logger.debug("Datablock methods %r" % mTupL)
+        logger.debug("Datablock methods %r", mTupL)
         for blockName, _, methodPath, _ in mTupL:
             self.__invokeDatablockMethod(methodPath, dataContainer, blockName, **kwargs)
 
@@ -166,7 +161,7 @@ class DictMethodRunner(object):
             mL = sorted(mL, key=itemgetter(3))
             return mL
         except Exception as e:
-            logger.exception("Failing dictName %s with %s" % (dictName, str(e)))
+            logger.exception("Failing dictName %s with %s", dictName, str(e))
         return mL
 
     def __getCategoryMethods(self):
@@ -180,7 +175,7 @@ class DictMethodRunner(object):
             mL = sorted(mL, key=itemgetter(3))
             return mL
         except Exception as e:
-            logger.exception("Failing catName %r with %s" % (catName, str(e)))
+            logger.exception("Failing catName %r with %s", catName, str(e))
         return mL
 
     def __getAttributeMethods(self):
@@ -194,16 +189,16 @@ class DictMethodRunner(object):
             mL = sorted(mL, key=itemgetter(3))
             return mL
         except Exception as e:
-            logger.exception("Failing catName %s atName %s with %s" % (catName, atName, str(e)))
+            logger.exception("Failing catName %s atName %s with %s", catName, atName, str(e))
         return mL
 
     def __methodPathSplit(self, methodPath):
-        """Extract module path and the method name from the input path.  Optional 
-           remap the module path. 
-        
+        """Extract module path and the method name from the input path.  Optional
+           remap the module path.
+
         Arguments:
             methodPath {str} -- implementation path from dictionary method definition
-        
+
         Returns:
             {tuple str} -- module path, method name
         """
@@ -215,7 +210,7 @@ class DictMethodRunner(object):
             modulePath = self.__modulePathMap[tp] if tp in self.__modulePathMap else tp
             return modulePath, methodName
         except Exception as e:
-            logger.error("Failing for method path %r with %s" % (methodPath, str(e)))
+            logger.error("Failing for method path %r with %s", methodPath, str(e))
         return None, None
 
     def __getModuleInstance(self, modulePath, **kwargs):
@@ -236,5 +231,5 @@ class DictMethodRunner(object):
             self.__moduleCache[modulePath] = mObj
 
         except Exception as e:
-            logger.error("Failing to instance helper %r with %s" % (modulePath, str(e)))
+            logger.error("Failing to instance helper %r with %s", modulePath, str(e))
         return mObj

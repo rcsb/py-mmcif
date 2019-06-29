@@ -17,6 +17,10 @@ import time
 import unittest
 from operator import itemgetter
 
+from mmcif.api.DictionaryApi import DictionaryApi
+from mmcif.api.PdbxContainers import CifName
+from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
@@ -26,10 +30,8 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-from mmcif.api.DictionaryApi import DictionaryApi
-from mmcif.api.PdbxContainers import CifName
-from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
-from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
+
+# from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -37,13 +39,12 @@ __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 class DictionayMarkdownTests(unittest.TestCase):
-
     def setUp(self):
         self.__verbose = True
         self.__pathPdbxV50Dictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
@@ -52,64 +53,64 @@ class DictionayMarkdownTests(unittest.TestCase):
         pass
 
     def testMarkupCategoryGroup(self):
-        oFile = os.path.join(HERE, 'test-output', 'xfel_extension.md')
-        self.__testMarkupCategoryGroup(oFile=oFile, groupSelectList=['xfel_group'])
-        oFile = os.path.join(HERE, 'test-output', 'xfel_extension.md"')
-        self.__testMarkupCategoryGroup(oFile=oFile, groupSelectList=['diffrn_data_set_group'])
+        oFile = os.path.join(HERE, "test-output", "xfel_extension.md")
+        self.__testMarkupCategoryGroup(oFile=oFile, groupSelectList=["xfel_group"])
+        oFile = os.path.join(HERE, "test-output", 'xfel_extension.md"')
+        self.__testMarkupCategoryGroup(oFile=oFile, groupSelectList=["diffrn_data_set_group"])
 
     def __processbounds(self, bList):
-        '''
+        """
             | columnName 1| columnName 2 |
             | ------------- | ------------ |
             | coldata1 | coldata2 |
             | coldata1 | coldata2 |
-        '''
+        """
         retList = []
         # Boundary values -
         #  (min, max)
         skipEquivalentBounds = True
         boundaryList = []
-        for b in bList:
-            min = b[0]
-            max = b[1]
-            if skipEquivalentBounds and min == max:
+        for bV in bList:
+            minV = bV[0]
+            maxV = bV[1]
+            if skipEquivalentBounds and minV == maxV:
                 continue
-            if min == '.':
-                min = '<h3>-&infin;</h3>'
-            if max == '.':
-                max = '<h3>+&infin;</h3>'
-            boundaryList.append((min, max))
+            if minV == ".":
+                minV = "<h3>-&infin;</h3>"
+            if maxV == ".":
+                maxV = "<h3>+&infin;</h3>"
+            boundaryList.append((minV, maxV))
 
-        if boundaryList is not None and len(boundaryList) > 0:
-            retList.append(('Minimum&nbsp;Value', 'Maximum&nbsp;Value'))
+        if boundaryList is not None and boundaryList:
+            retList.append(("Minimum&nbsp;Value", "Maximum&nbsp;Value"))
             retList.extend(boundaryList)
 
         return retList
 
-    def __formatTupListInset(self, tupList, tab='     '):
+    def __formatTupListInset(self, tupList, tab="     "):
         rL = []
         for tup in tupList:
-            rL.append('')
-            rL.append('```')
-            if tup[1] and len(tup[1]) > 0:
-                tL = tup[1].split('\n')
-                for t in tL:
-                    rL.append(tab + t)
+            rL.append("")
+            rL.append("```")
+            if tup[1]:
+                tL = tup[1].split("\n")
+                for tV in tL:
+                    rL.append(tab + tV)
             #
-            tL = tup[0].split('\n')
-            for t in tL:
-                rL.append(tab + t)
-            rL.append('```')
-            rL.append('')
+            tL = tup[0].split("\n")
+            for tV in tL:
+                rL.append(tab + tV)
+            rL.append("```")
+            rL.append("")
         #
         #
         return rL
 
     def __trB(self, iBool):
         if iBool:
-            return 'yes'
+            return "yes"
         else:
-            return 'no'
+            return "no"
 
     def __sortIgnoreCase(self, iList):
         tL = []
@@ -119,8 +120,8 @@ class DictionayMarkdownTests(unittest.TestCase):
         sL = sorted(tL, key=itemgetter(1), reverse=False)
         #
         rL = []
-        for s in sL:
-            rL.append(s[0])
+        for sV in sL:
+            rL.append(sV[0])
         #
         return rL
 
@@ -128,18 +129,16 @@ class DictionayMarkdownTests(unittest.TestCase):
         """Test case -  extract the content to be rendered -
         """
         startTime = time.time()
-        logger.debug("\nStarting %s %s at %s\n" % (self.__class__.__name__,
-                                                   sys._getframe().f_code.co_name,
-                                                   time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
+        logger.debug("\nStarting at %s\n", time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
         try:
             rL = []
 
             myIo = IoAdapter()
-            self.__containerList = myIo.readFile(self.__pathPdbxV50Dictionary)
-            dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
+            containerList = myIo.readFile(self.__pathPdbxV50Dictionary)
+            dApi = DictionaryApi(containerList=containerList, consolidate=True, verbose=self.__verbose)
             #
             groupList = dApi.getCategoryGroups()
-            logger.debug('groupList %s\n' % groupList)
+            logger.debug("groupList %s\n", groupList)
             for groupName in groupList:
                 if groupSelectList and groupName not in groupSelectList:
                     continue
@@ -158,7 +157,7 @@ class DictionayMarkdownTests(unittest.TestCase):
                 #
                 cList = self.__sortIgnoreCase(catNameList)
                 for catName in cList:
-                    logger.debug('Group %s category %s\n' % (groupName, catName))
+                    logger.debug("Group %s category %s\n", groupName, catName)
                     catDescription = dApi.getCategoryDescription(category=catName)
                     catExTupList = dApi.getCategoryExampleList(category=catName)
                     keyItemNameList = dApi.getCategoryKeyList(category=catName)
@@ -174,7 +173,7 @@ class DictionayMarkdownTests(unittest.TestCase):
                     rL.append("---")
                     rL.append("")
                     if catExTupList:
-                        rL.extend(self.__formatTupListInset(catExTupList, tab='     '))
+                        rL.extend(self.__formatTupListInset(catExTupList, tab="     "))
                         #
                         # summary table
                         #
@@ -192,24 +191,18 @@ class DictionayMarkdownTests(unittest.TestCase):
                         attTypeCode = dApi.getTypeCode(category=catName, attribute=attName)
 
                         enumTupList = dApi.getEnumListWithDetail(category=catName, attribute=attName)
-                        if len(enumTupList) > 0:
+                        if enumTupList:
                             isEnum = True
                         else:
                             isEnum = False
                         bL = dApi.getBoundaryList(category=catName, attribute=attName)
-                        if len(bL) > 0:
+                        if bL:
                             isBounded = True
                         else:
                             isBounded = False
                         rL.append(
-                            '| %s | %s | %s | %s | %s | %s | %s |' %
-                            (attName,
-                             self.__trB(isKey),
-                                attMandatory,
-                                attTypeCode,
-                                attUnits,
-                                self.__trB(isEnum),
-                                self.__trB(isBounded)))
+                            "| %s | %s | %s | %s | %s | %s | %s |" % (attName, self.__trB(isKey), attMandatory, attTypeCode, attUnits, self.__trB(isEnum), self.__trB(isBounded))
+                        )
                     #
                     rL.append("")
                     rL.append("---")
@@ -219,11 +212,11 @@ class DictionayMarkdownTests(unittest.TestCase):
                         isKey = attName in keyAttNameList
                         attMandatory = dApi.getMandatoryCode(category=catName, attribute=attName)
                         #
-                        tN = '_' + catName + '.' + attName
+                        tN = "_" + catName + "." + attName
                         if isKey:
-                            tN = tN + ' (key)'
-                        elif attMandatory.upper() in ['YES', 'Y']:
-                            tN = tN + ' (required)'
+                            tN = tN + " (key)"
+                        elif attMandatory.upper() in ["YES", "Y"]:
+                            tN = tN + " (required)"
                         #
                         rL.append("#### %s\n" % tN)
                         rL.append("")
@@ -234,23 +227,23 @@ class DictionayMarkdownTests(unittest.TestCase):
                         attTypeCode = dApi.getTypeCode(category=catName, attribute=attName)
 
                         enumTupList = dApi.getEnumListWithDetail(category=catName, attribute=attName)
-                        if len(enumTupList) > 0:
+                        if enumTupList:
                             rL.append("")
                             rL.append("---")
                             rL.append("")
                             rL.append("| Allowed Values | Detail |")
                             rL.append("| -------------- | ------ |")
                             for tup in enumTupList:
-                                if tup[1] and len(tup[1]) > 0:
+                                if tup[1]:
                                     rL.append("| %s | %s |" % (tup[0], tup[1]))
                                 else:
-                                    rL.append("| %s | %s |" % (tup[0], ' '))
+                                    rL.append("| %s | %s |" % (tup[0], " "))
                             rL.append("")
 
                         #
                         bL = dApi.getBoundaryList(category=catName, attribute=attName)
                         btL = self.__processbounds(bL)
-                        if len(btL) > 0:
+                        if btL:
                             tup = btL[0]
                             rL.append("")
                             rL.append("---")
@@ -262,18 +255,15 @@ class DictionayMarkdownTests(unittest.TestCase):
                                 rL.append("| %s | %s |" % (tup[0], tup[1]))
                             rL.append("")
                         rL.append("")
-            with open(oFile, 'w') as ofh:
-                ofh.write('\n'.join(rL))
+            with open(oFile, "w") as ofh:
+                ofh.write("\n".join(rL))
 
         except Exception as e:
-            logger.Exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
         endTime = time.time()
-        logger.debug("\nCompleted %s %s at %s (%.2f seconds)\n" % (self.__class__.__name__,
-                                                                   sys._getframe().f_code.co_name,
-                                                                   time.strftime("%Y %m %d %H:%M:%S", time.localtime()),
-                                                                   endTime - startTime))
+        logger.debug("\nCompleted at %s (%.2f seconds)", time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - startTime)
 
 
 def suiteMarkdownTests():
@@ -282,7 +272,6 @@ def suiteMarkdownTests():
     return suiteSelect
 
 
-if __name__ == '__main__':
-    if (True):
-        mySuite = suiteMarkdownTests()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
+if __name__ == "__main__":
+    mySuite = suiteMarkdownTests()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)

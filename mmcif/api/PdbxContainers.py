@@ -56,8 +56,8 @@ logger = logging.getLogger(__name__)
 
 
 class CifName(object):
-    ''' Class of utilities for CIF-style data names -
-    '''
+    """ Class of utilities for CIF-style data names -
+    """
 
     def __init__(self):
         pass
@@ -86,21 +86,21 @@ class CifName(object):
             if i == -1:
                 return None
             else:
-                return name[i + 1:]
+                return name[i + 1 :]
         except Exception:
             return None
 
     @staticmethod
     def itemName(categoryName, attributeName):
         try:
-            return '_' + str(categoryName) + '.' + str(attributeName)
+            return "_" + str(categoryName) + "." + str(attributeName)
         except Exception:
             return None
 
 
 class ContainerBase(object):
-    ''' Container base class for data and definition objects.
-    '''
+    """ Container base class for data and definition objects.
+    """
 
     def __init__(self, name):
         # The enclosing scope of the data container (e.g. data_/save_)
@@ -116,10 +116,22 @@ class ContainerBase(object):
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return NotImplemented
-        return self.__name == other.__name and self.__objNameList == other.__objNameList and self.__objCatalog == other.__objCatalog and self.__type == other.__type and self.__propCatalog == other.__propCatalog
+        return (
+            self.__name == other.getName()
+            and self.__objNameList == other.getObjNameList()
+            and self.__objCatalog == other.getObjCatalog()
+            and self.__type == other.getType()
+            and self.__propCatalog == other.getPropCatalog()
+        )
 
     def __hash__(self):
         return hash((self.__name, tuple(self.__objNameList), self.__type, tuple(self.__objCatalog.items()), tuple(self.__propCatalog.items())))
+
+    def getObjCatalog(self):
+        return self.__objCatalog
+
+    def getPropCatalog(self):
+        return self.__propCatalog
 
     def setProp(self, propName, value):
         try:
@@ -137,8 +149,8 @@ class ContainerBase(object):
     def getType(self):
         return self.__type
 
-    def setType(self, type):
-        self.__type = type
+    def setType(self, cType):
+        self.__type = cType
 
     def getName(self):
         return self.__name
@@ -174,16 +186,15 @@ class ContainerBase(object):
     def replace(self, obj):
         """ Replace an existing object with the input object
         """
-        if ((obj.getName() is not None) and (obj.getName() in self.__objCatalog)):
+        if (obj.getName() is not None) and (obj.getName() in self.__objCatalog):
             self.__objCatalog[obj.getName()] = obj
 
-    def printIt(self, fh=sys.stdout, type="brief"):
-        fh.write("+ %s container: %30s contains %4d categories\n" %
-                 (self.getType(), self.getName(), len(self.__objNameList)))
+    def printIt(self, fh=sys.stdout, pType="brief"):
+        fh.write("+ %s container: %30s contains %4d categories\n" % (self.getType(), self.getName(), len(self.__objNameList)))
         for nm in self.__objNameList:
             fh.write("--------------------------------------------\n")
             fh.write("Data category: %s\n" % nm)
-            if type == 'brief':
+            if pType == "brief":
                 self.__objCatalog[nm].printIt(fh)
             else:
                 self.__objCatalog[nm].dumpIt(fh)
@@ -224,7 +235,7 @@ class ContainerBase(object):
             for objName in objNameList:
                 self.append(container.getObj(objName))
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             return False
         return True
 
@@ -262,28 +273,26 @@ class ContainerBase(object):
 
 
 class DefinitionContainer(ContainerBase):
-
     def __init__(self, name):
         super(DefinitionContainer, self).__init__(name)
-        self.setType('definition')
+        self.setType("definition")
         self.__globalFlag = False
 
     def isCategory(self):
-        if self.exists('category'):
+        if self.exists("category"):
             return True
         return False
 
     def isAttribute(self):
-        if self.exists('item'):
+        if self.exists("item"):
             return True
         return False
 
     def getGlobal(self):
         return self.__globalFlag
 
-    def printIt(self, fh=sys.stdout, type="brief"):
-        fh.write("Definition container: %30s contains %4d categories\n" %
-                 (self.getName(), len(self.getObjNameList())))
+    def printIt(self, fh=sys.stdout, pType="brief"):
+        fh.write("Definition container: %30s contains %4d categories\n" % (self.getName(), len(self.getObjNameList())))
         if self.isCategory():
             fh.write("Definition type: category\n")
         elif self.isAttribute():
@@ -294,24 +303,26 @@ class DefinitionContainer(ContainerBase):
         for nm in self.getObjNameList():
             fh.write("--------------------------------------------\n")
             fh.write("Definition category: %s\n" % nm)
-            if type == 'brief':
+            if pType == "brief":
                 self.getObj(nm).printIt(fh)
             else:
                 self.getObj(nm).dumpId(fh)
 
 
 class DataContainer(ContainerBase):
-    ''' Container class for DataCategory objects.
-    '''
+    """ Container class for DataCategory objects.
+    """
 
     def __init__(self, name):
         super(DataContainer, self).__init__(name)
-        self.setType('data')
+        self.setType("data")
         self.__globalFlag = False
 
-    def invokeDataBlockMethod(self, type, method, db):
-        self.__currentRow = 1
-        exec(method.getInline(), globals(), locals())
+    def invokeDataBlockMethod(self, mType, method, db):
+        _ = mType
+        _ = db
+        # self.__currentRow = 1
+        exec(method.getInline(), globals(), locals())  # pylint: disable=exec-used
 
     def setGlobal(self):
         self.__globalFlag = True
@@ -320,8 +331,7 @@ class DataContainer(ContainerBase):
         return self.__globalFlag
 
 
-class SaveFameContainer(ContainerBase):
-
+class SaveFrameContainer(ContainerBase):
     def __init__(self, name):
-        super(DefinitionContainer, self).__init__(name)
-        self.setType('definition')
+        super(SaveFrameContainer, self).__init__(name)
+        self.setType("definition")

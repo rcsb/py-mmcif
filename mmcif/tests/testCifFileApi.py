@@ -20,10 +20,10 @@ import os
 import sys
 import unittest
 
-from mmcif.core.mmciflib import ParseCifSimple
+from mmcif.core.mmciflib import ParseCifSimple  # pylint: disable=no-name-in-module
 from mmcif.io.CifFile import CifFile
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -32,7 +32,6 @@ TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
 
 class CifFileApiTests(unittest.TestCase):
-
     def setUp(self):
         self.__lfh = sys.stdout
         self.__verbose = True
@@ -45,7 +44,7 @@ class CifFileApiTests(unittest.TestCase):
         self.__pathOutputPdbxFile = os.path.join(HERE, "test-output", "myPdbxOutputFile.cif")
         self.__pathBigOutputPdbxFile = os.path.join(HERE, "test-output", "myBigPdbxOutputFile.cif")
 
-        self.__logFileName = os.path.join(HERE, 'test-output', "ciffile-logfile.log")
+        self.__logFileName = os.path.join(HERE, "test-output", "ciffile-logfile.log")
 
     def tearDown(self):
         pass
@@ -53,11 +52,9 @@ class CifFileApiTests(unittest.TestCase):
     def testReadDataFile(self):
         """Test case -  read chemical dictionary and create index
         """
-        logger.debug("\nStarting %s %s\n" % (self.__class__.__name__,
-                                             sys._getframe().f_code.co_name))
         try:
             blockNameList = []
-            myReader = ParseCifSimple(self.__pathPdbxDataFile, False, 0, 255, '?', self.__logFileName)
+            myReader = ParseCifSimple(self.__pathPdbxDataFile, False, 0, 255, "?", self.__logFileName)
             blockNameList = myReader.GetBlockNames(blockNameList)
             #
             for blockName in blockNameList:
@@ -67,28 +64,27 @@ class CifFileApiTests(unittest.TestCase):
                 for tableName in tableNameList:
                     table = block.GetTable(tableName)
                     columnNameList = table.GetColumnNames()
-                    logger.debug("Table %s colunms %r" % (tableName, columnNameList))
+                    logger.debug("Table %s colunms %r", tableName, columnNameList)
                     numRows = table.GetNumRows()
                     rowList = []
                     for iRow in range(0, numRows):
                         row = table.GetRow(iRow)
                         rowList.append(row)
-                    logger.debug("table %s row length %d" % (tableName, len(rowList)))
+                    logger.debug("table %s row length %d", tableName, len(rowList))
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def testReadCifFile(self):
         """Test case -  deprecated CifFile api read, access and write test
         """
-        logger.debug("\nStarting %s %s\n" % (self.__class__.__name__,
-                                             sys._getframe().f_code.co_name))
+
         try:
             blockNameList = []
             cf = CifFile(self.__pathPdbxDataFile)
             myReader = cf.getCifFile()
             blockNameList = myReader.GetBlockNames(blockNameList)
-            logger.debug("Block list %r\n" % repr(blockNameList))
+            logger.debug("Block list %r", repr(blockNameList))
             #
             for blockName in blockNameList:
                 block = myReader.GetBlock(blockName)
@@ -97,7 +93,7 @@ class CifFileApiTests(unittest.TestCase):
                 for tableName in tableNameList:
                     table = block.GetTable(tableName)
                     columnNameList = table.GetColumnNames()
-                    logger.debug("Column list %r\n" % repr(columnNameList))
+                    logger.debug("Column list %r", repr(columnNameList))
                     numRows = table.GetNumRows()
                     rowList = []
                     for iRow in range(0, numRows):
@@ -105,7 +101,7 @@ class CifFileApiTests(unittest.TestCase):
                         rowList.append(row)
             cf.write(self.__pathOutputPdbxFile)
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
 
@@ -116,7 +112,7 @@ def suiteReadWriteTests():
     return suiteSelect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     #
     mySuite = suiteReadWriteTests()
     unittest.TextTestRunner(verbosity=2).run(mySuite)

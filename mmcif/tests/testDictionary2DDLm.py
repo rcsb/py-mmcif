@@ -16,6 +16,11 @@ import sys
 import time
 import unittest
 
+from mmcif.api.DataCategory import DataCategory
+from mmcif.api.DictionaryApi import DictionaryApi
+from mmcif.api.PdbxContainers import CifName, DataContainer, DefinitionContainer
+from mmcif.io.IoAdapterPy import IoAdapterPy
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
@@ -25,11 +30,6 @@ except Exception as e:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
-from mmcif.api.DataCategory import DataCategory
-from mmcif.api.DictionaryApi import DictionaryApi
-from mmcif.api.PdbxContainers import (CifName, DataContainer,
-                                      DefinitionContainer)
-from mmcif.io.IoAdapterPy import IoAdapterPy
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -37,26 +37,24 @@ __email__ = "jwest@rcsb.rutgers.edu"
 __license__ = "Apache 2.0"
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 class Dictionary2DDLmTests(unittest.TestCase):
-
     def setUp(self):
         self.__lfh = sys.stdout
         self.__verbose = True
-        self.__pathPdbxDictionary = os.path.join(HERE, "data", 'mmcif_pdbx_v5_next.dic')
+        self.__pathPdbxDictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
+        self.__containerList = None
         self.__startTime = time.time()
-        logger.debug("Testing version %s" % __version__)
-        logger.debug("Starting %s at %s" % (self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime())))
+        logger.debug("Testing version %s", __version__)
+        logger.debug("Starting %s at %s", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
 
     def tearDown(self):
         endTime = time.time()
-        logger.debug("Completed %s at %s (%.4f seconds)\n" % (self.id(),
-                                                              time.strftime("%Y %m %d %H:%M:%S", time.localtime()),
-                                                              endTime - self.__startTime))
+        logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testGenDDLm(self):
         """  Generating alternative DDLm metadata format. (starting point)
@@ -68,7 +66,7 @@ class Dictionary2DDLmTests(unittest.TestCase):
             parentD = dApi.getParentDictionary()
             #
             oCList = []
-            dDef = DataContainer('mmcif_pdbx_ddlm_auto')
+            dDef = DataContainer("mmcif_pdbx_ddlm_auto")
             dc = DataCategory("dictionary")
             dc.appendAttribute("title")
             dc.appendAttribute("class")
@@ -76,7 +74,7 @@ class Dictionary2DDLmTests(unittest.TestCase):
             dc.appendAttribute("date")
             dc.appendAttribute("ddl_conformance")
             dc.appendAttribute("text")
-            dc.append(['mmcif_pdbx_ddlm_auto', 'Instance', 'latest', '2018-03-09', 'ddlm best effort', 'Software converted PDBx dictionary using DDLm semantics'])
+            dc.append(["mmcif_pdbx_ddlm_auto", "Instance", "latest", "2018-03-09", "ddlm best effort", "Software converted PDBx dictionary using DDLm semantics"])
             dDef.append(dc)
             oCList.append(dDef)
 
@@ -107,14 +105,14 @@ class Dictionary2DDLmTests(unittest.TestCase):
                 valList = dApi.getCategoryGroupList(category=catName)
                 pcg = catName
                 for val in valList:
-                    if val != 'inclusive_group':
+                    if val != "inclusive_group":
                         pcg = val
                         break
                 dc.append([catName, pcg])
                 cDef.append(dc)
 
                 valList = dApi.getCategoryKeyList(category=catName)
-                if len(valList) < 1:
+                if not valList:
                     self.__lfh.write("Missing caegory key for category %s\n" % catName)
                 else:
                     dc = DataCategory("category")
@@ -161,7 +159,7 @@ class Dictionary2DDLmTests(unittest.TestCase):
                     #
                     #
                     aliasList = dApi.getItemAliasList(category=catName, attribute=attName)
-                    if len(aliasList) > 0:
+                    if aliasList:
                         dc = DataCategory("alias")
                         dc.appendAttribute("definition_id")
                         for alias in aliasList:
@@ -171,48 +169,48 @@ class Dictionary2DDLmTests(unittest.TestCase):
                     enList = dApi.getEnumListAltWithDetail(category=catName, attribute=attName)
 
                     tC = dApi.getTypeCode(category=catName, attribute=attName)
-                    tcontainer = 'Single'
-                    purpose = 'Describe'
-                    source = 'Recorded'
-                    contents = 'Text'
+                    tcontainer = "Single"
+                    purpose = "Describe"
+                    source = "Recorded"
+                    contents = "Text"
                     #
                     if tC is None:
                         self.__lfh.write("Missing data type attribute %s\n" % attName)
-                    elif tC in ['code', 'atcode', 'name', 'idname', 'symop', 'fax', 'phone', 'email', 'code30', 'ec-type']:
-                        purpose = 'Encode'
-                        contents = 'Text'
-                        source = 'Assigned'
-                    elif tC in ['ucode']:
-                        purpose = 'Encode'
-                        contents = 'Code'
-                        source = 'Assigned'
-                    elif tC in ['line', 'uline', 'text']:
-                        purpose = 'Describe'
-                        source = 'Recorded'
-                        contents = 'Text'
-                    elif tC in ['int']:
-                        purpose = 'Number'
-                        source = 'Recorded'
-                        contents = 'Integer'
-                    elif tC in ['int-range']:
-                        purpose = 'Number'
-                        source = 'Recorded'
-                        contents = 'Range'
-                    elif tC in ['float']:
-                        purpose = 'Measurand'
-                        source = 'Recorded'
-                        contents = 'Real'
-                    elif tC in ['float-range']:
-                        purpose = 'Measurand'
-                        source = 'Recorded'
-                        contents = 'Range'
-                    elif tC.startswith('yyyy'):
-                        source = 'Assigned'
-                        contents = 'Date'
-                        purpose = 'Describe'
+                    elif tC in ["code", "atcode", "name", "idname", "symop", "fax", "phone", "email", "code30", "ec-type"]:
+                        purpose = "Encode"
+                        contents = "Text"
+                        source = "Assigned"
+                    elif tC in ["ucode"]:
+                        purpose = "Encode"
+                        contents = "Code"
+                        source = "Assigned"
+                    elif tC in ["line", "uline", "text"]:
+                        purpose = "Describe"
+                        source = "Recorded"
+                        contents = "Text"
+                    elif tC in ["int"]:
+                        purpose = "Number"
+                        source = "Recorded"
+                        contents = "Integer"
+                    elif tC in ["int-range"]:
+                        purpose = "Number"
+                        source = "Recorded"
+                        contents = "Range"
+                    elif tC in ["float"]:
+                        purpose = "Measurand"
+                        source = "Recorded"
+                        contents = "Real"
+                    elif tC in ["float-range"]:
+                        purpose = "Measurand"
+                        source = "Recorded"
+                        contents = "Range"
+                    elif tC.startswith("yyyy"):
+                        source = "Assigned"
+                        contents = "Date"
+                        purpose = "Describe"
 
-                    if len(enList) > 0:
-                        purpose = 'State'
+                    if enList:
+                        purpose = "State"
 
                     dc = DataCategory("type")
                     dc.appendAttribute("purpose")
@@ -222,7 +220,7 @@ class Dictionary2DDLmTests(unittest.TestCase):
                     dc.append([purpose, source, contents, tcontainer])
                     iDef.append(dc)
                     #
-                    if (len(enList) > 0):
+                    if enList:
                         dc = DataCategory("enumeration_set")
                         dc.appendAttribute("state")
                         dc.appendAttribute("detail")
@@ -232,27 +230,27 @@ class Dictionary2DDLmTests(unittest.TestCase):
 
                     dfv = dApi.getDefaultValue(category=catName, attribute=attName)
                     bvList = dApi.getBoundaryList(category=catName, attribute=attName)
-                    if (((dfv is not None) and (dfv not in ['?', '.'])) or len(bvList) > 0):
+                    if ((dfv is not None) and (dfv not in ["?", "."])) or bvList:
                         row = []
                         dc = DataCategory("enumeration")
                         if dfv is not None:
                             dc.appendAttribute("default")
                             row.append(dfv)
-                        if len(bvList) > 0:
+                        if bvList:
                             dc.appendAttribute("range")
                             mminVp = -1000000
                             mmaxVp = 10000000
                             mminV = mmaxVp
                             mmaxV = mminVp
                             for bv in bvList:
-                                minV = float(bv[0]) if bv[0] != '.' else mminVp
-                                maxV = float(bv[1]) if bv[1] != '.' else mmaxVp
+                                minV = float(bv[0]) if bv[0] != "." else mminVp
+                                maxV = float(bv[1]) if bv[1] != "." else mmaxVp
                                 mminV = min(mminV, minV)
                                 mmaxV = max(mmaxV, maxV)
                             if mminV == mminVp:
-                                mminV = ''
+                                mminV = ""
                             if mmaxV == mmaxVp:
-                                mmaxV = ''
+                                mmaxV = ""
                             row.append(str(mminV) + ":" + str(mmaxV))
 
                         dc.append(row)
@@ -261,7 +259,7 @@ class Dictionary2DDLmTests(unittest.TestCase):
             myIo.writeFile(outputFilePath=os.path.join(HERE, "test-output", "mmcif_pdbx_ddlm_auto.dic"), containerList=oCList)
 
         except Exception as e:
-            logger.exception("Failing with %s" % str(e))
+            logger.exception("Failing with %s", str(e))
             self.fail()
 
     def __makeKeyItem(self, catName, attName, keyItemList, iDef):
@@ -278,7 +276,7 @@ class Dictionary2DDLmTests(unittest.TestCase):
         #
         dc = DataCategory("description")
         dc.appendAttribute("text")
-        dc.append(['synthentic componsite key'])
+        dc.append(["synthentic componsite key"])
         iDef.append(dc)
         #
         dc = DataCategory("name")
@@ -286,11 +284,11 @@ class Dictionary2DDLmTests(unittest.TestCase):
         dc.appendAttribute("object_id")
         dc.append([catName, attName])
         iDef.append(dc)
-        tcontainer = 'Set'
-        purpose = 'Composite'
-        source = 'Derived'
-        contents = 'Name'
-        dimension = '[%d]' % len(keyItemList)
+        tcontainer = "Set"
+        purpose = "Composite"
+        source = "Derived"
+        contents = "Name"
+        dimension = "[%d]" % len(keyItemList)
         #
 
         dc = DataCategory("type")
@@ -306,15 +304,15 @@ class Dictionary2DDLmTests(unittest.TestCase):
         dc.appendAttribute("purpose")
         dc.appendAttribute("expression")
 
-        tmpl = '''
+        tmpl = """
 
                       With row as %s
 
                            %s = [%s]
 
-        '''
-        mText = tmpl % (catName, itemName, ','.join(keyItemList))
-        dc.append(['Evaluation', mText])
+        """
+        mText = tmpl % (catName, itemName, ",".join(keyItemList))
+        dc.append(["Evaluation", mText])
         iDef.append(dc)
 
 
@@ -324,7 +322,6 @@ def suiteDictionary2DDLm():
     return suiteSelect
 
 
-if __name__ == '__main__':
-    if (True):
-        mySuite = suiteDictionary2DDLm()
-        unittest.TextTestRunner(verbosity=2).run(mySuite)
+if __name__ == "__main__":
+    mySuite = suiteDictionary2DDLm()
+    unittest.TextTestRunner(verbosity=2).run(mySuite)

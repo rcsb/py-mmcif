@@ -15,7 +15,7 @@ __license__ = "Apache 2.0"
 import logging
 import warnings
 
-from mmcif.core.mmciflib import ParseCifSimple
+from mmcif.core.mmciflib import ParseCifSimple  # pylint: disable=no-name-in-module
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 logger = logging.getLogger(__name__)
@@ -40,16 +40,16 @@ class CifFile(object):
         self.__fileName = fileName
 
         if parseLogFileName is None:
-            self.__cifFile = ParseCifSimple(self.__fileName, False, 0, 255, '?', "")
+            self.__cifFile = ParseCifSimple(self.__fileName, False, 0, 255, "?", "")
         else:
-            self.__cifFile = ParseCifSimple(self.__fileName, False, 0, 255, '?', parseLogFileName)
+            self.__cifFile = ParseCifSimple(self.__fileName, False, 0, 255, "?", parseLogFileName)
 
     def getCifFile(self):
-        return (self.__cifFile)
+        return self.__cifFile
 
     @classmethod
     def getFileExt(cls):
-        return ('cif')
+        return "cif"
 
     def write(self, fileName):
         self.__cifFile.Write(fileName)
@@ -57,4 +57,3 @@ class CifFile(object):
     @classmethod
     def read(cls, fileName):
         return cls(fileName)
-
