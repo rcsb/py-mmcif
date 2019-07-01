@@ -25,6 +25,8 @@ strategy:
   maxParallel: 2
 
 steps:
+  - checkout: self
+    submodules: true
   - script: which apt
     displayName: 'Installing OS dependencies'
   - script: apt-cache policy | grep http | awk '{print $2 $3}' | sort -u
