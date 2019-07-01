@@ -20,7 +20,7 @@ import os
 import sys
 import unittest
 
-from mmcif.core.mmciflib import ParseCifSimple  # pylint: disable=no-name-in-module
+from mmcif.core.mmciflib import ParseCifSimple  # pylint: disable=no-name-in-module,import-error
 from mmcif.io.CifFile import CifFile
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]-%(module)s.%(funcName)s: %(message)s")

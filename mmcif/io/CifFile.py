@@ -15,7 +15,7 @@ __license__ = "Apache 2.0"
 import logging
 import warnings
 
-from mmcif.core.mmciflib import ParseCifSimple  # pylint: disable=no-name-in-module
+from mmcif.core.mmciflib import ParseCifSimple  # pylint: disable=no-name-in-module,import-error
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 logger = logging.getLogger(__name__)
