@@ -98,7 +98,7 @@ class CMakeBuild(build_ext):
 
 packages = []
 thisPackage = "mmcif"
-requires = ["future", "six"]
+requires = ["future", "six", "pybind11"]
 
 
 with open("mmcif/__init__.py", "r") as fd:
