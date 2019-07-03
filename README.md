@@ -1,6 +1,8 @@
-## mmCIF Core Access Library
+# mmCIF Core Access Library
 
-### Introduction
+[![Build Status](https://dev.azure.com/jdwestbrook/jdwestbrook/_apis/build/status/rcsb.py-mmcif?branchName=master)](https://dev.azure.com/jdwestbrook/jdwestbrook/_build/latest?definitionId=2&branchName=master)
+
+## Introduction
 
 This module includes a native Python mmCIF API for data files and dictionaries along with
 [pybind11](https://github.com/pybind/pybind11) wrappers for the PDB C++ Core mmCIF Library.
@@ -26,6 +28,10 @@ tox
 Installation is via the program [pip](https://pypi.python.org/pypi/pip).
 
 ```bash
+pip install mmcif
+
+or from the local repository:
+
 pip install .
 ```
 
