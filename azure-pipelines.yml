@@ -1,5 +1,11 @@
 # File: azure-pipelines.yml
+# Date: 4-Jul-2019 jdw Created pipeline
+#       8-Jul-2019 jdw add macos test/publish
+#       8-Jul-2019 jdw templatize
+#       9-Jul-2019 jdw add publish jobs
 #
+name: $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.rr)
+
 trigger:
 - master
 
@@ -14,40 +20,32 @@ schedules:
     - master
   always: true
 
-pool:
-  vmImage: 'ubuntu-latest'
-strategy:
-  matrix:
-    Python37:
-      python.version: '3.7'
-    Python27:
-      python.version: '2.7'
-  maxParallel: 2
+jobs:
+  - template: azure-template-tox-job.yml
+    parameters: {tox: 'format_pep8', python: '3.7', os: 'linux'}
+  - template: azure-template-tox-job.yml
+    parameters: {tox: 'lint_pylint', python: '3.7', os: 'linux'}
+  - template: azure-template-tox-job.yml
+    parameters: {tox: 'test_coverage', python: '3.7', os: 'linux'}
+    #
+  - template: azure-template-tox-job.yml
+    parameters: {tox: 'py37', python: '3.7', os: 'linux'}
+  - template: azure-template-tox-job.yml
+    parameters: {tox: 'py27', python: '2.7', os: 'linux'}
+  #
+  - template: azure-template-tox-job.yml
+    parameters: {tox: 'py37', python: '3.7', os: 'macos'}
+  - template: azure-template-tox-job.yml
+    parameters: {tox: 'py27', python: '2.7', os: 'macos'}
+  #
+  - template: azure-template-publish-job.yml
+    parameters: {tox: 'py37', python: '3.7', os: 'macos'}
+  - template: azure-template-publish-job.yml
+    parameters: {tox: 'py37', python: '3.7', os: 'linux'}
+  #
+  - template: azure-template-publish-job.yml
+    parameters: {tox: 'py27', python: '2.7', os: 'macos'}
+  - template: azure-template-publish-job.yml
+    parameters: {tox: 'py27', python: '2.7', os: 'linux'}
+  #
 
-steps:
-  - checkout: self
-    submodules: true
-  - script: which apt
-    displayName: 'Installing OS dependencies'
-  - script: apt-cache policy | grep http | awk '{print $2 $3}' | sort -u
-    displayName: 'Checking for repos'
-  - script: sudo apt-get install flex
-    displayName: 'Install flex'
-  - script: sudo apt-get install bison
-    displayName: 'Install bison'
-  - task: UsePythonVersion@0
-    displayName: 'Use Python $(python.version)'
-    inputs:
-      versionSpec: '$(python.version)'
-
-  - script: python -m pip install --upgrade pip
-    displayName: 'Install tools'
-
-  - script: pip install -r requirements.txt
-    displayName: 'Install dependencies'
-
-  - script: pip install tox
-    displayName: 'Install Tox'
-
-  - script: tox -v
-    displayName: 'Run Tox'
