@@ -30,7 +30,7 @@ TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
 try:
     from mmcif import __version__
-except Exception as e:
+except ImportError:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 

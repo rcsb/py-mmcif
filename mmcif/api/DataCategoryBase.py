@@ -39,6 +39,7 @@ __license__ = "Apache 2.0"
 
 logger = logging.getLogger(__name__)
 
+
 # pylint: disable=arguments-differ
 class DataCategoryBase(UserList):
 

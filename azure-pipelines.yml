@@ -3,7 +3,7 @@
 #       8-Jul-2019 jdw add macos test/publish
 #       8-Jul-2019 jdw templatize
 #       9-Jul-2019 jdw add publish jobs
-#
+##
 name: $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.rr)
 
 trigger:

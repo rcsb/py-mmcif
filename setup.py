@@ -10,14 +10,15 @@ import platform
 import re
 import subprocess
 import sys
-from distutils.version import LooseVersion
+from distutils.version import LooseVersion  # pylint: disable=no-name-in-module,import-error
 
 from setuptools import Extension, find_packages, setup
 from setuptools.command.build_ext import build_ext
 
 
 class CMakeExtension(Extension):
-    def __init__(self, name, sourcedir="", sources=[]):
+    def __init__(self, name, sourcedir="", sources=None):
+        sources = sources if sources else []
         Extension.__init__(self, name, sources=sources)
         self.sourcedir = os.path.abspath(sourcedir)
 
@@ -30,8 +31,8 @@ class CMakeBuild(build_ext):
             raise RuntimeError("CMake must be installed to build the following extensions: " + ", ".join(e.name for e in self.extensions))
 
         if platform.system() == "Windows":
-            cmake_version = LooseVersion(re.search(r"version\s*([\d.]+)", out.decode()).group(1))
-            if cmake_version < "3.1.0":
+            cmakeVersion = LooseVersion(re.search(r"version\s*([\d.]+)", out.decode()).group(1))
+            if cmakeVersion < "3.1.0":
                 raise RuntimeError("CMake >= 3.1.0 is required on Windows")
 
         for ext in self.extensions:
@@ -40,38 +41,39 @@ class CMakeBuild(build_ext):
     def build_extension(self, ext):
 
         #
+        debug = False
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
-        cmake_args = ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + extdir, "-DPYTHON_EXECUTABLE=" + sys.executable]
+        cmakeArgs = ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + extdir, "-DPYTHON_EXECUTABLE=" + sys.executable]
 
         # we need to help cmake find the correct python for this virtual env -
         if hasattr(sys, "real_prefix"):
-            lsp = os.path.join(sys.real_prefix, "lib", "libpython") + "*"
-            isp = os.path.join(sys.real_prefix, "include", "python") + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"
+            lsp = os.path.join(sys.real_prefix, "lib", "libpython") + "*"  # pylint: disable=no-member
+            isp = os.path.join(sys.real_prefix, "include", "python") + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"  # pylint: disable=no-member
         else:
             lsp = os.path.join(sys.exec_prefix, "lib", "libpython") + "*"
             isp = os.path.join(sys.exec_prefix, "include", "python") + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"
         #
         lpL = glob.glob(lsp)
-        if len(lpL):
+        if lpL:
             lp = lpL[0]
-            cmake_args += ["-DPYTHON_LIBRARY=" + lp]
+            cmakeArgs += ["-DPYTHON_LIBRARY=" + lp]
 
         ipL = glob.glob(isp)
-        if len(ipL):
+        if ipL:
             ip = ipL[0]
-            cmake_args += ["-DPYTHON_INCLUDE_DIR=" + ip]
+            cmakeArgs += ["-DPYTHON_INCLUDE_DIR=" + ip]
         #
         cfg = "Debug" if self.debug else "Release"
-        build_args = ["--config", cfg]
+        buildArgs = ["--config", cfg]
 
         if platform.system() == "Windows":
-            cmake_args += ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), extdir)]
+            cmakeArgs += ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), extdir)]
             if sys.maxsize > 2 ** 32:
-                cmake_args += ["-A", "x64"]
-            build_args += ["--", "/m"]
+                cmakeArgs += ["-A", "x64"]
+            buildArgs += ["--", "/m"]
         else:
-            cmake_args += ["-DCMAKE_BUILD_TYPE=" + cfg]
-            build_args += ["--", "-j2"]
+            cmakeArgs += ["-DCMAKE_BUILD_TYPE=" + cfg]
+            buildArgs += ["--", "-j2"]
 
         env = os.environ.copy()
         env["CXXFLAGS"] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get("CXXFLAGS", ""), self.distribution.get_version())
@@ -80,10 +82,10 @@ class CMakeBuild(build_ext):
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
         #
-        if False:
+        if debug:
             print("------------------------------")
             print("Extension source path ", ext.sourcedir)
-            print("CMAKE_ARGS ", cmake_args)
+            print("CMAKE_ARGS ", cmakeArgs)
             print("self.build_temp ", self.build_temp)
             print("extdir", extdir)
             print("ext.name", ext.name)
@@ -92,8 +94,8 @@ class CMakeBuild(build_ext):
             print("CXXFLAGS ", env["CXXFLAGS"])
 
         #
-        subprocess.check_call(["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp, env=env)
-        subprocess.check_call(["cmake", "--build", "."] + build_args, cwd=self.build_temp)
+        subprocess.check_call(["cmake", ext.sourcedir] + cmakeArgs, cwd=self.build_temp, env=env)
+        subprocess.check_call(["cmake", "--build", "."] + buildArgs, cwd=self.build_temp)
 
 
 packages = []

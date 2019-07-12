@@ -32,7 +32,7 @@ TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
 try:
     from mmcif import __version__
-except Exception as e:
+except ImportError:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
@@ -169,10 +169,10 @@ class IoAdapterTests(unittest.TestCase):
             self.assertGreaterEqual(len(containerList), 1)
             #
         except PdbxSyntaxError as e:
-            logger.debug("Expected syntax failure")
+            logger.debug("Expected syntax failure %s", str(e))
             self.assertTrue(ok)
         except PdbxError as e:
-            logger.debug("Expected character encoding failure")
+            logger.debug("Expected character encoding failure %s", str(e))
             self.assertTrue(ok)
         except Exception as e:
             logger.error("Unexpected exception %s", type(e).__name__)

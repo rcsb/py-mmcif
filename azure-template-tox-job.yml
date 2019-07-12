@@ -1,7 +1,6 @@
 # File: azure-template-tox-job.yml
 # Date: 8-Jul-2019 jdw split out from original pipeline
-
-# Supports: fixture=mysql,mongodb (linux)
+# Supports: fixtures=mysql,mongodb (linux)
 #
 parameters:
   tox: ""
@@ -120,12 +119,18 @@ jobs:
     #
     - ${{ if startsWith(parameters.tox, 'py') }}:
       - script: ${{ format('python -m tox -e {0}', parameters.tox) }}
-        displayName: 'Run Tox'
-    - ${{ if not(startsWith(parameters.tox, 'py')) }}:
-      - script: ${{ format('python -m tox -e {0}-{1}', parameters.tox, parameters.os) }}
-        displayName: 'Run Tox'
+        displayName: 'Running tox task'
+    - ${{ if and(not(startsWith(parameters.tox, 'py')), startsWith(parameters.python, '3.8')) }}:
+      - script: ${{ format('python -m tox -e {0}-py38', parameters.tox) }}
+        displayName: 'Running tox task'
+    - ${{ if and(not(startsWith(parameters.tox, 'py')), startsWith(parameters.python, '3.7')) }}:
+      - script: ${{ format('python -m tox -e {0}-py37', parameters.tox) }}
+        displayName: 'Running tox task'
+    - ${{ if and(not(startsWith(parameters.tox, 'py')), startsWith(parameters.python, '2.7')) }}:
+      - script: ${{ format('python -m tox -e {0}-py27', parameters.tox) }}
+        displayName: 'Runing tox task'
     #
-    #  Build artifacts if this is a test targets (i.e. py##)
+    #  Build artifacts if this is a test target (i.e. labeled as py##)
     #
     - ${{ if startsWith(parameters.tox, 'py') }}:
       - script: pip install --upgrade pip twine setuptools wheel

@@ -54,7 +54,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 try:
     from mmcif.core.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, CifFileReadDef
     from mmcif.core.mmciflib import type as PdbxType
-except Exception as e:
+except ImportError:
     sys.path.insert(0, os.path.dirname(os.path.dirname(HERE)))
     from build.lib.mmciflib import ParseCifSimple, CifFile, ParseCifSelective, PdbxType, CifFileReadDef
 

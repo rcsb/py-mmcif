@@ -26,7 +26,7 @@ TOPDIR = os.path.dirname(os.path.dirname(HERE))
 
 try:
     from mmcif import __version__
-except Exception as e:
+except ImportError:
     sys.path.insert(0, TOPDIR)
     from mmcif import __version__
 
@@ -47,6 +47,7 @@ logger.setLevel(logging.INFO)
 class DictionayMarkdownTests(unittest.TestCase):
     def setUp(self):
         self.__verbose = True
+        self.__version = __version__
         self.__pathPdbxV50Dictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
 
     def tearDown(self):
