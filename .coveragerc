@@ -1,0 +1,18 @@
+# File: .coveragerc
+# Configuration file to control coverage.py
+[run]
+branch = True
+concurrency = multiprocessing
+parallel = True
+# debug = config sys data
+
+[report]
+ignore_errors = False
+show_missing = True
+sort = Miss
+
+[html]
+directory = coverage_html_report
+
+[xml]
+output = coverage.xml
