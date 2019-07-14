@@ -18,8 +18,7 @@ git clone  --recurse-submodules  https://github.com/rcsb/py-mmcif.git
 ```
 
 Optionally, run test suite using the Tox test runner. The C++ library bindings have been tested
-on Centos 7 Linux with GCC/G++ 4.8.5 and MacOS with clang-900.0.39.2 using Python versions 2.7.14,
-3.6.6, and 3.7.0
+on Centos 7 Linux with GCC/G++ 4.8.5 and MacOS with clang-900.0.39.2 using Python versions 2.7.16 and 3.7.3.
 
 ```bash
 tox
