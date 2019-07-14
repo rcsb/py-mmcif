@@ -48,4 +48,3 @@ jobs:
   - template: azure-template-publish-job.yml
     parameters: {tox: 'py27', python: '2.7', os: 'linux'}
   #
-
