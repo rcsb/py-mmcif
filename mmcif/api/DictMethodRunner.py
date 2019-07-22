@@ -7,6 +7,7 @@
 # Updates:
 # 12-Nov-2018 jdw Run block methods after category and attribute methods.
 #  5-Jun-2019 jdw Refactor and generalize and remove dependencies on rcsb.db package
+# 17-Jul-2019 jdw Propagate kwargs to __getModuleInstance()
 #
 ##
 """
@@ -96,7 +97,7 @@ class DictMethodRunner(object):
         ok = False
         try:
             modulePath, methodName = self.__methodPathSplit(methodPath)
-            mObj = self.__getModuleInstance(modulePath)
+            mObj = self.__getModuleInstance(modulePath, **kwargs)
             theMeth = getattr(mObj, methodName, None)
             ok = theMeth(dataContainer, catName, atName, **kwargs)
         except Exception as e:
@@ -109,7 +110,7 @@ class DictMethodRunner(object):
         ok = False
         try:
             modulePath, methodName = self.__methodPathSplit(methodPath)
-            mObj = self.__getModuleInstance(modulePath)
+            mObj = self.__getModuleInstance(modulePath, **kwargs)
             theMeth = getattr(mObj, methodName, None)
             ok = theMeth(dataContainer, catName, **kwargs)
         except Exception as e:
@@ -122,7 +123,7 @@ class DictMethodRunner(object):
         ok = False
         try:
             modulePath, methodName = self.__methodPathSplit(methodPath)
-            mObj = self.__getModuleInstance(modulePath)
+            mObj = self.__getModuleInstance(modulePath, **kwargs)
             theMeth = getattr(mObj, methodName, None)
             ok = theMeth(dataContainer, blockName, **kwargs)
         except Exception as e:
