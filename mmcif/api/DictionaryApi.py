@@ -1,5 +1,4 @@
 ##
-#
 # File:    DictionaryApi.py
 # Author:  jdw
 # Date:    11-August-2013
@@ -18,6 +17,7 @@
 #   3-Feb-2019  jdw add method getFullDecendentList()
 #  12-Apr-2019  jdw add methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
 #  26-May-2019  jdw extend api for mehhods
+#  28-Jul-2019  jdw retain dictionary ordering for categories and attributes (suppress sorting)
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -28,6 +28,7 @@ from __future__ import absolute_import
 import logging
 import sys
 
+from collections import OrderedDict
 from six.moves import zip
 
 from mmcif.api.DataCategory import DataCategory
@@ -60,25 +61,25 @@ class DictionaryApi(object):
         if expandItemLinked:
             self.__expandLoopedDefinitions()
 
-        self.__fullIndex = {}
+        self.__fullIndex = OrderedDict()
 
         # ---
         #
         # Map category name to the unique list of attributes
-        self.__catNameIndex = {}
+        self.__catNameIndex = OrderedDict()
         # Map category name to the unique list of item names
-        self.__catNameItemIndex = {}
+        self.__catNameItemIndex = OrderedDict()
         # Full unique list of item names -
         self.__itemNameList = []
         #
         # Map dictionary objects names to definition containers -
-        self.__definitionIndex = {}
+        self.__definitionIndex = OrderedDict()
         #
         # data section/objects of the dictionary by category name -
-        self.__dataIndex = {}
+        self.__dataIndex = OrderedDict()
         #
         # Map of types id->(regex,primitive_type)
-        self.__typesDict = {}
+        self.__typesDict = OrderedDict()
         #
         self.__enumD = {
             "ENUMERATION_VALUE": ("item_enumeration", "value"),
@@ -147,8 +148,8 @@ class DictionaryApi(object):
             "ITEM_TYPE_CONDITIONS_CODE": ("item_type_conditions", "code"),
         }
         #
-        self.__methodDict = {}
-        self.__methodIndex = {}
+        self.__methodDict = OrderedDict()
+        self.__methodIndex = OrderedDict()
         #
         self.__makeIndex()
         self.__getMethods()
@@ -156,19 +157,19 @@ class DictionaryApi(object):
         self.__fullParentD, self.__fullChildD = self.__makeFullParentChildDictionaries()
         #
         # content sections
-        self.__dataBlockDict = {}
-        self.__dictionaryDict = {}
-        self.__subCategoryDict = {}
-        self.__categoryGroupDict = {}
+        self.__dataBlockDict = OrderedDict()
+        self.__dictionaryDict = OrderedDict()
+        self.__subCategoryDict = OrderedDict()
+        self.__categoryGroupDict = OrderedDict()
         self.__groupIndex = False
         #
         # Data sections -
         #
         self.__dictionaryHistoryList = []
-        self.__itemUnitsDict = {}
+        self.__itemUnitsDict = OrderedDict()
         self.__itemUnitsConversionList = []
-        self.__itemLinkedGroupDict = {}
-        self.__itemLinkedGroupItemDict = {}
+        self.__itemLinkedGroupDict = OrderedDict()
+        self.__itemLinkedGroupItemDict = OrderedDict()
         #
         self.__getDataSections()
         #
@@ -234,7 +235,7 @@ class DictionaryApi(object):
             for groupName in groupNameList:
                 if groupName not in self.__categoryGroupDict:
                     #  handle undefined category group ?
-                    tD = {}
+                    tD = OrderedDict()
                     tD["description"] = None
                     tD["parent_id"] = None
                     tD["categories"] = []
@@ -273,7 +274,7 @@ class DictionaryApi(object):
 
     def getCategoryGroups(self):
         try:
-            kL = sorted(self.__categoryGroupDict.keys())
+            kL = self.__categoryGroupDict.keys()
             return kL
         except Exception:
             return []
@@ -958,7 +959,7 @@ class DictionaryApi(object):
     def __makeIndex(self):
         """  Create indices of definitions, categories and items.
         """
-        iD = {}
+        iD = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
             dType = dD.getType()
@@ -999,7 +1000,7 @@ class DictionaryApi(object):
             else:
                 pass
         #
-        self.__itemNameList = sorted(iD.keys())
+        self.__itemNameList = iD.keys()
 
     def getDefinitionIndex(self):
         return self.__definitionIndex
@@ -1014,21 +1015,21 @@ class DictionaryApi(object):
             return None
 
     def getCategoryList(self):
-        return sorted(self.__catNameIndex.keys())
+        return self.__catNameIndex.keys()
 
     def getCategoryIndex(self):
         return self.__catNameIndex
 
     def getAttributeNameList(self, category):
         try:
-            return sorted(self.__catNameIndex[category])
+            return self.__catNameIndex[category]
         except Exception:
             pass
         return []
 
     def getItemNameList(self, category):
         try:
-            return sorted(self.__catNameItemIndex[category])
+            return self.__catNameItemIndex[category]
         except Exception:
             pass
         return []
@@ -1040,8 +1041,8 @@ class DictionaryApi(object):
             return ""
 
     def __getMethods(self):
-        self.__methodDict = {}
-        self.__methodIndex = {}
+        self.__methodDict = OrderedDict()
+        self.__methodIndex = OrderedDict()
         for ob in self.__containerList:
             if ob.getType() == "data":
                 ml = ob.getObj("method_list")
@@ -1298,7 +1299,7 @@ class DictionaryApi(object):
     def __expandLoopedDefinitions(self):
         """  Handle definitions containing looped item and item_linked categories --
         """
-        fullIndex = {}
+        fullIndex = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
             if name not in fullIndex:
@@ -1346,7 +1347,7 @@ class DictionaryApi(object):
     def __expandLoopedDefinitionsSAVE(self):
         """  Handle definitions containing looped item and item_linkded categories --
         """
-        fullIndex = {}
+        fullIndex = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
             if name not in fullIndex:
@@ -1419,7 +1420,7 @@ class DictionaryApi(object):
     def __consolidateDefinitions(self):
         """ Consolidate definitions into a single save frame section per definition.
         """
-        fullIndex = {}
+        fullIndex = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
             if name not in fullIndex:
@@ -1511,7 +1512,7 @@ class DictionaryApi(object):
                 if tl is not None:
                     rL = tl.getRowList()
                     if rL:
-                        self.__dataBlockDict = {}
+                        self.__dataBlockDict = OrderedDict()
                         if tl.hasAttribute("id") and tl.hasAttribute("description"):
                             row = rL[0]
                             self.__dataBlockDict["id"] = row[tl.getIndex("id")]
@@ -1521,7 +1522,7 @@ class DictionaryApi(object):
                 if tl is not None:
                     rL = tl.getRowList()
                     if rL:
-                        self.__dictionaryDict = {}
+                        self.__dictionaryDict = OrderedDict()
                         row = rL[0]
                         if tl.hasAttribute("datablock_id"):
                             self.__dictionaryDict["datablock_id"] = row[tl.getIndex("datablock_id")]
@@ -1536,7 +1537,7 @@ class DictionaryApi(object):
                     self.__dictionaryHistoryList = []
                     for row in tl.getRowList():
                         if tl.hasAttribute("version") and tl.hasAttribute("revision") and tl.hasAttribute("update"):
-                            tD = {}
+                            tD = OrderedDict()
                             tD["version"] = row[tl.getIndex("version")]
                             tD["revision"] = row[tl.getIndex("revision")]
                             tD["update"] = row[tl.getIndex("update")]
@@ -1545,7 +1546,7 @@ class DictionaryApi(object):
                 tl = ob.getObj("sub_category")
                 if tl is not None:
                     # subcategories as a dictionary by id
-                    self.__subCategoryDict = {}
+                    self.__subCategoryDict = OrderedDict()
                     for row in tl.getRowList():
                         if tl.hasAttribute("id") and tl.hasAttribute("description"):
                             self.__subCategoryDict[row[tl.getIndex("id")]] = row[tl.getIndex("description")]
@@ -1553,10 +1554,10 @@ class DictionaryApi(object):
                 tl = ob.getObj("category_group_list")
                 if tl is not None:
                     # category groups as a dictionary by id of tuples
-                    self.__categoryGroupDict = {}
+                    self.__categoryGroupDict = OrderedDict()
                     for row in tl.getRowList():
                         if tl.hasAttribute("id") and tl.hasAttribute("description") and tl.hasAttribute("parent_id"):
-                            tD = {}
+                            tD = OrderedDict()
                             tD["description"] = row[tl.getIndex("description")]
                             tD["parent_id"] = row[tl.getIndex("parent_id")]
                             tD["categories"] = []
@@ -1565,7 +1566,7 @@ class DictionaryApi(object):
                 tl = ob.getObj("item_units_list")
                 if tl is not None:
                     # units as a dictionary by code
-                    self.__itemUnitsDict = {}
+                    self.__itemUnitsDict = OrderedDict()
                     for row in tl.getRowList():
                         if tl.hasAttribute("code") and tl.hasAttribute("detail"):
                             self.__itemUnitsDict[row[tl.getIndex("code")]] = row[tl.getIndex("detail")]
@@ -1583,7 +1584,7 @@ class DictionaryApi(object):
                 tl = ob.getObj("pdbx_item_linked_group")
                 if tl is not None:
                     # parent-child collections   [category_id] -> [(1,...),(3,...),(4,...) ]
-                    self.__itemLinkedGroupDict = {}
+                    self.__itemLinkedGroupDict = OrderedDict()
                     for row in tl.getRowList():
                         if (
                             tl.hasAttribute("category_id")
@@ -1602,7 +1603,7 @@ class DictionaryApi(object):
                 tl = ob.getObj("pdbx_item_linked_group_list")
                 if tl is not None:
                     # parent-child collections   [(category_id,link_group_id)] -> [(child_name,parent_name,parent_category),(,...),(,...) ]
-                    self.__itemLinkedGroupItemDict = {}
+                    self.__itemLinkedGroupItemDict = OrderedDict()
                     for row in tl.getRowList():
                         if (
                             tl.hasAttribute("child_category_id")

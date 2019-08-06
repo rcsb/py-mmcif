@@ -35,3 +35,4 @@
  5-Jun-2019    V039 - Incorporate DictMethodRunner class change test naming conventions
 28-Jun-2019    V040 - Update development workflows and cleanup
 22-Jul-2019    V041 - Update arguments in DictMethodRunner()
+28-Jul-2019    V042 - Suppress sorting of attribute and category order in DictionaryApi()
