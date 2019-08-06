@@ -38,23 +38,13 @@ jobs:
     - script: python -m pip install --upgrade pip twine setuptools wheel
       displayName: 'Install packaging tools'
     #
-    - task: TwineAuthenticate@0
+    - task: DownloadSecureFile@1
+      name: pypicred
+      displayName: 'Download PyPI credentials'
       inputs:
-        externalFeeds: pypi-pub
-    # Try upload
-    - bash: |
-        #cat $(PYPIRC_PATH)
-        #cat $(PYPIRC_PATH) | sed "s/^username.*$/username=westbrook/g"
-        #cat $(PYPIRC_PATH) | sed "s/^username.*$/username=westbrook/g" > $(System.DefaultWorkingDirectory)/.pypirc
-        #cat $(System.DefaultWorkingDirectory)/.pypirc
-        #
-        export pw=`grep password $(PYPIRC_PATH) | sed 's/password=//g'`
-        export un=`grep username $(PYPIRC_PATH) | sed 's/username=//g'`
-        export rp=`grep repository $(PYPIRC_PATH) | sed 's/repository=//g'`
-        twine upload --verbose --skip-existing -p $pw -u $un --repository-url $rp $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
-      displayName: "Manual upload to PyPi"
-      continueOnError: true
-    - script: twine upload --verbose --skip-existing -r pypi  --config-file $(PYPIRC_PATH) $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
+        secureFile: 'PYPIRC-AZURE'
+
+    - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
       displayName: "Upload sdist and wheel to PyPi ..."
       continueOnError: true
     #
