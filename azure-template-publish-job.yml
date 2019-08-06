@@ -32,10 +32,10 @@ jobs:
     #- checkout: self
     #  submodules: true
     #
-    - download: currentBinary
+    - download: current
       artifact: ${{ format('sw_{0}_{1}', parameters.tox,  parameters.os) }}
 
-    - download: currentSource
+    - download: current
       artifact: ${{ format('sw_u_{0}_{1}', parameters.tox,  parameters.os) }}
     #
     - script: ls -lR $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}

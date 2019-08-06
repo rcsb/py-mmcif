@@ -146,8 +146,6 @@ jobs:
     #
       - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"
         displayName: "Build source dist"
-      - script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/udist" --universal
-        displayName: "Build wheel source"
       #
       # Check the install artifacts
       - script: ls -lR "$(System.DefaultWorkingDirectory)/dist" "$(System.DefaultWorkingDirectory)/udist"
