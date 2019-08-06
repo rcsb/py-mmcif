@@ -2,6 +2,9 @@
 # Date: 8-Jul-2019 jdw split out from original pipeline
 # Supports: fixtures=mysql,mongodb (linux)
 #
+# Updates:
+#  6-Aug-2019  jdw build source and binary wheels by default.
+#
 ##
 parameters:
   tox: ""
@@ -140,10 +143,19 @@ jobs:
         displayName: "Build source dist"
       - script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/dist"
         displayName: "Build wheel"
+    #
+      - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"
+        displayName: "Build source dist"
+      - script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/udist" --universal
+        displayName: "Build wheel source"
       #
       # Check the install artifacts
-      - script: ls -lR "$(System.DefaultWorkingDirectory)/dist"
+      - script: ls -lR "$(System.DefaultWorkingDirectory)/dist" "$(System.DefaultWorkingDirectory)/udist"
         displayName: "Listing of installed software"
       #
       - publish: $(System.DefaultWorkingDirectory)/dist
         artifact: ${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}
+      #
+      - publish: $(System.DefaultWorkingDirectory)/udist
+        artifact: ${{ format('sw_u_{0}_{1}', parameters.tox, parameters.os) }}
+      #

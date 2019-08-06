@@ -1,6 +1,9 @@
 # File: azure-template-publish-job.yml
 # Date: 8-Jul-2019 jdw split out from original pipeline
 #
+# Update:
+# 6-Aug-2019 jdw push source wheels (universal) for linux
+#
 ##
 parameters:
   tox: ""
@@ -29,8 +32,11 @@ jobs:
     #- checkout: self
     #  submodules: true
     #
-    - download: current
+    - download: currentBinary
       artifact: ${{ format('sw_{0}_{1}', parameters.tox,  parameters.os) }}
+
+    - download: currentSource
+      artifact: ${{ format('sw_u_{0}_{1}', parameters.tox,  parameters.os) }}
     #
     - script: ls -lR $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}
       displayName: "Listing of downloaded artifacts"
@@ -44,7 +50,12 @@ jobs:
       inputs:
         secureFile: 'PYPIRC-AZURE'
 
-    - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
-      displayName: "Upload sdist and wheel to PyPi ..."
-      continueOnError: true
+    - ${{ if startsWith(parameters.os, 'linux') }}:
+      - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_u_{0}_{1}', parameters.tox, parameters.os) }}/*
+        displayName: "Linux upload sdist and source wheel to PyPi ..."
+        continueOnError: true
     #
+    - ${{ if startsWith(parameters.os, 'macos') }}:
+      - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
+        displayName: "Mac upload sdist and binary wheel to PyPi ..."
+        continueOnError: true
