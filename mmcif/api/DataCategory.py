@@ -13,6 +13,7 @@
 #    4-Oct-2018   jdw add optional method parameter returnCount=0 to selectValuesWhere() and selectValueListWhere()
 #   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
 #    5-May-2019   jdw add selectValuesWhereConditions() and countValuesWhereConditions()
+#    7-Aug-2019   jdw don't raise exception for *OrDefault() methods.
 ##
 """
 
@@ -148,10 +149,12 @@ class DataCategory(DataCategoryBase):
                     return defaultValue
                 else:
                     return tV
-            except Exception as e:
+            except Exception as _:
                 # logger.exception("Failing attributeName %s rowIndex %r defaultValue %r" % (attributeName, rowIndex, defaultValue))
-                if self._raiseExceptions:
-                    raise e
+                # if self._raiseExceptions:
+                #     raise e
+                # Returning default -- no exception
+                pass
         else:
             if self._raiseExceptions:
                 raise ValueError
@@ -170,9 +173,10 @@ class DataCategory(DataCategoryBase):
                         continue
                     else:
                         return tV
-        except Exception as e:
-            if self._raiseExceptions:
-                raise e
+        except Exception as _:
+            # if self._raiseExceptions:
+            #    raise e
+            pass
 
         return defaultValue
 

@@ -346,8 +346,8 @@ class DataCategoryTests(unittest.TestCase):
             # negative indices are interpreted in the python manner
             self.assertEqual(dcU.getValueOrDefault("colOrd", -1, "default"), 9)
 
-            self.assertRaises(IndexError, dcU.getValueOrDefault, "colOrd", dcU.getRowCount() + 1, 0)
-            self.assertRaises(ValueError, dcU.getValueOrDefault, "badAtt", 0, 0)
+            self.assertRaises(IndexError, dcU.getValue, "colOrd", dcU.getRowCount() + 1)
+            self.assertRaises(ValueError, dcU.getValue, "badAtt", 0)
             #
         except Exception as e:
             logger.exception("Failing with %s", str(e))
