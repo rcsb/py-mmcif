@@ -149,12 +149,11 @@ class DataCategory(DataCategoryBase):
                     return defaultValue
                 else:
                     return tV
-            except Exception as _:
-                # logger.exception("Failing attributeName %s rowIndex %r defaultValue %r" % (attributeName, rowIndex, defaultValue))
+            except Exception as e:
+                logger.debug("Failing attributeName %s rowIndex %r defaultValue %r with %s", attributeName, rowIndex, defaultValue, str(e))
                 # if self._raiseExceptions:
                 #     raise e
                 # Returning default -- no exception
-                pass
         else:
             if self._raiseExceptions:
                 raise ValueError
@@ -173,11 +172,10 @@ class DataCategory(DataCategoryBase):
                         continue
                     else:
                         return tV
-        except Exception as _:
+        except Exception as e:
+            logger.debug("Failing with %s", str(e))
             # if self._raiseExceptions:
             #    raise e
-            pass
-
         return defaultValue
 
     def setValue(self, value, attributeName=None, rowIndex=None):
