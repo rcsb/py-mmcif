@@ -4,6 +4,7 @@
 #
 # Updates:
 #  6-Aug-2019  jdw build source and binary wheels by default.
+# 13-Aug-2019  jdw export config support token prior to launching tox runner
 #
 ##
 parameters:
@@ -19,6 +20,9 @@ jobs:
       vmImage: 'macOS-10.14'
     ${{ if eq(parameters.os, 'linux') }}:
       vmImage: 'ubuntu-latest'
+
+  variables:
+    - group: py-shared-variables
 
   steps:
     #
@@ -122,16 +126,24 @@ jobs:
       displayName: 'Install dependencies'
     #
     - ${{ if startsWith(parameters.tox, 'py') }}:
-      - script: ${{ format('python -m tox -e {0}', parameters.tox) }}
+      - script: |
+          export CONFIG_SUPPORT_TOKEN_ENV=$(VAR_CONFIG_SUPPORT_TOKEN_ENV)
+          ${{ format('python -m tox -e {0}', parameters.tox) }}
         displayName: 'Running tox task'
     - ${{ if and(not(startsWith(parameters.tox, 'py')), startsWith(parameters.python, '3.8')) }}:
-      - script: ${{ format('python -m tox -e {0}-py38', parameters.tox) }}
+      - script: |
+          export CONFIG_SUPPORT_TOKEN_ENV=$(VAR_CONFIG_SUPPORT_TOKEN_ENV)
+          ${{ format('python -m tox -e {0}-py38', parameters.tox) }}
         displayName: 'Running tox task'
     - ${{ if and(not(startsWith(parameters.tox, 'py')), startsWith(parameters.python, '3.7')) }}:
-      - script: ${{ format('python -m tox -e {0}-py37', parameters.tox) }}
+      - script: |
+          export CONFIG_SUPPORT_TOKEN_ENV=$(VAR_CONFIG_SUPPORT_TOKEN_ENV)
+          ${{ format('python -m tox -e {0}-py37', parameters.tox) }}
         displayName: 'Running tox task'
     - ${{ if and(not(startsWith(parameters.tox, 'py')), startsWith(parameters.python, '2.7')) }}:
-      - script: ${{ format('python -m tox -e {0}-py27', parameters.tox) }}
+      - script: |
+          export CONFIG_SUPPORT_TOKEN_ENV=$(VAR_CONFIG_SUPPORT_TOKEN_ENV)
+          ${{ format('python -m tox -e {0}-py27', parameters.tox) }}
         displayName: 'Runing tox task'
     #
     #  Build artifacts if this is a test target (i.e. labeled as py##)

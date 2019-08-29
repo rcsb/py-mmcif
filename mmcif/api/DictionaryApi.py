@@ -18,6 +18,7 @@
 #  12-Apr-2019  jdw add methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
 #  26-May-2019  jdw extend api for mehhods
 #  28-Jul-2019  jdw retain dictionary ordering for categories and attributes (suppress sorting)
+#  15-Aug-2019  jdw improve handling of dictionary and dictionary history categories for concatenated dictionaries
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -156,9 +157,10 @@ class DictionaryApi(object):
         #
         self.__fullParentD, self.__fullChildD = self.__makeFullParentChildDictionaries()
         #
-        # content sections
-        self.__dataBlockDict = OrderedDict()
-        self.__dictionaryDict = OrderedDict()
+        #
+        self.__dataBlockDictList = []
+        self.__dictionaryDictList = []
+        #
         self.__subCategoryDict = OrderedDict()
         self.__categoryGroupDict = OrderedDict()
         self.__groupIndex = False
@@ -174,18 +176,21 @@ class DictionaryApi(object):
         self.__getDataSections()
         #
 
+    def testCache(self):
+        return len(self.__containerList) > 0
+
     #
     #  Methods for data sections --
     #
     def getDictionaryVersion(self):
         try:
-            return self.__dictionaryDict["version"]
+            return ",".join([str(tD["version"]) for tD in self.__dictionaryDictList])
         except Exception:
             return None
 
     def getDictionaryTitle(self):
         try:
-            return self.__dictionaryDict["title"]
+            return ",".join([str(tD["title"]) for tD in self.__dictionaryDictList])
         except Exception:
             return None
 
@@ -212,16 +217,16 @@ class DictionaryApi(object):
             return 0
 
     def getDictionaryHistory(self, order="reverse"):
-        """ Returns the revision history as a listr of tuples [(version,update,revisionText),...]
+        """ Returns the revision history as a listr of tuples [(version,update,revisionText,dictiomary),...]
         """
         oL = []
         try:
             if order == "reverse":
                 for tD in reversed(self.__dictionaryHistoryList):
-                    oL.append((tD["version"], tD["update"], tD["revision"]))
+                    oL.append((tD["version"], tD["update"], tD["revision"], tD["dictionary"]))
             else:
                 for tD in self.__dictionaryHistoryList:
-                    oL.append((tD["version"], tD["update"], tD["revision"]))
+                    oL.append((tD["version"], tD["update"], tD["revision"], tD["dictionary"]))
         except Exception:
             pass
         return oL
@@ -1240,8 +1245,8 @@ class DictionaryApi(object):
                         fh.write("      Dependent item name   %s\n" % it1)
 
     def dumpDataSections(self, fh=sys.stdout):
-        fh.write("Datablock:  %r\n" % list(self.__dataBlockDict.items()))
-        fh.write("Dictionary: %r\n" % list(self.__dictionaryDict.items()))
+        fh.write("Datablock:  %r\n" % list(self.__dataBlockDictList))
+        fh.write("Dictionary: %r\n" % list(self.__dictionaryDictList))
         fh.write("Dictionary History: %r\n" % self.__dictionaryHistoryList)
         fh.write("Subcategories: %r\n" % list(self.__subCategoryDict.items()))
         fh.write("Category groups:  %r\n" % list(self.__categoryGroupDict.items()))
@@ -1512,35 +1517,37 @@ class DictionaryApi(object):
                 if tl is not None:
                     rL = tl.getRowList()
                     if rL:
-                        self.__dataBlockDict = OrderedDict()
                         if tl.hasAttribute("id") and tl.hasAttribute("description"):
+                            tD = OrderedDict()
                             row = rL[0]
-                            self.__dataBlockDict["id"] = row[tl.getIndex("id")]
-                            self.__dataBlockDict["description"] = row[tl.getIndex("description")]
+                            tD["id"] = row[tl.getIndex("id")]
+                            tD["description"] = row[tl.getIndex("description")]
+                            self.__dataBlockDictList.append(tD)
 
                 tl = ob.getObj("dictionary")
                 if tl is not None:
                     rL = tl.getRowList()
                     if rL:
-                        self.__dictionaryDict = OrderedDict()
+                        tD = OrderedDict()
                         row = rL[0]
                         if tl.hasAttribute("datablock_id"):
-                            self.__dictionaryDict["datablock_id"] = row[tl.getIndex("datablock_id")]
+                            tD["datablock_id"] = row[tl.getIndex("datablock_id")]
                         if tl.hasAttribute("title"):
-                            self.__dictionaryDict["title"] = row[tl.getIndex("title")]
+                            tD["title"] = row[tl.getIndex("title")]
                         if tl.hasAttribute("version"):
-                            self.__dictionaryDict["version"] = row[tl.getIndex("version")]
-
+                            tD["version"] = row[tl.getIndex("version")]
+                        self.__dictionaryDictList.append(tD)
                 tl = ob.getObj("dictionary_history")
                 if tl is not None:
                     # history as a list of dictionaries -
-                    self.__dictionaryHistoryList = []
+                    dName = ob.getName()
                     for row in tl.getRowList():
                         if tl.hasAttribute("version") and tl.hasAttribute("revision") and tl.hasAttribute("update"):
                             tD = OrderedDict()
                             tD["version"] = row[tl.getIndex("version")]
                             tD["revision"] = row[tl.getIndex("revision")]
                             tD["update"] = row[tl.getIndex("update")]
+                            tD["dictionary"] = dName
                             self.__dictionaryHistoryList.append(tD)
 
                 tl = ob.getObj("sub_category")

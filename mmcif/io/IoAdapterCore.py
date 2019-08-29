@@ -28,6 +28,7 @@ import logging
 import os
 import sys
 import time
+import uuid
 import warnings
 
 from future.utils import raise_from
@@ -119,7 +120,7 @@ class IoAdapterCore(IoAdapterBase):
             if cleanUp:
                 self._cleanupFile(asciiFilePath, asciiFilePath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
-            self._setContainerProperties(containerL, locator=str(inputFilePath), load_date=self._getTimeStamp())
+            self._setContainerProperties(containerL, locator=str(inputFilePath), load_date=self._getTimeStamp(), uid=uuid.uuid4().hex)
             #
             return containerL
         except (PdbxError, PdbxSyntaxError) as ex:

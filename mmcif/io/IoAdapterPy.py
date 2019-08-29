@@ -23,6 +23,7 @@ from __future__ import absolute_import
 import io
 import logging
 import sys
+import uuid
 
 from future.utils import raise_from
 
@@ -104,7 +105,7 @@ class IoAdapterPy(IoAdapterBase):
             if cleanUp:
                 self._cleanupFile(lPath, lPath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
-            self._setContainerProperties(containerList, locator=str(inputFilePath), load_date=self._getTimeStamp())
+            self._setContainerProperties(containerList, locator=str(inputFilePath), load_date=self._getTimeStamp(), uid=uuid.uuid4().hex)
         except (PdbxError, PdbxSyntaxError) as ex:
             msg = "File %r with %s" % (filePath, str(ex))
             self._appendToLog([msg])

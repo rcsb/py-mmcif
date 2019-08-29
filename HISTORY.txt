@@ -36,4 +36,7 @@
 28-Jun-2019    V040 - Update development workflows and cleanup
 22-Jul-2019    V041 - Update arguments in DictMethodRunner()
 28-Jul-2019    V042 - Suppress sorting of attribute and category order in DictionaryApi()
- 7-Aut-2019    V043 - Suppress raising exceptions for getValueOrDefault() methods.
+ 7-Aug-2019    V043 - Suppress raising exceptions for getValueOrDefault() methods.
+13-Aug-2019    V044 - Add placeholder test method for DictionaryApi().
+16-Aug-2019    V045 - Improve handling of dictionary and dictionary history categories for concatenated dictionaries.
+28-Aug-2019    V046 - Add unique identifier properties to each container
