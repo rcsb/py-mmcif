@@ -170,8 +170,8 @@ class DictionaryApiTests(unittest.TestCase):
                     else:
                         cI[(cV, pV)] += 1
             linkL = []
-            for sV, tV in cI:
-                dD = {"source": sV, "target": tV, "type": "link"}
+            for tup in cI:
+                dD = {"source": tup[0], "target": tup[1], "type": "link"}
                 linkL.append(dD)
 
             if self.__verbose:
