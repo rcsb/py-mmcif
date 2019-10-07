@@ -19,6 +19,7 @@
 #  26-May-2019  jdw extend api for mehhods
 #  28-Jul-2019  jdw retain dictionary ordering for categories and attributes (suppress sorting)
 #  15-Aug-2019  jdw improve handling of dictionary and dictionary history categories for concatenated dictionaries
+#   6-Sep-2019  jdw cleanup enum details
 ##
 """
 Accessors for PDBx/mmCIF dictionaries -
@@ -365,7 +366,10 @@ class DictionaryApi(object):
         dD = {}
         if len(eVL) == len(eDL):
             for eV, eD in zip(eVL, eDL):
-                dD[eV] = (eV, eD)
+                if not eD or eD in [".", "?"]:
+                    dD[eV] = (eV, None)
+                else:
+                    dD[eV] = (eV, eD)
         else:
             for eV in eVL:
                 dD[eV] = (eV, None)
@@ -382,7 +386,10 @@ class DictionaryApi(object):
         dD = {}
         if len(eVL) == len(eDL):
             for eV, eD in zip(eVL, eDL):
-                dD[eV] = (eV, eD)
+                if not eD or eD in [".", "?"]:
+                    dD[eV] = (eV, None)
+                else:
+                    dD[eV] = (eV, eD)
         else:
             for eV in eVL:
                 dD[eV] = (eV, None)

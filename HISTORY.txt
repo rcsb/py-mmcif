@@ -40,3 +40,4 @@
 13-Aug-2019    V044 - Add placeholder test method for DictionaryApi().
 16-Aug-2019    V045 - Improve handling of dictionary and dictionary history categories for concatenated dictionaries.
 28-Aug-2019    V046 - Add unique identifier properties to each container
+ 7-Oct-2019    V047 - Adjust error handling in IoAdapterCore()

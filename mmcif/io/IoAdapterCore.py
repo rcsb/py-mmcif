@@ -348,7 +348,7 @@ class IoAdapterCore(IoAdapterBase):
                             table.AddRow()
                             table.FillRow(ii, [str(row[jj]) if row[jj] is not None else "?" for jj in range(0, rLen)])
                     except Exception as e:
-                        logger.error("Exception for %s preparing data for writing %s", outputFilePath, str(e))
+                        logger.error("Exception for %s preparing category %r (%d) attributes %r for writing %s", outputFilePath, name, len(rowList), attributeNameList, str(e))
                     #
                     block.WriteTable(table)
             #
