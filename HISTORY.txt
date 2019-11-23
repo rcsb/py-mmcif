@@ -42,3 +42,4 @@
 28-Aug-2019    V046 - Add unique identifier properties to each container
  7-Oct-2019    V047 - Adjust error handling in IoAdapterCore()
  7-Oct-2019    V048 - Exclude setup.py to avoid odd pylint crash.
+23-Nov-2019    V049 - Move pipeline to py38
