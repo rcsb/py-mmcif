@@ -165,6 +165,7 @@ class DictionaryApi(object):
         self.__subCategoryDict = OrderedDict()
         self.__categoryGroupDict = OrderedDict()
         self.__groupIndex = False
+        self.__groupChildIndex = OrderedDict()
         #
         # Data sections -
         #
@@ -255,6 +256,13 @@ class DictionaryApi(object):
                 self.__categoryGroupDict[groupName]["categories"].sort()
         self.__groupIndex = True
 
+        self.__groupChildIndex = OrderedDict()
+        for groupName, gD in self.__categoryGroupDict.items():
+            if "parent" in gD:
+                self.__groupChildIndex.setdefault(gD["parent"], []).append(groupName)
+        #
+        self.__groupIndex = True
+
     #
     def getCategoryGroupDescription(self, groupName):
         try:
@@ -268,11 +276,27 @@ class DictionaryApi(object):
         except Exception:
             return None
 
-    def getCategoryGroupCategories(self, groupName):
+    def getCategoryGroupChildGroups(self, parentGroupName):
+        try:
+            return self.__groupChildIndex[parentGroupName]
+        except Exception:
+            return []
+
+    def getCategoryGroupCategories(self, groupName, followChildren=False):
         try:
             if not self.__groupIndex:
                 self.__makeCategoryGroupIndex()
-            return self.__categoryGroupDict[groupName]["categories"]
+            #
+            if followChildren:
+                cL = []
+                grpL = [groupName]
+                grpL.extend(self.getCategoryGroupChildGroups(groupName))
+                for grp in grpL:
+                    cL.extend(self.__categoryGroupDict[grp]["categories"] if grp in self.__categoryGroupDict else [])
+                return sorted(set(cL))
+            else:
+                return self.__categoryGroupDict[groupName]["categories"] if groupName in self.__categoryGroupDict else []
+            #
         except Exception:
             logger.exception("DictionaryApi.getCategoryGroupCategories failed for group %s", groupName)
 

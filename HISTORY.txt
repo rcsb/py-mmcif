@@ -44,3 +44,4 @@
  7-Oct-2019    V048 - Exclude setup.py to avoid odd pylint crash.
 23-Nov-2019    V049 - Move pipeline to py38
 29-Nov-2019    V050 - Improve error diagnostics for missing methods, adjust parameter values for block methods.
+15-Feb-2020    V051 - Add support for category group hierarchies.
