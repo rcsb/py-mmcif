@@ -45,24 +45,38 @@ class CMakeBuild(build_ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cmakeArgs = ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + extdir, "-DPYTHON_EXECUTABLE=" + sys.executable]
 
-        # we need to help cmake find the correct python for this virtual env -
-        if hasattr(sys, "real_prefix"):
-            lsp = os.path.join(sys.real_prefix, "lib", "libpython") + "*"  # pylint: disable=no-member
-            isp = os.path.join(sys.real_prefix, "include", "python") + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"  # pylint: disable=no-member
-        else:
-            lsp = os.path.join(sys.exec_prefix, "lib", "libpython") + "*"
-            isp = os.path.join(sys.exec_prefix, "include", "python") + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"
-        #
+        # We need to help cmake find the correct python for this virtual env -
+        # ---
+        libPath = None
+        lsp = os.path.join(sys.exec_prefix, "lib", "libpython") + "*"
         lpL = glob.glob(lsp)
         if lpL:
-            lp = lpL[0]
-            cmakeArgs += ["-DPYTHON_LIBRARY=" + lp]
-
+            libPath = lpL[0]
+        elif hasattr(sys, "base_exec_prefix"):
+            lsp = os.path.join(sys.base_exec_prefix, "lib", "libpython") + "*"  # pylint: disable=no-member
+            lpL = glob.glob(lsp)
+            if lpL:
+                libPath = lpL[0]
+        if libPath:
+            cmakeArgs += ["-DPYTHON_LIBRARY=" + libPath]
+        else:
+            print("------ WARNING could not locate python library")
+        # ---
+        inclPath = None
+        isp = os.path.join(sys.exec_prefix, "include", "python") + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"
         ipL = glob.glob(isp)
         if ipL:
-            ip = ipL[0]
-            cmakeArgs += ["-DPYTHON_INCLUDE_DIR=" + ip]
-        #
+            inclPath = ipL[0]
+        elif hasattr(sys, "base_exec_prefix"):
+            isp = os.path.join(sys.base_exec_prefix, "include", "python") + "%s.%s" % (sys.version_info.major, sys.version_info.minor) + "*"  # pylint: disable=no-member
+            ipL = glob.glob(isp)
+            if ipL:
+                inclPath = ipL[0]
+        if inclPath:
+            cmakeArgs += ["-DPYTHON_INCLUDE_DIR=" + inclPath]
+        else:
+            print("------ WARNING could not locate python include files")
+        # ---
         cfg = "Debug" if self.debug else "Release"
         buildArgs = ["--config", cfg]
 
@@ -83,7 +97,7 @@ class CMakeBuild(build_ext):
             os.makedirs(self.build_temp)
         #
         if debug:
-            print("------------------------------")
+            print("------------- setup.py -----------------")
             print("Extension source path ", ext.sourcedir)
             print("CMAKE_ARGS ", cmakeArgs)
             print("self.build_temp ", self.build_temp)
