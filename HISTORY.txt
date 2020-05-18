@@ -47,3 +47,4 @@
 15-Feb-2020    V051 - Add support for category group hierarchies.
  9-May-2020    V052 - Make reserved token quoting case insensitive (PR from E. Ezra Peisach)
 18-May-2020    V053 - Add DataCatagory method countValuesWhereOpConditions() and test cases.
+18-May-2020    V054 - Add DataCatagory another method getCombinationCountsWithConditions() and test cases.

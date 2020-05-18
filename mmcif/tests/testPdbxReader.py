@@ -74,6 +74,9 @@ class PdbxReaderTests(unittest.TestCase):
                 asymD = asObj.getCombinationCounts(["label_asym_id"])
                 logger.debug("asymD %r", asymD)
                 self.assertEqual(len(asymD), 6)
+                modCD = asObj.getCombinationCountsWithConditions(["label_asym_id", "pdbx_PDB_model_num"], [("type_symbol", "in", ["C"])])
+                logger.debug("modCD %r", sum(modCD.values()))
+                self.assertEqual(sum(modCD.values()), 1694)
             #
             self.assertEqual(len(myDataList), 1)
         except Exception as e:

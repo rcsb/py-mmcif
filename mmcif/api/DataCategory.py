@@ -377,6 +377,17 @@ class DataCategory(DataCategoryBase):
         return rL
 
     def countValuesWhereConditions(self, conditionsD):
+        """Count row instances subject to input equivalence conditions
+
+        Args:
+            conditionsD (dict): {'atName': value, ....}
+
+        Raises:
+            e: any failure
+
+        Returns:
+            int: count of instancese satisfying input conditions
+        """
         try:
             iCount = 0
             idxD = {k: self._attributeNameList.index(k) for k, v in conditionsD.items()}
@@ -440,6 +451,9 @@ class DataCategory(DataCategoryBase):
     def getCombinationCounts(self, attributeList):
         """ Count the value occurences of the input attributeList in the category.
 
+            Args:
+                attributeList (list): target list of attribute names
+
             Returns:
 
                 cD[(attribute value, ... )] = count
@@ -452,6 +466,47 @@ class DataCategory(DataCategoryBase):
             for row in self.data:
                 ky = tuple([row[jj] for jj in idxL])
                 cD[ky] = cD[ky] + 1 if ky in cD else 1
+        except Exception as e:
+            if self.__verbose:
+                logger.exception("Selection failure")
+            if self._raiseExceptions:
+                raise e
+        return cD
+
+    def getCombinationCountsWithConditions(self, attributeList, conditionTupleList):
+        """ Count the value occurences of the input attributeList in the category.
+
+            Args:
+                attributeList (list): target list of attribute names
+                conditionTupleList (list): (attributeName, op, value) where (op = 'eq', 'gt(int)', 'lt(int)', 'in', 'ne', 'not in')
+
+            Returns:
+
+                cD[(attribute value, ... )] = count
+        """
+        cD = {}
+        try:
+            idxL = [self._attributeNameList.index(atName) for atName in attributeList]
+            idxD = {atName: self._attributeNameList.index(atName) for (atName, op, value) in conditionTupleList}
+            #
+            for row in self.data:
+                ok = True
+                for (atName, op, v) in conditionTupleList:
+                    if op == "eq":
+                        ok = (v == row[idxD[atName]]) and ok
+                    elif op == "ne":
+                        ok = (v != row[idxD[atName]]) and ok
+                    elif op == "lt(int)":
+                        ok = (int(row[idxD[atName]]) < v) and ok
+                    elif op == "gt(int)":
+                        ok = (int(row[idxD[atName]]) > v) and ok
+                    elif op == "in":
+                        ok = (row[idxD[atName]] in v) and ok
+                    elif op == "not in":
+                        ok = (row[idxD[atName]] not in v) and ok
+                if ok:
+                    ky = tuple([row[jj] for jj in idxL])
+                    cD[ky] = cD[ky] + 1 if ky in cD else 1
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")
