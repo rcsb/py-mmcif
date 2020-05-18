@@ -56,15 +56,24 @@ class PdbxReaderTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testReadSmallDataFile(self):
-        """Test case -  read data file
+        """Test case -  read data file and count atoms
         """
         try:
             #
             myDataList = []
-            ifh = open(self.__pathPdbxDataFile, "r")
-            pRd = PdbxReader(ifh)
-            pRd.read(myDataList)
-            ifh.close()
+            with open(self.__pathPdbxDataFile, "r") as ifh:
+                pRd = PdbxReader(ifh)
+                pRd.read(myDataList)
+            #
+            for container in myDataList:
+                asObj = container.getObj("atom_site")
+                ic0 = asObj.countValuesWhereConditions({"label_asym_id": "A"})
+                ic1 = asObj.countValuesWhereOpConditions([("type_symbol", "in", ["C", "N"]), ("label_asym_id", "eq", "A")])
+                logger.debug("ic0 %d ic1 %d", ic0, ic1)
+                self.assertTrue(ic0 > ic1)
+                asymD = asObj.getCombinationCounts(["label_asym_id"])
+                logger.debug("asymD %r", asymD)
+                self.assertEqual(len(asymD), 6)
             #
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
@@ -77,10 +86,10 @@ class PdbxReaderTests(unittest.TestCase):
         try:
             #
             myDataList = []
-            ifh = open(self.__pathBigPdbxDataFile, "r")
-            pRd = PdbxReader(ifh)
-            pRd.read(myDataList)
-            ifh.close()
+            with open(self.__pathBigPdbxDataFile, "r") as ifh:
+                pRd = PdbxReader(ifh)
+                pRd.read(myDataList)
+
             self.assertEqual(len(myDataList), 1)
         except Exception as e:
             logger.exception("Failing with %s", str(e))
@@ -92,9 +101,9 @@ class PdbxReaderTests(unittest.TestCase):
         try:
             #
             myContainerList = []
-            ifh = open(self.__pathSFDataFile, "r")
-            pRd = PdbxReader(ifh)
-            pRd.read(myContainerList)
+            with open(self.__pathSFDataFile, "r") as ifh:
+                pRd = PdbxReader(ifh)
+                pRd.read(myContainerList)
             c0 = myContainerList[0]
             #
             catObj = c0.getObj("refln")

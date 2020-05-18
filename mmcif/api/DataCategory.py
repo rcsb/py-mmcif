@@ -395,6 +395,47 @@ class DataCategory(DataCategoryBase):
                 raise e
         return iCount
 
+    def countValuesWhereOpConditions(self, conditionTupleList):
+        """Count row instances subject to input condition list
+
+        Args:
+            conditionTupleList (list): (attributeName, op, value) where (op = 'eq', 'gt(int)', 'lt(int)', 'in', 'ne', 'not in')
+
+        Raises:
+            e: any failure
+
+        Returns:
+            int: count of instancese satisfying input conditions
+        """
+        try:
+            iCount = 0
+            idxD = {atName: self._attributeNameList.index(atName) for (atName, op, value) in conditionTupleList}
+            #
+            for row in self.data:
+                ok = True
+                for (atName, op, v) in conditionTupleList:
+                    if op == "eq":
+                        ok = (v == row[idxD[atName]]) and ok
+                    elif op == "ne":
+                        ok = (v != row[idxD[atName]]) and ok
+                    elif op == "lt(int)":
+                        ok = (int(row[idxD[atName]]) < v) and ok
+                    elif op == "gt(int)":
+                        ok = (int(row[idxD[atName]]) > v) and ok
+                    elif op == "in":
+                        ok = (row[idxD[atName]] in v) and ok
+                    elif op == "not in":
+                        ok = (row[idxD[atName]] not in v) and ok
+                if ok:
+                    iCount += 1
+
+        except Exception as e:
+            if self.__verbose:
+                logger.exception("Selection failure")
+            if self._raiseExceptions:
+                raise e
+        return iCount
+
     #
     def getCombinationCounts(self, attributeList):
         """ Count the value occurences of the input attributeList in the category.
