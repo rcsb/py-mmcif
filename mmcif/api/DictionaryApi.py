@@ -31,8 +31,7 @@ import logging
 import sys
 
 from collections import OrderedDict
-from itertools import zip_longest
-from six.moves import zip
+from six.moves import zip, zip_longest
 
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.Method import MethodDefinition, MethodReference
