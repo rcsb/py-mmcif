@@ -31,6 +31,7 @@ import logging
 import sys
 
 from collections import OrderedDict
+from itertools import zip_longest
 from six.moves import zip
 
 from mmcif.api.DataCategory import DataCategory
@@ -86,6 +87,8 @@ class DictionaryApi(object):
         self.__enumD = {
             "ENUMERATION_VALUE": ("item_enumeration", "value"),
             "ENUMERATION_DETAIL": ("item_enumeration", "detail"),
+            "ENUMERATION_TYPE_UNITS": ("item_enumeration", "rcsb_type_units_code"),
+            "ENUMERATION_DETAIL_BRIEF": ("item_enumeration", "rcsb_detail_brief"),
             "ENUMERATION_TUPLE": ("item_enumeration", None),
             "ITEM_LINKED_PARENT": ("item_linked", "parent_name"),
             "ITEM_LINKED_CHILD": ("item_linked", "child_name"),
@@ -398,6 +401,20 @@ class DictionaryApi(object):
             for eV in eVL:
                 dD[eV] = (eV, None)
         #
+        for ky in sorted(dD.keys()):
+            rL.append(dD[ky])
+        return rL
+
+    def getEnumListWithFullDetails(self, category, attribute):
+        eVL = self.__getListAll("ENUMERATION_VALUE", category, attribute)
+        eDL = self.__getListAll("ENUMERATION_DETAIL", category, attribute)
+        eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF", category, attribute)
+        eUL = self.__getListAll("ENUMERATION_TYPE_UNITS", category, attribute)
+        rL = []
+        dD = {}
+        for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
+            oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
+            dD[eV] = tuple(oL)
         for ky in sorted(dD.keys()):
             rL.append(dD[ky])
         return rL

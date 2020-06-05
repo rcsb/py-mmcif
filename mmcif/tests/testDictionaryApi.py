@@ -56,6 +56,23 @@ class DictionaryApiTests(unittest.TestCase):
         endTime = time.time()
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
+    def testExtendedEnums(self):
+        """Test case -  to verify extended enums  -
+        """
+
+        try:
+            myIo = IoAdapter(raiseExceptions=True)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
+            dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
+            #
+            eList = dApi.getEnumListWithFullDetails(category="chem_comp", attribute="mon_nstd_flag")
+            logger.debug("Item Enum list sorted  %r\n", eList)
+            self.assertGreaterEqual(len(eList), 4)
+
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+            self.fail()
+
     def testDumpEnums(self):
         """Test case -  to verify enum ordering -
         """
