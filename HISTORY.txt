@@ -50,3 +50,4 @@
 18-May-2020    V054 - Add DataCatagory another method getCombinationCountsWithConditions() and test cases.
  5-Jun-2020    V055 - Add support for extended enumeration description and units
  5-Jun-2020    V056 - Address Py27 compatibility issues
+ 5-Jun-2020    V057 - Extend support for extended enumeration description and units for alt enumerations

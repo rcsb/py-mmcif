@@ -127,6 +127,8 @@ class DictionaryApi(object):
             "ITEM_DESCRIPTION_PDBX": ("pdbx_item_description", "description"),
             "ENUMERATION_VALUE_PDBX": ("pdbx_item_enumeration", "value"),
             "ENUMERATION_DETAIL_PDBX": ("pdbx_item_enumeration", "detail"),
+            "ENUMERATION_TYPE_UNITS_PDBX": ("pdbx_item_enumeration", "type_units_code"),
+            "ENUMERATION_DETAIL_BRIEF_PDBX": ("pdbx_item_enumeration", "detail_brief"),
             "ITEM_MANDATORY_CODE_PDBX": ("pdbx_item", "mandatory_code"),
             "ITEM_EXAMPLE_CASE_PDBX": ("pdbx_item_examples", "case"),
             "ITEM_EXAMPLE_DETAIL_PDBX": ("pdbx_item_examples", "detail"),
@@ -400,6 +402,34 @@ class DictionaryApi(object):
             for eV in eVL:
                 dD[eV] = (eV, None)
         #
+        for ky in sorted(dD.keys()):
+            rL.append(dD[ky])
+        return rL
+
+    def getEnumListAltWithFullDetails(self, category, attribute):
+        eVL = self.__getListAll("ENUMERATION_VALUE_PDBX", category, attribute)
+        eDL = self.__getListAll("ENUMERATION_DETAIL_PDBX", category, attribute)
+        eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF_PDBX", category, attribute)
+        eUL = self.__getListAll("ENUMERATION_TYPE_UNITS_PDBX", category, attribute)
+        rL = []
+        dD = {}
+        for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
+            oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
+            dD[eV] = tuple(oL)
+        for ky in sorted(dD.keys()):
+            rL.append(dD[ky])
+        if rL:
+            return rL
+        #
+        eVL = self.__getListAll("ENUMERATION_VALUE", category, attribute)
+        eDL = self.__getListAll("ENUMERATION_DETAIL", category, attribute)
+        eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF", category, attribute)
+        eUL = self.__getListAll("ENUMERATION_TYPE_UNITS", category, attribute)
+        rL = []
+        dD = {}
+        for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
+            oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
+            dD[eV] = tuple(oL)
         for ky in sorted(dD.keys()):
             rL.append(dD[ky])
         return rL
