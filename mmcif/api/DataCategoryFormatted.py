@@ -20,9 +20,10 @@ from __future__ import absolute_import
 import logging
 import re
 
+from six.moves import range
+
 from mmcif.api.DataCategory import DataCategory
 
-from six.moves import range
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -274,9 +275,9 @@ class DataCategoryFormatted(DataCategory):
             try:
                 fList, _ = self.__formatPdbx(self.data[rowI][self._attributeNameList.index(attribute)])
                 return "".join(fList)
-            except IndexError:
+            except IndexError as e:
                 logger.exception("attributeName %s rowI %r rowdata %r", attributeName, rowI, self.data[rowI])
-                raise IndexError
+                raise IndexError from e
             except Exception as e:
                 logger.exception(" Failing with %s - AttributeName %s rowI %r rowdata %r", str(e), attributeName, rowI, self.data[rowI])
         else:
@@ -288,9 +289,9 @@ class DataCategoryFormatted(DataCategory):
         try:
             fList, _ = self.__formatPdbx(self.data[rowIndex][attributeIndex])
             return "".join(fList)
-        except IndexError:
+        except IndexError as e:
             logger.exception("attributeIndex %r rowIndex %r rowdata %r", attributeIndex, rowIndex, self.data[rowIndex][attributeIndex])
-            raise IndexError
+            raise IndexError from e
         except Exception as e:
             logger.exception("Failing with %s  - attributeIndex %r rowIndex %r rowdata %r", str(e), attributeIndex, rowIndex, self.data[rowIndex][attributeIndex])
             raise e

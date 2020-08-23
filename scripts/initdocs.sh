@@ -7,8 +7,8 @@
 # documentation as HTML  -
 #
 # Dependencies for Sphinx -
-#   pip install recommonmark
-#   pip install sphinxcontrib-napoleon
+pip install recommonmark
+pip install sphinx sphinxcontrib-napoleon sphinx_bootstrap_theme
 #
 THISDIR="$( builtin cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 topD="$(dirname ${THISDIR})"

@@ -253,7 +253,7 @@ class IoAdapterBase(object):
             msg = "File check error for %r with %s " % (filePath, str(e))
             self._appendToLog([msg])
             if self._raiseExceptions:
-                raise PdbxError(msg)
+                raise PdbxError(msg) from e
             else:
                 logger.error(msg)
         return False
@@ -291,7 +291,7 @@ class IoAdapterBase(object):
             self._appendToLog([msg])
             logger.error(msg)
             if self._raiseExceptions:
-                raise PdbxError(msg)
+                raise PdbxError(msg) from e
         #
         return False
 
@@ -333,7 +333,7 @@ class IoAdapterBase(object):
             self._appendToLog([msg])
             logger.exception(msg)
             if self._raiseExceptions:
-                raise PdbxError(msg)
+                raise PdbxError(msg) from e
 
         logger.debug("Returning file path %r", outputFilePath)
         return outputFilePath

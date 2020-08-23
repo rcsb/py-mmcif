@@ -438,9 +438,9 @@ class DataCategoryBase(UserList):
                 for k, v in dD.items():
                     rL.insert(self._itemNameList.index(k), v)
                 return rL
-        except Exception:
+        except Exception as e:
             if self._raiseExceptions:
-                raise IndexError
+                raise IndexError from e
         return None
 
     def cmpAttributeNames(self, dcObj):
