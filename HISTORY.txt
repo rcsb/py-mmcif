@@ -52,3 +52,4 @@
  5-Jun-2020    V056 - Address Py27 compatibility issues
  5-Jun-2020    V057 - Extend support for extended enumeration description and units for alt enumerations
 23-Aug-2020    V058 - Adjustments for the latest pylint and installation of dependencies for documentation generator
+23-Aug-2020    V059 - Py27 adjustments
