@@ -20,6 +20,7 @@
 A collection of container classes supporting the PDBx/mmCIF storage model.
 
 """
+
 from __future__ import absolute_import
 
 import logging
@@ -118,9 +119,9 @@ class DataCategory(DataCategoryBase):
         if isinstance(attribute, self._stringTypes) and isinstance(rowI, int):
             try:
                 return self.data[rowI][self._attributeNameList.index(attribute)]
-            except IndexError as e:
+            except IndexError:
                 if self._raiseExceptions:
-                    raise IndexError from e
+                    raise IndexError
         if self._raiseExceptions:
             raise IndexError(attribute)
         else:
@@ -208,7 +209,7 @@ class DataCategory(DataCategoryBase):
 
                 self.data[rowI][ind] = value
                 return True
-            except IndexError as e:
+            except IndexError:
                 if self.__verbose:
                     logger.exception(
                         "DataCategory(setvalue) index error category %s attribute %s row index %d col %d rowlen %d value %r",
@@ -223,12 +224,12 @@ class DataCategory(DataCategoryBase):
                     for ii, aV in enumerate(self._attributeNameList):
                         logger.debug("DataCategory(setvalue) %d attributeName %r", ii, aV)
                 if self._raiseExceptions:
-                    raise IndexError from e
-            except ValueError as e:
+                    raise IndexError
+            except ValueError:
                 if self.__verbose:
                     logger.exception("DataCategory(setvalue) value error category %s attribute %s row index %d value %r", self._name, attribute, rowI, value)
                 if self._raiseExceptions:
-                    raise ValueError from e
+                    raise ValueError
         else:
             if self._raiseExceptions:
                 raise ValueError

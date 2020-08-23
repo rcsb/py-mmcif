@@ -275,9 +275,9 @@ class DataCategoryFormatted(DataCategory):
             try:
                 fList, _ = self.__formatPdbx(self.data[rowI][self._attributeNameList.index(attribute)])
                 return "".join(fList)
-            except IndexError as e:
+            except IndexError:
                 logger.exception("attributeName %s rowI %r rowdata %r", attributeName, rowI, self.data[rowI])
-                raise IndexError from e
+                raise IndexError
             except Exception as e:
                 logger.exception(" Failing with %s - AttributeName %s rowI %r rowdata %r", str(e), attributeName, rowI, self.data[rowI])
         else:
@@ -289,9 +289,9 @@ class DataCategoryFormatted(DataCategory):
         try:
             fList, _ = self.__formatPdbx(self.data[rowIndex][attributeIndex])
             return "".join(fList)
-        except IndexError as e:
+        except IndexError:
             logger.exception("attributeIndex %r rowIndex %r rowdata %r", attributeIndex, rowIndex, self.data[rowIndex][attributeIndex])
-            raise IndexError from e
+            raise IndexError
         except Exception as e:
             logger.exception("Failing with %s  - attributeIndex %r rowIndex %r rowdata %r", str(e), attributeIndex, rowIndex, self.data[rowIndex][attributeIndex])
             raise e

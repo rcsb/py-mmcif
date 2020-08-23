@@ -79,9 +79,9 @@ class PdbxReader(object):
             raise e
         except UnicodeDecodeError as e:
             logger.debug("Caught character encoding exception at %d with %s", self.__curLineNumber, str(e))
-            raise PdbxError("Character encoding error at line %d" % self.__curLineNumber) from e
+            raise PdbxError("Character encoding error at line %d" % self.__curLineNumber)
         except Exception as e:
-            raise PdbxError("Failing at line %d with %s" % (self.__curLineNumber, str(e))) from e
+            raise PdbxError("Failing at line %d with %s" % (self.__curLineNumber, str(e)))
         else:
             raise PdbxError("Miscellaneous parsing error at line %d" % self.__curLineNumber)
 
