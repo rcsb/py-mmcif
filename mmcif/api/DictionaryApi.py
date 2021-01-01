@@ -109,6 +109,7 @@ class DictionaryApi(object):
             "CATEGORY_EXAMPLE_DETAIL": ("category_examples", "detail"),
             "CATEGORY_MANDATORY_CODE": ("category", "mandatory_code"),
             "CATEGORY_DESCRIPTION": ("category", "description"),
+            "CATEGORY_NX_MAPPING_DETAILS": ("category", "NX_mapping_details"),
             #
             "DATA_TYPE_CODE_NDB": ("ndb_item_type", "code"),
             "ITEM_DESCRIPTION_NDB": ("ndb_item_description", "description"),
@@ -201,8 +202,7 @@ class DictionaryApi(object):
             return None
 
     def getDictionaryUpdate(self, order="reverse"):
-        """ Get details from the last history element.
-        """
+        """Get details from the last history element."""
         try:
             if order == "reverse":
                 tD = self.__dictionaryHistoryList[-1]
@@ -215,16 +215,14 @@ class DictionaryApi(object):
             return None
 
     def getDictionaryRevisionCount(self):
-        """ Get details from the last history element.
-        """
+        """Get details from the last history element."""
         try:
             return len(self.__dictionaryHistoryList)
         except Exception:
             return 0
 
     def getDictionaryHistory(self, order="reverse"):
-        """ Returns the revision history as a listr of tuples [(version,update,revisionText,dictiomary),...]
-        """
+        """Returns the revision history as a listr of tuples [(version,update,revisionText,dictiomary),...]"""
         oL = []
         try:
             if order == "reverse":
@@ -602,8 +600,7 @@ class DictionaryApi(object):
         return self.__get("ENUMERATION_CLOSED_FLAG", category, attribute)
 
     def getUltimateParent(self, category, attribute):
-        """  Return the first ultimate parent item for the input item.
-        """
+        """Return the first ultimate parent item for the input item."""
         #        pL=self.__getList('ITEM_LINKED_PARENT',category,attribute)
         pL = self.getFullParentList(category, attribute)
         itemName = CifName.itemName(category, attribute)
@@ -799,6 +796,9 @@ class DictionaryApi(object):
     def getCategoryDescription(self, category):
         return self.__get("CATEGORY_DESCRIPTION", category, attribute=None)
 
+    def getCategoryMxMappingDetails(self, category):
+        return self.__get("CATEGORY_NX_MAPPING_DETAILS", category, attribute=None)
+
     def getCategoryDescriptionAlt(self, category, fallBack=True):
         v = self.getCategoryDescriptionPdbx(category)
         if v is None:
@@ -861,11 +861,11 @@ class DictionaryApi(object):
         return exL
 
     def getParentDictionary(self):
-        """ Create a dictionary of parents relations accross all definnitions
+        """Create a dictionary of parents relations accross all definnitions
 
-            as d[child]=[parent,parent,...]
+        as d[child]=[parent,parent,...]
 
-            Exclude self parents.
+        Exclude self parents.
         """
         parentD = {}
         pAtN = self.__enumD["ITEM_LINKED_PARENT"][1]
@@ -888,12 +888,12 @@ class DictionaryApi(object):
         return parentD
 
     def __makeFullParentChildDictionaries(self):
-        """ Create a dictionaries of full parent/child relations accross all definnitions
+        """Create a dictionaries of full parent/child relations accross all definnitions
 
-            as  fullParentD[child]=[parent,parent,...]
-            and fullChildD[parent]=[child,child,...]
+        as  fullParentD[child]=[parent,parent,...]
+        and fullChildD[parent]=[child,child,...]
 
-            Exclude self parents.
+        Exclude self parents.
         """
         fullParentD = {}
         fullChildD = {}
@@ -924,9 +924,9 @@ class DictionaryApi(object):
         return fullParentD, fullChildD
 
     def __get(self, enumCode, category, attribute=None, followAncestors=False):
-        """  Return the last occurrence of the input dictionary metadata.  If the value
-             for the input category/attribute is null/missing then optionally check for
-             an ancestor value.
+        """Return the last occurrence of the input dictionary metadata.  If the value
+        for the input category/attribute is null/missing then optionally check for
+        an ancestor value.
         """
         v0 = self.__getValue(enumCode, category, attribute)
         if not followAncestors:
@@ -944,8 +944,8 @@ class DictionaryApi(object):
 
     #
     def __getValue(self, enumCode, category, attribute=None):
-        """ Returns the last occurrence of the input dictionary metadata (enumCode) for the input category/attribute
-            encountered in the list of objects stored at the indicated definition index.
+        """Returns the last occurrence of the input dictionary metadata (enumCode) for the input category/attribute
+        encountered in the list of objects stored at the indicated definition index.
 
         """
         eS = None
@@ -1039,8 +1039,7 @@ class DictionaryApi(object):
         return self.__methodIndex
 
     def __makeIndex(self):
-        """  Create indices of definitions, categories and items.
-        """
+        """Create indices of definitions, categories and items."""
         iD = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
@@ -1342,16 +1341,14 @@ class DictionaryApi(object):
                         fh.write("    group %s --- child item %s   parent item %s\n" % (lg[1], lgI[0], lgI[1]))
 
     def __newDataCategory(self, categoryName, attributeNameList):
-        """  create a new data category -
-        """
+        """create a new data category -"""
         aCat = DataCategory(categoryName)
         for attributeName in attributeNameList:
             aCat.appendAttribute(attributeName)
         return aCat
 
     def __addItemLinkToDef(self, dObj, parentName, childName):
-        """  Add the input link relationship to the input definition object.
-        """
+        """Add the input link relationship to the input definition object."""
         if dObj.exists("item_linked"):
             # update in place --
             cObj = dObj.getObj("item_linked")
@@ -1379,8 +1376,7 @@ class DictionaryApi(object):
             return True
 
     def __expandLoopedDefinitions(self):
-        """  Handle definitions containing looped item and item_linked categories --
-        """
+        """Handle definitions containing looped item and item_linked categories --"""
         fullIndex = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
@@ -1427,8 +1423,7 @@ class DictionaryApi(object):
                             ob.remove("item_linked")
 
     def __expandLoopedDefinitionsSAVE(self):
-        """  Handle definitions containing looped item and item_linkded categories --
-        """
+        """Handle definitions containing looped item and item_linkded categories --"""
         fullIndex = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
@@ -1500,8 +1495,7 @@ class DictionaryApi(object):
                             ob.remove("item_linked")
 
     def __consolidateDefinitions(self):
-        """ Consolidate definitions into a single save frame section per definition.
-        """
+        """Consolidate definitions into a single save frame section per definition."""
         fullIndex = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
@@ -1544,8 +1538,7 @@ class DictionaryApi(object):
         self.__containerList = dList
 
     def getDataTypeList(self):
-        """ Return list of tuples containing ('code','primitive_code','construct','detail' )
-        """
+        """Return list of tuples containing ('code','primitive_code','construct','detail' )"""
         rowList = []
         for code in sorted(self.__typesDict.keys()):
             tup = self.__typesDict[code]
@@ -1553,8 +1546,7 @@ class DictionaryApi(object):
         return rowList
 
     def getSubCategoryList(self):
-        """ Return list of tuples containing ('id', 'description')
-        """
+        """Return list of tuples containing ('id', 'description')"""
         rowList = []
         for tId in sorted(self.__subCategoryDict.keys()):
             description = self.__subCategoryDict[tId]
@@ -1562,8 +1554,7 @@ class DictionaryApi(object):
         return rowList
 
     def getUnitsList(self):
-        """ Return list of tuples containing ('id', 'description')
-        """
+        """Return list of tuples containing ('id', 'description')"""
         rowList = []
         for tId in sorted(self.__itemUnitsDict.keys()):
             description = self.__itemUnitsDict[tId]
@@ -1571,13 +1562,11 @@ class DictionaryApi(object):
         return rowList
 
     def getUnitsConversionList(self):
-        """  Return list of tuples containing ('from_code','to_code','operator','factor')
-        """
+        """Return list of tuples containing ('from_code','to_code','operator','factor')"""
         return self.__itemUnitsConversionList
 
     def __getDataSections(self):
-        """
-        """
+        """"""
         for ob in self.__containerList:
 
             if ob.getType() == "data":
@@ -1661,9 +1650,7 @@ class DictionaryApi(object):
                     self.__itemUnitsConversionList = []
                     for row in tl.getRowList():
                         if tl.hasAttribute("from_code") and tl.hasAttribute("to_code") and tl.hasAttribute("operator") and tl.hasAttribute("factor"):
-                            self.__itemUnitsConversionList.append(
-                                (row[tl.getIndex("from_code")], row[tl.getIndex("to_code")], row[tl.getIndex("operator")], row[tl.getIndex("factor")])
-                            )
+                            self.__itemUnitsConversionList.append((row[tl.getIndex("from_code")], row[tl.getIndex("to_code")], row[tl.getIndex("operator")], row[tl.getIndex("factor")]))
 
                 tl = ob.getObj("pdbx_item_linked_group")
                 if tl is not None:
