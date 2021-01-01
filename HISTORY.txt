@@ -2,55 +2,55 @@
 
  1-Aug-2017  - Initial Git Migration
 15-Jan-2018  - Python packaging overhaul
- 4-Apr-2018  - V012 - remove some deprecated code and a few api extensions
-26-Jun-2018  - V013 - add missing method code accessors
- 9-Jul-2018  - V014 - preliminary Py37 support, add coverage and code style tests
-26-Jul-2018  - V015 - further changes to support Py2/Py3 compatibility in dictionar API module
- 6-Aug-2018  - V016 - Add methods to set and get generic properties on base containers.
- 8-Aug-2018  - V017 - Add support for Ubuntu  16.04.5 & GCC 5.4
-10-Aug-2018  - V018 - Detect uncompress gz, bz2, xz and zip input files
-25-Aug-2018  - V019 - Record the compressed file names and fix tox coverage test runner
- 9-Sep-2018  - V020 - Adjust return types for failing Container and DataCategory methods
+ 4-Apr-2018  - V0.12 - remove some deprecated code and a few api extensions
+26-Jun-2018  - V0.13 - add missing method code accessors
+ 9-Jul-2018  - V0.14 - preliminary Py37 support, add coverage and code style tests
+26-Jul-2018  - V0.15 - further changes to support Py2/Py3 compatibility in dictionar API module
+ 6-Aug-2018  - V0.16 - Add methods to set and get generic properties on base containers.
+ 8-Aug-2018  - V0.17 - Add support for Ubuntu  16.04.5 & GCC 5.4
+10-Aug-2018  - V0.18 - Detect uncompress gz, bz2, xz and zip input files
+25-Aug-2018  - V0.19 - Record the compressed file names and fix tox coverage test runner
+ 9-Sep-2018  - V0.20 - Adjust return types for failing Container and DataCategory methods
                       Add implicit method execution priority based method order in category method_list.
- 4-Oct-2018  - V021 - Add optional method parameter returnCount=0 to selectValueListWhere()
-12-Oct-2018  - V022 - Update language binding code
-19-Oct-2018  - V023 - Add dictionary definition Markdown rendering example
-29-Oct-2018  - V024 - Add support for legacy CifFile() API
-11-Nov-2018  - V025 - Update DataCategory/DataCategoryBase with more consistent handling of raiseExceptions flag,
+ 4-Oct-2018  - V0.21 - Add optional method parameter returnCount=0 to selectValueListWhere()
+12-Oct-2018  - V0.22 - Update language binding code
+19-Oct-2018  - V0.23 - Add dictionary definition Markdown rendering example
+29-Oct-2018  - V0.24 - Add support for legacy CifFile() API
+11-Nov-2018  - V0.25 - Update DataCategory/DataCategoryBase with more consistent handling of raiseExceptions flag,
                       and harmonize selection of temporary and log file paths.
-27-Nov-2018  - V026 - Adjust exception handling in IoCoreAdapter().
-29-Nov-2018. - V027 - Add explicit option to better control read encoding errors separate from ascii encoding errors.
- 7-Dec-2018    V028 - Add constructor parameter replaceDefinition=False to allow replacing
+27-Nov-2018  - V0.26 - Adjust exception handling in IoCoreAdapter().
+29-Nov-2018. - V0.27 - Add explicit option to better control read encoding errors separate from ascii encoding errors.
+ 7-Dec-2018    V0.28 - Add constructor parameter replaceDefinition=False to allow replacing
                       defintions during consolidation
-27-Jan-2019    V029 - Add row dictionary initialization, append, and extend methods
-28-Jan-2019    V030 - Relax attribute coverage requirements on dictionary initialization
- 2-Feb-2019    V031 - Adjust formatting removing spurious comments and newlines and API method getFullDecendentList()
- 5-Feb-2019    V032 - Add container merge method.
- 7-Feb-2019    V033 - Adjust initialization error checking to allow empty list
-12-Feb-2019    V034 - Back off some reformatting from V32.
-11-Mar-2019    V035 - Add method getAttributeUniqueValueList().
-12-Apr-2019    V036 - Add dictionary api methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
- 5-May-2019    V037 - Add selectValuesWhereConditions() and countValuesWhereConditions()
-26-May-2019    V038 - Extend method API to support DDL 2.2.1 extensions
- 5-Jun-2019    V039 - Incorporate DictMethodRunner class change test naming conventions
-28-Jun-2019    V040 - Update development workflows and cleanup
-22-Jul-2019    V041 - Update arguments in DictMethodRunner()
-28-Jul-2019    V042 - Suppress sorting of attribute and category order in DictionaryApi()
- 7-Aug-2019    V043 - Suppress raising exceptions for getValueOrDefault() methods.
-13-Aug-2019    V044 - Add placeholder test method for DictionaryApi().
-16-Aug-2019    V045 - Improve handling of dictionary and dictionary history categories for concatenated dictionaries.
-28-Aug-2019    V046 - Add unique identifier properties to each container
- 7-Oct-2019    V047 - Adjust error handling in IoAdapterCore()
- 7-Oct-2019    V048 - Exclude setup.py to avoid odd pylint crash.
-23-Nov-2019    V049 - Move pipeline to py38
-29-Nov-2019    V050 - Improve error diagnostics for missing methods, adjust parameter values for block methods.
-15-Feb-2020    V051 - Add support for category group hierarchies.
- 9-May-2020    V052 - Make reserved token quoting case insensitive (PR from E. Ezra Peisach)
-18-May-2020    V053 - Add DataCatagory method countValuesWhereOpConditions() and test cases.
-18-May-2020    V054 - Add DataCatagory another method getCombinationCountsWithConditions() and test cases.
- 5-Jun-2020    V055 - Add support for extended enumeration description and units
- 5-Jun-2020    V056 - Address Py27 compatibility issues
- 5-Jun-2020    V057 - Extend support for extended enumeration description and units for alt enumerations
-23-Aug-2020    V058 - Adjustments for the latest pylint and installation of dependencies for documentation generator
-23-Aug-2020    V059 - Py27 adjustments
- 1-Jan-2021    V060 - Advance pipeline to py39 add DDL category.NX_mapping_details
+27-Jan-2019    V0.29 - Add row dictionary initialization, append, and extend methods
+28-Jan-2019    V0.30 - Relax attribute coverage requirements on dictionary initialization
+ 2-Feb-2019    V0.31 - Adjust formatting removing spurious comments and newlines and API method getFullDecendentList()
+ 5-Feb-2019    V0.32 - Add container merge method.
+ 7-Feb-2019    V0.33 - Adjust initialization error checking to allow empty list
+12-Feb-2019    V0.34 - Back off some reformatting from V32.
+11-Mar-2019    V0.35 - Add method getAttributeUniqueValueList().
+12-Apr-2019    V0.36 - Add dictionary api methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
+ 5-May-2019    V0.37 - Add selectValuesWhereConditions() and countValuesWhereConditions()
+26-May-2019    V0.38 - Extend method API to support DDL 2.2.1 extensions
+ 5-Jun-2019    V0.39 - Incorporate DictMethodRunner class change test naming conventions
+28-Jun-2019    V0.40 - Update development workflows and cleanup
+22-Jul-2019    V0.41 - Update arguments in DictMethodRunner()
+28-Jul-2019    V0.42 - Suppress sorting of attribute and category order in DictionaryApi()
+ 7-Aug-2019    V0.43 - Suppress raising exceptions for getValueOrDefault() methods.
+13-Aug-2019    V0.44 - Add placeholder test method for DictionaryApi().
+16-Aug-2019    V0.45 - Improve handling of dictionary and dictionary history categories for concatenated dictionaries.
+28-Aug-2019    V0.46 - Add unique identifier properties to each container
+ 7-Oct-2019    V0.47 - Adjust error handling in IoAdapterCore()
+ 7-Oct-2019    V0.48 - Exclude setup.py to avoid odd pylint crash.
+23-Nov-2019    V0.49 - Move pipeline to py38
+29-Nov-2019    V0.50 - Improve error diagnostics for missing methods, adjust parameter values for block methods.
+15-Feb-2020    V0.51 - Add support for category group hierarchies.
+ 9-May-2020    V0.52 - Make reserved token quoting case insensitive (PR from E. Ezra Peisach)
+18-May-2020    V0.53 - Add DataCatagory method countValuesWhereOpConditions() and test cases.
+18-May-2020    V0.54 - Add DataCatagory another method getCombinationCountsWithConditions() and test cases.
+ 5-Jun-2020    V0.55 - Add support for extended enumeration description and units
+ 5-Jun-2020    V0.56 - Address Py27 compatibility issues
+ 5-Jun-2020    V0.57 - Extend support for extended enumeration description and units for alt enumerations
+23-Aug-2020    V0.58 - Adjustments for the latest pylint and installation of dependencies for documentation generator
+23-Aug-2020    V0.59 - Py27 adjustments
+ 1-Jan-2021    V0.60 - Advance pipeline to py39 add DDL category.NX_mapping_details
