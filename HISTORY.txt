@@ -54,3 +54,4 @@
 23-Aug-2020    V0.58 - Adjustments for the latest pylint and installation of dependencies for documentation generator
 23-Aug-2020    V0.59 - Py27 adjustments
  1-Jan-2021    V0.60 - Advance pipeline to py39 add DDL category.NX_mapping_details
+ 1-Jan-2021    V0.61 - Adjust method api for category.NX_mapping_details

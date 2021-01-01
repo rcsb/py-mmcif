@@ -796,7 +796,7 @@ class DictionaryApi(object):
     def getCategoryDescription(self, category):
         return self.__get("CATEGORY_DESCRIPTION", category, attribute=None)
 
-    def getCategoryMxMappingDetails(self, category):
+    def getCategoryNxMappingDetails(self, category):
         return self.__get("CATEGORY_NX_MAPPING_DETAILS", category, attribute=None)
 
     def getCategoryDescriptionAlt(self, category, fallBack=True):
