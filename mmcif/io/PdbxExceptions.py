@@ -10,8 +10,7 @@ __license__ = "Apache 2.0"
 
 
 class PdbxError(Exception):
-    """ Class for catch general errors
-    """
+    """Class for catch general errors"""
 
 
 #    def __init__(self, msg):
@@ -19,8 +18,7 @@ class PdbxError(Exception):
 
 
 class PdbxSyntaxError(Exception):
-    """ Class for catching syntax errors
-    """
+    """Class for catching syntax errors"""
 
 
 #    def __init__(self, msg):

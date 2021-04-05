@@ -154,8 +154,7 @@ class GroupDictionaryApiTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testClassifyByGroup(self):
-        """Test case -  organize dictionary items by classes: SAMPLE, MX, NMR, EM, STRUCTURE, and DB
-        """
+        """Test case -  organize dictionary items by classes: SAMPLE, MX, NMR, EM, STRUCTURE, and DB"""
         try:
             myIo = IoAdapter(raiseExceptions=True)
             self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)

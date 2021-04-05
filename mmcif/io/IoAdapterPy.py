@@ -5,13 +5,14 @@
 # Version: 0.001 Initial version
 #
 # Updates:
-# 30-Jul-2014 jdw Expose column aligmment and  maximum line length as optional writeFile() parameters.
+# 30-Jul-2014 jdw Expose column alignment and  maximum line length as optional writeFile() parameters.
 # 22-Jun-2015 jdw add additional formatting control on write method.
 # 15-Aug-2016 rps readFile() updated to accept optional "logtag" parameter for consistency with IoAdapterCore API
 # 01-Aug-2017 jdw migrate portions to public repo
 # 12-Jan-2018 jdw start to unify api features -
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
+#  5-Apr-2021 jdw allow access to data/dictionary artifacts over HTTP(S)
 ##
 """
 Python implementation of IoAdapterBase class providing read and write
@@ -24,13 +25,21 @@ import io
 import logging
 import sys
 import uuid
+from contextlib import closing
 
+import requests
 from future.utils import raise_from
-
 from mmcif.io.IoAdapterBase import IoAdapterBase
-from mmcif.io.PdbxExceptions import PdbxError, PdbxSyntaxError
+from mmcif.io.PdbxExceptions import PdbxError
+from mmcif.io.PdbxExceptions import PdbxSyntaxError
 from mmcif.io.PdbxReader import PdbxReader
 from mmcif.io.PdbxWriter import PdbxWriter
+
+try:
+    from urllib.parse import urlsplit
+except Exception:
+    from urlparse import urlsplit
+
 
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -42,15 +51,13 @@ logger = logging.getLogger(__name__)
 
 
 class IoAdapterPy(IoAdapterBase):
-    """ Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF data files -
-
-    """
+    """Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF data files -"""
 
     # def __init__(self, *args, **kwargs):
     #     super(IoAdapterPy, self).__init__(*args, **kwargs)
     # pylint: disable=arguments-differ
     def readFile(self, inputFilePath, enforceAscii=False, selectList=None, excludeFlag=False, logFilePath=None, outDirPath=None, cleanUp=False, **kwargs):
-        """  Parse the data blocks in the input mmCIF format data file into list of data or definition containers.  The data category content within
+        """Parse the data blocks in the input mmCIF format data file into list of data or definition containers.  The data category content within
             each data block is stored a collection of DataCategory objects within each container.
 
         Args:
@@ -59,7 +66,7 @@ class IoAdapterPy(IoAdapterBase):
             selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)
             excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list
             logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)
-            outDirPath (string, optional): Path for translated/reencoded files and default logfiles.
+            outDirPath (string, optional): Path for translated/re-encoded files and default logfiles.
             cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.
             **kwargs: Placeholder for missing keyword arguments.
 
@@ -84,23 +91,36 @@ class IoAdapterPy(IoAdapterBase):
                 lPath = self._getDefaultFileName(filePath, fileType="cif-parser-log", outDirPath=oPath)
             #
             self._setLogFilePath(lPath)
-            #
-            if not self._fileExists(filePath):
+            # ---
+            if self.__isLocal(filePath) and not self._fileExists(filePath):
                 return []
-            filePath = self._uncompress(filePath, oPath)
             #
             if sys.version_info[0] > 2:
-                with open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
-                    pRd = PdbxReader(ifh)
-                    pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-            else:
-                if enforceAscii:
-                    with io.open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
+                if self.__isLocal(filePath):
+                    filePath = self._uncompress(filePath, oPath)
+                    with open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
                         pRd = PdbxReader(ifh)
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:
-                    with open(filePath, "r") as ifh:
-                        pRd = PdbxReader(ifh)
+                    with closing(requests.get(filePath)) as ifh:
+                        it = (line.decode(encoding) for line in ifh.iter_lines())
+                        pRd = PdbxReader(it)
+                        pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+            else:
+                if self.__isLocal(filePath):
+                    filePath = self._uncompress(filePath, oPath)
+                    if enforceAscii:
+                        with io.open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
+                            pRd = PdbxReader(ifh)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    else:
+                        with open(filePath, "r") as ifh:
+                            pRd = PdbxReader(ifh)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                else:
+                    with closing(requests.get(filePath)) as ifh:
+                        it = (line.decode(encoding) for line in ifh.iter_lines())
+                        pRd = PdbxReader(it)
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             if cleanUp:
                 self._cleanupFile(lPath, lPath)
@@ -124,7 +144,7 @@ class IoAdapterPy(IoAdapterBase):
         return containerList
 
     def getReadDiags(self):
-        """ Return diagnostics from last readFile operation. This will NOT be an exhustive list but
+        """Return diagnostics from last readFile operation. This will NOT be an exhaustive list but
         rather the particular failure that raised a parsing exception.
         """
         return self._readLogRecords()
@@ -237,8 +257,7 @@ class IoAdapterPy(IoAdapterBase):
         enforceAscii=False,
         cnvCharRefs=False,
     ):
-        """ Internal method mapping arguments to PDBxWriter API.
-        """
+        """Internal method mapping arguments to PDBxWriter API."""
         #
         pdbxW = PdbxWriter(ofh)
         pdbxW.setUseStopTokens(flag=useStopTokens)
@@ -248,3 +267,11 @@ class IoAdapterPy(IoAdapterBase):
         pdbxW.setConvertCharRefs(flag=cnvCharRefs)
         pdbxW.setSetEnforceAscii(enforceAscii)
         pdbxW.write(containerList, lastInOrder=lastInOrder, selectOrder=selectOrder)
+
+    def __isLocal(self, locator):
+        try:
+            locSp = urlsplit(locator)
+            return locSp.scheme in ["", "file"]
+        except Exception as e:
+            logger.exception("For locator %r failing with %s", locator, str(e))
+        return None

@@ -29,7 +29,7 @@ A base container class is defined which supports common features of
 data and definition containers.   PDBx data files are organized in
 sections called data blocks which are mapped to data containers.
 PDBx dictionaries contain definition sections and data sections
-which are mapped to definition and data containes respectively.
+which are mapped to definition and data containers respectively.
 
 Data in both PDBx data files and dictionaries are organized in
 data categories. In the PDBx syntax individual items or data
@@ -56,8 +56,7 @@ logger = logging.getLogger(__name__)
 
 
 class CifName(object):
-    """ Class of utilities for CIF-style data names -
-    """
+    """Class of utilities for CIF-style data names -"""
 
     def __init__(self):
         pass
@@ -99,8 +98,7 @@ class CifName(object):
 
 
 class ContainerBase(object):
-    """ Container base class for data and definition objects.
-    """
+    """Container base class for data and definition objects."""
 
     def __init__(self, name):
         # The enclosing scope of the data container (e.g. data_/save_)
@@ -174,8 +172,8 @@ class ContainerBase(object):
         return self.__objNameList
 
     def append(self, obj):
-        """ Add the input object to the current object catalog. An existing object
-            of the same name will be overwritten.
+        """Add the input object to the current object catalog. An existing object
+        of the same name will be overwritten.
         """
         if obj.getName() is not None:
             if obj.getName() not in self.__objCatalog:
@@ -184,8 +182,7 @@ class ContainerBase(object):
             self.__objCatalog[obj.getName()] = obj
 
     def replace(self, obj):
-        """ Replace an existing object with the input object
-        """
+        """Replace an existing object with the input object"""
         if (obj.getName() is not None) and (obj.getName() in self.__objCatalog):
             self.__objCatalog[obj.getName()] = obj
 
@@ -200,8 +197,7 @@ class ContainerBase(object):
                 self.__objCatalog[nm].dumpIt(fh)
 
     def rename(self, curName, newName):
-        """ Change the name of an object in place -
-        """
+        """Change the name of an object in place -"""
         try:
             i = self.__objNameList.index(curName)
             self.__objNameList[i] = newName
@@ -212,8 +208,7 @@ class ContainerBase(object):
             return False
 
     def remove(self, curName):
-        """ Revmove object by name.  Return True on success or False otherwise.
-        """
+        """Revmove object by name.  Return True on success or False otherwise."""
         try:
             if curName in self.__objCatalog:
                 del self.__objCatalog[curName]
@@ -228,8 +223,7 @@ class ContainerBase(object):
         return False
 
     def merge(self, container):
-        """ Merge the contents of the input container with the contents of the current container.
-        """
+        """Merge the contents of the input container with the contents of the current container."""
         try:
             objNameList = container.getObjNameList()
             for objName in objNameList:
@@ -240,14 +234,14 @@ class ContainerBase(object):
         return True
 
     def filterObjectNameList(self, lastInOrder=None, selectOrder=None):
-        """ Return an ordered list of categories in the input container subject to
-            input -
+        """Return an ordered list of categories in the input container subject to
+        input -
 
-               lastInOrder: list:  categories to be shifted to the end of the container.
-               selectOrder: list:  ordered selection of container categories
+           lastInOrder: list:  categories to be shifted to the end of the container.
+           selectOrder: list:  ordered selection of container categories
 
-            returns:
-               filNameList: list:  augmented category list or full list (default)
+        returns:
+           filNameList: list:  augmented category list or full list (default)
         """
         filNameList = []
         if lastInOrder:
@@ -310,8 +304,7 @@ class DefinitionContainer(ContainerBase):
 
 
 class DataContainer(ContainerBase):
-    """ Container class for DataCategory objects.
-    """
+    """Container class for DataCategory objects."""
 
     def __init__(self, name):
         super(DataContainer, self).__init__(name)

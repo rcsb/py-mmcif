@@ -29,8 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 class DictMethodRunner(object):
-    """Manage the invocation of dictionary methods implemented as class methods.
-    """
+    """Manage the invocation of dictionary methods implemented as class methods."""
 
     def __init__(self, dictionaryApi, modulePathMap=None, **kwargs):
         """Manage invocation of dictionary methods referenced in external modules.
@@ -59,9 +58,7 @@ class DictMethodRunner(object):
         logger.debug("Method index %r", self.__methodD.items())
 
     def __getMethodInfo(self, implementationSource="reference", methodCodes=None):
-        """ Get method implementation with the input implementation source.
-
-        """
+        """Get method implementation with the input implementation source."""
         catName = atName = mId = mType = methDef = None
         methodCodes = methodCodes if methodCodes else ["calculation"]
         methodD = {}
@@ -94,8 +91,7 @@ class DictMethodRunner(object):
         return methodD
 
     def __invokeAttributeMethod(self, methodPath, dataContainer, catName, atName, **kwargs):
-        """ Invoke the input attribute method
-        """
+        """Invoke the input attribute method"""
         ok = False
         try:
             modulePath, methodName = self.__methodPathSplit(methodPath)
@@ -107,8 +103,7 @@ class DictMethodRunner(object):
         return ok
 
     def __invokeCategoryMethod(self, methodPath, dataContainer, catName, **kwargs):
-        """ Invoke the input category method
-        """
+        """Invoke the input category method"""
         ok = False
         try:
             modulePath, methodName = self.__methodPathSplit(methodPath)
@@ -120,8 +115,7 @@ class DictMethodRunner(object):
         return ok
 
     def __invokeDatablockMethod(self, methodPath, dataContainer, blockName, **kwargs):
-        """ Invoke the input data block method
-        """
+        """Invoke the input data block method"""
         ok = False
         try:
             modulePath, methodName = self.__methodPathSplit(methodPath)
@@ -133,8 +127,7 @@ class DictMethodRunner(object):
         return ok
 
     def apply(self, dataContainer):
-        """ Apply category, attribute and block level dictionary methods on the input data container.
-        """
+        """Apply category, attribute and block level dictionary methods on the input data container."""
         kwargs = self.__kwargs
         mTupL = self.__getCategoryMethods()
         logger.debug("Category methods %r", mTupL)

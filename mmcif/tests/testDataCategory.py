@@ -46,8 +46,8 @@ logger.setLevel(logging.INFO)
 
 
 def window(seq, size=2, fill=0, fillLeft=False, fillRight=False):
-    """ Returns a sliding window (of width n) over data from the iterable:
-      s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...
+    """Returns a sliding window (of width n) over data from the iterable:
+    s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...
     """
     ssize = size - 1
     it = chain(repeat(fill, ssize * fillLeft), iter(seq), repeat(fill, ssize * fillRight))
@@ -102,8 +102,7 @@ class DataCategoryTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testBaseBasicAscii(self):
-        """Test case - base class instantiation with ascii data
-        """
+        """Test case - base class instantiation with ascii data"""
         try:
             dcbA = DataCategoryBase("A", self.__attributeList, self.__rowListAsciiA)
             dcbB = DataCategoryBase("A", self.__attributeList, self.__rowListAsciiA)
@@ -115,8 +114,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testBaseMethodsAscii(self):
-        """Test case -  base class methods
-        """
+        """Test case -  base class methods"""
         try:
             name = "A"
             dcbA = DataCategoryBase(name, self.__attributeList, self.__rowListAsciiA)
@@ -151,8 +149,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testBaseMethodsUnicode(self):
-        """Test case -  base class methods
-        """
+        """Test case -  base class methods"""
         try:
             name = "A"
             dcbA = DataCategoryBase(name, self.__attributeList, self.__rowListUnicode)
@@ -188,8 +185,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testBaseBasicAsciiDiff(self):
-        """Test case -  __eq__ and __ne__ methods
-        """
+        """Test case -  __eq__ and __ne__ methods"""
         try:
             dcbA = DataCategoryBase("A", self.__attributeList, self.__rowListAsciiA)
             dcbB = DataCategoryBase("A", self.__attributeList, self.__rowListAsciiB)
@@ -203,8 +199,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testBaseBasicUnicode(self):
-        """Test case - base class instantiation including non-ascii
-        """
+        """Test case - base class instantiation including non-ascii"""
         try:
             dcbA = DataCategoryBase("A", self.__attributeList, self.__rowListUnicode)
             dcbB = DataCategoryBase("A", self.__attributeList, self.__rowListUnicode)
@@ -216,8 +211,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testBasicAscii(self):
-        """Test case - subcclass instantiation with ascii data
-        """
+        """Test case - subcclass instantiation with ascii data"""
         try:
             dcA = DataCategory("A", self.__attributeList, self.__rowListAsciiA)
             dcB = DataCategory("A", self.__attributeList, self.__rowListAsciiA)
@@ -229,8 +223,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testBasicAsciiDiff(self):
-        """Test case -  __eq__ and __ne__ methods
-        """
+        """Test case -  __eq__ and __ne__ methods"""
         try:
             dcA = DataCategory("A", self.__attributeList, self.__rowListAsciiA)
             dcB = DataCategory("A", self.__attributeList, self.__rowListAsciiB)
@@ -244,8 +237,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testBasicUnicode(self):
-        """Test case -   __eq__ and __ne__ methods w/ unicode
-        """
+        """Test case -   __eq__ and __ne__ methods w/ unicode"""
         try:
             dcA = DataCategory("A", self.__attributeList, self.__rowListUnicode)
             dcB = DataCategory("A", self.__attributeList, self.__rowListUnicode)
@@ -259,8 +251,7 @@ class DataCategoryTests(unittest.TestCase):
     #
 
     def testEditRemoveRow(self):
-        """Test case -  remove rows
-        """
+        """Test case -  remove rows"""
         try:
             dcA = DataCategory("A", self.__attributeList, self.__rowListUnicode, raiseExceptions=True)
             for _ in range(0, dcA.getRowCount()):
@@ -275,8 +266,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testEditRowAccessors(self):
-        """Test case -  row accessors
-        """
+        """Test case -  row accessors"""
         try:
             #
             dcA = DataCategory("A", self.__attributeList, self.__rowListAsciiA)
@@ -289,8 +279,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testEditAttributes(self):
-        """Test case -  get and extend atttribute names
-        """
+        """Test case -  get and extend atttribute names"""
         try:
             #
             dcA = DataCategory("A", self.__attributeList, self.__rowListAsciiA)
@@ -316,8 +305,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testEditExtend(self):
-        """Test case -  category extension methods
-        """
+        """Test case -  category extension methods"""
         try:
             dcA = DataCategory("A", self.__attributeList, self.__rowListAsciiA)
             na = len(dcA.getAttributeList())
@@ -330,8 +318,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testGetValues(self):
-        """Test case -  value getters
-        """
+        """Test case -  value getters"""
         try:
             dcU = DataCategory("A", self.__attributeList, self.__rowListUnicode)
             aL = dcU.getAttributeList()
@@ -354,8 +341,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testGetSelectValues(self):
-        """Test case -  value selectors
-        """
+        """Test case -  value selectors"""
         try:
             dcU = DataCategory("A", self.__attributeListMiss, self.__rowListUnicodeMiss)
             #
@@ -366,8 +352,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testSetValues(self):
-        """Test case -  value setters
-        """
+        """Test case -  value setters"""
         try:
             dcU = DataCategory("A", self.__attributeListMiss, self.__rowListUnicodeMiss)
             for i in range(0, dcU.getRowCount()):
@@ -381,8 +366,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testReplaceValues(self):
-        """Test case -  replace values
-        """
+        """Test case -  replace values"""
         try:
             dcU = DataCategory("A", self.__attributeListMiss, self.__rowListUnicodeMiss)
             at = self.__attributeListMiss[3]
@@ -408,8 +392,7 @@ class DataCategoryTests(unittest.TestCase):
             self.fail()
 
     def testCompareAttributes(self):
-        """Test case - compare object attributes -
-        """
+        """Test case - compare object attributes -"""
         try:
             dcU = DataCategory("A", self.__attributeList, self.__rowListUnicode)
             dcM = DataCategory("A", self.__attributeListMiss, self.__rowListUnicodeMiss)
@@ -429,8 +412,7 @@ class DataCategoryTests(unittest.TestCase):
     #
 
     def testCompareValues(self):
-        """Test case - compare object values -
-        """
+        """Test case - compare object values -"""
         try:
             dcU = DataCategory("A", self.__attributeList, self.__rowListUnicode)
             dcM = DataCategory("A", self.__attributeListMiss, self.__rowListUnicodeMiss)
@@ -462,8 +444,7 @@ class DataCategoryTests(unittest.TestCase):
     #
 
     def testCondSelectValues(self):
-        """Test case - value selections -
-        """
+        """Test case - value selections -"""
         try:
             dcM = DataCategory("A", self.__attributeListMiss, self.__rowListUnicodeMiss)
             # self.__testRowUnicodeMiss = [u'someData', 100222, None, '?', '.', u'abcdĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨxyz', 234.2345]

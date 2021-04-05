@@ -35,8 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 class DataCategoryFormatted(DataCategory):
-    """  A subclass of DataCategory including additional formatting methods.
-    """
+    """A subclass of DataCategory including additional formatting methods."""
 
     def __init__(self, dataCategoryObj, preferDoubleQuotes=True):
         self.__dcObj = dataCategoryObj
@@ -97,8 +96,7 @@ class DataCategoryFormatted(DataCategory):
         # self.__string_types = basestring
 
     def __formatPdbx(self, inp):
-        """ Format input data following PDBx quoting rules -
-        """
+        """Format input data following PDBx quoting rules -"""
         try:
             if inp is None:
                 return ("?", "DT_NULL_VALUE")
@@ -182,8 +180,7 @@ class DataCategoryFormatted(DataCategory):
         return ("?", "DT_NULL_VALUE")
 
     def __dataTypePdbx(self, inp):
-        """ Detect the PDBx data type -
-        """
+        """Detect the PDBx data type -"""
         if inp is None:
             return "DT_NULL_VALUE"
 

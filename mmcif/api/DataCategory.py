@@ -41,8 +41,7 @@ logger = logging.getLogger(__name__)
 
 
 class DataCategory(DataCategoryBase):
-    """  Methods for creating, accessing, and formatting PDBx/mmCif data categories.
-    """
+    """Methods for creating, accessing, and formatting PDBx/mmCif data categories."""
 
     def __init__(self, name, attributeNameList=None, rowList=None, raiseExceptions=True, copyInputData=True):
         """Summary
@@ -71,8 +70,7 @@ class DataCategory(DataCategoryBase):
         return self._currentRowIndex
 
     def getFullRow(self, index):
-        """ Return a full row based on the length of the the attribute list or a row initialized with missing values
-        """
+        """Return a full row based on the length of the the attribute list or a row initialized with missing values"""
         try:
             if len(self.data[index]) < self._numAttributes:
                 for _ in range(self._numAttributes - len(self.data[index])):
@@ -128,11 +126,11 @@ class DataCategory(DataCategoryBase):
             return None
 
     def getValueOrDefault(self, attributeName=None, rowIndex=None, defaultValue=""):
-        """  Within the current category return the value of input attribute in the input rowIndex [0-based].
+        """Within the current category return the value of input attribute in the input rowIndex [0-based].
 
-             On error or if the value missing or null return the default value. Empty values returned as is.
+        On error or if the value missing or null return the default value. Empty values returned as is.
 
-             Exceptions on for unknown attributeNames and out-of-range indices.
+        Exceptions on for unknown attributeNames and out-of-range indices.
         """
         if attributeName is None:
             attribute = self.__currentAttribute
@@ -162,8 +160,8 @@ class DataCategory(DataCategoryBase):
         return defaultValue
 
     def getFirstValueOrDefault(self, attributeNameList, rowIndex=0, defaultValue=""):
-        """ Return the value from the first non-null attribute found in the input attribute list
-            from the row (rowIndex) in the current category object.
+        """Return the value from the first non-null attribute found in the input attribute list
+        from the row (rowIndex) in the current category object.
         """
         try:
             for at in attributeNameList:
@@ -180,8 +178,8 @@ class DataCategory(DataCategoryBase):
         return defaultValue
 
     def setValue(self, value, attributeName=None, rowIndex=None):
-        """ Set the value of an existing attribute.  rowIndex values >=0, where
-            the category will be extended in length as needed.
+        """Set the value of an existing attribute.  rowIndex values >=0, where
+        the category will be extended in length as needed.
         """
         if attributeName is None:
             attribute = self.__currentAttribute
@@ -330,8 +328,8 @@ class DataCategory(DataCategoryBase):
         return rL
 
     def selectValueListWhere(self, attributeNameList, attributeValueWhere, attributeNameWhere, returnCount=0):
-        """ Return a  list of lists containing the values of input attributeNameList
-            satisfiying the attribute value where condition.
+        """Return a  list of lists containing the values of input attributeNameList
+        satisfying the attribute value where condition.
         """
         rL = []
         try:
@@ -387,7 +385,7 @@ class DataCategory(DataCategoryBase):
             e: any failure
 
         Returns:
-            int: count of instancese satisfying input conditions
+            int: count of instances satisfying input conditions
         """
         try:
             iCount = 0
@@ -417,7 +415,7 @@ class DataCategory(DataCategoryBase):
             e: any failure
 
         Returns:
-            int: count of instancese satisfying input conditions
+            int: count of instances satisfying input conditions
         """
         try:
             iCount = 0
@@ -450,14 +448,14 @@ class DataCategory(DataCategoryBase):
 
     #
     def getCombinationCounts(self, attributeList):
-        """ Count the value occurences of the input attributeList in the category.
+        """Count the value occurrences of the input attributeList in the category.
 
-            Args:
-                attributeList (list): target list of attribute names
+        Args:
+            attributeList (list): target list of attribute names
 
-            Returns:
+        Returns:
 
-                cD[(attribute value, ... )] = count
+            cD[(attribute value, ... )] = count
 
         """
         cD = {}
@@ -475,15 +473,15 @@ class DataCategory(DataCategoryBase):
         return cD
 
     def getCombinationCountsWithConditions(self, attributeList, conditionTupleList):
-        """ Count the value occurences of the input attributeList in the category.
+        """Count the value occurrences of the input attributeList in the category.
 
-            Args:
-                attributeList (list): target list of attribute names
-                conditionTupleList (list): (attributeName, op, value) where (op = 'eq', 'gt(int)', 'lt(int)', 'in', 'ne', 'not in')
+        Args:
+            attributeList (list): target list of attribute names
+            conditionTupleList (list): (attributeName, op, value) where (op = 'eq', 'gt(int)', 'lt(int)', 'in', 'ne', 'not in')
 
-            Returns:
+        Returns:
 
-                cD[(attribute value, ... )] = count
+            cD[(attribute value, ... )] = count
         """
         cD = {}
         try:

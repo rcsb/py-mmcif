@@ -44,13 +44,10 @@ logger = logging.getLogger(__name__)
 
 
 class PdbxReader(object):
-    """ Utilities for reading mmCIF for data files and dictionaries.
-
-    """
+    """Utilities for reading mmCIF for data files and dictionaries."""
 
     def __init__(self, ifh):
-        """  ifh - input file handle returned by open()
-        """
+        """ifh - input file handle returned by open()"""
         #
         self.__curLineNumber = 0
         self.__ifh = ifh
@@ -86,8 +83,7 @@ class PdbxReader(object):
             raise PdbxError("Miscellaneous parsing error at line %d" % self.__curLineNumber)
 
     def __allSelected(self, container, catSelectD):
-        """ Test the input container for completeness relative to the input category selection dictionary.
-        """
+        """Test the input container for completeness relative to the input category selection dictionary."""
         nl = -1
         if catSelectD:
             try:
@@ -108,18 +104,17 @@ class PdbxReader(object):
         raise PdbxSyntaxError(msg)
 
     def __getContainerName(self, inWord):
-        """ Returns the name of the data block or saveframe container
-        """
+        """Returns the name of the data block or saveframe container"""
         return str(inWord[5:]).strip()
 
     def __getState(self, inWord):
         """Identifies reserved syntax elements and assigns an associated state.
 
-           on return: (reserved word, state)
-           where -
-              reserved word -  is one of CIF syntax elements:
-                               data, loop, global, save, or stop
-              state - the parser state required to process this next section.
+        on return: (reserved word, state)
+        where -
+           reserved word -  is one of CIF syntax elements:
+                            data, loop, global, save, or stop
+           state - the parser state required to process this next section.
 
         """
         i = inWord.find("_")
@@ -133,17 +128,17 @@ class PdbxReader(object):
             return None, "ST_UNKNOWN"
 
     def __parser(self, tokenizer, containerList, categorySelectionD=None, excludeFlag=False):
-        """ Parser for PDBx data files and dictionaries.
+        """Parser for PDBx data files and dictionaries.
 
-            Input - tokenizer() reentrant method recognizing data item names (_category.attribute)
-                    quoted strings (single, double and multi-line semi-colon delimited), and unquoted
-                    strings.
+        Input - tokenizer() reentrant method recognizing data item names (_category.attribute)
+                quoted strings (single, double and multi-line semi-colon delimited), and unquoted
+                strings.
 
-                    containerList -  list-type container for data and definition objects parsed from
-                                     from the input file.
+                containerList -  list-type container for data and definition objects parsed from
+                                 from the input file.
 
-            On return:
-                    The input containerList is appended with data and definition objects -
+        On return:
+                The input containerList is appended with data and definition objects -
         """
         catSelectD = categorySelectionD if categorySelectionD is not None else {}
         logger.debug("Exclude Flag %r Category selection %r", excludeFlag, catSelectD)
@@ -352,7 +347,7 @@ class PdbxReader(object):
                     categoryIndex = {}
                     curCategory = None
                 else:
-                    # reset current container to the last data contatiner
+                    # reset current container to the last data container
                     curContainer = previousDataContainer
 
                 curCatName, curAttName, curQuotedString, curWord = next(tokenizer)
@@ -383,23 +378,23 @@ class PdbxReader(object):
                 curCatName, curAttName, curQuotedString, curWord = next(tokenizer)
 
             elif state == "ST_UNKNOWN":
-                self.__syntaxError("Unrecogized syntax element: " + str(curWord))
+                self.__syntaxError("Unrecognized syntax element: " + str(curWord))
                 return
 
     def __tokenizer(self, ifh):
-        """ Tokenizer method for the mmCIF syntax file -
+        """Tokenizer method for the mmCIF syntax file -
 
-            Each return/yield from this method returns information about
-            the next token in the form of a tuple with the following structure.
+        Each return/yield from this method returns information about
+        the next token in the form of a tuple with the following structure.
 
-            (category name, attribute name, quoted strings, words w/o quotes or white space)
+        (category name, attribute name, quoted strings, words w/o quotes or white space)
 
 
         """
         #
         # Regex definition for mmCIF syntax - semi-colon delimited strings are handled
         #                                     outside of this regex.
-        #  Differentiated the reqular expression to the better handle embedded quotes.
+        #  Differentiated the regular expression to the better handle embedded quotes.
         #
         mmcifRe = re.compile(
             r"(?:"

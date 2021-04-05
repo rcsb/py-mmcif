@@ -54,8 +54,7 @@ class StarReaderTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testReadStarFile(self):
-        """Test case -  read star file -
-        """
+        """Test case -  read star file -"""
         try:
             for fp in self.__pathStarFileList:
                 myIo = IoAdapter(self.__verbose, self.__lfh)
@@ -72,8 +71,7 @@ class StarReaderTests(unittest.TestCase):
             self.fail()
 
     def testReadWriteStarFile(self):
-        """Test case -  star file read and write  ...
-        """
+        """Test case -  star file read and write  ..."""
         try:
             for fp in self.__pathStarFileList:
                 myIo = IoAdapter(self.__verbose, self.__lfh)

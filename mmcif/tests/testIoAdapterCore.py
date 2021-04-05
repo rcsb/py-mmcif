@@ -109,8 +109,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__testFileReader(self.__pathQuotesPdbxDataFile, enforceAscii=True)
 
     def __testFileReader(self, fp, enforceAscii=False, raiseExceptions=True):
-        """Test case -  read PDBx file
-        """
+        """Test case -  read PDBx file"""
         try:
             io = IoAdapter(raiseExceptions=raiseExceptions)
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
@@ -129,8 +128,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__testDictReader(self.__pathPdbxDictFile, enforceAscii=False)
 
     def __testDictReader(self, fp, enforceAscii=False):
-        """Test case -  read PDBx dictionary file
-        """
+        """Test case -  read PDBx dictionary file"""
         try:
             io = IoAdapter(raiseExceptions=True)
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
@@ -154,14 +152,12 @@ class IoAdapterTests(unittest.TestCase):
         self.__testFileReaderExceptionHandler2(self.__pathUnicodePdbxFile, enforceAscii=False)
 
     def __testFileReaderExceptionHandler1(self, fp, enforceAscii=False):
-        """Test case -  read selected categories from PDBx file and handle exceptions
-        """
+        """Test case -  read selected categories from PDBx file and handle exceptions"""
         io = IoAdapter(raiseExceptions=True)
         self.assertRaises(PdbxSyntaxError, io.readFile, fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
 
     def __testFileReaderExceptionHandler2(self, fp, enforceAscii=False):
-        """Test case -  read selected categories from PDBx and handle exceptions
-        """
+        """Test case -  read selected categories from PDBx and handle exceptions"""
         ok = True
         try:
             io = IoAdapter(raiseExceptions=True)
@@ -202,8 +198,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__testFileReaderWriter(self.__pathCharRefPdbxFile, self.__pathOutputCharRefPdbxFile, enforceAscii=True)
 
     def __testFileReaderWriter(self, ifp, ofp, **kwargs):
-        """Test case -  read and then write PDBx file or dictionary
-        """
+        """Test case -  read and then write PDBx file or dictionary"""
         try:
             io = IoAdapter(raiseExceptions=True, useCharRefs=True)
             containerList = io.readFile(ifp, enforceAscii=True, outDirPath=self.__pathOutputDir)
@@ -221,8 +216,7 @@ class IoAdapterTests(unittest.TestCase):
         self.__testFileReaderWriterSelect(self.__pathBigPdbxDataFile, self.__pathOutputPdbxFileExclude, selectList=["atom_site"], excludeFlag=True)
 
     def __testFileReaderWriterSelect(self, ifp, ofp, selectList=None, excludeFlag=False):
-        """Test case -  read and then write PDBx file with selection.
-        """
+        """Test case -  read and then write PDBx file with selection."""
         try:
             io = IoAdapter(raiseExceptions=True, useCharRefs=True)
             containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir)

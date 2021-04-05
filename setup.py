@@ -144,13 +144,8 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
-    # entry_points={
-    #    'console_scripts': [
-    #        'onedep_validate_cli=onedep.cli.validate_cli:run',
-    #    ]
-    # },
     #
-    install_requires=["future", "six"],
+    install_requires=["future", "six", "requests >= 2.25"],
     packages=find_packages(exclude=["mmcif.tests", "tests.*"]),
     package_data={
         # If any package contains *.md or *.rst ...  files, include them:
@@ -168,4 +163,9 @@ setup(
     ext_modules=[CMakeExtension("mmcif.core.mmciflib")],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
+    entry_points={
+        "console_scripts": [
+            "build_dict_cli=mmcif.io.BuildDictionaryExec:main",
+        ]
+    },
 )

@@ -74,8 +74,7 @@ class PdbxReadWriteTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testSingleRow(self):
-        """Test case -  read /write single row and null row in data file
-        """
+        """Test case -  read /write single row and null row in data file"""
         try:
             #
             myDataList = []
@@ -113,8 +112,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testSingleRowFile(self):
-        """Test case -  read /write single row and null row in data file
-        """
+        """Test case -  read /write single row and null row in data file"""
         try:
             #
             myDataList = []
@@ -141,8 +139,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testRowListInitialization(self):
-        """Test case -  Row list initialization of a data category and data block
-        """
+        """Test case -  Row list initialization of a data category and data block"""
         try:
             #
             fn = self.__pathOutputFile4
@@ -192,8 +189,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testWriteDataFile(self):
-        """Test case -  write data file
-        """
+        """Test case -  write data file"""
         try:
             #
             myDataList = []
@@ -225,8 +221,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testUpdateDataFile(self):
-        """Test case -  update data file
-        """
+        """Test case -  update data file"""
         try:
             # Create a initial data file --
             #
@@ -280,8 +275,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testReadDataFile(self):
-        """Test case -  read data file
-        """
+        """Test case -  read data file"""
         try:
             #
             myDataList = []
@@ -295,8 +289,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testReadWriteDataFile(self):
-        """Test case -  data file read write test
-        """
+        """Test case -  data file read write test"""
         try:
             myDataList = []
             with open(self.__pathPdbxDataFile, "r") as ifh:
@@ -312,8 +305,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testReadWriteListAccessors(self):
-        """Test cases -  for list style data access.
-        """
+        """Test cases -  for list style data access."""
         try:
             dc = DataCategoryBase("test", attributeNameList=["a", "b", "c", "d"])
 
@@ -380,8 +372,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testUpdateAttribute(self):
-        """Test case -  udpdate entry_id
-        """
+        """Test case -  udpdate entry_id"""
         ifn = self.__pathBigPdbxDataFile
         ofn = self.__pathOutputFile2
         try:
@@ -415,8 +406,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testReadWriteDataFileStop(self):
-        """Test case -  data file read write test with stop tokens
-        """
+        """Test case -  data file read write test with stop tokens"""
         try:
             myDataList = []
             with open(self.__pathTestFileStop, "r") as ifh:
@@ -432,8 +422,7 @@ class PdbxReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testRowDictInitialization(self):
-        """Test case -  Row dictionary initialization of a data category and data block
-        """
+        """Test case -  Row dictionary initialization of a data category and data block"""
         try:
             #
             rLen = 10

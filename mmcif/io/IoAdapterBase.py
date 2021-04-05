@@ -39,8 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 class IoAdapterBase(object):
-    """ Base class presenting essential mmCIF I/O methods.
-    """
+    """Base class presenting essential mmCIF I/O methods."""
 
     def __init__(self, *args, **kwargs):
         """General options controlling I/O method operations:
@@ -65,7 +64,7 @@ class IoAdapterBase(object):
         self._readEncodingErrors = kwargs.get("readEncodingErrors", "ignore")
 
     def readFile(self, *args, **kwargs):
-        """ Read file method. (abstract)
+        """Read file method. (abstract)
 
          Args:
             inputFilePath (string):  Input file path/uri
@@ -77,7 +76,7 @@ class IoAdapterBase(object):
         raise NotImplementedError("To be implemented in subclass")
 
     def writeFile(self, outputFilePath, containerList, **kwargs):
-        """ Write file method - (abstract)
+        """Write file method - (abstract)
 
         Args:
             outputFilePath (string):  output file path
@@ -89,8 +88,7 @@ class IoAdapterBase(object):
         raise NotImplementedError("To be implemented in subclass")
 
     def getReadDiags(self):
-        """ Return any diagnostics from the last read operation. (abstract)
-        """
+        """Return any diagnostics from the last read operation. (abstract)"""
         raise NotImplementedError("To be implemented in subclass")
 
     def _setContainerProperties(self, containerList, **kwargs):
@@ -107,16 +105,16 @@ class IoAdapterBase(object):
         return ts
 
     def _getCategoryNameList(self, container, lastInOrder=None, selectOrder=None):
-        """ Return an ordered list of categories in the input container subject to
-            input category name lists.
+        """Return an ordered list of categories in the input container subject to
+        input category name lists.
 
-            Args:
-               container (DataContainer object):  Input DataContainer object
-               lastInOrder (list):  names of categories to be shifted to the end of the container.
-               selectOrder (list):  preferred order of category names
+        Args:
+           container (DataContainer object):  Input DataContainer object
+           lastInOrder (list):  names of categories to be shifted to the end of the container.
+           selectOrder (list):  preferred order of category names
 
-            Returns:
-               catNameList: list:  augmented category list or full list (default)
+        Returns:
+           catNameList: list:  augmented category list or full list (default)
         """
         catNameList = []
         if lastInOrder:
@@ -133,23 +131,20 @@ class IoAdapterBase(object):
                 if container.exists(nm):
                     catNameList.append(nm)
         else:
-            catNameList = objNameList
+            catNameList = container.getObjNameList()
 
         return catNameList
 
     def _setLogFilePath(self, filePath):
-        """ Set the log file path.
-        """
+        """Set the log file path."""
         self.__logFilePath = filePath
 
     def _getLogFilePath(self):
-        """ Return current log file path.
-        """
+        """Return current log file path."""
         return self.__logFilePath
 
     def _appendToLog(self, stList):
-        """ Append input string list to the current log file -
-        """
+        """Append input string list to the current log file -"""
         if not self.__logFilePath:
             return False
         try:
@@ -161,8 +156,7 @@ class IoAdapterBase(object):
         return True
 
     def _logError(self, msg):
-        """ Convenience method to log error messages and optionally raise general exceptions (PdbxError).
-        """
+        """Convenience method to log error messages and optionally raise general exceptions (PdbxError)."""
         self._appendToLog([msg])
         if self._raiseExceptions:
             raise PdbxError(msg)
@@ -170,8 +164,7 @@ class IoAdapterBase(object):
             logger.error(msg)
 
     def _readLogRecords(self):
-        """ Return the contents of the current log file as list of strings.
-        """
+        """Return the contents of the current log file as list of strings."""
         diagL = []
         try:
             with open(self.__logFilePath, "r") as ifh:
@@ -185,16 +178,15 @@ class IoAdapterBase(object):
         return diagL
 
     def __getDiscriminator(self):
-        """ Internal method returning a string which can discriminate among default file names -
-        """
+        """Internal method returning a string which can discriminate among default file names -"""
         return str(int(time.time() * 10000))
 
     def _chooseTemporaryPath(self, filePath, outDirPath=None):
-        """ Select a path for temporary files in the priority order
-            outDirpath, directory containing the input filePath, current working directory,
-            dynamically created temporary directory.
+        """Select a path for temporary files in the priority order
+        outDirpath, directory containing the input filePath, current working directory,
+        dynamically created temporary directory.
 
-            These choices harmonize various legacy api behaviors.
+        These choices harmonize various legacy api behaviors.
         """
         if outDirPath:
             return outDirPath
@@ -204,8 +196,7 @@ class IoAdapterBase(object):
                 return oPath
 
     def _getDefaultFileName(self, filePath, fileType="cif-parser", fileExt="log", outDirPath=None, verify=True):
-        """ Return default file path for the target input file subject to input attributes and the output path.
-        """
+        """Return default file path for the target input file subject to input attributes and the output path."""
         returnFilePath = None
         try:
             _, fn = os.path.split(filePath)
@@ -235,8 +226,7 @@ class IoAdapterBase(object):
         return returnFilePath
 
     def _fileExists(self, filePath):
-        """ Verify that input file path exists and is readable.
-        """
+        """Verify that input file path exists and is readable."""
         try:
             if not os.access(filePath, os.R_OK):
                 msg = "Missing file %r" % filePath
@@ -259,8 +249,7 @@ class IoAdapterBase(object):
         return False
 
     def _cleanupFile(self, test, filePath):
-        """  Remove the input file path subject to the input test condition.
-        """
+        """Remove the input file path subject to the input test condition."""
         try:
             if test:
                 os.remove(filePath)
@@ -268,8 +257,8 @@ class IoAdapterBase(object):
             pass
 
     def _toAscii(self, inputFilePath, outputFilePath, chunkSize=5000, encodingErrors="ignore", readEncodingErrors="ignore"):
-        """ Encode input file to Ascii and write this to the target output file.   Handle encoding
-            errors according to the input settting ('ignore', 'escape', 'xmlcharrefreplace').
+        """Encode input file to Ascii and write this to the target output file.   Handle encoding
+        errors according to the input settting ('ignore', 'escape', 'xmlcharrefreplace').
         """
         try:
             startTime = time.time()
@@ -296,9 +285,9 @@ class IoAdapterBase(object):
         return False
 
     def _uncompress(self, inputFilePath, outputDir):
-        """ Uncompress the input file if the path name has a recognized compression type file extension.file
+        """Uncompress the input file if the path name has a recognized compression type file extension.file
 
-            Return the file name ofthe uncompressed file (in outDir) or the original input file path.
+        Return the file name of the uncompressed file (in outDir) or the original input file path.
 
         """
         try:

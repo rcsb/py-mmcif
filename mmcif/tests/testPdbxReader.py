@@ -56,8 +56,7 @@ class PdbxReaderTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testReadSmallDataFile(self):
-        """Test case -  read data file and count atoms
-        """
+        """Test case -  read data file and count atoms"""
         try:
             #
             myDataList = []
@@ -84,8 +83,7 @@ class PdbxReaderTests(unittest.TestCase):
             self.fail()
 
     def testReadBigDataFile(self):
-        """Test case -  read large data file
-        """
+        """Test case -  read large data file"""
         try:
             #
             myDataList = []
@@ -99,8 +97,7 @@ class PdbxReaderTests(unittest.TestCase):
             self.fail()
 
     def testReadSFDataFile(self):
-        """Test case -  read PDB structure factor data  file and compute statistics on f/sig(f).
-        """
+        """Test case -  read PDB structure factor data  file and compute statistics on f/sig(f)."""
         try:
             #
             myContainerList = []

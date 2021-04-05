@@ -1,2 +1,3 @@
 future
 six
+requests >= 2.25

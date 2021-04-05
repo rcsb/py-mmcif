@@ -34,8 +34,7 @@ logger = logging.getLogger(__name__)
 
 class PdbxWriter(object):
 
-    """Write mmCIF data files or dictionaries using the input container or container list.
-    """
+    """Write mmCIF data files or dictionaries using the input container or container list."""
 
     def __init__(self, ofh=sys.stdout):
         self.__ofh = ofh
@@ -82,8 +81,7 @@ class PdbxWriter(object):
         self.__preferDoubleQuotes = True
 
     def setRowPartition(self, numParts):
-        """ Maximum number of partitions used to format value length for column alignment
-        """
+        """Maximum number of partitions used to format value length for column alignment"""
         self.__rowPartition = numParts
 
     def write(self, containerList, lastInOrder=None, selectOrder=None):
@@ -187,9 +185,10 @@ class PdbxWriter(object):
         #
         lineList = []
         # lineList.append(indS + '#\n')
+        lineList.append("\n")
         if self.__doDefinitionIndent:
             lineList.append(self.__indentSpace)
-        lineList.append("\nloop_")
+        lineList.append("loop_")
         for attributeName in myCategory.getAttributeList():
             lineList.append("\n")
             if self.__doDefinitionIndent:

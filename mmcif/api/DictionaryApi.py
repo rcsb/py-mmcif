@@ -9,12 +9,12 @@
 #   2-Oct-2013  Jdw add alternative methods for extracting full parent and child lists
 #   6-Oct-2013  Jdw provide ordering options for history and revision dates
 #  10-Dec-2013  jdw return sorted unique list of enumerations with details.
-#  14-Feb-2014  jdw fix atribute index lookup.
+#  14-Feb-2014  jdw fix attribute index lookup.
 #  08-Mar-2014  jdw add method getEnumerationClosedFlag(self,category,attribute)
 #   9-Sep-2018  jdw add priority to method definition constructor
 #   7-Dec-2018  jdw add constructor parameter replaceDefinition=False to allow replacing
 #                   defintions during consolidation
-#   3-Feb-2019  jdw add method getFullDecendentList()
+#   3-Feb-2019  jdw add method getFullDescendentList()
 #  12-Apr-2019  jdw add methods getItemSubCategoryLabelList() and  getItemSubCategoryList()
 #  26-May-2019  jdw extend api for mehhods
 #  28-Jul-2019  jdw retain dictionary ordering for categories and attributes (suppress sorting)
@@ -22,7 +22,7 @@
 #   6-Sep-2019  jdw cleanup enum details
 ##
 """
-Accessors for PDBx/mmCIF dictionaries -
+Accessors for PDBx/mmCIF dictionary attributes -
 
 """
 from __future__ import absolute_import
@@ -180,6 +180,13 @@ class DictionaryApi(object):
         self.__itemLinkedGroupDict = OrderedDict()
         self.__itemLinkedGroupItemDict = OrderedDict()
         #
+        self.__dictionaryIncludeDict = OrderedDict()
+        self.__categoryIncludeDict = OrderedDict()
+        self.__itemIncludeDict = OrderedDict()
+        #
+        self.__dictionaryComponentList = []
+        self.__dictionaryComponentHistoryDict = OrderedDict()
+        #
         self.__getDataSections()
         #
 
@@ -202,7 +209,7 @@ class DictionaryApi(object):
             return None
 
     def getDictionaryUpdate(self, order="reverse"):
-        """Get details from the last history element."""
+        """Get details from the first/last history element."""
         try:
             if order == "reverse":
                 tD = self.__dictionaryHistoryList[-1]
@@ -215,14 +222,14 @@ class DictionaryApi(object):
             return None
 
     def getDictionaryRevisionCount(self):
-        """Get details from the last history element."""
+        """Get the count of revision history records."""
         try:
             return len(self.__dictionaryHistoryList)
         except Exception:
             return 0
 
     def getDictionaryHistory(self, order="reverse"):
-        """Returns the revision history as a listr of tuples [(version,update,revisionText,dictiomary),...]"""
+        """Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]"""
         oL = []
         try:
             if order == "reverse":
@@ -235,6 +242,46 @@ class DictionaryApi(object):
             pass
         return oL
 
+    #
+    def getDictionaryComponentDetails(self):
+        """Returns the component dictionary list as tuples [(version,title,dictionary_component_id),...]"""
+        oL = []
+        try:
+            for tD in self.__dictionaryComponentList:
+                oL.append((tD["version"], tD["title"], tD["dictionary_component_id"]))
+        except Exception:
+            pass
+        return oL
+
+    def getDictionaryComponentCount(self):
+        """Get the count of dictionary components."""
+        try:
+            return len(self.__dictionaryComponentList)
+        except Exception:
+            return 0
+
+    def getDictionaryComponents(self):
+        """Get the list of dictionary components."""
+        try:
+            return list(self.__dictionaryComponentHistoryDict.keys())
+        except Exception:
+            return []
+
+    def getDictionaryComponentHistory(self, dictionaryComponentId, order="reverse"):
+        """Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]"""
+        oL = []
+        try:
+            if order == "reverse":
+                for tD in reversed(self.__dictionaryComponentHistoryDict[dictionaryComponentId]):
+                    oL.append((tD["version"], tD["update"], tD["revision"], tD["dictionary_component_id"]))
+            else:
+                for tD in self.__dictionaryComponentHistoryDict[dictionaryComponentId]:
+                    oL.append((tD["version"], tD["update"], tD["revision"], tD["dictionary_component_id"]))
+        except Exception:
+            pass
+        return oL
+
+    #
     def __makeCategoryGroupIndex(self):
         catNameList = self.getCategoryList()
         # add categories in group to self.__categoryGroupDict[<groupName>]['categories']
@@ -335,10 +382,6 @@ class DictionaryApi(object):
                 childCategoryName = CifName.categoryPart(childItem)
                 childCategories.add(childCategoryName)
         return list(childCategories)
-
-    #
-    # def XgetItemNameList(self):
-    #    return self.__itemNameList
 
     #
     def definitionExists(self, definitionName):
@@ -635,7 +678,7 @@ class DictionaryApi(object):
         except Exception:
             return []
 
-    def getFullDecendentList(self, category, attribute):
+    def getFullDescendentList(self, category, attribute):
         itemNameL = []
         try:
             itemName = CifName.itemName(category, attribute)
@@ -1422,78 +1465,6 @@ class DictionaryApi(object):
                         else:
                             ob.remove("item_linked")
 
-    def __expandLoopedDefinitionsSAVE(self):
-        """Handle definitions containing looped item and item_linkded categories --"""
-        fullIndex = OrderedDict()
-        for dD in self.__containerList:
-            name = dD.getName()
-            if name not in fullIndex:
-                fullIndex[name] = []
-            fullIndex[name].append(dD)
-
-        for name, dObjL in fullIndex.items():
-            if dObjL:
-                ob = dObjL[0]
-                if (ob.getType() == "definition") and ob.exists("item_linked"):
-                    cObj = ob.getObj("item_linked")
-                    if cObj.getRowCount() > 1:
-                        idxP = cObj.getIndex("parent_name")
-                        idxC = cObj.getIndex("child_name")
-                        itemName = ob.getName()
-
-                        cObjNext = self.__newDataCategory("item_linked", ["child_name", "parent_name"])
-                        #
-                        # Distribute the data for each row --
-                        iChanges = 0
-                        for row in cObj.getRowList():
-                            #
-                            parentItemName = row[idxP]
-                            childItemName = row[idxC]
-                            if childItemName != itemName:
-                                iChanges += 1
-                                if childItemName in fullIndex:
-                                    #
-                                    # Add this p/c link to the child definition -
-                                    #
-                                    self.__addItemLinkToDef(fullIndex[childItemName][0], parentItemName, childItemName)
-                                else:
-                                    # error missing child definition object.
-                                    logger.info("+DictionaryApi.__expandLoopedDefinitions() missing child item %s", childItemName)
-                            else:
-                                cObjNext.append([row[idxC], row[idxP]])
-                        if cObjNext.getRowCount() > 0 and iChanges > 0:
-                            ob.replace(cObjNext)
-                        else:
-                            ob.remove("item_linked")
-
-        for name, dObjL in fullIndex.items():
-            if dObjL:
-                ob = dObjL[0]
-                if (ob.getType() == "definition") and ob.exists("item_linked"):
-                    cObj = ob.getObj("item_linked")
-                    if cObj.getRowCount() > 0:
-                        idxP = cObj.getIndex("parent_name")
-                        idxC = cObj.getIndex("child_name")
-                        itemName = ob.getName()
-                        iChanges = 0
-                        for row in cObj.getRowList():
-                            #
-                            parentItemName = row[idxP]
-                            childItemName = row[idxC]
-                            if childItemName != itemName:
-                                logger.info("+DictionaryApi.__expandLoopedDefinitions() item name %s child item %s", itemName, childItemName)
-                                iChanges += 1
-                                if childItemName in fullIndex:
-                                    #
-                                    # Add this p/c link to the child definition -
-                                    #
-                                    self.__addItemLinkToDef(fullIndex[childItemName][0], parentItemName, childItemName)
-                                else:
-                                    # error missing child definition object.
-                                    logger.info("+DictionaryApi.__expandLoopedDefinitions() missing definition child item %s", childItemName)
-                        if iChanges > 0:
-                            ob.remove("item_linked")
-
     def __consolidateDefinitions(self):
         """Consolidate definitions into a single save frame section per definition."""
         fullIndex = OrderedDict()
@@ -1571,7 +1542,7 @@ class DictionaryApi(object):
 
             if ob.getType() == "data":
                 if self.__debug:
-                    logger.info("+DictionaryApi().__getDataSections() adding data container name %s  type  %s", ob.getName(), ob.getType())
+                    logger.info("+DictionaryApi().__getDataSections() adding data sections from container name %s  type  %s", ob.getName(), ob.getType())
                 #  add detail to data type tuple
                 tl = ob.getObj("item_type_list")
                 if tl is not None:
@@ -1616,6 +1587,91 @@ class DictionaryApi(object):
                             tD["dictionary"] = dName
                             self.__dictionaryHistoryList.append(tD)
 
+                # JDW
+                tl = ob.getObj("pdbx_include_dictionary")
+                if tl is not None:
+                    for row in tl.getRowList():
+                        tD = OrderedDict()
+                        if tl.hasAttribute("dictionary_id"):
+                            tD["dictionary_id"] = row[tl.getIndex("dictionary_id")]
+                        if tl.hasAttribute("dictionary_locator"):
+                            tD["dictionary_locator"] = row[tl.getIndex("dictionary_locator")]
+                        if tl.hasAttribute("include_mode"):
+                            tD["include_mode"] = row[tl.getIndex("include_mode")]
+                        if tl.hasAttribute("dictionary_namespace"):
+                            tD["dictionary_namespace_prefix"] = row[tl.getIndex("dictionary_namespace_prefix")]
+                        if tl.hasAttribute("dictionary_namespace_replace"):
+                            tD["dictionary_namespace_prefix"] = row[tl.getIndex("dictionary_namespace_prefix_replace")]
+                        #
+                        self.__dictionaryIncludeDict[tD["dictionary_id"]] = tD
+                    #
+                    tl = ob.getObj("pdbx_include_category")
+                    if tl is not None:
+                        for row in tl.getRowList():
+                            tD = OrderedDict()
+                            if tl.hasAttribute("dictionary_id"):
+                                tD["dictionary_id"] = row[tl.getIndex("dictionary_id")]
+                            if tl.hasAttribute("category_id"):
+                                tD["category_id"] = row[tl.getIndex("category_id")]
+                            if tl.hasAttribute("include_as_category_id"):
+                                tD["include_as_category_id"] = row[tl.getIndex("include_as_category_id")]
+                            if tl.hasAttribute("include_mode"):
+                                tD["include_mode"] = row[tl.getIndex("include_mode")]
+                            #
+                            self.__categoryIncludeDict.setdefault(tD["dictionary_id"], {}).setdefault(tD["category_id"], tD)
+                    tl = ob.getObj("pdbx_include_item")
+                    if tl is not None:
+                        for row in tl.getRowList():
+                            tD = OrderedDict()
+                            if tl.hasAttribute("dictionary_id"):
+                                tD["dictionary_id"] = row[tl.getIndex("dictionary_id")]
+                            if tl.hasAttribute("item_name"):
+                                tD["item_name"] = row[tl.getIndex("item_name")]
+                            if tl.hasAttribute("include_as_item_name"):
+                                tD["include_as_item_name"] = row[tl.getIndex("include_as_item_name")]
+                            if tl.hasAttribute("include_mode"):
+                                tD["include_mode"] = row[tl.getIndex("include_mode")]
+                            #
+                            categoryId = CifName.categoryPart(tD["item_name"])
+                            self.__itemIncludeDict.setdefault(tD["dictionary_id"], {}).setdefault(categoryId, {}).setdefault(tD["item_name"], tD)
+
+                tl = ob.getObj("dictionary_history")
+                if tl is not None:
+                    # history as a list of dictionaries -
+                    dName = ob.getName()
+                    for row in tl.getRowList():
+                        if tl.hasAttribute("version") and tl.hasAttribute("revision") and tl.hasAttribute("update"):
+                            tD = OrderedDict()
+                            tD["version"] = row[tl.getIndex("version")]
+                            tD["revision"] = row[tl.getIndex("revision")]
+                            tD["update"] = row[tl.getIndex("update")]
+                            tD["dictionary"] = dName
+                            self.__dictionaryHistoryList.append(tD)
+                #
+                tl = ob.getObj("pdbx_dictionary_component")
+                if tl is not None:
+                    for row in tl.getRowList():
+                        tD = OrderedDict()
+                        if tl.hasAttribute("dictionary_component_id"):
+                            tD["dictionary_component_id"] = row[tl.getIndex("dictionary_component_id")]
+                        if tl.hasAttribute("title"):
+                            tD["title"] = row[tl.getIndex("title")]
+                        if tl.hasAttribute("version"):
+                            tD["version"] = row[tl.getIndex("version")]
+                        self.__dictionaryComponentList.append(tD)
+
+                    tl = ob.getObj("pdbx_dictionary_component_history")
+                    if tl is not None:
+                        for row in tl.getRowList():
+                            if tl.hasAttribute("version") and tl.hasAttribute("revision") and tl.hasAttribute("update"):
+                                tD = OrderedDict()
+                                tD["version"] = row[tl.getIndex("version")]
+                                tD["revision"] = row[tl.getIndex("revision")]
+                                tD["update"] = row[tl.getIndex("update")]
+                                tD["dictionary_component_id"] = row[tl.getIndex("dictionary_component_id")]
+                                self.__dictionaryComponentHistoryDict.setdefault(tD["dictionary_component_id"], []).append(tD)
+
+                # JDW
                 tl = ob.getObj("sub_category")
                 if tl is not None:
                     # subcategories as a dictionary by id
@@ -1650,7 +1706,9 @@ class DictionaryApi(object):
                     self.__itemUnitsConversionList = []
                     for row in tl.getRowList():
                         if tl.hasAttribute("from_code") and tl.hasAttribute("to_code") and tl.hasAttribute("operator") and tl.hasAttribute("factor"):
-                            self.__itemUnitsConversionList.append((row[tl.getIndex("from_code")], row[tl.getIndex("to_code")], row[tl.getIndex("operator")], row[tl.getIndex("factor")]))
+                            self.__itemUnitsConversionList.append(
+                                (row[tl.getIndex("from_code")], row[tl.getIndex("to_code")], row[tl.getIndex("operator")], row[tl.getIndex("factor")])
+                            )
 
                 tl = ob.getObj("pdbx_item_linked_group")
                 if tl is not None:

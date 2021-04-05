@@ -57,8 +57,7 @@ class Dictionary2DDLmTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testGenDDLm(self):
-        """  Generating alternative DDLm metadata format. (starting point)
-        """
+        """Generating alternative DDLm metadata format. (starting point)"""
         try:
             myIo = IoAdapterPy(self.__verbose, self.__lfh)
             self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)

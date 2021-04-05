@@ -63,8 +63,7 @@ class PdbxWriterTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testWriteDataFile(self):
-        """Test case -  write data file
-        """
+        """Test case -  write data file"""
         try:
             #
             myDataList = []
@@ -94,8 +93,7 @@ class PdbxWriterTests(unittest.TestCase):
             self.fail()
 
     def testUpdateDataFile(self):
-        """Test case -  write data file
-        """
+        """Test case -  write data file"""
         try:
             # Create a initial data file --
             #
@@ -143,8 +141,7 @@ class PdbxWriterTests(unittest.TestCase):
             self.fail()
 
     def testReadWriteDataFile(self):
-        """Test case -  data file read write test
-        """
+        """Test case -  data file read write test"""
 
         try:
             #

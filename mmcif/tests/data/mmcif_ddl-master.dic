@@ -1,0 +1,46 @@
+##
+# mmcif_ddl-master.dic
+##
+
+data_mmcif_ddl.dic
+#
+loop_
+_pdbx_include_dictionary.dictionary_id
+_pdbx_include_dictionary.dictionary_locator
+_pdbx_include_dictionary.include_mode
+_pdbx_include_dictionary.dictionary_namespace_prefix
+_pdbx_include_dictionary.dictionary_namespace_prefix_replace
+mmcif_ddl-header.dic        https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/base/mmcif_ddl-header.dic   extend . .
+mmcif_ddl-data.dic          https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/base/mmcif_ddl-data.dic     extend . .
+mmcif_ddl-def-core.dic      https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/base/mmcif_ddl-def-core.dic extend . .
+#
+mmcif_ddl-ext-nx.dic        https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/extensions/mmcif_ddl-ext-nx.dic        extend nx    nx
+mmcif_ddl-ext-ndb.dic       https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/extensions/mmcif_ddl-ext-ndb.dic       extend ndb   ndb
+mmcif_ddl-ext-pdbx.dic      https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/extensions/mmcif_ddl-ext-pdbx.dic      extend pdbx  pdbx
+mmcif_ddl-ext-rcsb.dic      https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/extensions/mmcif_ddl-ext-rcsb.dic      extend rcsb  rcsb
+mmcif_ddl-ext-compose.dic   https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/extensions/mmcif_ddl-ext-compose.dic   extend pdbx  pdbx
+mmcif_ddl-ext-condition.dic https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/extensions/mmcif_ddl-ext-condition.dic extend pdbx  pdbx
+#
+mmcif_ddl-data-ilg.dic      https://raw.githubusercontent.com/wwpdb-dictionaries/mmcif_ddl/development/base/mmcif_ddl-data-ilg.dic extend . .
+
+#
+loop_
+_pdbx_include_category.category_id
+_pdbx_include_category.dictionary_id
+_pdbx_include_category.include_as_category_id
+_pdbx_include_category.include_mode
+pdbx_include_dictionary           mmcif_ddl-ext-compose.dic pdbx_include_dictionary           extend
+pdbx_include_category             mmcif_ddl-ext-compose.dic pdbx_include_category             extend
+pdbx_include_item                 mmcif_ddl-ext-compose.dic pdbx_include_item                 extend
+pdbx_dictionary_component         mmcif_ddl-ext-compose.dic pdbx_dictionary_component         extend
+pdbx_dictionary_component_history mmcif_ddl-ext-compose.dic pdbx_dictionary_component_history extend
+
+loop_
+_pdbx_include_item.item_name
+_pdbx_include_item.dictionary_id
+_pdbx_include_item.include_as_item_name
+_pdbx_include_item.include_mode
+'_category.NX_mapping_details'           mmcif_ddl-ext-nx.dic   '_category.NX_mapping_details'           extend
+'_item_enumeration.rcsb_detail_brief'    mmcif_ddl-ext-rcsb.dic '_item_enumeration.rcsb_detail_brief'    extend
+'_item_enumeration.rcsb_type_units_code' mmcif_ddl-ext-rcsb.dic '_item_enumeration.rcsb_type_units_code' extend
+

@@ -57,8 +57,7 @@ class DictionaryApiTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testExtendedEnums(self):
-        """Test case -  to verify extended enums  -
-        """
+        """Test case -  to verify extended enums  -"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
@@ -74,8 +73,7 @@ class DictionaryApiTests(unittest.TestCase):
             self.fail()
 
     def testDumpEnums(self):
-        """Test case -  to verify enum ordering -
-        """
+        """Test case -  to verify enum ordering -"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
@@ -94,8 +92,7 @@ class DictionaryApiTests(unittest.TestCase):
             self.fail()
 
     def testDumpIndex(self):
-        """Test case -  dump methods for dictionary metadata
-        """
+        """Test case -  dump methods for dictionary metadata"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
@@ -113,8 +110,7 @@ class DictionaryApiTests(unittest.TestCase):
             self.fail()
 
     def testDumpDictionary(self):
-        """Test case -  dump methods for dictionary metadata
-        """
+        """Test case -  dump methods for dictionary metadata"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
@@ -136,8 +132,7 @@ class DictionaryApiTests(unittest.TestCase):
             self.fail()
 
     def testConsolidateDictionary(self):
-        """Test case -  dump methods for dictionary metadata
-        """
+        """Test case -  dump methods for dictionary metadata"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
@@ -164,8 +159,7 @@ class DictionaryApiTests(unittest.TestCase):
             self.fail()
 
     def testGetAdjacentCategories(self):
-        """Test case -
-        """
+        """Test case -"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)

@@ -61,8 +61,7 @@ except ImportError:
 
 
 class IoAdapterCore(IoAdapterBase):
-    """ Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.
-    """
+    """Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library."""
 
     # def __init__(self, *args, **kwargs):
     #    super(IoAdapterCore, self).__init__(*args, **kwargs)
@@ -138,16 +137,16 @@ class IoAdapterCore(IoAdapterBase):
     def getReadDiags(self):
         """Recover the diagnostics for the previous readFile() operation.readFile
 
-           Returns:
-             list of strings:  List of parsing and processing diagnostics from last readFile() operation
+        Returns:
+          list of strings:  List of parsing and processing diagnostics from last readFile() operation
         """
         return self._readLogRecords()
 
     def __getSelectionDef(self, selectList, excludeFlag):
-        """ Internal method to package selection/exclusion list for the C++ parser library.
+        """Internal method to package selection/exclusion list for the C++ parser library.
 
-            Returns:
-               CifFileReadDef() object:  object prepared for parsing library
+        Returns:
+           CifFileReadDef() object:  object prepared for parsing library
         """
         try:
             readDef = CifFileReadDef()
@@ -162,11 +161,11 @@ class IoAdapterCore(IoAdapterBase):
         return None
 
     def __processReadLogFile(self, inputFilePath):
-        """ Internal method to process logfiles and either log errors or raise exceptions (See: Class PdbxExceptions).
-            The behavior is controlled by the class attribute _raiseExcetions.
+        """Internal method to process logfiles and either log errors or raise exceptions (See: Class PdbxExceptions).
+        The behavior is controlled by the class attribute _raiseExcetions.
 
-            Returns:
-             list of strings:  List of records in the input log file
+        Returns:
+         list of strings:  List of records in the input log file
         """
         diagL = self._readLogRecords()
         #

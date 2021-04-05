@@ -43,10 +43,10 @@ logger = logging.getLogger(__name__)
 # pylint: disable=arguments-differ
 class DataCategoryBase(UserList):
 
-    """ Base object definition for a data category -
+    """Base object definition for a data category -
 
-        This class subclasses UserList and implements many list-like features for
-        row data managed by this class.
+    This class subclasses UserList and implements many list-like features for
+    row data managed by this class.
 
     """
 
@@ -199,8 +199,7 @@ class DataCategoryBase(UserList):
         return self._numAttributes
 
     def renameAttributes(self, mapDict):
-        """ Rename attributes according to mapping information in the input mapping dictionary {oldName: newName}
-        """
+        """Rename attributes according to mapping information in the input mapping dictionary {oldName: newName}"""
         atL = []
         for atName in self._attributeNameList:
             atL.append(mapDict[atName] if atName in mapDict else atName)
@@ -286,8 +285,7 @@ class DataCategoryBase(UserList):
         return rD
 
     def getAttributeValueList(self, attributeName):
-        """ Return a list of attribute values.
-        """
+        """Return a list of attribute values."""
         rL = []
         try:
             idx = self.getAttributeIndex(attributeName)
@@ -299,8 +297,7 @@ class DataCategoryBase(UserList):
         return rL
 
     def getAttributeUniqueValueList(self, attributeName):
-        """ Return a sorted list of unique attribute values.
-        """
+        """Return a sorted list of unique attribute values."""
         rL = []
         try:
             rD = {}
@@ -335,8 +332,8 @@ class DataCategoryBase(UserList):
         return False
 
     def removeAttribute(self, attributeName):
-        """ Remove the attribute from the attribute list along with any
-            corresponding row data.
+        """Remove the attribute from the attribute list along with any
+        corresponding row data.
         """
         idx = self.getAttributeIndex(attributeName)
         if idx != -1:
@@ -356,8 +353,8 @@ class DataCategoryBase(UserList):
     ##
     ##
     def __updateItemLabels(self):
-        """  Internal method to create mmCIF style item names for the current attribute
-             list.
+        """Internal method to create mmCIF style item names for the current attribute
+        list.
         """
         self._itemNameList = []
         for atName in self._attributeNameList:
@@ -366,10 +363,10 @@ class DataCategoryBase(UserList):
         return self._itemNameList
 
     def __alignLabels(self, row):
-        """  Internal method which aligns the list of input attributes with row data.
+        """Internal method which aligns the list of input attributes with row data.
 
-             If there are fewer labels than data elements in a row, then placeholder labels
-             are creeated (e.g. "unlabeled_#")
+        If there are fewer labels than data elements in a row, then placeholder labels
+        are created (e.g. "unlabeled_#")
 
         """
         if len(row) > len(self._attributeNameList):
@@ -379,14 +376,14 @@ class DataCategoryBase(UserList):
                 self.__updateItemLabels()
 
     def setMapping(self, mType):
-        """  Controls the manner in which this class returns data when accessed by
-             index or in the context of an iterator:
+        """Controls the manner in which this class returns data when accessed by
+        index or in the context of an iterator:
 
-             DATA      = list of row data elements as these were input. [default]
+        DATA      = list of row data elements as these were input. [default]
 
-             ATTRIBUTE = row returned as a dictionary with attribute key
+        ATTRIBUTE = row returned as a dictionary with attribute key
 
-             ITEM      = row returned as a dictionary with item key
+        ITEM      = row returned as a dictionary with item key
 
         """
         if mType in ["DATA", "ATTRIBUTE", "ITEM"]:
@@ -444,25 +441,25 @@ class DataCategoryBase(UserList):
         return None
 
     def cmpAttributeNames(self, dcObj):
-        """ Compare the attributeNameList in current data category (dca) and input data category .
+        """Compare the attributeNameList in current data category (dca) and input data category .
 
-            Return: (current attributes not in dcObj), (attributes common to both), (attributes in dcObj not in current data category)
+        Return: (current attributes not in dcObj), (attributes common to both), (attributes in dcObj not in current data category)
         """
         sa = set(self.getAttributeList())
         sb = set(dcObj.getAttributeList())
         return tuple(sa - sb), tuple(sa & sb), tuple(sb - sa)
 
     def cmpAttributeValues(self, dcObj):
-        """ Compare the values by attribute for current data category (dca) and input data category.
-            The comparison is performed independently for the values of corresponding attributes.
-            Length differences are treated inequality out of hand.
+        """Compare the values by attribute for current data category (dca) and input data category.
+        The comparison is performed independently for the values of corresponding attributes.
+        Length differences are treated inequality out of hand.
 
-            Return: [(attributeName, values equal flag (bool)), (attributeName, values equal flag (bool), ...]
+        Return: [(attributeName, values equal flag (bool)), (attributeName, values equal flag (bool), ...]
 
 
-            Note on slower alternative
-            >>> import collections
-            >>> compare = lambda x, y: collections.Counter(x) == collections.Counter(y)
+        Note on slower alternative
+        >>> import collections
+        >>> compare = lambda x, y: collections.Counter(x) == collections.Counter(y)
         """
         rL = []
         try:

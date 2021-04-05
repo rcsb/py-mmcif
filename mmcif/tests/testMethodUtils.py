@@ -60,8 +60,7 @@ class MethodUtilsTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testGetDictionaryMethods(self):
-        """Test case -  dump methods for dictionary metadata
-        """
+        """Test case -  dump methods for dictionary metadata"""
         try:
             myIo = IoAdapter(self.__verbose, self.__lfh)
             dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)
@@ -75,8 +74,7 @@ class MethodUtilsTests(unittest.TestCase):
             self.fail()
 
     def testInvokeDictionaryMethods(self):
-        """Test case -  invoke dictionary methods -
-        """
+        """Test case -  invoke dictionary methods -"""
         try:
             myIo = IoAdapter(self.__verbose, self.__lfh)
             dictContainerList = myIo.readFile(inputFilePath=self.__pathPdbxDictFile)

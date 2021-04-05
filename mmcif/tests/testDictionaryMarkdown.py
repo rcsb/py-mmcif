@@ -61,10 +61,10 @@ class DictionayMarkdownTests(unittest.TestCase):
 
     def __processbounds(self, bList):
         """
-            | columnName 1| columnName 2 |
-            | ------------- | ------------ |
-            | coldata1 | coldata2 |
-            | coldata1 | coldata2 |
+        | columnName 1| columnName 2 |
+        | ------------- | ------------ |
+        | coldata1 | coldata2 |
+        | coldata1 | coldata2 |
         """
         retList = []
         # Boundary values -
@@ -127,8 +127,7 @@ class DictionayMarkdownTests(unittest.TestCase):
         return rL
 
     def __testMarkupCategoryGroup(self, oFile, groupSelectList=None):
-        """Test case -  extract the content to be rendered -
-        """
+        """Test case -  extract the content to be rendered -"""
         startTime = time.time()
         logger.debug("\nStarting at %s\n", time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
         try:

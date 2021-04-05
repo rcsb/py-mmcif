@@ -53,8 +53,7 @@ class DictionaryReadWriteTests(unittest.TestCase):
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testReadDictionary(self):
-        """Test case -  read logical structure of dictionary
-        """
+        """Test case -  read logical structure of dictionary"""
         try:
             myIo = IoAdapterPy(self.__verbose, self.__lfh)
             containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
@@ -65,8 +64,7 @@ class DictionaryReadWriteTests(unittest.TestCase):
             self.fail()
 
     def testReadWriteDictionary(self):
-        """Test case -  read and dump logical structure of dictionary
-        """
+        """Test case -  read and dump logical structure of dictionary"""
         try:
             myIo = IoAdapterPy(self.__verbose, self.__lfh)
             containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)

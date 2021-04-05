@@ -50,8 +50,7 @@ class CifFileApiTests(unittest.TestCase):
         pass
 
     def testReadDataFile(self):
-        """Test case -  read chemical dictionary and create index
-        """
+        """Test case -  read chemical dictionary and create index"""
         try:
             blockNameList = []
             myReader = ParseCifSimple(self.__pathPdbxDataFile, False, 0, 255, "?", self.__logFileName)
@@ -76,8 +75,7 @@ class CifFileApiTests(unittest.TestCase):
             self.fail()
 
     def testReadCifFile(self):
-        """Test case -  deprecated CifFile api read, access and write test
-        """
+        """Test case -  deprecated CifFile api read, access and write test"""
 
         try:
             blockNameList = []
