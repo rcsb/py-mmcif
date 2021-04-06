@@ -5,7 +5,7 @@
  4-Apr-2018  - V0.12 - remove some deprecated code and a few api extensions
 26-Jun-2018  - V0.13 - add missing method code accessors
  9-Jul-2018  - V0.14 - preliminary Py37 support, add coverage and code style tests
-26-Jul-2018  - V0.15 - further changes to support Py2/Py3 compatibility in dictionar API module
+26-Jul-2018  - V0.15 - further changes to support Py2/Py3 compatibility in dictionary API module
  6-Aug-2018  - V0.16 - Add methods to set and get generic properties on base containers.
  8-Aug-2018  - V0.17 - Add support for Ubuntu  16.04.5 & GCC 5.4
 10-Aug-2018  - V0.18 - Detect uncompress gz, bz2, xz and zip input files
@@ -21,10 +21,10 @@
 27-Nov-2018  - V0.26 - Adjust exception handling in IoCoreAdapter().
 29-Nov-2018. - V0.27 - Add explicit option to better control read encoding errors separate from ascii encoding errors.
  7-Dec-2018    V0.28 - Add constructor parameter replaceDefinition=False to allow replacing
-                      defintions during consolidation
+                      definitions during consolidation
 27-Jan-2019    V0.29 - Add row dictionary initialization, append, and extend methods
 28-Jan-2019    V0.30 - Relax attribute coverage requirements on dictionary initialization
- 2-Feb-2019    V0.31 - Adjust formatting removing spurious comments and newlines and API method getFullDecendentList()
+ 2-Feb-2019    V0.31 - Adjust formatting removing spurious comments and newlines and API method getFullDescendentList()
  5-Feb-2019    V0.32 - Add container merge method.
  7-Feb-2019    V0.33 - Adjust initialization error checking to allow empty list
 12-Feb-2019    V0.34 - Back off some reformatting from V32.
@@ -46,8 +46,8 @@
 29-Nov-2019    V0.50 - Improve error diagnostics for missing methods, adjust parameter values for block methods.
 15-Feb-2020    V0.51 - Add support for category group hierarchies.
  9-May-2020    V0.52 - Make reserved token quoting case insensitive (PR from E. Ezra Peisach)
-18-May-2020    V0.53 - Add DataCatagory method countValuesWhereOpConditions() and test cases.
-18-May-2020    V0.54 - Add DataCatagory another method getCombinationCountsWithConditions() and test cases.
+18-May-2020    V0.53 - Add DataCategory method countValuesWhereOpConditions() and test cases.
+18-May-2020    V0.54 - Add DataCategory another method getCombinationCountsWithConditions() and test cases.
  5-Jun-2020    V0.55 - Add support for extended enumeration description and units
  5-Jun-2020    V0.56 - Address Py27 compatibility issues
  5-Jun-2020    V0.57 - Extend support for extended enumeration description and units for alt enumerations
@@ -55,3 +55,5 @@
 23-Aug-2020    V0.59 - Py27 adjustments
  1-Jan-2021    V0.60 - Advance pipeline to py39 add DDL category.NX_mapping_details
  1-Jan-2021    V0.61 - Adjust method api for category.NX_mapping_details
+30-Mar-2021    V0.62 - Adding support for pdbx_include_dictionary, pdbx_include_category, pdbx_include_item,
+                       pdbx_dictionary_component and pdbx_dictionary_component_history; allow URL locators in IoAdapterPy()

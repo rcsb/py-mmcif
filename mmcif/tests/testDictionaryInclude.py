@@ -43,7 +43,7 @@ logger.setLevel(logging.INFO)
 
 class DictionaryIncludeTests(unittest.TestCase):
     def setUp(self):
-        self.__pathDdlIncludeDictionary = os.path.join(HERE, "data", "mmcif_ddl-master.dic")
+        self.__pathDdlIncludeDictionary = os.path.join(HERE, "data", "mmcif_ddl-generator.dic")
         self.__pathDdlGeneratedDictionary = os.path.join(HERE, "data", "mmcif_ddl_generated.dic")
         self.__pathDdlDictionary = os.path.join(HERE, "data", "mmcif_ddl.dic")
         self.__startTime = time.time()
@@ -63,7 +63,7 @@ class DictionaryIncludeTests(unittest.TestCase):
             dIncl = DictionaryInclude()
             inclL = dIncl.processIncludedContent(containerList)
             logger.info("Processed included container length (%d)", len(inclL))
-            self.assertGreaterEqual(len(inclL), 258)
+
             ok = myIo.writeFile(outputFilePath=os.path.join(HERE, "test-output", "mmcif_ddl_generated.dic"), containerList=inclL)
             self.assertTrue(ok)
             #
@@ -82,6 +82,7 @@ class DictionaryIncludeTests(unittest.TestCase):
                 if incl.getName() not in cD:
                     logger.info("Included but missing in reference %r", incl.getName())
             #
+            self.assertGreaterEqual(len(inclL), 258)
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()
