@@ -13,6 +13,7 @@ from __future__ import absolute_import, print_function
 import json
 import logging
 import os
+import pprint
 import sys
 import time
 import unittest
@@ -47,6 +48,7 @@ class DictionaryApiTests(unittest.TestCase):
         self.__lfh = sys.stderr
         self.__verbose = False
         self.__pathPdbxDictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
+        self.__pathPdbxDictionaryExtension = os.path.join(HERE, "data", "pdbx-dictionary-extensions-examples.dic")
         self.__containerList = None
         self.__startTime = time.time()
         logger.debug("Running tests on version %s", __version__)
@@ -56,18 +58,51 @@ class DictionaryApiTests(unittest.TestCase):
         endTime = time.time()
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
+    #
+    def testExtensions(self):
+        """Test case -  condition extensions  """
+
+        try:
+            myIo = IoAdapter(raiseExceptions=True)
+            self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
+            self.__containerList.extend(myIo.readFile(inputFilePath=self.__pathPdbxDictionaryExtension))
+            dApi = DictionaryApi(containerList=self.__containerList, consolidate=True)
+            tD = dApi.getItemValueConditionDict()
+            logger.debug("tD \n%s", pprint.pformat(tD))
+            self.assertGreaterEqual(len(tD), 2)
+            tD = dApi.getComparisonOperatorDict()
+            logger.debug("tD \n%s", pprint.pformat(tD))
+            self.assertGreaterEqual(len(tD), 5)
+            tL = dApi.getComparisonOperators()
+            logger.debug("tL %r", tL)
+            self.assertGreaterEqual(len(tL), 5)
+            #
+            tD = dApi.getItemLinkedConditions()
+            logger.debug("tD \n%s", pprint.pformat(tD))
+            self.assertGreaterEqual(len(tD), 1)
+
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+            self.fail()
+
     def testExtendedEnums(self):
         """Test case -  to verify extended enums  -"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)
             self.__containerList = myIo.readFile(inputFilePath=self.__pathPdbxDictionary)
+
             dApi = DictionaryApi(containerList=self.__containerList, consolidate=True, verbose=self.__verbose)
             #
             eList = dApi.getEnumListWithFullDetails(category="chem_comp", attribute="mon_nstd_flag")
-            logger.debug("Item Enum list sorted  %r\n", eList)
+            logger.info("Item Enum list sorted  %r\n", eList)
             self.assertGreaterEqual(len(eList), 4)
 
+            eList = dApi.getEnumListWithFullDetails(category="atom_site", attribute="refinement_flags_occupancy")
+            logger.info("Item Enum list sorted  %r\n", eList)
+            self.assertGreaterEqual(len(eList), 1)
+
+            #
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()

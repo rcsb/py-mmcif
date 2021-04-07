@@ -103,7 +103,7 @@ class IoAdapterPy(IoAdapterBase):
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:
                     with closing(requests.get(filePath)) as ifh:
-                        it = (line.decode(encoding) for line in ifh.iter_lines())
+                        it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
                         pRd = PdbxReader(it)
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             else:
@@ -119,7 +119,7 @@ class IoAdapterPy(IoAdapterBase):
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:
                     with closing(requests.get(filePath)) as ifh:
-                        it = (line.decode(encoding) for line in ifh.iter_lines())
+                        it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
                         pRd = PdbxReader(it)
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             if cleanUp:

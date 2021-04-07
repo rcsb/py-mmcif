@@ -1,0 +1,55 @@
+data_pdbx-dictionary-extensions-example.dic
+
+loop_
+_pdbx_comparison_operator_list.code
+_pdbx_comparison_operator_list.description
+'eq'  'equivalence'
+'gt'  'greater than'
+'ge'  'greater than or equal'
+'lt'  'less than'
+'le'  'less than or equal'
+
+loop_
+_pdbx_item_value_condition_list.cond_id
+_pdbx_item_value_condition_list.target_item_name
+_pdbx_item_value_condition_list.target_item_value
+_pdbx_item_value_condition_list.dependent_item_name
+_pdbx_item_value_condition_list.dependent_item_value
+_pdbx_item_value_condition_list.dependent_item_cmp_op
+_pdbx_item_value_condition_list.log_op
+1 '_citation.journal_abbrev'  'Nat Struct Biol'     '_citation.year' 2004 lt .
+2 '_citation.journal_abbrev'  'Nat Struct Mol Biol' '_citation.year' 2004 ge .
+3 '_citation.journal_id_ISSN' '1072-8368'           '_citation.year' 2004 lt .
+4 '_citation.journal_id_ISSN' '1545-9993'           '_citation.year' 2004 ge .
+
+save__citation.journal_abbrev
+    _item.name '_citation.journal_abbrev'
+    _pdbx_item_value_condition.item_name            '_citation.journal_abbrev'
+    _pdbx_item_value_condition.dependent_item_name  '_citation.year'
+
+    save_
+
+save__citation.journal_id_ISSN
+    _item.name '_citation.journal_id_ISSN'
+    _pdbx_item_value_condition.item_name            '_citation.journal_id_ISSN'
+    _pdbx_item_value_condition.dependent_item_name  '_citation.year'
+
+    save_
+
+save__atom_site.label_seq_id
+    _item.name '_atom_site.label_seq_id'
+
+    loop_
+    _pdbx_item_linked.id
+    _pdbx_item_linked.condition_id
+    _pdbx_item_linked.parent_name
+    _pdbx_item_linked.child_name
+    _pdbx_item_linked.condition_child_name
+    _pdbx_item_linked.condition_child_value
+    _pdbx_item_linked.condition_child_cmp_op
+    _pdbx_item_linked.condition_child_target_name
+    _pdbx_item_linked.condition_child_log_op
+    1 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_atom_site.label_entity_id'  .            'eq'  '_entity.id'  .
+    2 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_entity.type'              'polymer'      'eq'  .             'and'
+
+    save_

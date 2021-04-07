@@ -57,3 +57,4 @@
  1-Jan-2021    V0.61 - Adjust method api for category.NX_mapping_details
 30-Mar-2021    V0.62 - Adding support for pdbx_include_dictionary, pdbx_include_category, pdbx_include_item,
                        pdbx_dictionary_component and pdbx_dictionary_component_history; allow URL locators in IoAdapterPy()
+ 7-Apr-2021    V0.63 - Add support for conditional value and conditional link attributes and data

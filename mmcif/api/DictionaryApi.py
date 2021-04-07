@@ -20,10 +20,10 @@
 #  28-Jul-2019  jdw retain dictionary ordering for categories and attributes (suppress sorting)
 #  15-Aug-2019  jdw improve handling of dictionary and dictionary history categories for concatenated dictionaries
 #   6-Sep-2019  jdw cleanup enum details
+#   5-Apr-2021  jdw add getItemValueConditionDependentList()
 ##
 """
 Accessors for PDBx/mmCIF dictionary attributes -
-
 """
 from __future__ import absolute_import
 
@@ -49,16 +49,23 @@ logger = logging.getLogger(__name__)
 
 
 class DictionaryApi(object):
-    def __init__(self, containerList, consolidate=True, expandItemLinked=False, replaceDefinition=False, verbose=False):
-        self.__verbose = verbose
-        self.__debug = False
+    def __init__(self, containerList, consolidate=True, expandItemLinked=False, replaceDefinition=False, **kwargs):
+        """Return an instance of the mmCIF dictionary API.
+
+        Args:
+            containerList (list): list of definition or data containers holding dictionary content
+            consolidate (bool, optional): consolidate dictionary attributes within a single definition. Defaults to True.
+            expandItemLinked (bool, optional): distribute item and item linked attributes defined for the parent
+                                               to child definitions. Defaults to False.
+            replaceDefinition (bool, optional): duplicate definitions replace prior definitions. Defaults to False.
+        """
+        _ = kwargs
         #
         self.__containerList = containerList
         self.__replaceDefinition = replaceDefinition
         #
         if consolidate:
             self.__consolidateDefinitions()
-
         #
         if expandItemLinked:
             self.__expandLoopedDefinitions()
@@ -153,6 +160,19 @@ class DictionaryApi(object):
             "ITEM_SUB_CATEGORY_ID": ("item_sub_category", "id"),
             "ITEM_SUB_CATEGORY_LABEL": ("item_sub_category", "pdbx_label"),
             "ITEM_TYPE_CONDITIONS_CODE": ("item_type_conditions", "code"),
+            #
+            "ITEM_VALUE_CONDITION_DEPENDENT_NAME": ("pdbx_item_value_condition", "dependent_item_name"),
+            #
+            "ITEM_LINKED_PDBX_ID": ("pdbx_item_linked", "id"),
+            "ITEM_LINKED_PDBX_CONDITION_ID": ("pdbx_item_linked", "condition_id"),
+            "ITEM_LINKED_PDBX_PARENT_NAME": ("pdbx_item_linked", "parent_name"),
+            "ITEM_LINKED_PDBX_CHILD_NAME": ("pdbx_item_linked", "child_name"),
+            #
+            "ITEM_LINKED_PDBX_CONDITION_CHILD_NAME": ("pdbx_item_linked", "condition_child_name"),
+            "ITEM_LINKED_PDBX_CONDITION_CHILD_VALUE": ("pdbx_item_linked", "condition_child_value"),
+            "ITEM_LINKED_PDBX_CONDITION_CHILD_TARGET_NAME": ("pdbx_item_linked", "condition_child_target_name"),
+            "ITEM_LINKED_PDBX_CONDITION_CHILD_CMP_OP": ("pdbx_item_linked", "condition_child_cmp_op"),
+            "ITEM_LINKED_PDBX_CONDITION_LOG_OP": ("pdbx_item_linked", "condition_log_op"),
         }
         #
         self.__methodDict = OrderedDict()
@@ -187,6 +207,9 @@ class DictionaryApi(object):
         self.__dictionaryComponentList = []
         self.__dictionaryComponentHistoryDict = OrderedDict()
         #
+        self.__itemValueConditionDict = OrderedDict()
+        self.__compOpDict = OrderedDict()
+        #
         self.__getDataSections()
         #
 
@@ -195,6 +218,26 @@ class DictionaryApi(object):
 
     #
     #  Methods for data sections --
+    #
+
+    def getItemValueConditionDict(self):
+        try:
+            return self.__itemValueConditionDict if self.__itemValueConditionDict else {}
+        except Exception:
+            return {}
+
+    def getComparisonOperators(self):
+        try:
+            return list(self.__compOpDict.keys()) if self.__compOpDict else []
+        except Exception:
+            return []
+
+    def getComparisonOperatorDict(self):
+        try:
+            return self.__compOpDict if self.__compOpDict else {}
+        except Exception:
+            return {}
+
     #
     def getDictionaryVersion(self):
         try:
@@ -296,15 +339,12 @@ class DictionaryApi(object):
                     tD["parent_id"] = None
                     tD["categories"] = []
                     self.__categoryGroupDict[groupName] = tD
-
                 self.__categoryGroupDict[groupName]["categories"].append(catName)
         #
         for groupName in self.__categoryGroupDict:
             # logger.info("Group %s count %r\n" % (groupName, len(self.__categoryGroupDict[groupName]['categories'])))
             if "categories" in self.__categoryGroupDict[groupName]:
                 self.__categoryGroupDict[groupName]["categories"].sort()
-        self.__groupIndex = True
-
         self.__groupChildIndex = OrderedDict()
         for groupName, gD in self.__categoryGroupDict.items():
             if "parent" in gD:
@@ -348,7 +388,6 @@ class DictionaryApi(object):
             #
         except Exception:
             logger.exception("DictionaryApi.getCategoryGroupCategories failed for group %s", groupName)
-
         return []
 
     def getCategoryGroups(self):
@@ -394,6 +433,9 @@ class DictionaryApi(object):
 
     def getItemDependentNameList(self, category, attribute):
         return self.__getList("ITEM_DEPENDENT_DEPENDENT_NAME", category, attribute)
+
+    def getItemValueConditionDependentList(self, category, attribute):
+        return self.__getList("ITEM_VALUE_CONDITION_DEPENDENT_NAME", category, attribute)
 
     def getItemSubCategoryIdList(self, category, attribute):
         return self.__getList("ITEM_SUB_CATEGORY_ID", category, attribute)
@@ -448,45 +490,58 @@ class DictionaryApi(object):
         return rL
 
     def getEnumListAltWithFullDetails(self, category, attribute):
-        eVL = self.__getListAll("ENUMERATION_VALUE_PDBX", category, attribute)
-        eDL = self.__getListAll("ENUMERATION_DETAIL_PDBX", category, attribute)
-        eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF_PDBX", category, attribute)
-        eUL = self.__getListAll("ENUMERATION_TYPE_UNITS_PDBX", category, attribute)
         rL = []
         dD = {}
-        for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
-            oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
-            dD[eV] = tuple(oL)
-        for ky in sorted(dD.keys()):
-            rL.append(dD[ky])
-        if rL:
-            return rL
-        #
-        eVL = self.__getListAll("ENUMERATION_VALUE", category, attribute)
-        eDL = self.__getListAll("ENUMERATION_DETAIL", category, attribute)
-        eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF", category, attribute)
-        eUL = self.__getListAll("ENUMERATION_TYPE_UNITS", category, attribute)
-        rL = []
-        dD = {}
-        for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
-            oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
-            dD[eV] = tuple(oL)
-        for ky in sorted(dD.keys()):
-            rL.append(dD[ky])
+        try:
+            eVL = self.__getListAll("ENUMERATION_VALUE_PDBX", category, attribute)
+            eDL = self.__getListAll("ENUMERATION_DETAIL_PDBX", category, attribute)
+            eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF_PDBX", category, attribute)
+            eUL = self.__getListAll("ENUMERATION_TYPE_UNITS_PDBX", category, attribute)
+            rL = []
+            dD = {}
+            for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
+                oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
+                dD[eV] = tuple(oL)
+            for ky in sorted(dD.keys()):
+                rL.append(dD[ky])
+            if rL:
+                return rL
+            #
+            eVL = self.__getListAll("ENUMERATION_VALUE", category, attribute)
+            eDL = self.__getListAll("ENUMERATION_DETAIL", category, attribute)
+            eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF", category, attribute)
+            eUL = self.__getListAll("ENUMERATION_TYPE_UNITS", category, attribute)
+            rL = []
+            dD = {}
+            for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
+                oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
+                dD[eV] = tuple(oL)
+            for ky in sorted(dD.keys()):
+                rL.append(dD[ky])
+        except Exception as e:
+            logger.exception("Failing dD %r rL %r with %s", dD, rL, str(e))
         return rL
 
     def getEnumListWithFullDetails(self, category, attribute):
-        eVL = self.__getListAll("ENUMERATION_VALUE", category, attribute)
-        eDL = self.__getListAll("ENUMERATION_DETAIL", category, attribute)
-        eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF", category, attribute)
-        eUL = self.__getListAll("ENUMERATION_TYPE_UNITS", category, attribute)
         rL = []
         dD = {}
-        for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
-            oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
-            dD[eV] = tuple(oL)
-        for ky in sorted(dD.keys()):
-            rL.append(dD[ky])
+        try:
+            eVL = self.__getListAll("ENUMERATION_VALUE", category, attribute)
+            eDL = self.__getListAll("ENUMERATION_DETAIL", category, attribute)
+            eBL = self.__getListAll("ENUMERATION_DETAIL_BRIEF", category, attribute)
+            eUL = self.__getListAll("ENUMERATION_TYPE_UNITS", category, attribute)
+            #
+            for eV, eD, eB, eU in zip_longest(eVL, eDL, eBL, eUL):
+                oL = [v if v and v not in [".", "?"] else None for v in [eV, eD, eB, eU]]
+                dD[eV] = tuple(oL)
+            for ky in sorted(dD.keys()):
+                rL.append(dD[ky])
+        except Exception as e:
+            logger.info("eVL %r", eVL)
+            logger.info("eDL %r", eDL)
+            logger.info("eBL %r", eBL)
+            logger.info("eUL %r", eUL)
+            logger.exception("Failing category %s attribute %s dD %r rL %r with %s", category, attribute, dD, rL, str(e))
         return rL
 
     def getEnumListAltWithDetail(self, category, attribute):
@@ -905,8 +960,7 @@ class DictionaryApi(object):
 
     def getParentDictionary(self):
         """Create a dictionary of parents relations accross all definnitions
-
-        as d[child]=[parent,parent,...]
+        as {child : [parent, parent,...]
 
         Exclude self parents.
         """
@@ -929,6 +983,82 @@ class DictionaryApi(object):
                     parentD[cVal].append(pVal)
         #
         return parentD
+
+    def getItemLinkedConditions(self):
+        """Create a dictionary of conditional item link relationships.
+
+        Returns:
+         (dict):  {{parent_name, child_name}: [{"id": , "condition_id": , "condition_child_name": , "condition_child_value": ,
+                                                "condition_child_cmp_op": , "condition_log_op": ,}, {},...]}
+
+        Example:
+
+        loop_
+        _pdbx_item_linked.id
+        _pdbx_item_linked.condition_id
+        _pdbx_item_linked.parent_name
+        _pdbx_item_linked.child_name
+        #
+        _pdbx_item_linked.condition_child_name
+        _pdbx_item_linked.condition_child_value
+        _pdbx_item_linked.condition_child_cmp_op
+        _pdbx_item_linked.condition_child_target_name
+        _pdbx_item_linked.condition_child_log_op
+        1 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_atom_site.label_entity_id'  .            'eq'  '_entity.id'  .
+        2 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_entity.type'              'polymer'      'eq'  .             'and'
+
+        """
+        rD = OrderedDict()
+        try:
+            for ob in self.__containerList:
+                if ob.getType() == "data":
+                    continue
+                tl = ob.getObj(self.__enumD["ITEM_LINKED_PDBX_ID"][0])
+                if tl is not None:
+                    for row in tl.getRowList():
+                        if (
+                            tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_ID"][1])
+                            and tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_ID"][1])
+                            and tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CHILD_NAME"][1])
+                            and tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_PARENT_NAME"][1])
+                        ):
+                            tD = OrderedDict()
+                            tD["id"] = row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_ID"][1])]
+                            tD["condition_id"] = row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_ID"][1])]
+                            parentName = row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_PARENT_NAME"][1])]
+                            childName = row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CHILD_NAME"][1])]
+                            #
+                            tD["condition_child_name"] = (
+                                row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_NAME"][1])]
+                                if tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_NAME"][1])
+                                else None
+                            )
+                            tD["condition_child_value"] = (
+                                row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_VALUE"][1])]
+                                if tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_VALUE"][1])
+                                else None
+                            )
+                            tD["condition_child_cmp_op"] = (
+                                row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_CMP_OP"][1])]
+                                if tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_CMP_OP"][1])
+                                else None
+                            )
+                            tD["condition_child_target_name"] = (
+                                row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_TARGET_NAME"][1])]
+                                if tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_CHILD_TARGET_NAME"][1])
+                                else None
+                            )
+                            tD["condition_log_op"] = (
+                                row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_LOG_OP"][1])]
+                                if tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_LOG_OP"][1])
+                                else None
+                            )
+                            #
+                            rD.setdefault((parentName, childName), []).append(tD)
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+
+        return rD
 
     def __makeFullParentChildDictionaries(self):
         """Create a dictionaries of full parent/child relations accross all definnitions
@@ -966,6 +1096,7 @@ class DictionaryApi(object):
         #
         return fullParentD, fullChildD
 
+    #
     def __get(self, enumCode, category, attribute=None, followAncestors=False):
         """Return the last occurrence of the input dictionary metadata.  If the value
         for the input category/attribute is null/missing then optionally check for
@@ -978,11 +1109,8 @@ class DictionaryApi(object):
             if (v0 is None) or (not v0) or (v0 in [".", "?"]):
                 pItem = self.getUltimateParent(category, attribute)
                 if (pItem is not None) and pItem and (pItem != CifName.itemName(category, attribute)):
-                    if self.__debug:
-                        logger.info("DictionaryApi.__get() Reassigning enum code %s  category %s attribute %s to parent %r", enumCode, category, attribute, pItem)
-
+                    logger.debug("Reassigning enum code %s  category %s attribute %s to parent %r", enumCode, category, attribute, pItem)
                     return self.__getValue(enumCode, CifName.categoryPart(pItem), CifName.attributePart(pItem))
-
         return v0
 
     #
@@ -1013,41 +1141,12 @@ class DictionaryApi(object):
                             if dc.hasAttribute(atN):
                                 eS = row[dc.getIndex(atN)]
                         else:
-                            tL = []
-                            for rv in row:
-                                tL.append(rv)
-                            eS = tL
+                            eS = [rv for rv in row]
         return eS
 
     def __getList(self, enumCode, category, attribute=None):
-        """ Return the unique list of values """
-        eL = []
-        if enumCode not in self.__enumD:
-            return eL
-
-        if attribute is not None:
-            nm = "_" + category + "." + attribute
-        else:
-            nm = category
-
-        if nm in self.__definitionIndex:
-            dObjL = self.__definitionIndex[nm]
-            for dObj in dObjL:
-                dc = dObj.getObj(self.__enumD[enumCode][0])
-                if dc is not None:
-                    atN = self.__enumD[enumCode][1]
-                    for row in dc.getRowList():
-                        if atN is not None:
-                            if dc.hasAttribute(atN):
-                                eL.append(row[dc.getIndex(atN)])
-                        else:
-                            tL = []
-                            for rv in row:
-                                tL.append(rv)
-                            eL.append(tL)
-        eS = set(eL)
-        eL = list(eS)
-        return eL
+        """ Return the list of unique values """
+        return list(set(self.__getListAll(enumCode, category, attribute)))
 
     def __getListAll(self, enumCode, category, attribute=None):
         """ Return a list of all values  """
@@ -1071,10 +1170,7 @@ class DictionaryApi(object):
                             if dc.hasAttribute(atN):
                                 eL.append(row[dc.getIndex(atN)])
                         else:
-                            tL = []
-                            for rv in row:
-                                tL.append(rv)
-                            eL.append(tL)
+                            eL = [rv for rv in row]
 
         return eL
 
@@ -1124,7 +1220,7 @@ class DictionaryApi(object):
             else:
                 pass
         #
-        self.__itemNameList = iD.keys()
+        self.__itemNameList = list(iD.keys())
 
     def getDefinitionIndex(self):
         return self.__definitionIndex
@@ -1139,7 +1235,7 @@ class DictionaryApi(object):
             return None
 
     def getCategoryList(self):
-        return self.__catNameIndex.keys()
+        return list(self.__catNameIndex.keys())
 
     def getCategoryIndex(self):
         return self.__catNameIndex
@@ -1383,13 +1479,6 @@ class DictionaryApi(object):
                     for lgI in lgIList:
                         fh.write("    group %s --- child item %s   parent item %s\n" % (lg[1], lgI[0], lgI[1]))
 
-    def __newDataCategory(self, categoryName, attributeNameList):
-        """create a new data category -"""
-        aCat = DataCategory(categoryName)
-        for attributeName in attributeNameList:
-            aCat.appendAttribute(attributeName)
-        return aCat
-
     def __addItemLinkToDef(self, dObj, parentName, childName):
         """Add the input link relationship to the input definition object."""
         if dObj.exists("item_linked"):
@@ -1406,16 +1495,14 @@ class DictionaryApi(object):
                 nRows = cObj.getRowCount()
                 cObj.setValue(childName, "child_name", nRows)
                 cObj.setValue(parentName, "parent_name", nRows)
-                if self.__debug:
-                    logger.info("+DictionaryApi.__addItemLinkToDef() appending item link in category %s", dObj.getName())
+                logger.debug("Appending item link in category %s", dObj.getName())
             return True
         else:
             # create new category and append to input object
-            cObj = self.__newDataCategory("item_linked", ["child_name", "parent_name"])
+            cObj = DataCategory("item_linked", attributeNameList=["child_name", "parent_name"])
             cObj.append([childName, parentName])
             dObj.append(cObj)
-            if self.__debug:
-                logger.info("+DictionaryApi.__addItemLinkToDef() created new item link in category %s", dObj.getName())
+            logger.debug("Created new item link in category %s", dObj.getName())
             return True
 
     def __expandLoopedDefinitions(self):
@@ -1436,9 +1523,8 @@ class DictionaryApi(object):
                         idxP = cObj.getIndex("parent_name")
                         idxC = cObj.getIndex("child_name")
                         itemName = ob.getName()
-                        if self.__debug:
-                            logger.info("\n\n+DictionaryApi.__expandLoopedDefinitions() current target item %s", itemName)
-                        cObjNext = self.__newDataCategory("item_linked", ["child_name", "parent_name"])
+                        logger.debug("Current target item %s", itemName)
+                        cObjNext = DataCategory("item_linked", attributeNameList=["child_name", "parent_name"])
                         #
                         # Distribute the data for each row --
                         iChanges = 0
@@ -1457,7 +1543,7 @@ class DictionaryApi(object):
                                     self.__addItemLinkToDef(fullIndex[childItemName][0], parentItemName, childItemName)
                                 else:
                                     # error missing child definition object.
-                                    logger.info("+DictionaryApi.__expandLoopedDefinitions() missing child item %s", childItemName)
+                                    logger.warning("Missing child item %s", childItemName)
                             else:
                                 cObjNext.append([row[idxC], row[idxP]])
                         if cObjNext.getRowCount() > 0:
@@ -1488,8 +1574,7 @@ class DictionaryApi(object):
                     xList = dD.getObjNameList()
                     for nm in xList:
                         if nm not in dObjL[0].getObjNameList():
-                            if self.__debug:
-                                logger.debug("Adding %s to %s", nm, name)
+                            logger.debug("Adding %s to %s", nm, name)
                             catObj = dD.getObj(nm)
                             dObjL[0].append(catObj)
                         elif self.__replaceDefinition:
@@ -1541,8 +1626,7 @@ class DictionaryApi(object):
         for ob in self.__containerList:
 
             if ob.getType() == "data":
-                if self.__debug:
-                    logger.info("+DictionaryApi().__getDataSections() adding data sections from container name %s  type  %s", ob.getName(), ob.getType())
+                logger.debug("Adding data sections from container name %s  type  %s", ob.getName(), ob.getType())
                 #  add detail to data type tuple
                 tl = ob.getObj("item_type_list")
                 if tl is not None:
@@ -1748,3 +1832,31 @@ class DictionaryApi(object):
                             self.__itemLinkedGroupItemDict[(childCategoryId, linkGroupId)].append(
                                 (row[tl.getIndex("child_name")], row[tl.getIndex("parent_name")], row[tl.getIndex("parent_category_id")])
                             )
+                #
+                tl = ob.getObj("pdbx_item_value_condition_list")
+                if tl is not None:
+                    for row in tl.getRowList():
+                        if (
+                            tl.hasAttribute("dependent_item_name")
+                            and tl.hasAttribute("dependent_item_cmp_op")
+                            and tl.hasAttribute("target_item_name")
+                            and tl.hasAttribute("cond_id")
+                        ):
+                            tD = OrderedDict()
+                            tD["cond_id"] = row[tl.getIndex("cond_id")]
+                            tD["target_item_name"] = row[tl.getIndex("target_item_name")]
+                            tD["dependent_item_name"] = row[tl.getIndex("dependent_item_name")]
+                            tD["dependent_item_cmp_op"] = row[tl.getIndex("dependent_item_cmp_op")]
+                            tD["target_item_value"] = row[tl.getIndex("target_item_value")] if tl.hasAttribute("target_item_value") else None
+                            tD["dependent_item_value"] = row[tl.getIndex("dependent_item_value")] if tl.hasAttribute("dependent_item_value") else None
+                            tD["log_op"] = row[tl.getIndex("log_op")] if tl.hasAttribute("log_op") else "and"
+                            self.__itemValueConditionDict.setdefault(tD["target_item_name"], {}).setdefault(tD["dependent_item_name"], []).append(tD)
+                #
+                tl = ob.getObj("pdbx_comparison_operator_list")
+                if tl is not None:
+                    for row in tl.getRowList():
+                        if tl.hasAttribute("code") and tl.hasAttribute("description"):
+                            tD = OrderedDict()
+                            tD["code"] = row[tl.getIndex("code")]
+                            tD["description"] = row[tl.getIndex("description")]
+                            self.__compOpDict[tD["code"]] = tD["description"]
