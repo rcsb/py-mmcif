@@ -58,3 +58,4 @@
 30-Mar-2021    V0.62 - Adding support for pdbx_include_dictionary, pdbx_include_category, pdbx_include_item,
                        pdbx_dictionary_component and pdbx_dictionary_component_history; allow URL locators in IoAdapterPy()
  7-Apr-2021    V0.63 - Add support for conditional value and conditional link attributes and data
+ 8-Apr-2021    V0.64 - Add --cleanup option to build_dict_cli, update documentation and dependencies.

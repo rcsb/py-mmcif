@@ -33,6 +33,7 @@ def main():
     parser.add_argument("--op", default=None, required=True, help="Operation (build | get_version)")
     parser.add_argument("--input_dict_path", required=True, default=None, help="Path to dictionary generator file")
     parser.add_argument("--output_dict_path", default=None, help="Path to output dictionary text file")
+    parser.add_argument("--cleanup", default=False, action="store_true", help="Remove include instruction categories after processing")
     args = parser.parse_args()
     #
     try:

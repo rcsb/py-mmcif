@@ -90,13 +90,36 @@ class DictionaryInclude(object):
         #
         self.__locatorIndexD = {}
 
-    def processIncludedContent(self, containerList):
-        includeD = self.__getIncludeInstructions(containerList)
-        logger.debug("includeD %r", includeD)
+    def processIncludedContent(self, containerList, cleanup=False):
+        """Process any dictionary, category or item include instructions in any data containers in the
+        input list of dictionary data and definition containers.
+
+        Args:
+            containerList (list): list of input PdbxContainer data or definition container objects
+            cleanup (bool, optional): flag to remove generator category objects after parsing (default: False)
+
+        Returns:
+            (list): list of data and definition containers incorporating included content
+
+        """
+        includeD = self.__getIncludeInstructions(containerList, cleanup=cleanup)
         includeContentD = self.__fetchIncludedContent(includeD)
         return self.__addIncludedContent(containerList, includeContentD)
 
     def __addIncludedContent(self, containerList, includeContentD):
+        """Incorporate included content described in the input dictionary of include instructions produced by
+        internal method __getIncludeInstructions().
+
+        Args:
+            containerList (list): list of input PdbxContainer data or definition container objects
+            includeContentD (dict): {"dictionaryIncludeDict": {dictionary_id: {...include details...}},
+                                    "categoryIncludeDict": {dictionary_id: {category_id: {...include details... }}},
+                                    "itemIncludeDict": {dictionary_id: {category_id: {itemName: {...include details...}}}}
+                                    }
+
+        Returns:
+            (list): list of data and definition containers incorporating included content
+        """
         # Index the current container list...
         cD = OrderedDict()
         datablockName = "unnamed_1"
@@ -160,8 +183,12 @@ class DictionaryInclude(object):
         #
         return fullL
 
-    def __getIncludeInstructions(self, containerList):
+    def __getIncludeInstructions(self, containerList, cleanup=False):
         """Extract include instructions from categories pdbx_include_dictionary,  pdbx_include_category, and pdbx_include_item.
+
+        Args:
+          containerList (list): list of input PdbxContainer data or definition container objects
+          cleanup (optional, bool): flag to remove generator category objects after parsing (default: false)
 
         Returns:
             (dict): {"dictionaryIncludeDict": {dictionary_id: {...include details...}},
@@ -207,6 +234,11 @@ class DictionaryInclude(object):
                                     tD[atName] = row[tl.getIndex(atName)] if tl.hasAttribute(atName) else None
                                 categoryId = CifName.categoryPart(tD["item_name"])
                                 itemIncludeDict.setdefault(tD["dictionary_id"], {}).setdefault(categoryId, {}).setdefault(tD["item_name"], tD)
+                    if cleanup:
+                        for catName in ["pdbx_include_dictionary", "pdbx_include_category", "pdbx_include_item"]:
+                            if container.exists(catName):
+                                container.remove(catName)
+                    #
                     includeD[datablockName] = {
                         "dictionaryIncludeDict": dictionaryIncludeDict,
                         "categoryIncludeDict": categoryIncludeDict,

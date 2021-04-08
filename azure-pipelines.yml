@@ -1,7 +1,7 @@
 # File: azure-pipelines.yml
 # Date: 4-Jul-2019 jdw Created pipeline
 #       8-Jul-2019 jdw add macos test/publish
-#       8-Jul-2019 jdw templatize
+#       8-Jul-2019 jdw convert to template
 #       9-Jul-2019 jdw add publish jobs
 #      21-Jul-2019 jdw update to Py38
 #
