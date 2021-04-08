@@ -40,6 +40,7 @@ def main():
         op = args.op.lower() if args.op else None
         inputDictPath = args.input_dict_path
         outputDictPath = args.output_dict_path
+        cleanup = args.cleanup
     except Exception as e:
         logger.exception("Argument processing problem %s", str(e))
         parser.print_help(sys.stderr)
@@ -51,8 +52,8 @@ def main():
         containerList = myIo.readFile(inputFilePath=inputDictPath)
         logger.info("Starting dictionary container list length (%d)", len(containerList))
         dIncl = DictionaryInclude()
-        inclL = dIncl.processIncludedContent(containerList)
-        logger.info("Processed container length (%d)", len(inclL))
+        inclL = dIncl.processIncludedContent(containerList, cleanup=cleanup)
+        logger.info("Processed dictionary container length (%d)", len(inclL))
         ok = myIo.writeFile(outputFilePath=outputDictPath, containerList=inclL)
         logger.info("Operation completed with status %r", ok)
     elif op == "get_version" and inputDictPath:

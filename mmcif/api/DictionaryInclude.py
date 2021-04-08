@@ -103,7 +103,7 @@ class DictionaryInclude(object):
 
         """
         includeD = self.__getIncludeInstructions(containerList, cleanup=cleanup)
-        includeContentD = self.__fetchIncludedContent(includeD)
+        includeContentD = self.__fetchIncludedContent(includeD, cleanup=cleanup)
         return self.__addIncludedContent(containerList, includeContentD)
 
     def __addIncludedContent(self, containerList, includeContentD):
@@ -188,7 +188,7 @@ class DictionaryInclude(object):
 
         Args:
           containerList (list): list of input PdbxContainer data or definition container objects
-          cleanup (optional, bool): flag to remove generator category objects after parsing (default: false)
+          cleanup (optional, bool): flag to remove generator category objects after parsing (default: False)
 
         Returns:
             (dict): {"dictionaryIncludeDict": {dictionary_id: {...include details...}},
@@ -248,7 +248,7 @@ class DictionaryInclude(object):
             logger.exception("Include processing failing with %s", str(e))
         return includeD
 
-    def __fetchIncludedContent(self, includeD):
+    def __fetchIncludedContent(self, includeD, cleanup=False):
         """Fetch included content following the instructions encoded in the input data structure.
 
         Args:
@@ -256,6 +256,7 @@ class DictionaryInclude(object):
                                       "categoryIncludeDict": {dictionary_id: {category_id: {...include details... }}},
                                       "itemIncludeDict": {dictionary_id: {category_id: {itemName: {...include details...}}}}
                                        }
+            cleanup (optional, bool): flag to remove generator category objects after parsing (default: false)
 
         Returns:
             (dict): {datablockName: {"extend": [container,...], "replace": [container, ...]}, ... }
@@ -274,7 +275,7 @@ class DictionaryInclude(object):
                     #
                     # --- Fetch the dictionary component -
                     #
-                    containerList = self.processIncludedContent(self.__fetchLocator(locator))
+                    containerList = self.processIncludedContent(self.__fetchLocator(locator), cleanup=cleanup)
                     #
                     nsPrefix = iD["dictionary_namespace_prefix"]
                     nsPrefixReplace = iD["dictionary_namespace_prefix_replace"]
@@ -341,7 +342,7 @@ class DictionaryInclude(object):
             for nm in includeDataD:
                 numReplace = len(includeDataD[nm]["replace"]) if "replace" in includeDataD[nm] else 0
                 numExtend = len(includeDataD[nm]["extend"]) if "extend" in includeDataD[nm] else 0
-                logger.info("includeDataD %s replace (%d) extend (%d)", nm, numReplace, numExtend)
+                logger.debug("includeDataD %s replace (%d) extend (%d)", nm, numReplace, numExtend)
             #
         except Exception as e:
             logger.exception("Failing with %s", str(e))
@@ -359,7 +360,7 @@ class DictionaryInclude(object):
             #
             myIo = IoAdapterPy(raiseExceptions=raiseExceptions, useCharRefs=useCharRefs)
             containerList = myIo.readFile(locator, enforceAscii=enforceAscii, outDirPath=workPath)
-            logger.info("%r length (%d)", locator, len(containerList) if containerList else 0)
+            logger.info("Fetched %r dictionary container length (%d)", locator, len(containerList) if containerList else 0)
             logger.debug("%r", [container.getName() for container in containerList])
         except Exception as e:
             logger.exception("Failing for %s with %s", locator, str(e))
