@@ -127,10 +127,18 @@ class IoAdapterPy(IoAdapterBase):
                             pRd = PdbxReader(ifh)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:
-                    with closing(requests.get(filePath)) as ifh:
-                        it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
-                        pRd = PdbxReader(it)
-                        pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    if filePath.endswith(".gz"):
+                        customHeader = {"Accept-Encoding": "gzip"}
+                        with closing(requests.get(filePath, headers=customHeader)) as ifh:
+                            gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
+                            it = (line.decode(encoding) for line in gzit)
+                            pRd = PdbxReader(it)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    else:
+                        with closing(requests.get(filePath)) as ifh:
+                            it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
+                            pRd = PdbxReader(it)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             if cleanUp:
                 self._cleanupFile(lPath, lPath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
