@@ -72,7 +72,10 @@ class IoAdapterTests(unittest.TestCase):
         #
         self.__pathOutputUnicodePdbxFile = os.path.join(HERE, "test-output", "out-unicode-test.cif")
         self.__pathOutputCharRefPdbxFile = os.path.join(HERE, "test-output", "out-unicode-char-ref-test.cif")
-
+        #
+        self.__pathGzipUrl = "https://files.rcsb.org/download/1KIP.cif.gz"
+        self.__pathTextUrl = "https://files.rcsb.org/download/1KIP.cif"
+        #
         self.__pathOutputDir = os.path.join(HERE, "test-output")
         self.__startTime = time.time()
         logger.debug("Running tests on version %s", __version__)
@@ -127,6 +130,22 @@ class IoAdapterTests(unittest.TestCase):
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
             logger.debug("Read %d data blocks", len(containerList))
             self.assertTrue(len(containerList) > self.__testBlockCount)
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+            self.fail()
+
+    #
+    def testDownloadReader(self):
+        """Test case -  download/read text and compressed file"""
+        try:
+            io = IoAdapter(raiseExceptions=True)
+            containerList = io.readFile(self.__pathGzipUrl, outDirPath=self.__pathOutputDir)
+            logger.info("Read %d data blocks", len(containerList))
+            self.assertGreaterEqual(len(containerList[0].getObjNameList()), 60)
+            io = IoAdapter(raiseExceptions=True)
+            containerList = io.readFile(self.__pathTextUrl, outDirPath=self.__pathOutputDir)
+            logger.info("Read %d data blocks", len(containerList))
+            self.assertGreaterEqual(len(containerList[0].getObjNameList()), 60)
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()

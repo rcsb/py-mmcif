@@ -21,6 +21,7 @@ Python implementation of IoAdapterBase class providing read and write
 """
 from __future__ import absolute_import
 
+import gzip
 import io
 import logging
 import sys
@@ -102,10 +103,18 @@ class IoAdapterPy(IoAdapterBase):
                         pRd = PdbxReader(ifh)
                         pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:
-                    with closing(requests.get(filePath)) as ifh:
-                        it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
-                        pRd = PdbxReader(it)
-                        pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    if filePath.endswith(".gz"):
+                        customHeader = {"Accept-Encoding": "gzip"}
+                        with closing(requests.get(filePath, headers=customHeader)) as ifh:
+                            gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
+                            it = (line.decode(encoding) for line in gzit)
+                            pRd = PdbxReader(it)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    else:
+                        with closing(requests.get(filePath)) as ifh:
+                            it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
+                            pRd = PdbxReader(it)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             else:
                 if self.__isLocal(filePath):
                     filePath = self._uncompress(filePath, oPath)
