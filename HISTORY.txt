@@ -62,3 +62,4 @@
  8-Apr-2021    V0.65 - Make --cleanup work with nested include instructions
 17-Apr-2021    V0.66 - Add support for reading remote text and gzipped files in IoPyAdapter()
 17-Apr-2021    V0.67 - Update support for Py27 with IoPyAdapter() tests
+10-May-2021    V0.68 - Extend time precision in IoAdapterBase()
