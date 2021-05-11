@@ -179,7 +179,7 @@ class IoAdapterBase(object):
 
     def __getDiscriminator(self):
         """Internal method returning a string which can discriminate among default file names -"""
-        return str(int(time.time() * 10000))
+        return str(time.time() * 10000).replace(".", "_")
 
     def _chooseTemporaryPath(self, filePath, outDirPath=None):
         """Select a path for temporary files in the priority order
