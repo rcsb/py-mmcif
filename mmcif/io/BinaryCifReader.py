@@ -7,6 +7,7 @@
 #  Updates:
 ##
 
+from collections import OrderedDict
 import gzip
 import io
 import logging
@@ -87,7 +88,7 @@ class BinaryCifReader(object):
                     catName = self.__fromBytes(category[self.__toBytes("name")])[1:]
                     colList = category[self.__toBytes("columns")]
                     logger.debug("catName %r columns %r", catName, colList)
-                    colD = {}
+                    colD = OrderedDict()
                     atNameList = []
                     for col in colList:
                         logger.debug("col.keys() %r", col.keys())
