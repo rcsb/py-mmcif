@@ -137,7 +137,7 @@ class BinaryCifEncoders(object):
     StringArray, ByteArray, IntegerPacking, Delta, RunLength,
     and FixedPoint encoders from the BinaryCIF specification described in:
 
-    Sehnal D, Bittrich S, Velankar S, Koča J, Svobodová R, Burley SK, Rose AS.
+    Sehnal D, Bittrich S, Velankar S, Koca J, Svobodova R, Burley SK, Rose AS.
     BinaryCIF and CIFTools-Lightweight, efficient and extensible macromolecular data management.
     PLoS Comput Biol. 2020 Oct 19;16(10):e1008247.
     doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.
