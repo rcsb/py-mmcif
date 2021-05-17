@@ -4,11 +4,14 @@
 #       8-Jul-2019 jdw convert to template
 #       9-Jul-2019 jdw add publish jobs
 #      21-Jul-2019 jdw update to Py38
+#      17-May-2021 jdw update to Py39 and add devel-* branches
+#
 #
 name: $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.rr)
 
 trigger:
   - master
+  - devel-*
 
 pr:
   - master
@@ -19,7 +22,6 @@ schedules:
     branches:
       include:
         - master
-        - dev*
     always: true
 
 jobs:
