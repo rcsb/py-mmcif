@@ -61,6 +61,8 @@ jobs:
             displayName: "Mac upload sdist and binary wheel to PyPi ..."
             continueOnError: true
       #
+      - script: pip install -r requirements.txt
+        displayName: "Install package dependencies"
       - script: pip install -r requirements-doc.txt
         displayName: "Install documentation dependencies"
       - script: mkdocs gh-deploy
