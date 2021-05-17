@@ -1,0 +1,1 @@
+::: mmcif.api.DataCategoryBase:DataCategoryBase

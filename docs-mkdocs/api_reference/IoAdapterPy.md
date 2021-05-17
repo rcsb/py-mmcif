@@ -1,0 +1,1 @@
+::: mmcif.io.IoAdapterPy:IoAdapterPy

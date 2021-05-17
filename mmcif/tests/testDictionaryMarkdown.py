@@ -33,7 +33,7 @@ except ImportError:
 
 # from mmcif.io.PdbxExceptions import PdbxError, SyntaxError
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
@@ -200,9 +200,7 @@ class DictionayMarkdownTests(unittest.TestCase):
                             isBounded = True
                         else:
                             isBounded = False
-                        rL.append(
-                            "| %s | %s | %s | %s | %s | %s | %s |" % (attName, self.__trB(isKey), attMandatory, attTypeCode, attUnits, self.__trB(isEnum), self.__trB(isBounded))
-                        )
+                        rL.append("| %s | %s | %s | %s | %s | %s | %s |" % (attName, self.__trB(isKey), attMandatory, attTypeCode, attUnits, self.__trB(isEnum), self.__trB(isBounded)))
                     #
                     rL.append("")
                     rL.append("---")

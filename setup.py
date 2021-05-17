@@ -3,6 +3,7 @@
 #
 # Update:  17-Jan-2018 jdw - resolve python virtual env issues with Tox.
 #           8-Aug-2018 jdw - add py3.7
+#          14-May-2021 jdw - make requirements*.txt authoritative
 #
 import glob
 import os
@@ -39,8 +40,6 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext):
-
-        #
         debug = True
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cmakeArgs = ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + extdir, "-DPYTHON_EXECUTABLE=" + sys.executable]
@@ -114,11 +113,22 @@ class CMakeBuild(build_ext):
 
 packages = []
 thisPackage = "mmcif"
-requires = ["future", "six", "pybind11"]
 
+# Load packages from requirements*.txt
+with open("requirements.txt", "r") as ifh:
+    packagesRequired = [ln.strip() for ln in ifh.readlines()]
 
-with open("mmcif/__init__.py", "r") as fd:
-    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', fd.read(), re.MULTILINE).group(1)
+with open("requirements-test.txt", "r") as ifh:
+    packagesTest = [ln.strip() for ln in ifh.readlines()]
+
+with open("requirements-doc.txt", "r") as ifh:
+    packagesDoc = [ln.strip() for ln in ifh.readlines()]
+
+with open("README.md", "r") as ifh:
+    longDescription = ifh.read()
+
+with open("mmcif/__init__.py", "r") as ifh:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', ifh.read(), re.MULTILINE).group(1)
 
 if not version:
     raise RuntimeError("Cannot find version information")
@@ -127,14 +137,16 @@ setup(
     name=thisPackage,
     version=version,
     description="mmCIF Core Access Library",
-    long_description="See:  README.md",
+    long_description=longDescription,
+    long_description_content_type="text/markdown",
     author="John Westbrook",
     author_email="john.westbrook@rcsb.org",
     url="http://mmcif.wwpdb.org",
     #
     license="Apache 2.0",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        # "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         # 'Development Status :: 5 - Production/Stable',
         "Intended Audience :: Developers",
         "Natural Language :: English",
@@ -142,24 +154,20 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.9",
     ],
     #
-    install_requires=["future", "six", "requests >= 2.25"],
+    install_requires=packagesRequired,
+    tests_require=packagesTest,
+    extras_require={"all": packagesRequired + packagesTest + packagesTest, "test": packagesTest, "docs": packagesTest},
+    #
     packages=find_packages(exclude=["mmcif.tests", "tests.*"]),
     package_data={
         # If any package contains *.md or *.rst ...  files, include them:
         "": ["*.md", "*.rst", "*.txt", "*.h", "*.C", ".c", "*.cpp"]
     },
-    #
-    #
     test_suite="mmcif.tests",
-    tests_require=["tox"],
     #
-    # Not configured ...
-    extras_require={"dev": ["check-manifest"], "test": ["coverage"]},
-    # Added for
-    command_options={"build_sphinx": {"project": ("setup.py", thisPackage), "version": ("setup.py", version), "release": ("setup.py", version)}},
     ext_modules=[CMakeExtension("mmcif.core.mmciflib")],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,

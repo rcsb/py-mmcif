@@ -37,7 +37,7 @@ from mmcif.api.DataCategory import DataCategory
 from mmcif.api.Method import MethodDefinition, MethodReference
 from mmcif.api.PdbxContainers import CifName
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
@@ -992,20 +992,21 @@ class DictionaryApi(object):
                                                 "condition_child_cmp_op": , "condition_log_op": ,}, {},...]}
 
         Example:
-
-        loop_
-        _pdbx_item_linked.id
-        _pdbx_item_linked.condition_id
-        _pdbx_item_linked.parent_name
-        _pdbx_item_linked.child_name
-        #
-        _pdbx_item_linked.condition_child_name
-        _pdbx_item_linked.condition_child_value
-        _pdbx_item_linked.condition_child_cmp_op
-        _pdbx_item_linked.condition_child_target_name
-        _pdbx_item_linked.condition_child_log_op
-        1 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_atom_site.label_entity_id'  .            'eq'  '_entity.id'  .
-        2 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_entity.type'              'polymer'      'eq'  .             'and'
+        ```text
+            loop_
+            _pdbx_item_linked.id
+            _pdbx_item_linked.condition_id
+            _pdbx_item_linked.parent_name
+            _pdbx_item_linked.child_name
+            #
+            _pdbx_item_linked.condition_child_name
+            _pdbx_item_linked.condition_child_value
+            _pdbx_item_linked.condition_child_cmp_op
+            _pdbx_item_linked.condition_child_target_name
+            _pdbx_item_linked.condition_child_log_op
+            1 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_atom_site.label_entity_id'  .            'eq'  '_entity.id'  .
+            2 1 '_entity_poly_seq.num'  '_atom_site.label_seq_id'  '_entity.type'              'polymer'      'eq'  .             'and'
+        ```
 
         """
         rD = OrderedDict()
@@ -1049,9 +1050,7 @@ class DictionaryApi(object):
                                 else None
                             )
                             tD["condition_log_op"] = (
-                                row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_LOG_OP"][1])]
-                                if tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_LOG_OP"][1])
-                                else None
+                                row[tl.getIndex(self.__enumD["ITEM_LINKED_PDBX_CONDITION_LOG_OP"][1])] if tl.hasAttribute(self.__enumD["ITEM_LINKED_PDBX_CONDITION_LOG_OP"][1]) else None
                             )
                             #
                             rD.setdefault((parentName, childName), []).append(tD)
@@ -1145,11 +1144,11 @@ class DictionaryApi(object):
         return eS
 
     def __getList(self, enumCode, category, attribute=None):
-        """ Return the list of unique values """
+        """Return the list of unique values"""
         return list(set(self.__getListAll(enumCode, category, attribute)))
 
     def __getListAll(self, enumCode, category, attribute=None):
-        """ Return a list of all values  """
+        """Return a list of all values"""
         eL = []
         if enumCode not in self.__enumD:
             return eL
@@ -1622,7 +1621,7 @@ class DictionaryApi(object):
         return self.__itemUnitsConversionList
 
     def __getDataSections(self):
-        """"""
+        """ """
         for ob in self.__containerList:
 
             if ob.getType() == "data":
@@ -1790,9 +1789,7 @@ class DictionaryApi(object):
                     self.__itemUnitsConversionList = []
                     for row in tl.getRowList():
                         if tl.hasAttribute("from_code") and tl.hasAttribute("to_code") and tl.hasAttribute("operator") and tl.hasAttribute("factor"):
-                            self.__itemUnitsConversionList.append(
-                                (row[tl.getIndex("from_code")], row[tl.getIndex("to_code")], row[tl.getIndex("operator")], row[tl.getIndex("factor")])
-                            )
+                            self.__itemUnitsConversionList.append((row[tl.getIndex("from_code")], row[tl.getIndex("to_code")], row[tl.getIndex("operator")], row[tl.getIndex("factor")]))
 
                 tl = ob.getObj("pdbx_item_linked_group")
                 if tl is not None:
@@ -1836,12 +1833,7 @@ class DictionaryApi(object):
                 tl = ob.getObj("pdbx_item_value_condition_list")
                 if tl is not None:
                     for row in tl.getRowList():
-                        if (
-                            tl.hasAttribute("dependent_item_name")
-                            and tl.hasAttribute("dependent_item_cmp_op")
-                            and tl.hasAttribute("target_item_name")
-                            and tl.hasAttribute("cond_id")
-                        ):
+                        if tl.hasAttribute("dependent_item_name") and tl.hasAttribute("dependent_item_cmp_op") and tl.hasAttribute("target_item_name") and tl.hasAttribute("cond_id"):
                             tD = OrderedDict()
                             tD["cond_id"] = row[tl.getIndex("cond_id")]
                             tD["target_item_name"] = row[tl.getIndex("target_item_name")]

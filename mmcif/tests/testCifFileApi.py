@@ -10,7 +10,7 @@
 Test cases for deprated Python wrapper for C++ CifFile class library of file and dictionary tools.
 
 """
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "jwest@rcsb.rutgers.edu"
 __license__ = "Apache 2.0"
