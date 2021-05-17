@@ -32,7 +32,7 @@ except ImportError:
     from mmcif import __version__
 
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "jwest@rcsb.rutgers.edu"
 __license__ = "Apache 2.0"
@@ -60,7 +60,7 @@ class DictionaryApiTests(unittest.TestCase):
 
     #
     def testExtensions(self):
-        """Test case -  condition extensions  """
+        """Test case -  condition extensions"""
 
         try:
             myIo = IoAdapter(raiseExceptions=True)

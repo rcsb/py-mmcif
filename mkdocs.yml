@@ -1,0 +1,96 @@
+docs_dir: docs-mkdocs
+repo_name: rcsb/py-mmcif
+repo_url: https://github.com/rcsb/py-mmcif
+site_description: mmCIF Core Access Library
+site_name: mmCIF Core Access Library
+site_url: https://github.com/rcsb/py-mmcif
+#
+#extra_css:
+#  - static/css/mkdocstrings.css
+markdown_extensions:
+  - markdown_include.include
+  - pymdownx.magiclink
+  #- toc:
+  #    permalink: "\xA4"
+  #
+  - admonition # alerts
+  - pymdownx.details #  collapsible alerts
+  - pymdownx.superfences # nest code and content inside alerts
+  - attr_list # add HTML and CSS to Markdown elements
+  - pymdownx.inlinehilite # inline code highlights
+  - pymdownx.keys # show keystroke symbols
+  - pymdownx.snippets # insert content from other files
+  - pymdownx.tabbed # content tabs
+  - footnotes
+  - def_list
+  - pymdownx.arithmatex: # mathjax
+      generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - codehilite
+  - pymdownx.highlight:
+      use_pygments: true
+  - toc:
+      toc_depth: 4
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          rendering:
+            group_by_category: true
+            show_category_heading: true
+            show_if_no_docstring: true
+            show_root_heading: true
+          selection:
+            filters:
+              - "!^_[^_]"
+              - "!^__json"
+              - "!^__config__"
+            new_path_syntax: true
+      watch:
+        - mmcif
+
+theme:
+  name: material
+  #logo: static/images/rcsb_logo.png
+  favicon: static/images/favicon.ico
+  palette:
+    accent: grey
+    primary: blue grey
+    scheme: default
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.expand
+  icon:
+    repo: fontawesome/brands/github
+# ---- ----
+nav:
+  - Overview: index.md
+  - Reference:
+      - Overview: api_reference.md
+      - API:
+          - DataCategory: api_reference/DataCategory.md
+          - DataCategoryBase: api_reference/DataCategoryBase.md
+          - DataCategoryFormatted: api_reference/DataCategoryFormatted.md
+          - DataCategoryTyped: api_reference/DataCategoryTyped.md
+          - DictMethodRunner: api_reference/DictMethodRunner.md
+          - DictionaryApi: api_reference/DictionaryApi.md
+          - DictionaryInclude: api_reference/DictionaryInclude.md
+          - Method: api_reference/Method.md
+          - MethodUtils: api_reference/MethodUtils.md
+          - PdbxContainers: api_reference/PdbxContainers.md
+      - IO:
+          - BinaryCifReader: api_reference/BinaryCifReader.md
+          - BinaryCifWriter: api_reference/BinaryCifWriter.md
+          - CifFile: api_reference/CifFile.md
+          - IoAdapterBase: api_reference/IoAdapterBase.md
+          - IoAdapterCore: api_reference/IoAdapterCore.md
+          - IoAdapterPy: api_reference/IoAdapterPy.md
+          - PdbxExceptions: api_reference/PdbxExceptions.md
+          - PdbxReader: api_reference/PdbxReader.md
+          - PdbxWriter: api_reference/PdbxWriter.md

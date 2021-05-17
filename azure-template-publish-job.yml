@@ -2,7 +2,8 @@
 # Date: 8-Jul-2019 jdw split out from original pipeline
 #
 # Update:
-# 6-Aug-2019 jdw push source wheels (universal) for linux
+#  6-Aug-2019 jdw push source wheels (universal) for linux
+# 17-May-2021 jdw add
 #
 ##
 parameters:
@@ -12,50 +13,55 @@ parameters:
   fixtures: ""
 
 jobs:
-- job: ${{ format('publish_{0}_{1}', parameters.tox, parameters.os) }}
-  pool:
-    ${{ if eq(parameters.os, 'macos') }}:
-      vmImage: 'macOS-10.15'
-    ${{ if eq(parameters.os, 'linux') }}:
-      vmImage: 'ubuntu-latest'
-  dependsOn:
-  - ${{ format('build_test_{0}_{1}', parameters.tox, parameters.os) }}
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  #
-  steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: ${{ parameters.python }}
-        addToPath: true
-      displayName: setup python
+  - job: ${{ format('publish_{0}_{1}', parameters.tox, parameters.os) }}
+    pool:
+      ${{ if eq(parameters.os, 'macos') }}:
+        vmImage: "macOS-10.15"
+      ${{ if eq(parameters.os, 'linux') }}:
+        vmImage: "ubuntu-latest"
+    dependsOn:
+      - ${{ format('build_test_{0}_{1}', parameters.tox, parameters.os) }}
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     #
-    #- checkout: self
-    #  submodules: true
-    #
-    - download: current
-      artifact: ${{ format('sw_{0}_{1}', parameters.tox,  parameters.os) }}
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: ${{ parameters.python }}
+          addToPath: true
+        displayName: setup python
+      #
+      #- checkout: self
+      #  submodules: true
+      #
+      - download: current
+        artifact: ${{ format('sw_{0}_{1}', parameters.tox,  parameters.os) }}
 
-    - download: current
-      artifact: ${{ format('sw_u_{0}_{1}', parameters.tox,  parameters.os) }}
-    #
-    - script: ls -lR $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}
-      displayName: "Listing of downloaded artifacts"
-    #
-    - script: python -m pip install --upgrade pip twine setuptools wheel
-      displayName: 'Install packaging tools'
-    #
-    - task: DownloadSecureFile@1
-      name: pypicred
-      displayName: 'Download PyPI credentials'
-      inputs:
-        secureFile: 'PYPIRC-AZURE'
+      - download: current
+        artifact: ${{ format('sw_u_{0}_{1}', parameters.tox,  parameters.os) }}
+      #
+      - script: ls -lR $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}
+        displayName: "Listing of downloaded artifacts"
+      #
+      - script: python -m pip install --upgrade pip twine setuptools wheel
+        displayName: "Install packaging tools"
+      #
+      - task: DownloadSecureFile@1
+        name: pypicred
+        displayName: "Download PyPI credentials"
+        inputs:
+          secureFile: "PYPIRC-AZURE"
 
-    - ${{ if startsWith(parameters.os, 'linux') }}:
-      - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_u_{0}_{1}', parameters.tox, parameters.os) }}/*
-        displayName: "Linux upload sdist and source wheel to PyPi ..."
-        continueOnError: true
-    #
-    - ${{ if startsWith(parameters.os, 'macos') }}:
-      - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
-        displayName: "Mac upload sdist and binary wheel to PyPi ..."
-        continueOnError: true
+      - ${{ if startsWith(parameters.os, 'linux') }}:
+          - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_u_{0}_{1}', parameters.tox, parameters.os) }}/*
+            displayName: "Linux upload sdist and source wheel to PyPi ..."
+            continueOnError: true
+      #
+      - ${{ if startsWith(parameters.os, 'macos') }}:
+          - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
+            displayName: "Mac upload sdist and binary wheel to PyPi ..."
+            continueOnError: true
+      #
+      - script: pip install -r requirements-doc.txt
+        displayName: "Install documentation dependencies"
+      - script: mkdocs gh-deploy
+        displayName: "Build and deploy documentation to GitHub pages"

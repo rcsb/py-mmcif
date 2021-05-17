@@ -1,0 +1,434 @@
+##
+# File: BinaryCifWrite.py
+# Date: 19-Apr-2021  jdw
+#
+#  Write methods and encoders for binary CIF serialization.
+#
+#  Updates:
+#
+##
+
+import logging
+import struct
+import sys
+import msgpack
+
+try:
+    from urllib.parse import urlsplit
+except Exception:
+    from urlparse import urlsplit
+
+from mmcif.io.BinaryCifReader import BinaryCifDecoders
+
+logger = logging.getLogger(__name__)
+
+#
+# ByteArray types
+# https://github.com/molstar/BinaryCIF/blob/master/encoding.md
+#
+_Int8 = 1
+_Int16 = 2
+_Int32 = 3
+_Uint8 = 4
+_Uint16 = 5
+_Uint32 = 6
+_Float32 = 32
+_Float64 = 33
+
+
+class BinaryCifWriter(object):
+    def __init__(self, dictionaryApi, useByteEncoding=False, defaultEncoding="utf-8", allString=False):
+        self.__version = "0.01"
+        self.__useByteEncoding = useByteEncoding
+        self.__defaultEncoding = defaultEncoding
+        self.__allString = allString
+        self.__dApi = dictionaryApi
+
+    def serialize(self, filePath, containerList):
+        try:
+            blocks = []
+            for container in containerList:
+                name = container.getName()
+                block = {b"header": self.__toBytes(name), b"categories": []}
+                categories = block[b"categories"]
+                blocks.append(block)
+                for catName in container.getObjNameList():
+                    cObj = container.getObj(catName)
+                    rowCount = cObj.getRowCount()
+                    # materialize columns -
+                    cols = []
+                    for ii, atName in enumerate(cObj.getAttributeList()):
+                        colValL = cObj.getColumn(ii)
+                        dataType = "string"
+                        if not self.__allString:
+                            cifDataType = self.__dApi.getTypeCode(catName, atName)
+                            cifPrimitiveType = self.__dApi.getTypePrimitive(catName, atName)
+                            if cifPrimitiveType == "numb":
+                                dataType = "integer" if "int" in cifDataType else "float"
+                                castD = {"integer": int, "float": float}
+                                for jj in range(len(colValL)):
+                                    try:
+                                        colValL[jj] = castD[dataType](colValL[jj])
+                                    except Exception:
+                                        pass
+
+                        logger.debug("catName %r atName %r dataType %r", catName, atName, dataType)
+                        mask, encdata, encs = self.__encodeColumnData(colValL, dataType)
+                        cols.append({b"name": self.__toBytes(atName), b"mask": mask, b"data": {b"data": encdata, b"encoding": encs}})
+                    categories.append({b"name": self.__toBytes("_" + catName), b"columns": cols, b"rowCount": rowCount})
+            #
+            data = {b"version": self.__toBytes(self.__version), b"encoder": b"python-mmcif library", b"dataBlocks": blocks}
+            with open(filePath, "wb") as ofh:
+                msgpack.pack(data, ofh)
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+        return
+
+    def __encodeColumnData(self, colData, dataType):
+        colMaskDict = {}
+        # encM = BinaryCifMaskedEncoders()
+        enc = BinaryCifEncoders()
+        #
+        maskEncoderList = ["Delta", "RunLength", "ByteArray"]
+        # masked_encoder = {str: "StringArrayMasked", int: "IntArrayMasked", float: "FloatArrayMasked"}
+        typeEncoderD = {"string": "StringArrayMasked", "integer": "IntArrayMasked", "float": "FloatArrayMasked"}
+        # tmask, typ = encM.get_mask_and_type(data)
+        colMaskList = enc.getMask(colData)
+        # if False:
+        #    logger.info("dataType %r data %r mask %r tmask %r", dataType, len(data) if data else None, len(mask) if mask else None, len(tmask) if tmask else None)
+        #    if tmask and mask:
+        #        for ii, tup in enumerate(zip(mask, tmask)):
+        #            if tup[0] != tup[1]:
+        #                logger.info("ii %d  %r %r", ii, tup[0], tup[1])
+        dataEncType = typeEncoderD[dataType]
+        # encType = masked_encoder[typ]
+        # if dataEncType != encType:
+        #    logger.info("data encoding type differ (%r) %r  old (%r) %r", dataType, dataEncType, typ, encType)
+        #
+        # encdata, encs = encM.encode(data, mask, encType)
+        colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colData, colMaskList, dataEncType)
+        if colMaskList:
+            maskEncoded, maskEncodingDictL = enc.encode(colMaskList, maskEncoderList, "integer")
+            colMaskDict = {b"data": maskEncoded, b"encoding": maskEncodingDictL}
+        return colMaskDict, colDataEncoded, colDataEncodingDictL
+
+    def __toBytes(self, strVal):
+        try:
+            return strVal.encode(self.__defaultEncoding) if self.__useByteEncoding else strVal
+        except (UnicodeDecodeError, AttributeError):
+            logger.exception("Bad type for %r", strVal)
+            return strVal
+
+    def __fromBytes(self, byteVal):
+        try:
+            return byteVal.decode(self.__defaultEncoding) if self.__useByteEncoding else byteVal
+        except (UnicodeDecodeError, AttributeError):
+            logger.exception("Bad type for %r", byteVal)
+            return byteVal
+
+
+class BinaryCifEncoders(object):
+    """Binary CIF encoders"""
+
+    struct_map = {
+        _Int8: "b",
+        _Int16: "h",
+        _Int32: "i",
+        _Uint8: "B",
+        _Uint16: "H",
+        _Uint32: "I",
+        _Float32: "f",
+        _Float64: "d",
+    }
+
+    def __init__(self):
+        self.__boolmap = {False: "NO", True: "YES"}
+        self.__unknown = [".", "?"]
+        self.__defaultEncoding = "utf-8"
+        self.__useByteEncoding = True
+        self.__useFloat64 = False
+        self.__bCifTypeCodeD = {v: k for k, v in BinaryCifDecoders.bCifCodeTypeD.items()}
+
+    def encode(self, colDataList, encodingTypeList, dataType):
+        """Encode the data using the input list of encoding types returning encoded data and encoding instructions."""
+        encodingDictL = []
+        for encType in encodingTypeList:
+            if encType == "ByteArray":
+                colDataList, encDict = self.byteArrayEncoder(colDataList, dataType)
+            elif encType == "Delta":
+                colDataList, encDict = self.deltaEncoder(colDataList)
+            elif encType == "RunLength":
+                colDataList, encDict = self.runLengthEncoder(colDataList)
+            else:
+                logger.info("unsupported encoding %r", encType)
+            if encDict is not None:
+                encodingDictL.append(encDict)
+        return colDataList, encodingDictL
+
+    def encodeWithMask(self, colDataList, colMaskList, encType):
+        """Encode the data using the input mask and encoding type returning encoded data and encoding instructions."""
+        encData = []
+        encodingDictL = []
+        if encType == "StringArrayMasked":
+            encData, encodingDictL = self.stringArrayMaskedEncoder(colDataList, colMaskList)
+        elif encType == "IntArrayMasked":
+            encData, encodingDictL = self.intArrayMaskedEncoder(colDataList, colMaskList)
+        elif encType == "FloatArrayMasked":
+            encData, encodingDictL = self.floatArrayMaskedEncoder(colDataList, colMaskList)
+        else:
+            logger.info("unsupported masked encoding %r", encType)
+        return encData, encodingDictL
+
+    def __get_int_float_type(self, data):
+        """Determine the int/float type of the given data"""
+        # If anything is float, treat everything as single-precision float
+        for d in data:
+            if isinstance(d, float):
+                return _Float32
+        # Otherwise, figure out the most appropriate int type
+        min_val = min(data)
+        max_val = max(data)
+        if min_val >= 0:
+            # Unsigned types
+            for typ, limit in [(_Uint8, 0xFF), (_Uint16, 0xFFFF), (_Uint32, 0xFFFFFFFF)]:
+                if max_val <= limit:
+                    return typ
+        else:
+            # Signed types
+            for typ, up_limit in [(_Int8, 0x7F), (_Int16, 0x7FFF), (_Int32, 0x7FFFFFFF)]:
+                low_limit = -up_limit - 1
+                if min_val >= low_limit and max_val <= up_limit:
+                    return typ
+        raise TypeError("Cannot represent data as BinaryCIF")
+
+    def __getIntegerPackingType(self, colDataList):
+        """Determine the integer packing type or the input data list"""
+        try:
+            minV = min(colDataList)
+            maxV = max(colDataList)
+            if minV >= 0:
+                # Unsigned types
+                for typeName in ["unsigned_integer_8", "unsigned_integer_16", "unsigned_integer_32"]:
+                    byteArrayType = self.__bCifTypeCodeD[typeName]
+                    upperLimit = BinaryCifDecoders.bCifTypeD[typeName]["max"]
+                    if maxV <= upperLimit:
+                        return byteArrayType
+            else:
+                # Signed types
+                for typeName in ["integer_8", "integer_16", "integer_32"]:
+                    byteArrayType = self.__bCifTypeCodeD[typeName]
+                    upperLimit = BinaryCifDecoders.bCifTypeD[typeName]["max"]
+                    lowerLimit = BinaryCifDecoders.bCifTypeD[typeName]["min"]
+                    if minV >= lowerLimit and maxV <= upperLimit:
+                        return byteArrayType
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+        raise TypeError("Cannot determine interger packing type")
+
+    def byteArrayEncoder(self, colDataList, dataType):
+        """Encode integer or float array in a pack byte array.
+
+        Args:
+            data (list): list of integer or float data
+            dataType (str): data type (integer|float)
+
+        Returns:
+            [type]: [description]
+        """
+        # byteArrayType = self.__get_int_float_type(data)
+        if dataType == "float":
+            byteArrayType = self.__bCifTypeCodeD["float_64"] if self.__useFloat64 else self.__bCifTypeCodeD["float_32"]
+        else:
+            byteArrayType = self.__getIntegerPackingType(colDataList)
+        encodingD = {b"kind": b"ByteArray", b"type": byteArrayType}
+        fmt = BinaryCifDecoders.bCifTypeD[BinaryCifDecoders.bCifCodeTypeD[byteArrayType]]["struct_format_code"]
+        # fmt = self.struct_map[byteArrayType]
+        # All data is encoded little-endian in bcif
+        return struct.pack("<" + fmt * len(colDataList), *colDataList), encodingD
+
+    def deltaEncoder(self, colDataList, minLen=40):
+        """Encode an integer array as an array of consecutive differences."""
+        # Don't try to compress small arrays; the overhead of the compression
+        # probably will exceed the space savings
+        if len(colDataList) <= minLen:
+            return colDataList, None
+        # byteArrayType = self.__get_int_float_type(colDataList)
+        byteArrayType = self.__getIntegerPackingType(colDataList)
+        encodingD = {b"kind": b"Delta", b"origin": colDataList[0], b"srcType": byteArrayType}
+        encodedColDataList = [0] + [colDataList[i] - colDataList[i - 1] for i in range(1, len(colDataList))]
+        return encodedColDataList, encodingD
+
+    def runLengthEncoder(self, colDataList, minLen=40):
+        """Encode an integer array as pairs of (value, number of repeats)"""
+        # Don't try to compress small arrays; the overhead of the compression
+        # probably will exceed the space savings
+        if len(colDataList) <= minLen:
+            return colDataList, None
+
+        # byteArrayType = self.__get_int_float_type(data)
+        byteArrayType = self.__getIntegerPackingType(colDataList)
+        encodingD = {b"kind": b"RunLength", b"srcType": byteArrayType, b"srcSize": len(colDataList)}
+        encodedColDataList = []
+        val = None
+        for d in colDataList:
+            if d != val:
+                if val is not None:
+                    encodedColDataList.extend((val, repeat))  # noqa: F821
+                val = d
+                repeat = 1
+            else:
+                repeat += 1
+        encodedColDataList.extend((val, repeat))
+        # If we didn't save any space, return the original unchanged
+        if len(encodedColDataList) > len(colDataList):
+            return colDataList, None
+        else:
+            return encodedColDataList, encodingD
+
+    def stringArrayMaskedEncoder(self, colDataList, colMaskList):
+        integerEncoderList = ["Delta", "RunLength", "ByteArray"]
+        uniqStringIndex = {}  # keys are substrings, values indices
+        uniqStringList = []
+        indexList = []
+        for i, reals in enumerate(colDataList):
+            if colMaskList is not None and colMaskList[i]:
+                indexList.append(-1)
+            else:
+                s = reals
+                # Map bool to YES/NO strings
+                if isinstance(s, bool):
+                    s = self.__boolmap[s]
+                else:
+                    s = str(s)  # coerce non-str data to str
+                if s not in uniqStringIndex:
+                    uniqStringIndex[s] = len(uniqStringIndex)
+                    uniqStringList.append(s)
+                indexList.append(uniqStringIndex[s])
+        offsetList = [0]
+        runningLen = 0
+        for s in uniqStringList:
+            runningLen += len(s)
+            offsetList.append(runningLen)
+
+        encodedOffsetList, offsetEncodingDictL = self.encode(offsetList, integerEncoderList, "integer")
+        encodedIndexList, indexEncodingDictL = self.encode(indexList, integerEncoderList, "integer")
+
+        encodingDict = {
+            b"kind": b"StringArray",
+            b"dataEncoding": indexEncodingDictL,
+            b"stringData": self.__toBytes("".join(uniqStringList)),
+            b"offsetEncoding": offsetEncodingDictL,
+            b"offsets": encodedOffsetList,
+        }
+        return encodedIndexList, [encodingDict]
+
+    def stringArrayMaskedEncoder(self, colDataList, colMaskList):
+        integerEncoderList = ["Delta", "RunLength", "ByteArray"]
+        uniqStringIndex = {}  # keys are substrings, values indices
+        uniqStringList = []
+        indexList = []
+        for i, strVal in enumerate(colDataList):
+            if colMaskList is not None and colMaskList[i]:
+                indexList.append(-1)
+            else:
+                tS = strVal
+                tS = str(tS)
+                if tS not in uniqStringIndex:
+                    uniqStringIndex[tS] = len(uniqStringIndex)
+                    uniqStringList.append(tS)
+                indexList.append(uniqStringIndex[tS])
+        offsetList = [0]
+        runningLen = 0
+        for tS in uniqStringList:
+            runningLen += len(tS)
+            offsetList.append(runningLen)
+
+        encodedOffsetList, offsetEncodingDictL = self.encode(offsetList, integerEncoderList, "integer")
+        encodedIndexList, indexEncodingDictL = self.encode(indexList, integerEncoderList, "integer")
+
+        encodingDict = {
+            b"kind": b"StringArray",
+            b"dataEncoding": indexEncodingDictL,
+            b"stringData": self.__toBytes("".join(uniqStringList)),
+            b"offsetEncoding": offsetEncodingDictL,
+            b"offsets": encodedOffsetList,
+        }
+        return encodedIndexList, [encodingDict]
+
+    def intArrayMaskedEncoder(self, colDataList, colMaskList):
+        integerEncoderList = ["Delta", "RunLength", "ByteArray"]
+
+        if colMaskList:
+            maskedColDataList = [-1 if m else d for m, d in zip(colMaskList, colDataList)]
+        else:
+            maskedColDataList = colDataList
+        encodedColDataList, encodingDictL = self.encode(maskedColDataList, integerEncoderList, "integer")
+        return encodedColDataList, encodingDictL
+
+    def floatArrayMaskedEncoder(self, colDataList, colMaskList):
+        floatEncoderList = ["ByteArray"]
+
+        if colMaskList:
+            maskedColDataList = [0.0 if m else d for m, d in zip(colMaskList, colDataList)]
+        else:
+            maskedColDataList = colDataList
+        encodedColDataList, encodingDictL = self.encode(maskedColDataList, floatEncoderList, "float")
+        return encodedColDataList, encodingDictL
+
+    def getMask(self, data):
+        """Create a mask list identifying missing/omitted values in `data`
+        0 = Value is present, 1 = '.' = value not specified, and 2 = '?' = value unknown
+
+        Only return a mask if there some incompleteness in the input data
+        """
+        mask = None
+        for ii, colVal in enumerate(data):
+            if colVal is not None and colVal not in self.__unknown:
+                continue
+            if not mask:
+                mask = [0] * len(data)
+            mask[ii] = 2 if colVal is None or colVal == "?" else 1
+        return mask
+
+    def get_mask_and_type(self, data):
+        """Detect missing/omitted values in `data` and determine the type of
+        the remaining values (str, int, float)
+            * 0 = Value is present
+            * 1 = . = value not specified
+            * 2 = ? = value unknown
+        """
+        mask = None
+        seen_types = set()
+        for i, val in enumerate(data):
+            if val is None or val in self.__unknown:
+                if mask is None:
+                    mask = [0] * len(data)
+                mask[i] = 1 if val is None else 2
+            else:
+                seen_types.add(type(val))
+        # If a mix of types, coerce to that of the highest precendence
+        # (mixed int/float can be represented as float; mix int/float/str can
+        # be represented as str; bool is represented as str)
+        if not seen_types or bool in seen_types or str in seen_types:
+            return mask, str
+        elif float in seen_types:
+            return mask, float
+        elif int in seen_types:
+            return mask, int
+        elif sys.version_info[0] < 3 and long in seen_types:  # pylint: disable=undefined-variable
+            # Handle long like int (we don't have a 64-bit int type in BCIF anyway,
+            # so hopefully the data can be represented in an int)
+            return mask, int
+        for t in seen_types:
+            # Handle numpy float types like Python float
+            # todo: this is a hack
+            if "numpy.float" in str(t):
+                return mask, float
+        raise ValueError("Cannot determine type of data %s" % data)
+
+    def __toBytes(self, strVal):
+        try:
+            return strVal.encode(self.__defaultEncoding) if self.__useByteEncoding else strVal
+        except (UnicodeDecodeError, AttributeError):
+            logger.exception("Bad type for %r", strVal)
+            return strVal

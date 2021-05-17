@@ -3,6 +3,9 @@
 #
 include CMakeLists.txt
 include HISTORY.txt
+include requirements.txt
+include requirements-doc.txt
+include requirements-test.txt
 include modules/cc-regex/include/*
 include modules/cc-regex/src/*
 include modules/cpp-*/include/*.h

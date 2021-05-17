@@ -31,7 +31,7 @@ import logging
 from past.builtins import basestring
 from six.moves import UserList, range, zip
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
@@ -259,6 +259,14 @@ class DataCategoryBase(UserList):
                 raise e
         return []
 
+    def getColumn(self, index):
+        try:
+            return [row[index] for row in self.data]
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
+        return []
+
     def getRowAttributeDict(self, index):
         rD = {}
         try:
@@ -449,20 +457,16 @@ class DataCategoryBase(UserList):
         sb = set(dcObj.getAttributeList())
         return tuple(sa - sb), tuple(sa & sb), tuple(sb - sa)
 
-    def cmpAttributeValues(self, dcObj):
+    def cmpAttributeValues(self, dcObj, ignoreOrder=True, **kwargs):
         """Compare the values by attribute for current data category (dca) and input data category.
         The comparison is performed independently for the values of corresponding attributes.
         Length differences are treated inequality out of hand.
 
         Return: [(attributeName, values equal flag (bool)), (attributeName, values equal flag (bool), ...]
-
-
-        Note on slower alternative
-        >>> import collections
-        >>> compare = lambda x, y: collections.Counter(x) == collections.Counter(y)
         """
         rL = []
         try:
+            _ = kwargs
             sa = set(self.getAttributeList())
             sb = set(dcObj.getAttributeList())
             atComList = list(sa & sb)
@@ -470,7 +474,10 @@ class DataCategoryBase(UserList):
             lenEq = self.getRowCount() == dcObj.getRowCount()
             for at in atComList:
                 if lenEq:
-                    same = sorted(self.getAttributeValueList(at)) == sorted(dcObj.getAttributeValueList(at))
+                    if ignoreOrder:
+                        same = sorted(self.getAttributeValueList(at)) == sorted(dcObj.getAttributeValueList(at))
+                    else:
+                        same = self.getAttributeValueList(at) == dcObj.getAttributeValueList(at)
                 else:
                     same = False
                 rL.append((at, same))

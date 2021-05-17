@@ -39,7 +39,7 @@ from mmcif.api.PdbxContainers import DataContainer
 from mmcif.io.IoAdapterBase import IoAdapterBase
 from mmcif.io.PdbxExceptions import PdbxError, PdbxSyntaxError
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
@@ -262,9 +262,7 @@ class IoAdapterCore(IoAdapterBase):
         diagL = []
         try:
             if readDef:
-                cifFileObj = ParseCifSelective(
-                    inputFilePath, readDef, verbose=self._verbose, intCaseSense=0, maxLineLength=maxLineLength, nullValue="?", parseLogFileName=logFilePath
-                )
+                cifFileObj = ParseCifSelective(inputFilePath, readDef, verbose=self._verbose, intCaseSense=0, maxLineLength=maxLineLength, nullValue="?", parseLogFileName=logFilePath)
             else:
                 cifFileObj = ParseCifSimple(inputFilePath, verbose=self._verbose, intCaseSense=0, maxLineLength=maxLineLength, nullValue="?", parseLogFileName=logFilePath)
             #

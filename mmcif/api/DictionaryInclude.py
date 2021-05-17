@@ -7,8 +7,7 @@
 # Updates:
 ##
 """
-Handle PDBx/mmCIF dictionary extension/component include processing.
-
+Implements PDBx/mmCIF dictionary composition using dictionary, category and item include instructions.
 """
 
 import logging
@@ -18,7 +17,7 @@ from collections import OrderedDict
 from mmcif.api.PdbxContainers import CifName
 from mmcif.io.IoAdapterPy import IoAdapterPy
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
@@ -100,6 +99,17 @@ class DictionaryInclude(object):
 
         Returns:
             (list): list of data and definition containers incorporating included content
+
+        Examples:
+            ```python
+            pathDdlIncludeDictionary = "mmcif_ddl-generator.dic"
+            myIo = IoAdapter(raiseExceptions=True)
+            containerList = myIo.readFile(inputFilePath=pathDdlIncludeDictionary)
+            logger.info("Starting container list length (%d)", len(containerList))
+            dIncl = DictionaryInclude()
+            inclL = dIncl.processIncludedContent(containerList)
+            logger.info("Processed included container length (%d)", len(inclL))
+            ```
 
         """
         includeD = self.__getIncludeInstructions(containerList, cleanup=cleanup)
@@ -191,10 +201,18 @@ class DictionaryInclude(object):
           cleanup (optional, bool): flag to remove generator category objects after parsing (default: False)
 
         Returns:
-            (dict): {"dictionaryIncludeDict": {dictionary_id: {...include details...}},
-                     "categoryIncludeDict": {dictionary_id: {category_id: {...include details... }}},
-                     "itemIncludeDict": {dictionary_id: {category_id: {itemName: {...include details...}}}}
-                    }
+          A dictionary containing the dictionary, category and and item level include details.
+          For example,
+
+            ```python
+            {
+            "dictionaryIncludeDict": {dictionary_id: {...include details...}},
+            "categoryIncludeDict": {dictionary_id: {category_id: {...include details... }}},
+            "itemIncludeDict": {dictionary_id: {category_id: {itemName: {...include details...}}}},
+            }
+            ```
+
+
         """
         includeD = OrderedDict()
         try:
@@ -252,14 +270,15 @@ class DictionaryInclude(object):
         """Fetch included content following the instructions encoded in the input data structure.
 
         Args:
-            includeD (dict): (dict): {"dictionaryIncludeDict": {dictionary_id: {...include details...}},
-                                      "categoryIncludeDict": {dictionary_id: {category_id: {...include details... }}},
-                                      "itemIncludeDict": {dictionary_id: {category_id: {itemName: {...include details...}}}}
-                                       }
+            includeD (dict):  {"dictionaryIncludeDict": {dictionary_id: {...include details...}},
+                               "categoryIncludeDict": {dictionary_id: {category_id: {...include details... }}},
+                               "itemIncludeDict": {dictionary_id: {category_id: {itemName: {...include details...}}}},
+                               }
             cleanup (optional, bool): flag to remove generator category objects after parsing (default: false)
 
         Returns:
             (dict): {datablockName: {"extend": [container,...], "replace": [container, ...]}, ... }
+
         """
 
         includeDataD = {}
@@ -350,7 +369,7 @@ class DictionaryInclude(object):
         return includeDataD
 
     def __fetchLocator(self, locator, **kwargs):
-        """"""
+        """ """
         try:
             containerList = []
             workPath = kwargs.get("workPath", None)

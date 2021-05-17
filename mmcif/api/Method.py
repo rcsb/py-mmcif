@@ -1,6 +1,6 @@
 ##
 # File:      Method.py
-# Orignal:   Aug 12, 2013   Jdw
+# Original:   Aug 12, 2013   Jdw
 #
 # Updates:
 #   01-Aug-2017   jdw migrate portions to public repo
@@ -16,7 +16,7 @@ from __future__ import absolute_import
 
 import sys
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
@@ -59,7 +59,7 @@ class MethodDefinition(object):
         fh.write("Code:                    %s\n" % self.code)
         fh.write("Language:                %s\n" % str(self.language))
         fh.write("Inline text:             %s\n" % str(self.inline))
-        fh.write("Imlementation:           %s\n" % str(self.implementation))
+        fh.write("Implementation:           %s\n" % str(self.implementation))
         fh.write("Implementation source:   %s\n" % str(self.implementationSource))
         fh.write("Priority:                %d\n" % self.priority)
 
@@ -70,7 +70,7 @@ class MethodDefinition(object):
         oL.append("Code:                    %s" % self.code)
         oL.append("Language:                %s" % str(self.language))
         oL.append("Inline text:             %s" % str(self.inline))
-        oL.append("Imlementation:           %s" % str(self.implementation))
+        oL.append("Implementation:           %s" % str(self.implementation))
         oL.append("Implementation source:   %s" % str(self.implementationSource))
         oL.append("Priority:                %d" % self.priority)
         return "\n".join(oL)

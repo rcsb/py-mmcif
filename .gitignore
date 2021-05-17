@@ -1,5 +1,6 @@
 .vscode
 test-output/
+site/
 LOGTOX
 .idea/
 # Byte-compiled / optimized / DLL files

@@ -31,7 +31,7 @@ from six.moves import zip
 
 from mmcif.api.DataCategoryBase import DataCategoryBase
 
-__docformat__ = "restructuredtext en"
+__docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
