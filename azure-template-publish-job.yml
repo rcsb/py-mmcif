@@ -30,7 +30,8 @@ jobs:
           addToPath: true
         displayName: setup python
       #
-
+      - checkout: self
+        submodules: true
       #
       - download: current
         artifact: ${{ format('sw_{0}_{1}', parameters.tox,  parameters.os) }}
@@ -61,8 +62,6 @@ jobs:
             continueOnError: true
       #
       # Checkout and update documentation -
-      - checkout: self
-        submodules: true
       - script: pip install -r requirements.txt
         displayName: "Install package dependencies"
       - script: pip install -r requirements-doc.txt
