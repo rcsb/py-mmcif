@@ -1,0 +1,2681 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="mmCIF Core Access Library">
+      
+      
+      
+      
+        <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/PdbxContainers/">
+      
+      <link rel="icon" href="../../static/images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>PdbxContainers - mmCIF Core Access Library</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#546d78">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="grey">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mmcif.api.PdbxContainers.ContainerBase" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="mmCIF Core Access Library" class="md-header__button md-logo" aria-label="mmCIF Core Access Library" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mmCIF Core Access Library
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PdbxContainers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/rcsb/py-mmcif/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rcsb/py-mmcif
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Overview
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link md-tabs__link--active">
+        Reference
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="mmCIF Core Access Library" class="md-nav__button md-logo" aria-label="mmCIF Core Access Library" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    mmCIF Core Access Library
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/rcsb/py-mmcif/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rcsb/py-mmcif
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2_2">
+        API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DataCategory/" class="md-nav__link">
+        DataCategory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DataCategoryBase/" class="md-nav__link">
+        DataCategoryBase
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DataCategoryFormatted/" class="md-nav__link">
+        DataCategoryFormatted
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DataCategoryTyped/" class="md-nav__link">
+        DataCategoryTyped
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DictMethodRunner/" class="md-nav__link">
+        DictMethodRunner
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DictionaryApi/" class="md-nav__link">
+        DictionaryApi
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DictionaryInclude/" class="md-nav__link">
+        DictionaryInclude
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Method/" class="md-nav__link">
+        Method
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MethodUtils/" class="md-nav__link">
+        MethodUtils
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          PdbxContainers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        PdbxContainers
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase" class="md-nav__link">
+    ContainerBase
+  </a>
+  
+    <nav class="md-nav" aria-label="ContainerBase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.__eq__" class="md-nav__link">
+    __eq__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.__hash__" class="md-nav__link">
+    __hash__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.append" class="md-nav__link">
+    append()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.exists" class="md-nav__link">
+    exists()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.filterObjectNameList" class="md-nav__link">
+    filterObjectNameList()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getName" class="md-nav__link">
+    getName()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getObj" class="md-nav__link">
+    getObj()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getObjCatalog" class="md-nav__link">
+    getObjCatalog()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getObjNameList" class="md-nav__link">
+    getObjNameList()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getProp" class="md-nav__link">
+    getProp()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getPropCatalog" class="md-nav__link">
+    getPropCatalog()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getType" class="md-nav__link">
+    getType()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.merge" class="md-nav__link">
+    merge()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.printIt" class="md-nav__link">
+    printIt()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.rename" class="md-nav__link">
+    rename()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.replace" class="md-nav__link">
+    replace()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.setName" class="md-nav__link">
+    setName()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.setProp" class="md-nav__link">
+    setProp()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.setType" class="md-nav__link">
+    setType()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.toJSON" class="md-nav__link">
+    toJSON()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer" class="md-nav__link">
+    DefinitionContainer
+  </a>
+  
+    <nav class="md-nav" aria-label="DefinitionContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.getGlobal" class="md-nav__link">
+    getGlobal()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.isAttribute" class="md-nav__link">
+    isAttribute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.isCategory" class="md-nav__link">
+    isCategory()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.printIt" class="md-nav__link">
+    printIt()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer" class="md-nav__link">
+    DataContainer
+  </a>
+  
+    <nav class="md-nav" aria-label="DataContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.getGlobal" class="md-nav__link">
+    getGlobal()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.invokeDataBlockMethod" class="md-nav__link">
+    invokeDataBlockMethod()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.setGlobal" class="md-nav__link">
+    setGlobal()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.SaveFrameContainer" class="md-nav__link">
+    SaveFrameContainer
+  </a>
+  
+    <nav class="md-nav" aria-label="SaveFrameContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.SaveFrameContainer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName" class="md-nav__link">
+    CifName
+  </a>
+  
+    <nav class="md-nav" aria-label="CifName">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.attributePart" class="md-nav__link">
+    attributePart()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.categoryPart" class="md-nav__link">
+    categoryPart()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.itemName" class="md-nav__link">
+    itemName()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" data-md-state="indeterminate" type="checkbox" id="__nav_2_3" checked>
+      
+      <label class="md-nav__link" for="__nav_2_3">
+        IO
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="IO" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          IO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BinaryCifReader/" class="md-nav__link">
+        BinaryCifReader
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BinaryCifWriter/" class="md-nav__link">
+        BinaryCifWriter
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CifFile/" class="md-nav__link">
+        CifFile
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IoAdapterBase/" class="md-nav__link">
+        IoAdapterBase
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IoAdapterCore/" class="md-nav__link">
+        IoAdapterCore
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IoAdapterPy/" class="md-nav__link">
+        IoAdapterPy
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PdbxExceptions/" class="md-nav__link">
+        PdbxExceptions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PdbxReader/" class="md-nav__link">
+        PdbxReader
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PdbxWriter/" class="md-nav__link">
+        PdbxWriter
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase" class="md-nav__link">
+    ContainerBase
+  </a>
+  
+    <nav class="md-nav" aria-label="ContainerBase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.__eq__" class="md-nav__link">
+    __eq__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.__hash__" class="md-nav__link">
+    __hash__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.append" class="md-nav__link">
+    append()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.exists" class="md-nav__link">
+    exists()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.filterObjectNameList" class="md-nav__link">
+    filterObjectNameList()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getName" class="md-nav__link">
+    getName()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getObj" class="md-nav__link">
+    getObj()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getObjCatalog" class="md-nav__link">
+    getObjCatalog()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getObjNameList" class="md-nav__link">
+    getObjNameList()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getProp" class="md-nav__link">
+    getProp()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getPropCatalog" class="md-nav__link">
+    getPropCatalog()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.getType" class="md-nav__link">
+    getType()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.merge" class="md-nav__link">
+    merge()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.printIt" class="md-nav__link">
+    printIt()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.rename" class="md-nav__link">
+    rename()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.replace" class="md-nav__link">
+    replace()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.setName" class="md-nav__link">
+    setName()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.setProp" class="md-nav__link">
+    setProp()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.setType" class="md-nav__link">
+    setType()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.toJSON" class="md-nav__link">
+    toJSON()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer" class="md-nav__link">
+    DefinitionContainer
+  </a>
+  
+    <nav class="md-nav" aria-label="DefinitionContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.getGlobal" class="md-nav__link">
+    getGlobal()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.isAttribute" class="md-nav__link">
+    isAttribute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.isCategory" class="md-nav__link">
+    isCategory()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DefinitionContainer.printIt" class="md-nav__link">
+    printIt()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer" class="md-nav__link">
+    DataContainer
+  </a>
+  
+    <nav class="md-nav" aria-label="DataContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.getGlobal" class="md-nav__link">
+    getGlobal()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.invokeDataBlockMethod" class="md-nav__link">
+    invokeDataBlockMethod()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.DataContainer.setGlobal" class="md-nav__link">
+    setGlobal()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.SaveFrameContainer" class="md-nav__link">
+    SaveFrameContainer
+  </a>
+  
+    <nav class="md-nav" aria-label="SaveFrameContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.SaveFrameContainer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName" class="md-nav__link">
+    CifName
+  </a>
+  
+    <nav class="md-nav" aria-label="CifName">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.attributePart" class="md-nav__link">
+    attributePart()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.categoryPart" class="md-nav__link">
+    categoryPart()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.CifName.itemName" class="md-nav__link">
+    itemName()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rcsb/py-mmcif/edit/master/docs/api_reference/PdbxContainers.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>PdbxContainers</h1>
+                
+                <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mmcif.api.PdbxContainers.ContainerBase" class="doc doc-heading">
+        <code>mmcif.api.PdbxContainers.ContainerBase</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+      <p>Container base class for data and definition objects.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<h3 id="mmcif.api.PdbxContainers.ContainerBase-methods">Methods</h3>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.__eq__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">()</span>
+        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">getObjCatalog</span><span class="p">()</span>
+        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span>
+        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__propCatalog</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">getPropCatalog</span><span class="p">()</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.__hash__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__type</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__propCatalog</span><span class="o">.</span><span class="n">items</span><span class="p">())))</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="c1"># The enclosing scope of the data container (e.g. data_/save_)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="c1"># List of category names within this container -</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># dictionary of DataCategory objects keyed by category name.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># dictionary for properties of the container</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__propCatalog</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__type</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.append" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Add the input object to the current object catalog. An existing object
+of the same name will be overwritten.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add the input object to the current object catalog. An existing object</span>
+<span class="sd">    of the same name will be overwritten.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">:</span>
+            <span class="c1"># self.__objNameList is keeping track of object order here --</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">obj</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.exists" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.filterObjectNameList" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">filterObjectNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Return an ordered list of categories in the input container subject to
+input -</p>
+<p>lastInOrder: list:  categories to be shifted to the end of the container.
+   selectOrder: list:  ordered selection of container categories</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>filNameList</code></td>
+      <td><p>list:  augmented category list or full list (default)</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">filterObjectNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return an ordered list of categories in the input container subject to</span>
+<span class="sd">    input -</span>
+
+<span class="sd">       lastInOrder: list:  categories to be shifted to the end of the container.</span>
+<span class="sd">       selectOrder: list:  ordered selection of container categories</span>
+
+<span class="sd">    returns:</span>
+<span class="sd">       filNameList: list:  augmented category list or full list (default)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filNameList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">lastInOrder</span><span class="p">:</span>
+        <span class="n">objNameList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span>
+        <span class="n">lastList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">objNameList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">lastInOrder</span><span class="p">:</span>
+                <span class="n">lastList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">filNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+        <span class="n">filNameList</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lastList</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">selectOrder</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">selectOrder</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">nm</span><span class="p">):</span>
+                <span class="n">filNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">filNameList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span>
+
+    <span class="k">return</span> <span class="n">filNameList</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.getName" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getName</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.getObj" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.getObjCatalog" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getObjCatalog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getObjCatalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.getObjNameList" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getObjNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getObjNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.getProp" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getProp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propName</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getProp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propName</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__propCatalog</span><span class="p">[</span><span class="n">propName</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.getPropCatalog" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getPropCatalog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getPropCatalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__propCatalog</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.getType" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__type</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.merge" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Merge the contents of the input container with the contents of the current container.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Merge the contents of the input container with the contents of the current container.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">objNameList</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">objName</span> <span class="ow">in</span> <span class="n">objNameList</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">objName</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.printIt" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10e57aee0</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s1">&#39;brief&#39;</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s2">&quot;brief&quot;</span><span class="p">):</span>
+    <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;+ </span><span class="si">%s</span><span class="s2"> container: </span><span class="si">%30s</span><span class="s2"> contains </span><span class="si">%4d</span><span class="s2"> categories</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getType</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Data category: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nm</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pType</span> <span class="o">==</span> <span class="s2">&quot;brief&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span><span class="o">.</span><span class="n">printIt</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span><span class="o">.</span><span class="n">dumpIt</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.remove" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Revmove object by name.  Return True on success or False otherwise.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Revmove object by name.  Return True on success or False otherwise.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">curName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curName</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.rename" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Change the name of an object in place -</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Change the name of an object in place -&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">newName</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">newName</span><span class="p">]</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="n">newName</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.replace" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Replace an existing object with the input object</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replace an existing object with the input object&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">obj</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.setName" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">setName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">name</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.setProp" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">setProp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propName</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setProp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propName</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__propCatalog</span><span class="p">[</span><span class="n">propName</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.setType" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">setType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cType</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cType</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__type</span> <span class="o">=</span> <span class="n">cType</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.ContainerBase.toJSON" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">toJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">toJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mmcif.api.PdbxContainers.DefinitionContainer" class="doc doc-heading">
+        <code>mmcif.api.PdbxContainers.DefinitionContainer</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DefinitionContainer.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">DefinitionContainer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;definition&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__globalFlag</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DefinitionContainer.getGlobal" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getGlobal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getGlobal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__globalFlag</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DefinitionContainer.isAttribute" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">isAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">isAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;item&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DefinitionContainer.isCategory" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">isCategory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">isCategory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DefinitionContainer.printIt" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10e57aee0</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s1">&#39;brief&#39;</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s2">&quot;brief&quot;</span><span class="p">):</span>
+    <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Definition container: </span><span class="si">%30s</span><span class="s2"> contains </span><span class="si">%4d</span><span class="s2"> categories</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">())))</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isCategory</span><span class="p">():</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Definition type: category</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">isAttribute</span><span class="p">():</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Definition type: item</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Definition type: undefined</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Definition category: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nm</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pType</span> <span class="o">==</span> <span class="s2">&quot;brief&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span><span class="o">.</span><span class="n">printIt</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span><span class="o">.</span><span class="n">dumpId</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mmcif.api.PdbxContainers.DataContainer" class="doc doc-heading">
+        <code>mmcif.api.PdbxContainers.DataContainer</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+      <p>Container class for DataCategory objects.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DataContainer.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">DataContainer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__globalFlag</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DataContainer.getGlobal" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getGlobal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getGlobal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__globalFlag</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DataContainer.invokeDataBlockMethod" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">invokeDataBlockMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mType</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">invokeDataBlockMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mType</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">mType</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">db</span>
+    <span class="c1"># self.__currentRow = 1</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">getInline</span><span class="p">(),</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">())</span>  <span class="c1"># pylint: disable=exec-used</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.DataContainer.setGlobal" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">setGlobal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setGlobal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__globalFlag</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mmcif.api.PdbxContainers.SaveFrameContainer" class="doc doc-heading">
+        <code>mmcif.api.PdbxContainers.SaveFrameContainer</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.SaveFrameContainer.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">SaveFrameContainer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;definition&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mmcif.api.PdbxContainers.CifName" class="doc doc-heading">
+        <code>mmcif.api.PdbxContainers.CifName</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+      <p>Class of utilities for CIF-style data names -</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.CifName.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.CifName.attributePart" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">attributePart</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">attributePart</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">name</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.CifName.categoryPart" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">categoryPart</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">categoryPart</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">tname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+            <span class="n">tname</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tname</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">tname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tname</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tname</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.PdbxContainers.CifName.itemName" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">itemName</span><span class="p">(</span><span class="n">categoryName</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">itemName</span><span class="p">(</span><span class="n">categoryName</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">categoryName</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../MethodUtils/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              MethodUtils
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../BinaryCifReader/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              BinaryCifReader
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+    
+  </body>
+</html>

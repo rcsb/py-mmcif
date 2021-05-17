@@ -1,0 +1,1419 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="mmCIF Core Access Library">
+      
+      
+      
+      
+        <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/DataCategoryTyped/">
+      
+      <link rel="icon" href="../../static/images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>DataCategoryTyped - mmCIF Core Access Library</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#546d78">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="grey">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="mmCIF Core Access Library" class="md-header__button md-logo" aria-label="mmCIF Core Access Library" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mmCIF Core Access Library
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DataCategoryTyped
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/rcsb/py-mmcif/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rcsb/py-mmcif
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Overview
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link md-tabs__link--active">
+        Reference
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="mmCIF Core Access Library" class="md-nav__button md-logo" aria-label="mmCIF Core Access Library" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    mmCIF Core Access Library
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/rcsb/py-mmcif/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rcsb/py-mmcif
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2_2">
+        API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DataCategory/" class="md-nav__link">
+        DataCategory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DataCategoryBase/" class="md-nav__link">
+        DataCategoryBase
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DataCategoryFormatted/" class="md-nav__link">
+        DataCategoryFormatted
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          DataCategoryTyped
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        DataCategoryTyped
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped" class="md-nav__link">
+    DataCategoryTyped
+  </a>
+  
+    <nav class="md-nav" aria-label="DataCategoryTyped">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.applyStringTypes" class="md-nav__link">
+    applyStringTypes()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.applyTypes" class="md-nav__link">
+    applyTypes()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.cmpAttributeValues" class="md-nav__link">
+    cmpAttributeValues()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.getAttributeInfo" class="md-nav__link">
+    getAttributeInfo()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DictMethodRunner/" class="md-nav__link">
+        DictMethodRunner
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DictionaryApi/" class="md-nav__link">
+        DictionaryApi
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DictionaryInclude/" class="md-nav__link">
+        DictionaryInclude
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Method/" class="md-nav__link">
+        Method
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MethodUtils/" class="md-nav__link">
+        MethodUtils
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PdbxContainers/" class="md-nav__link">
+        PdbxContainers
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" data-md-state="indeterminate" type="checkbox" id="__nav_2_3" checked>
+      
+      <label class="md-nav__link" for="__nav_2_3">
+        IO
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="IO" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          IO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BinaryCifReader/" class="md-nav__link">
+        BinaryCifReader
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BinaryCifWriter/" class="md-nav__link">
+        BinaryCifWriter
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CifFile/" class="md-nav__link">
+        CifFile
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IoAdapterBase/" class="md-nav__link">
+        IoAdapterBase
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IoAdapterCore/" class="md-nav__link">
+        IoAdapterCore
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IoAdapterPy/" class="md-nav__link">
+        IoAdapterPy
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PdbxExceptions/" class="md-nav__link">
+        PdbxExceptions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PdbxReader/" class="md-nav__link">
+        PdbxReader
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PdbxWriter/" class="md-nav__link">
+        PdbxWriter
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped" class="md-nav__link">
+    DataCategoryTyped
+  </a>
+  
+    <nav class="md-nav" aria-label="DataCategoryTyped">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.applyStringTypes" class="md-nav__link">
+    applyStringTypes()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.applyTypes" class="md-nav__link">
+    applyTypes()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.cmpAttributeValues" class="md-nav__link">
+    cmpAttributeValues()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryTyped.DataCategoryTyped.getAttributeInfo" class="md-nav__link">
+    getAttributeInfo()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rcsb/py-mmcif/edit/master/docs/api_reference/DataCategoryTyped.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>DataCategoryTyped</h1>
+                
+                <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mmcif.api.DataCategoryTyped.DataCategoryTyped" class="doc doc-heading">
+        <code>mmcif.api.DataCategoryTyped.DataCategoryTyped</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+      <p>A subclass of DataCategory with methods to apply explicit data typing.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<h3 id="mmcif.api.DataCategoryTyped.DataCategoryTyped-methods">Methods</h3>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.DataCategoryTyped.DataCategoryTyped.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataCategoryObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raiseExceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>A subclass of DataCategory with methods to apply explicit data typing.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dataCategoryObj</code></td>
+        <td><code>object</code></td>
+        <td><p>DataCategory object instance</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>dictionaryApi</code></td>
+        <td><code>object</code></td>
+        <td><p>instance of DictionaryApi class. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>raiseExceptions</code></td>
+        <td><code>bool</code></td>
+        <td><p>raise exceptions. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>copyInputData</code></td>
+        <td><code>bool</code></td>
+        <td><p>make a new copy input data. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>ignoreCastErrors</code></td>
+        <td><code>bool</code></td>
+        <td><p>ignore data processing cast errors. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>useCifUnknowns</code></td>
+        <td><code>bool</code></td>
+        <td><p>use CIF style missing values ('.' and '?'). Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>missingValueString</code></td>
+        <td><code>str</code></td>
+        <td><p>missing string value . Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>missingValueInteger</code></td>
+        <td><code>integer</code></td>
+        <td><p>missing integer value. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>missingValueFloat</code></td>
+        <td><code>float</code></td>
+        <td><p>missing float value. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">dataCategoryObj</span><span class="p">,</span>
+    <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">raiseExceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">copyInputData</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataCategoryObj (object): DataCategory object instance</span>
+<span class="sd">        dictionaryApi (object, optional): instance of DictionaryApi class. Defaults to None.</span>
+<span class="sd">        raiseExceptions (bool, optional): raise exceptions. Defaults to True.</span>
+<span class="sd">        copyInputData (bool, optional): make a new copy input data. Defaults to True.</span>
+<span class="sd">        ignoreCastErrors (bool, optional): ignore data processing cast errors. Defaults to False.</span>
+<span class="sd">        useCifUnknowns (bool, optional): use CIF style missing values (&#39;.&#39; and &#39;?&#39;). Defaults to True.</span>
+<span class="sd">        missingValueString (str, optional): missing string value . Defaults to None.</span>
+<span class="sd">        missingValueInteger (integer, optional): missing integer value. Defaults to None.</span>
+<span class="sd">        missingValueFloat (float, optional): missing float value. Defaults to None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span> <span class="o">=</span> <span class="n">dataCategoryObj</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">DataCategoryTyped</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">(),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+        <span class="n">raiseExceptions</span><span class="o">=</span><span class="n">raiseExceptions</span><span class="p">,</span>
+        <span class="n">copyInputData</span><span class="o">=</span><span class="n">copyInputData</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__typesSet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">applyTypes</span><span class="p">(</span>
+        <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="n">ignoreCastErrors</span><span class="p">,</span>
+        <span class="n">useCifUnknowns</span><span class="o">=</span><span class="n">useCifUnknowns</span><span class="p">,</span>
+        <span class="n">missingValueString</span><span class="o">=</span><span class="n">missingValueString</span><span class="p">,</span>
+        <span class="n">missingValueInteger</span><span class="o">=</span><span class="n">missingValueInteger</span><span class="p">,</span>
+        <span class="n">missingValueFloat</span><span class="o">=</span><span class="n">missingValueFloat</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.DataCategoryTyped.DataCategoryTyped.applyStringTypes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">applyStringTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Cast data types to strings in the current object.  Missing values are set to '?' and '.' for
+optional and mandatory attributes, respectively.</p>
+
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>e</code></td>
+        <td><p>any exception</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True for success or False otherwise</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">applyStringTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cast data types to strings in the current object.  Missing values are set to &#39;?&#39; and &#39;.&#39; for</span>
+<span class="sd">    optional and mandatory attributes, respectively.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        e: any exception</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True for success or False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+            <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataType</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">ok</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.DataCategoryTyped.DataCategoryTyped.applyTypes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">applyTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Cast data types (string, integer, float) in the current object based on dictionary type details.
+Missing values ('.' or '?') are set to None.</p>
+
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>e</code></td>
+        <td><p>any exception</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True for success or False otherwise</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">applyTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
+<span class="sd">    Missing values (&#39;.&#39; or &#39;?&#39;) are set to None.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        e: any exception</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True for success or False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
+            <span class="c1"># colValL = self.getColumn(ii)</span>
+            <span class="n">dataType</span><span class="p">,</span> <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+            <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValueInteger</span> <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;integer&quot;</span> <span class="k">else</span> <span class="n">missingValueFloat</span> <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValueString</span>
+            <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValue</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">useCifUnknowns</span> <span class="k">else</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValue</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">ignoreCastErrors</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cast error </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">missingValue</span>
+            <span class="c1">#</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataType</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">ok</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.DataCategoryTyped.DataCategoryTyped.cmpAttributeValues" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Compare the values by attribute for current typed data category (dca) and input data category.
+The comparison is performed for values of the attributes common to both objects. Length differences
+are treated inequality out of hand.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dcObj</code></td>
+        <td><code>object</code></td>
+        <td><p>DataCategory object</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>ignoreOrder</code></td>
+        <td><code>bool</code></td>
+        <td><p>ignore attribute order. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>floatRelTolerance</code></td>
+        <td><code>float</code></td>
+        <td><p>relative tolerance for float comparisons. Defaults to 1e-05.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>floatAbsTolerance</code></td>
+        <td><code>float</code></td>
+        <td><p>absolute tolerance for float comparisons. Defaults to 1e-04.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>e</code></td>
+        <td><p>any exception</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>[(attributeName, values equal/close flag (bool)), (attributeName, values equal/close flag (bool), ...]</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compare the values by attribute for current typed data category (dca) and input data category.</span>
+<span class="sd">    The comparison is performed for values of the attributes common to both objects. Length differences</span>
+<span class="sd">    are treated inequality out of hand.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dcObj (object): DataCategory object</span>
+<span class="sd">        ignoreOrder (bool, optional): ignore attribute order. Defaults to True.</span>
+<span class="sd">        floatRelTolerance (float, optional): relative tolerance for float comparisons. Defaults to 1e-05.</span>
+<span class="sd">        floatAbsTolerance (float, optional): absolute tolerance for float comparisons. Defaults to 1e-04.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        e: any exception</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: [(attributeName, values equal/close flag (bool)), (attributeName, values equal/close flag (bool), ...]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">floatRelTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floatRelTolerance&quot;</span><span class="p">,</span> <span class="mf">1.0e-05</span><span class="p">)</span>
+    <span class="n">floatAbsTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floatAbsTolerance&quot;</span><span class="p">,</span> <span class="mf">1.0e-04</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sa</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">())</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">())</span>
+        <span class="n">atNameComList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sa</span> <span class="o">&amp;</span> <span class="n">sb</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="n">lenEq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()</span> <span class="o">==</span> <span class="n">dcObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lenEq</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[(</span><span class="n">atName</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">atNameComList</span><span class="p">]</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">atNameComList</span><span class="p">:</span>
+            <span class="n">dataType</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
+                    <span class="n">same</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">same</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="o">==</span> <span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;float&quot;</span><span class="p">]:</span>
+                <span class="n">aVL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+                <span class="n">bVL</span> <span class="o">=</span> <span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">aV</span><span class="p">,</span> <span class="n">bV</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">aVL</span><span class="p">),</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bVL</span><span class="p">)):</span>
+                        <span class="n">same</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isClose</span><span class="p">(</span><span class="n">aV</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="n">floatAbsTolerance</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">same</span><span class="p">:</span>
+                            <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">aV</span><span class="p">,</span> <span class="n">bV</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">aVL</span><span class="p">,</span> <span class="n">bVL</span><span class="p">):</span>
+                        <span class="n">same</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isClose</span><span class="p">(</span><span class="n">aV</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="n">floatAbsTolerance</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">same</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (rel=</span><span class="si">%r</span><span class="s2">) (abs=</span><span class="si">%r</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%r</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">aV</span> <span class="o">*</span> <span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">floatAbsTolerance</span><span class="p">,</span> <span class="n">aV</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">aV</span> <span class="o">-</span> <span class="n">bV</span><span class="p">))</span>
+                            <span class="k">break</span>
+            <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">atName</span><span class="p">,</span> <span class="n">same</span><span class="p">))</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="n">rL</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">rL</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.DataCategoryTyped.DataCategoryTyped.getAttributeInfo" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get attribute data type (string, integer, or float) and optionality</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>atName</code></td>
+        <td><code>str</code></td>
+        <td><p>attribute name</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, bool)</code></td>
+      <td><p>data type (string, integer or float) and mandatory code</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        atName (str): attribute name</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">         (string, bool): data type (string, integer or float) and mandatory code</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dataType</span><span class="p">,</span> <span class="n">mandatoryCode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">mandatoryCode</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../DataCategoryFormatted/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              DataCategoryFormatted
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../DictMethodRunner/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              DictMethodRunner
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+    
+  </body>
+</html>
