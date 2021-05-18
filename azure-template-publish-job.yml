@@ -70,31 +70,44 @@ jobs:
       - script: pip install -e .
         displayName: "Install package locally"
       #
-      - script: |
-          git config --global user.email "$env:GH_EMAIL"
-          git config --global user.name "$env:GH_USER"
-          git config --global credential.helper store
-          echo https://$env:GH_TOKEN:x-oauth-basic@github.com>>~/.git-credentials
-          mkdocs gh-deploy
-        env:
-          GH_USER: $(GH_USER)
-          GH_EMAIL: $(GH_EMAIL)
-          GH_TOKEN: $(GH_TOKEN)
-          REPO_URL: $(BUILD_REPOSITORY_URI)
-        displayName: "Build and deploy documentation to GitHub pages"
-      #
-      - script: |
-          git config --global user.name "$env:GH_USER"
-          git config --global user.email "$env:GH_EMAIL"
-          echo "machine github.com login $env:GH_USER password $env:GH_TOKEN" > ~/.netrc
-          mkdocs gh-deploy
-        env:
-          GH_USER: $(GH_USER)
-          GH_EMAIL: $(GH_EMAIL)
-          GH_TOKEN: $(GH_TOKEN)
-          REPO_URL: $(BUILD_REPOSITORY_URI)
-        displayName: "Build and deploy documentation to GitHub pages"
-      #
+      #- script: |
+      #    git config --global user.email "$env:GH_EMAIL"
+      #    git config --global user.name "$env:GH_USER"
+      #    git config --global credential.helper store
+      #    echo https://$env:GH_TOKEN:x-oauth-basic@github.com>>~/.git-credentials
+      #    mkdocs gh-deploy
+      #  env:
+      #    GH_USER: $(GH_USER)
+      #    GH_EMAIL: $(GH_EMAIL)
+      #    GH_TOKEN: $(GH_TOKEN)
+      #    REPO_URL: $(BUILD_REPOSITORY_URI)
+      #  displayName: "Build and deploy documentation to GitHub pages"
+      ##
+      #- script: |
+      #    git config --global user.name "$env:GH_USER"
+      #    git config --global user.email "$env:GH_EMAIL"
+      #    echo "machine github.com login $env:GH_USER password $env:GH_TOKEN" > ~/.netrc
+      #    mkdocs gh-deploy
+      #  env:
+      #    GH_USER: $(GH_USER)
+      #    GH_EMAIL: $(GH_EMAIL)
+      #    GH_TOKEN: $(GH_TOKEN)
+      #    REPO_URL: $(BUILD_REPOSITORY_URI)
+      #  displayName: "Build and deploy documentation to GitHub pages"
+      ##
+      #- script: |
+      #    AUTH=$(echo -n ":$env:GH_TOKEN" | openssl base64 | tr -d '\n')
+      #    git config --global user.name "$env:GH_USER"
+      #    git config --global user.email "$env:GH_EMAIL"
+      #    git config --global http.$env:REPO_URL/.extraHeader "Authorization: Basic $AUTH"
+      #    mkdocs gh-deploy
+      #  env:
+      #    GH_USER: $(GH_USER)
+      #    GH_EMAIL: $(GH_EMAIL)
+      #    GH_TOKEN: $(GH_TOKEN)
+      #    REPO_URL: $(BUILD_REPOSITORY_URI)
+      #  displayName: "Build and deploy documentation to GitHub pages"
+
       - script: |
           AUTH=$(echo -n ":$env:GH_TOKEN" | openssl base64 | tr -d '\n')
           git config --global user.name "$env:GH_USER"
