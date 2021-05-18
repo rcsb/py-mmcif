@@ -47,8 +47,8 @@ jobs:
   - template: azure-template-publish-job.yml
     parameters: { tox: "py39", python: "3.9", os: "linux" }
   #
-  - template: azure-template-publish-job.yml
-    parameters: { tox: "py27", python: "2.7", os: "macos" }
-  - template: azure-template-publish-job.yml
-    parameters: { tox: "py27", python: "2.7", os: "linux" }
+  #- template: azure-template-publish-job.yml
+  #  parameters: { tox: "py27", python: "2.7", os: "macos" }
+  #- template: azure-template-publish-job.yml
+  #  parameters: { tox: "py27", python: "2.7", os: "linux" }
   #
