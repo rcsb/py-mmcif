@@ -113,6 +113,11 @@ jobs:
           git config --global user.name "$env:GH_USER"
           git config --global user.email "$env:GH_EMAIL"
           git config --global http.$env:REPO_URL/.extraHeader "Authorization: Basic $AUTH"
+          git branch -D gh-pages
+          git checkout gh-pages
+          git pull --rebase
+          git checkout master
+          mkdocs build --clean
           mkdocs gh-deploy
         env:
           GH_USER: $(GH_USER)
