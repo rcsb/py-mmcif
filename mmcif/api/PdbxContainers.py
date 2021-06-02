@@ -208,7 +208,7 @@ class ContainerBase(object):
             return False
 
     def remove(self, curName):
-        """Revmove object by name.  Return True on success or False otherwise."""
+        """Remove object by name.  Return True on success or False otherwise."""
         try:
             if curName in self.__objCatalog:
                 del self.__objCatalog[curName]

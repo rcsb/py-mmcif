@@ -339,6 +339,27 @@ class DataCategoryBase(UserList):
 
         return False
 
+    def removeDuplicateRows(self):
+        """Remove duplicate rows from the category
+
+        Raises:
+            e: any exception
+
+        Returns:
+            bool: True for success or False otherwise
+        """
+        try:
+            filteredL = []
+            for row in self.data:
+                if row not in filteredL:
+                    filteredL.append(row)
+            self.data = filteredL
+            return True
+        except Exception as e:
+            if self._raiseExceptions:
+                raise e
+        return False
+
     def removeAttribute(self, attributeName):
         """Remove the attribute from the attribute list along with any
         corresponding row data.
