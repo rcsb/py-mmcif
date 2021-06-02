@@ -600,6 +600,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryBase.DataCategoryBase.removeDuplicateRows" class="md-nav__link">
+    removeDuplicateRows()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mmcif.api.DataCategoryBase.DataCategoryBase.removeRow" class="md-nav__link">
     removeRow()
   </a>
@@ -1168,6 +1175,13 @@
           <li class="md-nav__item">
   <a href="#mmcif.api.DataCategoryBase.DataCategoryBase.removeAttribute" class="md-nav__link">
     removeAttribute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmcif.api.DataCategoryBase.DataCategoryBase.removeDuplicateRows" class="md-nav__link">
+    removeDuplicateRows()
   </a>
   
 </li>
@@ -2334,6 +2348,80 @@ corresponding row data.</p>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.api.DataCategoryBase.DataCategoryBase.removeDuplicateRows" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">removeDuplicateRows</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Remove duplicate rows from the category</p>
+
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>e</code></td>
+        <td><p>any exception</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>True for success or False otherwise</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">removeDuplicateRows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove duplicate rows from the category</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        e: any exception</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True for success or False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">filteredL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">filteredL</span><span class="p">:</span>
+                <span class="n">filteredL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">filteredL</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
         </details>
     </div>
