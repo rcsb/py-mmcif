@@ -144,7 +144,8 @@ disable=missing-docstring,
         exception-escape,
         comprehension-escape,
         raise-missing-from,
-        W0707
+        W0707,
+        W0238
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -424,10 +425,10 @@ good-names=_,
            i,
            j,
            k,
-#           v,
-#           ii,
-#           jj,
-#           kk,
+           v,
+           ii,
+           jj,
+           kk,
 #           t,
 #           c,
 #           d,

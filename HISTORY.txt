@@ -64,4 +64,4 @@
 17-Apr-2021    V0.67 - Update support for Py27 with IoPyAdapter() tests
 10-May-2021    V0.68 - Extend time precision in IoAdapterBase()
 16-May-2021    V0.69 - Add BinaryCifReader/BinaryCifWriter, add mkdocs support, overhaul setup.py
- 2-Jun-2021    V0.70 - Add removeDuplicatRows() method in DataCategoryBase()
+ 2-Jun-2021    V0.70 - Add removeDuplicateRows() method in DataCategoryBase()
