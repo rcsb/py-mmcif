@@ -17,6 +17,7 @@
 #    7-Feb-2019   jdw adjust initialization error checking to allow empty list
 #   11-Mar-2019   jdw add getAttributeUniqueValueList()
 ##
+# pylint: disable=arguments-renamed
 """
 
 A collection of container classes supporting the PDBx/mmCIF storage model.
