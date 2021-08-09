@@ -154,12 +154,15 @@ jobs:
       #  Build artifacts if this is a test target (i.e. labeled as py##)
       #
       - ${{ if startsWith(parameters.tox, 'py') }}:
-          - script: pip install --upgrade pip twine setuptools wheel
+          - script: pip install --upgrade pip twine setuptools wheel cibuildwheel==2.1.1
             displayName: "Acquire build tools"
           - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/dist"
             displayName: "Build source dist"
           - script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/dist"
             displayName: "Build wheel"
+          #
+          - script: cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
+            displayName: Build wheels with cibuildwheel
           #
           - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"
             displayName: "Build source dist"
