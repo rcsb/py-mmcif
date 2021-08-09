@@ -161,7 +161,9 @@ jobs:
           - script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/dist"
             displayName: "Build wheel"
           #
-          - script: cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
+          - script: |
+              export CIBW_BEFORE_ALL_LINUX="yum install -y flex bison cmake"
+              cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
             displayName: Build wheels with cibuildwheel
           #
           - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"
