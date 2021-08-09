@@ -153,7 +153,7 @@ jobs:
       #
       #  Build artifacts if this is a test target (i.e. labeled as py##)
       #
-      - ? ${{ if and((startsWith(parameters.tox, 'py')), not(startsWith(parameters.python, '2.7'))) }}
+      - ? ${{ if and( startsWith(parameters.tox, 'py'), not(startsWith(parameters.python, '2.7')) ) }}
         : - script: pip install --upgrade pip twine setuptools wheel cibuildwheel==2.1.1
             displayName: "Acquire build tools"
           - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/dist"
