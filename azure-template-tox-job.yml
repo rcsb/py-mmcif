@@ -163,6 +163,7 @@ jobs:
           #
           - script: |
               export CIBW_BEFORE_ALL_LINUX="yum install -y flex bison cmake"
+              rm -rf "$(System.DefaultWorkingDirectory)/build"
               cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
             displayName: Build wheels with cibuildwheel
           #
