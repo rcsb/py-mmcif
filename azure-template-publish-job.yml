@@ -53,7 +53,7 @@ jobs:
           secureFile: "PYPIRC-AZURE"
 
       - ${{ if startsWith(parameters.os, 'linux') }}:
-          - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_u_{0}_{1}', parameters.tox, parameters.os) }}/*
+          - script: twine upload --verbose --skip-existing -r pypi  --config-file $(pypicred.secureFilePath) $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}/*
             displayName: "Linux upload sdist and source wheel to PyPi ..."
             continueOnError: true
       #
@@ -65,8 +65,6 @@ jobs:
       # Checkout and update documentation -
       - script: pip install -r requirements.txt
         displayName: "Install package dependencies"
-      - script: pip install -r requirements-doc.txt
-        displayName: "Install documentation dependencies"
       - script: pip install -e .
         displayName: "Install package locally"
       #
