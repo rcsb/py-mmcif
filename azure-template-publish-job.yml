@@ -67,6 +67,8 @@ jobs:
         displayName: "Install package dependencies"
       - script: pip install -e .
         displayName: "Install package locally"
+      - script: pip install mkdocs
+        displayName: "Install documentation dependencies"
       #
       #- script: |
       #    git config --global user.email "$env:GH_EMAIL"

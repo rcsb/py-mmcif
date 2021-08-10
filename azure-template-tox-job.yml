@@ -155,17 +155,17 @@ jobs:
       #
       - ? ${{ if and( startsWith(parameters.tox, 'py'), not(startsWith(parameters.python, '2.7')) ) }}
         : - script: pip install --upgrade pip twine setuptools wheel cibuildwheel==2.1.1
-            displayName: "Acquire build tools"
+            displayName: "Install build tools"
           - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/dist"
-            displayName: "Build source dist"
-          - script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/dist"
-            displayName: "Build wheel"
+            displayName: "Build source distribution"
+          #- script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/dist"
+          #  displayName: "Build wheel"
           #
           - script: |
               export CIBW_BEFORE_ALL_LINUX="yum install -y flex bison cmake"
               rm -rf "$(System.DefaultWorkingDirectory)/build"
               cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
-            displayName: Build wheels with cibuildwheel
+            displayName: "Build binary wheels"
           #
           #- script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"
           #  displayName: "Build source dist"
