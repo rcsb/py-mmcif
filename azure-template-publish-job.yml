@@ -37,8 +37,8 @@ jobs:
       - download: current
         artifact: ${{ format('sw_{0}_{1}', parameters.tox,  parameters.os) }}
 
-      - download: current
-        artifact: ${{ format('sw_u_{0}_{1}', parameters.tox,  parameters.os) }}
+      #- download: current
+      #  artifact: ${{ format('sw_u_{0}_{1}', parameters.tox,  parameters.os) }}
       #
       - script: ls -lR $(Pipeline.Workspace)/${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}
         displayName: "Listing of downloaded artifacts"
