@@ -106,12 +106,16 @@ class IoAdapterPy(IoAdapterBase):
                     if filePath.endswith(".gz"):
                         customHeader = {"Accept-Encoding": "gzip"}
                         with closing(requests.get(filePath, headers=customHeader)) as ifh:
+                            if self._raiseExceptions:
+                                ifh.raise_for_status()
                             gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
                             it = (line.decode(encoding) for line in gzit)
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
                         with closing(requests.get(filePath)) as ifh:
+                            if self._raiseExceptions:
+                                ifh.raise_for_status()
                             it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
@@ -130,12 +134,16 @@ class IoAdapterPy(IoAdapterBase):
                     if filePath.endswith(".gz"):
                         customHeader = {"Accept-Encoding": "gzip"}
                         with closing(requests.get(filePath, headers=customHeader)) as ifh:
+                            if self._raiseExceptions:
+                                ifh.raise_for_status()
                             gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
                             it = (line.decode(encoding) for line in gzit)
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
                         with closing(requests.get(filePath)) as ifh:
+                            if self._raiseExceptions:
+                                ifh.raise_for_status()
                             it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)

@@ -66,3 +66,4 @@
 16-May-2021    V0.69 - Add BinaryCifReader/BinaryCifWriter, add mkdocs support, overhaul setup.py
  2-Jun-2021    V0.70 - Add removeDuplicateRows() method in DataCategoryBase()
 21-Jul-2021    V0.71 - Update ccp-cif-file module with support for new DDL attributes.
+21-Jul-2021    V0.72 - Improve error handling for remote cif reader in IoAdapterPy()
