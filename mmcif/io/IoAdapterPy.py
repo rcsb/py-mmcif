@@ -109,14 +109,14 @@ class IoAdapterPy(IoAdapterBase):
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
                             gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
-                            it = (line.decode(encoding) for line in gzit)
+                            it = (line.decode(encoding, "ignore") for line in gzit)
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
                         with closing(requests.get(filePath)) as ifh:
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
-                            it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
+                            it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             else:
@@ -137,14 +137,14 @@ class IoAdapterPy(IoAdapterBase):
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
                             gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
-                            it = (line.decode(encoding) for line in gzit)
+                            it = (line.decode(encoding, "ignore") for line in gzit)
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
                         with closing(requests.get(filePath)) as ifh:
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
-                            it = (line.decode(encoding) + "\n" for line in ifh.iter_lines())
+                            it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
             if cleanUp:
