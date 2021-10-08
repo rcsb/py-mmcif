@@ -48,10 +48,12 @@ def main():
 
     ##
     if op == "build" and inputDictPath and outputDictPath:
+        dirPath = os.path.abspath(os.path.dirname(inputDictPath))
+        logger.info("Starting dictionary path %s", dirPath)
         myIo = IoAdapter(raiseExceptions=True)
         containerList = myIo.readFile(inputFilePath=inputDictPath)
         logger.info("Starting dictionary container list length (%d)", len(containerList))
-        dIncl = DictionaryInclude()
+        dIncl = DictionaryInclude(dirPath=dirPath)
         inclL = dIncl.processIncludedContent(containerList, cleanup=cleanup)
         logger.info("Processed dictionary container length (%d)", len(inclL))
         ok = myIo.writeFile(outputFilePath=outputDictPath, containerList=inclL)

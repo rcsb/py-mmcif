@@ -1,0 +1,13 @@
+data_e1.dic
+#
+
+
+save__e1_a.b
+    _item_description.description
+;              A definition.
+;
+    _item.name                  '_e1_a.b'
+    _item.category_id             e1
+    _item.mandatory_code          no
+    _item_type.code               code
+save_

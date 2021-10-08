@@ -1,0 +1,19 @@
+data_t2.dic
+#
+loop_
+_pdbx_include_dictionary.dictionary_id
+_pdbx_include_dictionary.dictionary_locator
+_pdbx_include_dictionary.include_mode
+_pdbx_include_dictionary.dictionary_namespace_prefix
+_pdbx_include_dictionary.dictionary_namespace_prefix_replace
+e2.dic        embedded/e1.dic   extend . .
+
+save__t2_a.b
+    _item_description.description
+;              A definition.
+;
+    _item.name                  '_t2_a.b'
+    _item.category_id             t2
+    _item.mandatory_code          no
+    _item_type.code               code
+save_

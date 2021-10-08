@@ -1,7 +1,7 @@
 ##
-# File:    DictionaryApi.py
+# File:    DictionaryInclude.py
 # Author:  jdw
-# Date:    11-August-2013
+# Date:    11-August-2021
 # Version: 0.001
 #
 # Updates:
@@ -11,8 +11,13 @@ Implements PDBx/mmCIF dictionary composition using dictionary, category and item
 """
 
 import logging
-
+import os
 from collections import OrderedDict
+
+try:
+    from urllib.parse import urlsplit
+except Exception:
+    from urlparse import urlsplit
 
 from mmcif.api.PdbxContainers import CifName
 from mmcif.io.IoAdapterPy import IoAdapterPy
@@ -27,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 class DictionaryInclude(object):
-    def __init__(self):
+    def __init__(self, **kwargs):
         #
         self.__itemNameRelatives = [
             "_item.name",
@@ -87,6 +92,10 @@ class DictionaryInclude(object):
             "_pdbx_item_linked_group_list.child_category_id",
         ]
         #
+        self.__cwd = os.getcwd()
+        self.__dirPath = kwargs.get("dirPath", os.getcwd())
+        logger.info("Local dictionary include path relative to %s", self.__dirPath)
+        self.__dirStack = []
         self.__locatorIndexD = {}
 
     def processIncludedContent(self, containerList, cleanup=False):
@@ -294,7 +303,23 @@ class DictionaryInclude(object):
                     #
                     # --- Fetch the dictionary component -
                     #
+                    updateStack = self.__isLocal(locator)
+                    if updateStack:
+                        if not self.__dirStack:
+                            # top-level include case
+                            self.__dirStack.append(os.path.abspath(self.__dirPath))
+
+                        # embedded include case (push directory containing the locator)
+                        if not os.path.isabs(locator):
+                            # handle the relative path case -
+                            locator = os.path.abspath(os.path.join(self.__dirStack[-1], locator))
+                            logger.debug("modified local relative locator is %r", locator)
+                        self.__dirStack.append(os.path.dirname(locator))
+                        logger.debug("dirStack (%d) top %r", len(self.__dirStack), self.__dirStack[-1])
                     containerList = self.processIncludedContent(self.__fetchLocator(locator), cleanup=cleanup)
+                    if updateStack:
+                        # restore stack context
+                        self.__dirStack.pop()
                     #
                     nsPrefix = iD["dictionary_namespace_prefix"]
                     nsPrefixReplace = iD["dictionary_namespace_prefix_replace"]
@@ -368,9 +393,23 @@ class DictionaryInclude(object):
 
         return includeDataD
 
-    def __fetchLocator(self, locator, **kwargs):
-        """ """
+    def __isLocal(self, locator):
         try:
+            locSp = urlsplit(locator)
+            return locSp.scheme in ["", "file"]
+        except Exception as e:
+            logger.error("Bad include file path (%r) : %s", locator, str(e))
+        return False
+
+    def __fetchLocator(self, locator, **kwargs):
+        """"""
+        try:
+            # Locate non-absolute paths relative to the dictionary incude file
+            if self.__isLocal(locator) and not os.path.isabs(locator):
+                logger.info("locator is %r", locator)
+                logger.info("dirStack (%d) top %r", len(self.__dirStack), self.__dirStack[-1])
+                locator = os.path.abspath(os.path.relpath(locator, start=self.__dirStack[-1]))
+            #
             containerList = []
             workPath = kwargs.get("workPath", None)
             enforceAscii = kwargs.get("enforceAscii", False)

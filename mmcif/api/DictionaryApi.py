@@ -57,7 +57,8 @@ class DictionaryApi(object):
             consolidate (bool, optional): consolidate dictionary attributes within a single definition. Defaults to True.
             expandItemLinked (bool, optional): distribute item and item linked attributes defined for the parent
                                                to child definitions. Defaults to False.
-            replaceDefinition (bool, optional): duplicate definitions replace prior definitions. Defaults to False.
+            replaceDefinition (bool, optional): when consolidating definitions in the case of multiple occurences of the same definition,
+                                                attributes from the latter occurences replace prior definitions content. Defaults to False.
         """
         _ = kwargs
         #
@@ -1551,13 +1552,11 @@ class DictionaryApi(object):
                             ob.remove("item_linked")
 
     def __consolidateDefinitions(self):
-        """Consolidate definitions into a single save frame section per definition."""
+        """Consolidate definition attributes into a single save frame section per definition."""
         fullIndex = OrderedDict()
         for dD in self.__containerList:
             name = dD.getName()
-            if name not in fullIndex:
-                fullIndex[name] = []
-            fullIndex[name].append(dD)
+            fullIndex.setdefault(name, []).append(dD)
 
         # preserve the original order of sections -
         #

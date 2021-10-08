@@ -68,3 +68,4 @@
 21-Jul-2021    V0.71 - Update ccp-cif-file module with support for new DDL attributes.
 21-Jul-2021    V0.72 - Improve error handling for remote cif reader in IoAdapterPy()
 28-Sep-2021    V0.73 - Ignore decoding errors on read by default in IoAdapterPy.readFile()
+ 5-Oct-2021    V0.74 - Add support for relative local paths with DictionaryInclude()

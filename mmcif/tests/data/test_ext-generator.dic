@@ -1,0 +1,13 @@
+# test_ext-generator.dic
+##
+
+data_test_ext.dic
+#
+loop_
+_pdbx_include_dictionary.dictionary_id
+_pdbx_include_dictionary.dictionary_locator
+_pdbx_include_dictionary.include_mode
+_pdbx_include_dictionary.dictionary_namespace_prefix
+_pdbx_include_dictionary.dictionary_namespace_prefix_replace
+t1.dic        extensions/t1.dic   extend . .
+t2.dic        extensions/t2.dic   extend . .

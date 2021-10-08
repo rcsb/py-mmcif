@@ -12,6 +12,7 @@ from __future__ import absolute_import, print_function
 
 import logging
 import os
+from re import L
 import sys
 import time
 import unittest
@@ -46,6 +47,7 @@ class DictionaryIncludeTests(unittest.TestCase):
         self.__pathDdlIncludeDictionary = os.path.join(HERE, "data", "mmcif_ddl-generator.dic")
         self.__pathDdlGeneratedDictionary = os.path.join(HERE, "data", "mmcif_ddl_generated.dic")
         self.__pathDdlDictionary = os.path.join(HERE, "data", "mmcif_ddl.dic")
+        self.__pathEmbeddedIncludeDictionary = os.path.join(HERE, "data", "test_ext-generator.dic")
         self.__startTime = time.time()
         logger.debug("Running tests on version %s", __version__)
         logger.debug("Starting %s at %s", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
@@ -53,6 +55,22 @@ class DictionaryIncludeTests(unittest.TestCase):
     def tearDown(self):
         endTime = time.time()
         logger.debug("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
+
+    def testEmbeddedInclude(self):
+        """Test case -  embedded include"""
+        try:
+            myIo = IoAdapter(raiseExceptions=True)
+            containerList = myIo.readFile(inputFilePath=self.__pathEmbeddedIncludeDictionary)
+            logger.info("Starting container list length (%d)", len(containerList))
+            dIncl = DictionaryInclude(dirPath=os.path.dirname(self.__pathEmbeddedIncludeDictionary))
+            inclL = dIncl.processIncludedContent(containerList)
+            logger.info("Processed included container length (%d)", len(inclL))
+            self.assertEqual(len(inclL), 4)
+            ok = myIo.writeFile(outputFilePath=os.path.join(HERE, "test-output", "test_ext_generated.dic"), containerList=inclL)
+            self.assertTrue(ok)
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+            self.fail()
 
     def testDDLInclude(self):
         """Test case -  DDL composition/include tests"""
@@ -75,12 +93,12 @@ class DictionaryIncludeTests(unittest.TestCase):
             cD = {incl.getName(): True for incl in inclL}
             for cref in crefL:
                 if cref.getName() not in cD:
-                    logger.info("In reference missing in included file %r", cref.getName())
+                    logger.debug("In reference missing in included file %r", cref.getName())
             #
             cD = {cref.getName(): True for cref in crefL}
             for incl in inclL:
                 if incl.getName() not in cD:
-                    logger.info("Included but missing in reference %r", incl.getName())
+                    logger.debug("Included but missing in reference %r", incl.getName())
             #
             self.assertGreaterEqual(len(inclL), 258)
         except Exception as e:
