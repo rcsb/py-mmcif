@@ -12,7 +12,6 @@ from __future__ import absolute_import, print_function
 
 import logging
 import os
-from re import L
 import sys
 import time
 import unittest
