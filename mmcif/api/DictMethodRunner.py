@@ -223,6 +223,9 @@ class DictMethodRunner(object):
             mpL = str(modulePath).split(".")
             moduleName = mpL[-1]
             #
+            # Add the internal dictionaryApi object instance as a kw option
+            #
+            kwargs["dictionaryApi"] = self.__dApi
             mObj = getattr(aMod, moduleName)(**kwargs)
             self.__moduleCache[modulePath] = mObj
 
