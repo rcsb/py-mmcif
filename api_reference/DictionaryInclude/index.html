@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/DictionaryInclude/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -811,6 +811,457 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
     <div class="doc doc-contents first">
 
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DictionaryInclude.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DictionaryInclude</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__itemNameRelatives</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;_item.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_examples.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_ndb_item_description.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_related.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_category_key.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_structure.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_methods.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_aliases.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_dependent.dependent_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_default.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_examples.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_units.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_related.related_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_description.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_dependent.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_range.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_sub_category.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_range.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked.condition_child_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_ndb_item_examples.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_value_condition.item_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_ndb_item_range.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_linked.child_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_description.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_context.item_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_enumeration_details.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked_group_list.child_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked_group_list.parent_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_value_condition_list.target_item_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_ndb_item_enumeration.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked.child_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_value_condition.dependent_item_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_enumeration.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_linked.parent_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_value_condition_list.dependent_item_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_type.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_type_conditions.name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked.parent_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item_enumeration.name&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__categoryIdRelatives</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;_category.id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_category_key.id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked_group.category_id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_category_examples.id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_item.category_id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_category_context.category_id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked_group_list.parent_category_id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_category_group.category_id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_category_description.id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_ndb_category_examples.id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_category_examples.id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_category_methods.category_id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_ndb_category_description.id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pdbx_item_linked_group_list.child_category_id&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dirPath</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dirPath&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Local dictionary include path relative to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dirPath</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__locatorIndexD</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process any dictionary, category or item include instructions in any data containers in the</span>
+<span class="sd">        input list of dictionary data and definition containers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            containerList (list): list of input PdbxContainer data or definition container objects</span>
+<span class="sd">            cleanup (bool, optional): flag to remove generator category objects after parsing (default: False)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (list): list of data and definition containers incorporating included content</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            ```python</span>
+<span class="sd">            pathDdlIncludeDictionary = &quot;mmcif_ddl-generator.dic&quot;</span>
+<span class="sd">            myIo = IoAdapter(raiseExceptions=True)</span>
+<span class="sd">            containerList = myIo.readFile(inputFilePath=pathDdlIncludeDictionary)</span>
+<span class="sd">            logger.info(&quot;Starting container list length (%d)&quot;, len(containerList))</span>
+<span class="sd">            dIncl = DictionaryInclude()</span>
+<span class="sd">            inclL = dIncl.processIncludedContent(containerList)</span>
+<span class="sd">            logger.info(&quot;Processed included container length (%d)&quot;, len(inclL))</span>
+<span class="sd">            ```</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">includeD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIncludeInstructions</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span><span class="p">)</span>
+        <span class="n">includeContentD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fetchIncludedContent</span><span class="p">(</span><span class="n">includeD</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__addIncludedContent</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">includeContentD</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__addIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">includeContentD</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Incorporate included content described in the input dictionary of include instructions produced by</span>
+<span class="sd">        internal method __getIncludeInstructions().</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            containerList (list): list of input PdbxContainer data or definition container objects</span>
+<span class="sd">            includeContentD (dict): {&quot;dictionaryIncludeDict&quot;: {dictionary_id: {...include details...}},</span>
+<span class="sd">                                    &quot;categoryIncludeDict&quot;: {dictionary_id: {category_id: {...include details... }}},</span>
+<span class="sd">                                    &quot;itemIncludeDict&quot;: {dictionary_id: {category_id: {itemName: {...include details...}}}}</span>
+<span class="sd">                                    }</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (list): list of data and definition containers incorporating included content</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Index the current container list...</span>
+        <span class="n">cD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">datablockName</span> <span class="o">=</span> <span class="s2">&quot;unnamed_1&quot;</span>
+        <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                <span class="n">datablockName</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+            <span class="c1"># Handle potentially unconsolidated definitions --</span>
+            <span class="n">cD</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">datablockName</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">())</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">datablockName</span> <span class="ow">in</span> <span class="n">cD</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">datablockName</span> <span class="ow">in</span> <span class="n">includeContentD</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;replace&quot;</span> <span class="ow">in</span> <span class="n">includeContentD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">]:</span>
+                    <span class="c1"># Organize the replacements by name</span>
+                    <span class="n">replaceDefinitionD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="n">replaceDataD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">includeContentD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">][</span><span class="s2">&quot;replace&quot;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;definition&quot;</span><span class="p">:</span>
+                            <span class="n">replaceDefinitionD</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">replaceDataD</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">datablockName</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="k">for</span> <span class="n">rN</span><span class="p">,</span> <span class="n">rL</span> <span class="ow">in</span> <span class="n">replaceDefinitionD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">rN</span> <span class="ow">in</span> <span class="n">cD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">]:</span>
+                            <span class="n">cD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">][</span><span class="n">rN</span><span class="p">]</span> <span class="o">=</span> <span class="n">rL</span>
+                    <span class="c1"># replace data sections in the base container</span>
+                    <span class="n">baseContainer</span> <span class="o">=</span> <span class="n">cD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">][</span><span class="n">datablockName</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">rN</span><span class="p">,</span> <span class="n">containerL</span> <span class="ow">in</span> <span class="n">replaceDataD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerL</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
+                                <span class="n">obj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+                                <span class="n">baseContainer</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                <span class="k">if</span> <span class="s2">&quot;extend&quot;</span> <span class="ow">in</span> <span class="n">includeContentD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">]:</span>
+                    <span class="n">extendDataD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">includeContentD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">][</span><span class="s2">&quot;extend&quot;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;definition&quot;</span><span class="p">:</span>
+                            <span class="n">cD</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">datablockName</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">())</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">extendDataD</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">datablockName</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+                    <span class="c1"># extend data sections in the base container</span>
+                    <span class="n">baseContainer</span> <span class="o">=</span> <span class="n">cD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">][</span><span class="n">datablockName</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">rN</span><span class="p">,</span> <span class="n">containerL</span> <span class="ow">in</span> <span class="n">extendDataD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerL</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
+                                <span class="n">obj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">baseContainer</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">nm</span><span class="p">):</span>
+                                    <span class="n">baseObj</span> <span class="o">=</span> <span class="n">baseContainer</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+                                    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()):</span>
+                                        <span class="n">rowD</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">getRowAttributeDict</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+                                        <span class="n">baseObj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rowD</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">baseContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Unwind the container index</span>
+        <span class="c1">#</span>
+        <span class="n">fullL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">datablockName</span> <span class="ow">in</span> <span class="n">cD</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cL</span> <span class="ow">in</span> <span class="n">cD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">fullL</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cL</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="n">fullL</span>
+
+    <span class="k">def</span> <span class="nf">__getIncludeInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract include instructions from categories pdbx_include_dictionary,  pdbx_include_category, and pdbx_include_item.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          containerList (list): list of input PdbxContainer data or definition container objects</span>
+<span class="sd">          cleanup (optional, bool): flag to remove generator category objects after parsing (default: False)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          A dictionary containing the dictionary, category and and item level include details.</span>
+<span class="sd">          For example,</span>
+
+<span class="sd">            ```python</span>
+<span class="sd">            {</span>
+<span class="sd">            &quot;dictionaryIncludeDict&quot;: {dictionary_id: {...include details...}},</span>
+<span class="sd">            &quot;categoryIncludeDict&quot;: {dictionary_id: {category_id: {...include details... }}},</span>
+<span class="sd">            &quot;itemIncludeDict&quot;: {dictionary_id: {category_id: {itemName: {...include details...}}}},</span>
+<span class="sd">            }</span>
+<span class="sd">            ```</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">includeD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">unNamed</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                    <span class="n">dictionaryIncludeDict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="n">categoryIncludeDict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="n">itemIncludeDict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">():</span>
+                        <span class="n">datablockName</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">datablockName</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">unNamed</span><span class="p">)</span>
+                        <span class="n">unNamed</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Adding data sections from container name </span><span class="si">%s</span><span class="s2">  type  </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">datablockName</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">())</span>
+                    <span class="n">tl</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="s2">&quot;pdbx_include_dictionary&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">tl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tl</span><span class="o">.</span><span class="n">getRowList</span><span class="p">():</span>
+                            <span class="n">tD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                            <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dictionary_id&quot;</span><span class="p">,</span> <span class="s2">&quot;dictionary_locator&quot;</span><span class="p">,</span> <span class="s2">&quot;include_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;dictionary_namespace_prefix&quot;</span><span class="p">,</span> <span class="s2">&quot;dictionary_namespace_prefix_replace&quot;</span><span class="p">]:</span>
+                                <span class="n">tD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">getIndex</span><span class="p">(</span><span class="n">atName</span><span class="p">)]</span> <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+                            <span class="n">dictionaryIncludeDict</span><span class="p">[</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;dictionary_id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tD</span>
+                        <span class="c1">#</span>
+                        <span class="n">tl</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="s2">&quot;pdbx_include_category&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">tl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tl</span><span class="o">.</span><span class="n">getRowList</span><span class="p">():</span>
+                                <span class="n">tD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                                <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dictionary_id&quot;</span><span class="p">,</span> <span class="s2">&quot;category_id&quot;</span><span class="p">,</span> <span class="s2">&quot;include_as_category_id&quot;</span><span class="p">,</span> <span class="s2">&quot;include_mode&quot;</span><span class="p">]:</span>
+                                    <span class="n">tD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">getIndex</span><span class="p">(</span><span class="n">atName</span><span class="p">)]</span> <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+                                <span class="n">categoryIncludeDict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;dictionary_id&quot;</span><span class="p">],</span> <span class="p">{})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;category_id&quot;</span><span class="p">],</span> <span class="n">tD</span><span class="p">)</span>
+                        <span class="c1">#</span>
+                        <span class="n">tl</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="s2">&quot;pdbx_include_item&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">tl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tl</span><span class="o">.</span><span class="n">getRowList</span><span class="p">():</span>
+                                <span class="n">tD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                                <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dictionary_id&quot;</span><span class="p">,</span> <span class="s2">&quot;item_name&quot;</span><span class="p">,</span> <span class="s2">&quot;include_as_item_name&quot;</span><span class="p">,</span> <span class="s2">&quot;include_mode&quot;</span><span class="p">]:</span>
+                                    <span class="n">tD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">getIndex</span><span class="p">(</span><span class="n">atName</span><span class="p">)]</span> <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+                                <span class="n">categoryId</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;item_name&quot;</span><span class="p">])</span>
+                                <span class="n">itemIncludeDict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;dictionary_id&quot;</span><span class="p">],</span> <span class="p">{})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">categoryId</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;item_name&quot;</span><span class="p">],</span> <span class="n">tD</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">cleanup</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;pdbx_include_dictionary&quot;</span><span class="p">,</span> <span class="s2">&quot;pdbx_include_category&quot;</span><span class="p">,</span> <span class="s2">&quot;pdbx_include_item&quot;</span><span class="p">]:</span>
+                            <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">catName</span><span class="p">):</span>
+                                <span class="n">container</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="n">includeD</span><span class="p">[</span><span class="n">datablockName</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;dictionaryIncludeDict&quot;</span><span class="p">:</span> <span class="n">dictionaryIncludeDict</span><span class="p">,</span>
+                        <span class="s2">&quot;categoryIncludeDict&quot;</span><span class="p">:</span> <span class="n">categoryIncludeDict</span><span class="p">,</span>
+                        <span class="s2">&quot;itemIncludeDict&quot;</span><span class="p">:</span> <span class="n">itemIncludeDict</span><span class="p">,</span>
+                    <span class="p">}</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Include processing failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">includeD</span>
+
+    <span class="k">def</span> <span class="nf">__fetchIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">includeD</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch included content following the instructions encoded in the input data structure.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            includeD (dict):  {&quot;dictionaryIncludeDict&quot;: {dictionary_id: {...include details...}},</span>
+<span class="sd">                               &quot;categoryIncludeDict&quot;: {dictionary_id: {category_id: {...include details... }}},</span>
+<span class="sd">                               &quot;itemIncludeDict&quot;: {dictionary_id: {category_id: {itemName: {...include details...}}}},</span>
+<span class="sd">                               }</span>
+<span class="sd">            cleanup (optional, bool): flag to remove generator category objects after parsing (default: false)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (dict): {datablockName: {&quot;extend&quot;: [container,...], &quot;replace&quot;: [container, ...]}, ... }</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">includeDataD</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">datablockName</span><span class="p">,</span> <span class="n">inclD</span> <span class="ow">in</span> <span class="n">includeD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">cL</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">dictName</span><span class="p">,</span> <span class="n">iD</span> <span class="ow">in</span> <span class="n">inclD</span><span class="p">[</span><span class="s2">&quot;dictionaryIncludeDict&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">locator</span> <span class="o">=</span> <span class="n">iD</span><span class="p">[</span><span class="s2">&quot;dictionary_locator&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">locator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__locatorIndexD</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping redundant include for </span><span class="si">%r</span><span class="s2"> at </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dictName</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__locatorIndexD</span><span class="p">[</span><span class="n">locator</span><span class="p">]</span> <span class="o">=</span> <span class="n">dictName</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># --- Fetch the dictionary component -</span>
+                    <span class="c1">#</span>
+                    <span class="n">updateStack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isLocal</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">updateStack</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="p">:</span>
+                            <span class="c1"># top-level include case</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dirPath</span><span class="p">))</span>
+
+                        <span class="c1"># embedded include case (push directory containing the locator)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">locator</span><span class="p">):</span>
+                            <span class="c1"># handle the relative path case -</span>
+                            <span class="n">locator</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">locator</span><span class="p">))</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;modified local relative locator is </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">locator</span><span class="p">))</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;dirStack (</span><span class="si">%d</span><span class="s2">) top </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">containerList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__fetchLocator</span><span class="p">(</span><span class="n">locator</span><span class="p">),</span> <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">updateStack</span><span class="p">:</span>
+                        <span class="c1"># restore stack context</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                    <span class="c1">#</span>
+                    <span class="n">nsPrefix</span> <span class="o">=</span> <span class="n">iD</span><span class="p">[</span><span class="s2">&quot;dictionary_namespace_prefix&quot;</span><span class="p">]</span>
+                    <span class="n">nsPrefixReplace</span> <span class="o">=</span> <span class="n">iD</span><span class="p">[</span><span class="s2">&quot;dictionary_namespace_prefix_replace&quot;</span><span class="p">]</span>
+                    <span class="n">dictInclMode</span> <span class="o">=</span> <span class="n">iD</span><span class="p">[</span><span class="s2">&quot;include_mode&quot;</span><span class="p">]</span>
+                    <span class="n">dataIncludeMode</span> <span class="o">=</span> <span class="n">iD</span><span class="p">[</span><span class="s2">&quot;data_include_mode&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;data_include_mode&quot;</span> <span class="ow">in</span> <span class="n">iD</span> <span class="k">else</span> <span class="s2">&quot;extend&quot;</span>
+                    <span class="n">catInclD</span> <span class="o">=</span> <span class="n">inclD</span><span class="p">[</span><span class="s2">&quot;categoryIncludeDict&quot;</span><span class="p">][</span><span class="n">dictName</span><span class="p">]</span> <span class="k">if</span> <span class="n">dictName</span> <span class="ow">in</span> <span class="n">inclD</span><span class="p">[</span><span class="s2">&quot;categoryIncludeDict&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">itemInclD</span> <span class="o">=</span> <span class="n">inclD</span><span class="p">[</span><span class="s2">&quot;itemIncludeDict&quot;</span><span class="p">][</span><span class="n">dictName</span><span class="p">]</span> <span class="k">if</span> <span class="n">dictName</span> <span class="ow">in</span> <span class="n">inclD</span><span class="p">[</span><span class="s2">&quot;itemIncludeDict&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="c1">#</span>
+                    <span class="c1">#  Do data sections first.</span>
+                    <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Including data container </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">())</span>
+                            <span class="n">cL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">container</span><span class="p">,</span> <span class="n">dataIncludeMode</span><span class="p">))</span>
+                    <span class="c1">#</span>
+                    <span class="k">if</span> <span class="n">catInclD</span> <span class="ow">or</span> <span class="n">itemInclD</span><span class="p">:</span>
+                        <span class="c1"># Process only explicitly included categories/items in the dictionary component</span>
+                        <span class="k">if</span> <span class="n">catInclD</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                                    <span class="k">continue</span>
+                                <span class="n">cName</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+                                <span class="n">catName</span> <span class="o">=</span> <span class="n">cName</span> <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">isCategory</span><span class="p">()</span> <span class="k">else</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">cName</span><span class="p">)</span>
+                                <span class="c1">#</span>
+                                <span class="k">if</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">catInclD</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">isAttribute</span><span class="p">()</span> <span class="ow">and</span> <span class="n">itemInclD</span> <span class="ow">and</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">itemInclD</span> <span class="ow">and</span> <span class="n">cName</span> <span class="ow">in</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">]:</span>
+                                        <span class="n">inclMode</span> <span class="o">=</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="n">cName</span><span class="p">][</span><span class="s2">&quot;include_mode&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="n">cName</span><span class="p">][</span><span class="s2">&quot;include_mode&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">dictInclMode</span>
+                                        <span class="n">cL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__renameItem</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="n">cName</span><span class="p">][</span><span class="s2">&quot;include_as_item_name&quot;</span><span class="p">]),</span> <span class="n">inclMode</span><span class="p">))</span>
+                                    <span class="k">else</span><span class="p">:</span>
+                                        <span class="n">inclMode</span> <span class="o">=</span> <span class="n">catInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="s2">&quot;include_mode&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">catInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="s2">&quot;include_mode&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">dictInclMode</span>
+                                        <span class="n">cL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__renameCategory</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">catInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="s2">&quot;include_as_category_id&quot;</span><span class="p">]),</span> <span class="n">inclMode</span><span class="p">))</span>
+                        <span class="k">elif</span> <span class="n">itemInclD</span><span class="p">:</span>
+                            <span class="c1"># Process only explicitly included items exclusive of explicitly included categories in the dictionary component</span>
+                            <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                                    <span class="k">continue</span>
+                                <span class="n">cName</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+                                <span class="n">catName</span> <span class="o">=</span> <span class="n">cName</span> <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">isCategory</span><span class="p">()</span> <span class="k">else</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">cName</span><span class="p">)</span>
+                                <span class="c1">#</span>
+                                <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">isAttribute</span><span class="p">()</span> <span class="ow">and</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">itemInclD</span> <span class="ow">and</span> <span class="n">cName</span> <span class="ow">in</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">]:</span>
+                                    <span class="n">inclMode</span> <span class="o">=</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="n">cName</span><span class="p">][</span><span class="s2">&quot;include_mode&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="n">cName</span><span class="p">][</span><span class="s2">&quot;include_mode&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">dictInclMode</span>
+                                    <span class="n">cL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__renameItem</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">itemInclD</span><span class="p">[</span><span class="n">catName</span><span class="p">][</span><span class="n">cName</span><span class="p">][</span><span class="s2">&quot;include_as_item_name&quot;</span><span class="p">]),</span> <span class="n">inclMode</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Process the full content of the dictionary component</span>
+                        <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                                <span class="k">continue</span>
+                            <span class="n">cName</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+                            <span class="n">catName</span> <span class="o">=</span> <span class="n">cName</span> <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">isCategory</span><span class="p">()</span> <span class="k">else</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">cName</span><span class="p">)</span>
+                            <span class="c1">#</span>
+                            <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">isAttribute</span><span class="p">():</span>
+                                <span class="n">newName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__substituteItemPrefix</span><span class="p">(</span><span class="n">cName</span><span class="p">,</span> <span class="n">nsPrefix</span><span class="p">,</span> <span class="n">nsPrefixReplace</span><span class="p">)</span>
+                                <span class="n">cL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__renameItem</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">newName</span><span class="p">),</span> <span class="n">dictInclMode</span><span class="p">))</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">newName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__substituteCategoryPrefix</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">nsPrefix</span><span class="p">,</span> <span class="n">nsPrefixReplace</span><span class="p">)</span>
+                                <span class="n">cL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__renameCategory</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">newName</span><span class="p">),</span> <span class="n">dictInclMode</span><span class="p">))</span>
+                <span class="c1">#</span>
+                <span class="k">for</span> <span class="n">container</span><span class="p">,</span> <span class="n">inclMode</span> <span class="ow">in</span> <span class="n">cL</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">inclMode</span> <span class="o">==</span> <span class="s2">&quot;replace&quot;</span><span class="p">:</span>
+                        <span class="n">includeDataD</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">datablockName</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">inclMode</span> <span class="o">==</span> <span class="s2">&quot;extend&quot;</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> extending with </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">datablockName</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">())</span>
+                        <span class="n">includeDataD</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">datablockName</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;extend&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+                <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">includeDataD</span><span class="p">:</span>
+                <span class="n">numReplace</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">includeDataD</span><span class="p">[</span><span class="n">nm</span><span class="p">][</span><span class="s2">&quot;replace&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;replace&quot;</span> <span class="ow">in</span> <span class="n">includeDataD</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">numExtend</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">includeDataD</span><span class="p">[</span><span class="n">nm</span><span class="p">][</span><span class="s2">&quot;extend&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;extend&quot;</span> <span class="ow">in</span> <span class="n">includeDataD</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;includeDataD </span><span class="si">%s</span><span class="s2"> replace (</span><span class="si">%d</span><span class="s2">) extend (</span><span class="si">%d</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">nm</span><span class="p">,</span> <span class="n">numReplace</span><span class="p">,</span> <span class="n">numExtend</span><span class="p">)</span>
+            <span class="c1">#</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">includeDataD</span>
+
+    <span class="k">def</span> <span class="nf">__isLocal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">locSp</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">locSp</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Bad include file path (</span><span class="si">%r</span><span class="s2">) : </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__fetchLocator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Locate non-absolute paths relative to the dictionary incude file</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isLocal</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">locator</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;locator is </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;dirStack (</span><span class="si">%d</span><span class="s2">) top </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">locator</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="c1">#</span>
+            <span class="n">containerList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">workPath</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workPath&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">enforceAscii</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enforceAscii&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">raiseExceptions</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;raiseExceptions&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">useCharRefs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;useCharRefs&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="n">myIo</span> <span class="o">=</span> <span class="n">IoAdapterPy</span><span class="p">(</span><span class="n">raiseExceptions</span><span class="o">=</span><span class="n">raiseExceptions</span><span class="p">,</span> <span class="n">useCharRefs</span><span class="o">=</span><span class="n">useCharRefs</span><span class="p">)</span>
+            <span class="n">containerList</span> <span class="o">=</span> <span class="n">myIo</span><span class="o">.</span><span class="n">readFile</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="n">enforceAscii</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">workPath</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fetched </span><span class="si">%r</span><span class="s2"> dictionary container length (</span><span class="si">%d</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">containerList</span><span class="p">)</span> <span class="k">if</span> <span class="n">containerList</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">containerList</span>
+
+    <span class="k">def</span> <span class="nf">__substituteCategoryPrefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">catName</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">catName</span> <span class="ow">and</span> <span class="n">catName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">)</span> <span class="k">else</span> <span class="n">catName</span>
+
+    <span class="k">def</span> <span class="nf">__substituteItemPrefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">itemName</span><span class="p">,</span> <span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">):</span>
+        <span class="n">atName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">attributePart</span><span class="p">(</span><span class="n">itemName</span><span class="p">)</span>
+        <span class="n">atName</span> <span class="o">=</span> <span class="n">atName</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">atName</span> <span class="ow">and</span> <span class="n">atName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">)</span> <span class="k">else</span> <span class="n">atName</span>
+        <span class="n">catName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">itemName</span><span class="p">)</span>
+        <span class="n">catName</span> <span class="o">=</span> <span class="n">catName</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">atName</span> <span class="ow">and</span> <span class="n">catName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">)</span> <span class="k">else</span> <span class="n">catName</span>
+        <span class="k">return</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__renameItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">newItemName</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">container</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">container</span><span class="o">.</span><span class="n">isAttribute</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">newItemName</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">container</span>
+        <span class="c1">#</span>
+        <span class="n">itemNameCur</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">itemNameCur</span> <span class="o">==</span> <span class="n">newItemName</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">container</span>
+        <span class="c1">#</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemNameRelatives</span><span class="p">:</span>
+                <span class="n">catName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">catName</span><span class="p">):</span>
+                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
+                    <span class="n">atName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">attributePart</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">cObj</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">atName</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()):</span>
+                            <span class="n">curVal</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="n">atName</span><span class="p">,</span> <span class="n">iRow</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">curVal</span> <span class="o">==</span> <span class="n">itemNameCur</span><span class="p">:</span>
+                                <span class="n">cObj</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">newItemName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">iRow</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">container</span>
+
+    <span class="k">def</span> <span class="nf">__renameCategory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">newCategoryName</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">container</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">container</span><span class="o">.</span><span class="n">isCategory</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">newCategoryName</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">container</span>
+        <span class="c1">#</span>
+        <span class="n">catNameCur</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">catNameCur</span> <span class="o">==</span> <span class="n">newCategoryName</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">container</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__categoryIdRelatives</span><span class="p">:</span>
+                <span class="n">catName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">catName</span><span class="p">):</span>
+                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
+                    <span class="n">atName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">attributePart</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">cObj</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">atName</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()):</span>
+                            <span class="n">testVal</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="n">atName</span><span class="p">,</span> <span class="n">iRow</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">testVal</span> <span class="o">==</span> <span class="n">catNameCur</span><span class="p">:</span>
+                                <span class="n">cObj</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">newCategoryName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">iRow</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">container</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1088,10 +1539,10 @@ input list of dictionary data and definition containers.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

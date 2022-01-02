@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/PdbxReader/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -812,6 +812,428 @@ mmcif.io.PdbxReader.PdbxReader        </code>
 
       <p>Utilities for reading mmCIF for data files and dictionaries.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/PdbxReader.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PdbxReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utilities for reading mmCIF for data files and dictionaries.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifh</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ifh - input file handle returned by open()&quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ifh</span> <span class="o">=</span> <span class="n">ifh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stateDict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_DATA_CONTAINER&quot;</span><span class="p">,</span> <span class="s2">&quot;loop&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_TABLE&quot;</span><span class="p">,</span> <span class="s2">&quot;global&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_GLOBAL_CONTAINER&quot;</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_DEFINITION&quot;</span><span class="p">,</span> <span class="s2">&quot;stop&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_STOP&quot;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends to input list of definition and data containers.</span>
+
+<span class="sd">        return</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sL</span> <span class="o">=</span> <span class="n">selectList</span> <span class="k">if</span> <span class="n">selectList</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">catSelectD</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">sL</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ifh</span><span class="p">),</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">categorySelectionD</span><span class="o">=</span><span class="n">catSelectD</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="n">excludeFlag</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># will be raised at the end of token iterator - not an error -</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Normal termination after reading </span><span class="si">%d</span><span class="s2"> lines with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="c1"># will be raised at the end of token iterator - not an error -</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Normal termination after reading </span><span class="si">%d</span><span class="s2"> lines&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PdbxSyntaxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Caught syntax exception at </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">except</span> <span class="ne">UnicodeDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Caught character encoding exception at </span><span class="si">%d</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="s2">&quot;Character encoding error at line </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="s2">&quot;Failing at line </span><span class="si">%d</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="s2">&quot;Miscellaneous parsing error at line </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__allSelected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">catSelectD</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test the input container for completeness relative to the input category selection dictionary.&quot;&quot;&quot;</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">catSelectD</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">nl</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nl</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">catSelectD</span><span class="p">):</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;nl </span><span class="si">%d</span><span class="s2"> length catSelectD </span><span class="si">%d</span><span class="s2"> returning </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nl</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">catSelectD</span><span class="p">),</span> <span class="n">ok</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">ok</span>
+
+    <span class="k">def</span> <span class="nf">__syntaxError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errText</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot; [Line: </span><span class="si">%d</span><span class="s2">] </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">,</span> <span class="n">errText</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PdbxSyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getContainerName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inWord</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the name of the data block or saveframe container&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">inWord</span><span class="p">[</span><span class="mi">5</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inWord</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Identifies reserved syntax elements and assigns an associated state.</span>
+
+<span class="sd">        on return: (reserved word, state)</span>
+<span class="sd">        where -</span>
+<span class="sd">           reserved word -  is one of CIF syntax elements:</span>
+<span class="sd">                            data, loop, global, save, or stop</span>
+<span class="sd">           state - the parser state required to process this next section.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">inWord</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;ST_UNKNOWN&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rWord</span> <span class="o">=</span> <span class="n">inWord</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">rWord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stateDict</span><span class="p">[</span><span class="n">rWord</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;ST_UNKNOWN&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__parser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">categorySelectionD</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parser for PDBx data files and dictionaries.</span>
+
+<span class="sd">        Input - tokenizer() reentrant method recognizing data item names (_category.attribute)</span>
+<span class="sd">                quoted strings (single, double and multi-line semi-colon delimited), and unquoted</span>
+<span class="sd">                strings.</span>
+
+<span class="sd">                containerList -  list-type container for data and definition objects parsed from</span>
+<span class="sd">                                 from the input file.</span>
+
+<span class="sd">        On return:</span>
+<span class="sd">                The input containerList is appended with data and definition objects -</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">catSelectD</span> <span class="o">=</span> <span class="n">categorySelectionD</span> <span class="k">if</span> <span class="n">categorySelectionD</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Exclude Flag </span><span class="si">%r</span><span class="s2"> Category selection </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="p">,</span> <span class="n">catSelectD</span><span class="p">)</span>
+        <span class="c1"># Working container - data or definition</span>
+        <span class="n">curContainer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># the last container of type data -</span>
+        <span class="n">previousDataContainer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#</span>
+        <span class="c1"># Working category container</span>
+        <span class="n">categoryIndex</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">curCategory</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#</span>
+        <span class="n">curRow</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Find the first reserved word and begin capturing data.</span>
+        <span class="c1">#</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">curWord</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">reservedWord</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getState</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">reservedWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1">#  Set the current state  -</span>
+            <span class="c1">#</span>
+            <span class="c1">#  At this point in the processing cycle we are expecting a token containing</span>
+            <span class="c1">#  either a &#39;_category.attribute&#39;  or a reserved word.</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="n">curCatName</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;ST_KEY_VALUE_PAIR&quot;</span>
+            <span class="k">elif</span> <span class="n">curWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">reservedWord</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getState</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Miscellaneous syntax error&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="c1">#</span>
+            <span class="c1"># Process  _category.attribute  value assignments</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;ST_KEY_VALUE_PAIR&quot;</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">curCategory</span> <span class="o">=</span> <span class="n">categoryIndex</span><span class="p">[</span><span class="n">curCatName</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="c1"># A new category is encountered - create a container and add a row</span>
+                    <span class="n">curCategory</span> <span class="o">=</span> <span class="n">categoryIndex</span><span class="p">[</span><span class="n">curCatName</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataCategory</span><span class="p">(</span><span class="n">curCatName</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="c1">#  check if we have all of the selection</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">excludeFlag</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__allSelected</span><span class="p">(</span><span class="n">curContainer</span><span class="p">,</span> <span class="n">catSelectD</span><span class="p">):</span>
+                        <span class="k">return</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">catSelectD</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">excludeFlag</span> <span class="ow">and</span> <span class="n">curCatName</span> <span class="ow">in</span> <span class="n">catSelectD</span><span class="p">:</span>
+                                <span class="n">curContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curCategory</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="n">excludeFlag</span> <span class="ow">and</span> <span class="n">curCatName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">catSelectD</span><span class="p">:</span>
+                                <span class="n">curContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curCategory</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Skipped unselected/excluded category </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">curCatName</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">curContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curCategory</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Category cannot be added to  data_ block&quot;</span><span class="p">)</span>
+                        <span class="k">return</span>
+
+                    <span class="n">curRow</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">curCategory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curRow</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Recover the existing row from the category</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># curRow = curCategory[0]</span>
+                        <span class="n">curRow</span> <span class="o">=</span> <span class="n">curCategory</span><span class="o">.</span><span class="n">getRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Internal index error accessing category data&quot;</span><span class="p">)</span>
+                        <span class="k">return</span>
+
+                <span class="c1"># Check for duplicate attributes and add attribute to table.</span>
+                <span class="k">if</span> <span class="n">curAttName</span> <span class="ow">in</span> <span class="n">curCategory</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Duplicate attribute encountered in category&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">curCategory</span><span class="o">.</span><span class="n">appendAttribute</span><span class="p">(</span><span class="n">curAttName</span><span class="p">)</span>
+
+                <span class="c1"># Get the data for this attribute from the next token</span>
+                <span class="n">tCat</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">tCat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">curQuotedString</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">curWord</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Missing data for item _</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="n">curWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># Validation check token for misplaced reserved words  -</span>
+                    <span class="c1">#</span>
+                    <span class="n">reservedWord</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getState</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">reservedWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Unexpected reserved word: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">reservedWord</span><span class="p">))</span>
+
+                    <span class="n">curRow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+
+                <span class="k">elif</span> <span class="n">curQuotedString</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">curRow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curQuotedString</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Missing value in item-value pair&quot;</span><span class="p">)</span>
+
+                <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1">#</span>
+            <span class="c1"># Process a loop_ declaration and associated data -</span>
+            <span class="c1">#</span>
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;ST_TABLE&quot;</span><span class="p">:</span>
+
+                <span class="c1"># The category name in the next curCatName,curAttName pair</span>
+                <span class="c1">#    defines the name of the category container.</span>
+                <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">curCatName</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">curAttName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Unexpected token in loop_ declaration&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+                <span class="c1"># Check for a previous category declaration.</span>
+                <span class="k">if</span> <span class="n">curCatName</span> <span class="ow">in</span> <span class="n">categoryIndex</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Duplicate category declaration in loop_&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+                <span class="n">curCategory</span> <span class="o">=</span> <span class="n">DataCategory</span><span class="p">(</span><span class="n">curCatName</span><span class="p">)</span>
+
+                <span class="c1">#</span>
+                <span class="c1">#  check if we have all of the selection</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">excludeFlag</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__allSelected</span><span class="p">(</span><span class="n">curContainer</span><span class="p">,</span> <span class="n">catSelectD</span><span class="p">):</span>
+                    <span class="k">return</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">catSelectD</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">excludeFlag</span> <span class="ow">and</span> <span class="n">curCatName</span> <span class="ow">in</span> <span class="n">catSelectD</span><span class="p">:</span>
+                            <span class="n">curContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curCategory</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="n">excludeFlag</span> <span class="ow">and</span> <span class="n">curCatName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">catSelectD</span><span class="p">:</span>
+                            <span class="n">curContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curCategory</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Skipped unselected/excluded category </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">curCatName</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">curContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curCategory</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;loop_ declaration outside of data_ block or save_ frame&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+                <span class="n">curCategory</span><span class="o">.</span><span class="n">appendAttribute</span><span class="p">(</span><span class="n">curAttName</span><span class="p">)</span>
+
+                <span class="c1"># Read the rest of the loop_ declaration</span>
+                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">curCatName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                    <span class="k">if</span> <span class="n">curCatName</span> <span class="o">!=</span> <span class="n">curCategory</span><span class="o">.</span><span class="n">getName</span><span class="p">():</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Changed category name in loop_ declaration&quot;</span><span class="p">)</span>
+                        <span class="k">return</span>
+
+                    <span class="n">curCategory</span><span class="o">.</span><span class="n">appendAttribute</span><span class="p">(</span><span class="n">curAttName</span><span class="p">)</span>
+
+                <span class="c1"># If the next token is a &#39;word&#39;, check it for any reserved words -</span>
+                <span class="k">if</span> <span class="n">curWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">reservedWord</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getState</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">reservedWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">reservedWord</span> <span class="o">==</span> <span class="s2">&quot;stop&quot;</span><span class="p">:</span>
+                            <span class="k">return</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Unexpected reserved word after loop declaration: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">reservedWord</span><span class="p">))</span>
+
+                <span class="c1"># Read the table of data for this loop_ -</span>
+                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">curRow</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">curCategory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curRow</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">curCategory</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">curWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">curRow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="n">curQuotedString</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">curRow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curQuotedString</span><span class="p">)</span>
+
+                        <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+                    <span class="c1"># loop_ data processing ends if -</span>
+
+                    <span class="c1"># A new _category.attribute is encountered</span>
+                    <span class="k">if</span> <span class="n">curCatName</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                    <span class="c1"># A reserved word is encountered</span>
+                    <span class="k">if</span> <span class="n">curWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">reservedWord</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getState</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">reservedWord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">break</span>
+
+                <span class="k">continue</span>
+
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;ST_DEFINITION&quot;</span><span class="p">:</span>
+                <span class="c1"># Ignore trailing unnamed saveframe delimiters e.g. &#39;save&#39;</span>
+                <span class="n">sName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getContainerName</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sName</span><span class="p">:</span>
+                    <span class="n">curContainer</span> <span class="o">=</span> <span class="n">DefinitionContainer</span><span class="p">(</span><span class="n">sName</span><span class="p">)</span>
+                    <span class="n">containerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curContainer</span><span class="p">)</span>
+                    <span class="n">categoryIndex</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">curCategory</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># reset current container to the last data container</span>
+                    <span class="n">curContainer</span> <span class="o">=</span> <span class="n">previousDataContainer</span>
+
+                <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;ST_DATA_CONTAINER&quot;</span><span class="p">:</span>
+                <span class="c1">#</span>
+                <span class="n">dName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getContainerName</span><span class="p">(</span><span class="n">curWord</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">dName</span><span class="p">:</span>
+                    <span class="n">dName</span> <span class="o">=</span> <span class="s2">&quot;unidentified&quot;</span>
+                <span class="n">curContainer</span> <span class="o">=</span> <span class="n">DataContainer</span><span class="p">(</span><span class="n">dName</span><span class="p">)</span>
+                <span class="n">containerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curContainer</span><span class="p">)</span>
+                <span class="n">categoryIndex</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">curCategory</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">previousDataContainer</span> <span class="o">=</span> <span class="n">curContainer</span>
+                <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;ST_STOP&quot;</span><span class="p">:</span>
+                <span class="c1">###</span>
+                <span class="c1"># curCatName, curAttName, curQuotedString, curWord = tokenizer.next()</span>
+                <span class="k">continue</span>
+
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;ST_GLOBAL&quot;</span><span class="p">:</span>
+                <span class="n">curContainer</span> <span class="o">=</span> <span class="n">DataContainer</span><span class="p">(</span><span class="s2">&quot;blank-global&quot;</span><span class="p">)</span>
+                <span class="n">curContainer</span><span class="o">.</span><span class="n">setGlobal</span><span class="p">()</span>
+                <span class="n">containerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curContainer</span><span class="p">)</span>
+                <span class="n">categoryIndex</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">curCategory</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">curCatName</span><span class="p">,</span> <span class="n">curAttName</span><span class="p">,</span> <span class="n">curQuotedString</span><span class="p">,</span> <span class="n">curWord</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;ST_UNKNOWN&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__syntaxError</span><span class="p">(</span><span class="s2">&quot;Unrecognized syntax element: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">curWord</span><span class="p">))</span>
+                <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">__tokenizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifh</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tokenizer method for the mmCIF syntax file -</span>
+
+<span class="sd">        Each return/yield from this method returns information about</span>
+<span class="sd">        the next token in the form of a tuple with the following structure.</span>
+
+<span class="sd">        (category name, attribute name, quoted strings, words w/o quotes or white space)</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="c1"># Regex definition for mmCIF syntax - semi-colon delimited strings are handled</span>
+        <span class="c1">#                                     outside of this regex.</span>
+        <span class="c1">#  Differentiated the regular expression to the better handle embedded quotes.</span>
+        <span class="c1">#</span>
+        <span class="n">mmcifRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;(?:&quot;</span>
+            <span class="sa">r</span><span class="s2">&quot;(?:_(.+?)[.](\S+))&quot;</span>
+            <span class="sa">r</span><span class="s2">&quot;|&quot;</span>  <span class="c1"># _category.attribute</span>
+            <span class="sa">r</span><span class="s2">&quot;(?:[&#39;](.*?)(?:[&#39;]\s|[&#39;]$))&quot;</span>
+            <span class="sa">r</span><span class="s2">&quot;|&quot;</span>  <span class="c1"># single quoted strings</span>
+            <span class="sa">r</span><span class="s1">&#39;(?:[&quot;](.*?)(?:[&quot;]\s|[&quot;]$))&#39;</span>
+            <span class="sa">r</span><span class="s2">&quot;|&quot;</span>  <span class="c1"># double quoted strings</span>
+            <span class="sa">r</span><span class="s2">&quot;(?:\s*#.*$)&quot;</span>
+            <span class="sa">r</span><span class="s2">&quot;|&quot;</span>  <span class="c1"># comments (dumped)</span>
+            <span class="sa">r</span><span class="s2">&quot;(\S+)&quot;</span>  <span class="c1"># unquoted words</span>
+            <span class="sa">r</span><span class="s2">&quot;)&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">fileIter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">ifh</span><span class="p">)</span>
+
+        <span class="c1"># Tokenizer loop begins here ---</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fileIter</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Dump comments</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Gobble up the entire semi-colon/multi-line delimited string and</span>
+                <span class="c1">#    and stuff this into the string slot in the return tuple</span>
+                <span class="c1">#</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">):</span>
+                    <span class="n">mlString</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+                    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fileIter</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">):</span>
+                            <span class="k">break</span>
+                        <span class="n">mlString</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+                    <span class="c1"># remove trailing new-line that is part of the \n; delimiter</span>
+                    <span class="n">mlString</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">mlString</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+                    <span class="c1">#</span>
+                    <span class="k">yield</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mlString</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># Need to process the remainder of the current line -</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                    <span class="c1"># continue</span>
+
+                <span class="c1"># Apply regex to the current line consolidate the single/double</span>
+                <span class="c1"># quoted within the quoted string category</span>
+                <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">mmcifRe</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">tgroups</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+                    <span class="c1">#</span>
+                    <span class="k">if</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;stop_&quot;</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="n">tgroups</span> <span class="o">!=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">qs</span> <span class="o">=</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="k">elif</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">qs</span> <span class="o">=</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">qs</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="n">groups</span> <span class="o">=</span> <span class="p">(</span><span class="n">tgroups</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">qs</span><span class="p">,</span> <span class="n">tgroups</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+                        <span class="k">yield</span> <span class="n">groups</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="k">return</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -983,10 +1405,10 @@ mmcif.io.PdbxReader.PdbxReader        </code>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

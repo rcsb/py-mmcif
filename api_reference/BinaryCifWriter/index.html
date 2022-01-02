@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/BinaryCifWriter/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1004,6 +1004,122 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
 
       <p>Writer methods for the binary CIF format.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Writer methods for the binary CIF format.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dictionaryApi (object): DictionaryApi object instance</span>
+<span class="sd">            storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.</span>
+<span class="sd">            defaultStringEncoding (str, optional): default encoding for string data. Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">            applyTypes (bool, optional): apply explicit data typing before encoding. Defaults to True.</span>
+<span class="sd">            useStringTypes (bool, optional): assume all types are string. Defaults to False.</span>
+<span class="sd">            useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="s2">&quot;0.01&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="o">=</span> <span class="n">applyTypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="o">=</span> <span class="n">useStringTypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
+
+    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filePath (str): output file path</span>
+<span class="sd">            containerList (list): list of DataContainer objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;categories&quot;</span><span class="p">):</span> <span class="p">[]}</span>
+                <span class="n">categories</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;categories&quot;</span><span class="p">)]</span>
+                <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
+                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
+                        <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="n">rowCount</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()</span>
+                    <span class="c1">#</span>
+                    <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
+                        <span class="n">colDataList</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getColumn</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+                        <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeType</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="k">else</span> <span class="s2">&quot;string&quot;</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;catName </span><span class="si">%r</span><span class="s2"> atName </span><span class="si">%r</span><span class="s2"> dataType </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+                        <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeColumnData</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+                        <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="p">{</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="n">atName</span><span class="p">),</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">):</span> <span class="n">colMaskDict</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">):</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">):</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">):</span> <span class="n">encodingDictL</span><span class="p">},</span>
+                            <span class="p">}</span>
+                        <span class="p">)</span>
+                    <span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">catName</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;columns&quot;</span><span class="p">):</span> <span class="n">cols</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;rowCount&quot;</span><span class="p">):</span> <span class="n">rowCount</span><span class="p">})</span>
+            <span class="c1">#</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__version</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoder&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;python-mmcif library&quot;</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;dataBlocks&quot;</span><span class="p">):</span> <span class="n">blocks</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
+                <span class="n">msgpack</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ofh</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__encodeColumnData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
+        <span class="n">colMaskDict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">enc</span> <span class="o">=</span> <span class="n">BinaryCifEncoders</span><span class="p">(</span><span class="n">defaultStringEncoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="n">maskEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+        <span class="n">typeEncoderD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="s2">&quot;StringArrayMasked&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="s2">&quot;IntArrayMasked&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;FloatArrayMasked&quot;</span><span class="p">}</span>
+        <span class="n">colMaskList</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">getMask</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="n">dataEncType</span> <span class="o">=</span> <span class="n">typeEncoderD</span><span class="p">[</span><span class="n">dataType</span><span class="p">]</span>
+        <span class="n">colDataEncoded</span><span class="p">,</span> <span class="n">colDataEncodingDictL</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">encodeWithMask</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">dataEncType</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
+            <span class="n">maskEncoded</span><span class="p">,</span> <span class="n">maskEncodingDictL</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">maskEncoderList</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>
+            <span class="n">colMaskDict</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">):</span> <span class="n">maskEncoded</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">):</span> <span class="n">maskEncodingDictL</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">colDataEncoded</span><span class="p">,</span> <span class="n">colDataEncodingDictL</span>
+
+    <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            strVal (string): input string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            string or bytes: optionally converted string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">strVal</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="k">else</span> <span class="n">strVal</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Bad type for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strVal</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">strVal</span>
+
+    <span class="k">def</span> <span class="nf">__getAttributeType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dObj</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            atName (str): attribute name</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (string): data type (string, integer or float)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cifDataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+        <span class="n">cifPrimitiveType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypePrimitive</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+        <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span> <span class="k">if</span> <span class="s2">&quot;int&quot;</span> <span class="ow">in</span> <span class="n">cifDataType</span> <span class="k">else</span> <span class="s2">&quot;float&quot;</span> <span class="k">if</span> <span class="n">cifPrimitiveType</span> <span class="o">==</span> <span class="s2">&quot;numb&quot;</span> <span class="k">else</span> <span class="s2">&quot;string&quot;</span>
+        <span class="k">return</span> <span class="n">dataType</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1241,6 +1357,294 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <p>and in the specification at <a href="https://github.com/molstar/BinaryCIF/blob/master/encoding.md">https://github.com/molstar/BinaryCIF/blob/master/encoding.md</a></p>
 <p>and from the I/HM Python implementation at <a href="https://github.com/ihmwg/python-ihm">https://github.com/ihmwg/python-ihm</a></p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifEncoders</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Column oriented Binary CIF encoders implementing</span>
+<span class="sd">    StringArray, ByteArray, IntegerPacking, Delta, RunLength,</span>
+<span class="sd">    and FixedPoint encoders from the BinaryCIF specification described in:</span>
+
+<span class="sd">    Sehnal D, Bittrich S, Velankar S, Koca J, Svobodova R, Burley SK, Rose AS.</span>
+<span class="sd">    BinaryCIF and CIFTools-Lightweight, efficient and extensible macromolecular data management.</span>
+<span class="sd">    PLoS Comput Biol. 2020 Oct 19;16(10):e1008247.</span>
+<span class="sd">    doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</span>
+
+<span class="sd">    and in the specification at https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">    and from the I/HM Python implementation at https://github.com/ihmwg/python-ihm</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate the binary CIF encoder class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            defaultStringEncoding (str, optional): default encoding for string data . Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">            storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.</span>
+<span class="sd">            useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__unknown</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingTypeList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode the data using the input list of encoding types returning encoded data and encoding instructions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): input data to be encoded</span>
+<span class="sd">            encodingTypeList (list): list of encoding types (ByteArray, Delta, or RunLength)</span>
+<span class="sd">            dataType (string):  column input data type (string, integer, float)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (list, list ): encoded data column, list of encoding instructions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">encodingDictL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">encType</span> <span class="ow">in</span> <span class="n">encodingTypeList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">:</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;Delta&quot;</span><span class="p">:</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">:</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;unsupported encoding </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encType</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">encDict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">encodingDictL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encDict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+    <span class="k">def</span> <span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode the data using the input mask and encoding type returning encoded data and encoding instructions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (string): input data column</span>
+<span class="sd">            colMaskList (list): incompleteness mask for the input data column</span>
+<span class="sd">            encodingType (string): encoding type to apply (StringArrayMask, IntArrayMasked, FloatArrayMasked)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (list, list ): encoded data column, list of encoding instructions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">encodingDictL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">encodingType</span> <span class="o">==</span> <span class="s2">&quot;StringArrayMasked&quot;</span><span class="p">:</span>
+            <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stringArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">encodingType</span> <span class="o">==</span> <span class="s2">&quot;IntArrayMasked&quot;</span><span class="p">:</span>
+            <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">encodingType</span> <span class="o">==</span> <span class="s2">&quot;FloatArrayMasked&quot;</span><span class="p">:</span>
+            <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floatArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;unsupported masked encoding </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+    <span class="k">def</span> <span class="nf">__getIntegerPackingType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine the integer packing type of the input integer data list&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">minV</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="n">maxV</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">minV</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Unsigned types</span>
+                <span class="k">for</span> <span class="n">typeName</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;unsigned_integer_8&quot;</span><span class="p">,</span> <span class="s2">&quot;unsigned_integer_16&quot;</span><span class="p">,</span> <span class="s2">&quot;unsigned_integer_32&quot;</span><span class="p">]:</span>
+                    <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">typeName</span><span class="p">]</span>
+                    <span class="n">upperLimit</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">typeName</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">maxV</span> <span class="o">&lt;=</span> <span class="n">upperLimit</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">byteArrayType</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Signed types</span>
+                <span class="k">for</span> <span class="n">typeName</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer_8&quot;</span><span class="p">,</span> <span class="s2">&quot;integer_16&quot;</span><span class="p">,</span> <span class="s2">&quot;integer_32&quot;</span><span class="p">]:</span>
+                    <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">typeName</span><span class="p">]</span>
+                    <span class="n">upperLimit</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">typeName</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">]</span>
+                    <span class="n">lowerLimit</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">typeName</span><span class="p">][</span><span class="s2">&quot;min&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">minV</span> <span class="o">&gt;=</span> <span class="n">lowerLimit</span> <span class="ow">and</span> <span class="n">maxV</span> <span class="o">&lt;=</span> <span class="n">upperLimit</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">byteArrayType</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot determine interger packing type&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">byteArrayEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (list): list of integer or float data</span>
+<span class="sd">            dataType (str): data type (integer|float)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: byte encoded packed data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_64&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_32&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;ByteArray&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">]][</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">]</span>
+        <span class="c1"># Data are encoded little-endian &#39;&lt;&#39;</span>
+        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">),</span> <span class="o">*</span><span class="n">colDataList</span><span class="p">),</span> <span class="n">encodingD</span>
+
+    <span class="k">def</span> <span class="nf">deltaEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): list of integer data</span>
+<span class="sd">            minLen (int, optional): minimum list length to apply encoder. Defaults to 40.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: delta encoded integer list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;Delta&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">):</span> <span class="n">colDataList</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
+        <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">colDataList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">))]</span>
+        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
+
+    <span class="k">def</span> <span class="nf">runLengthEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): list of integer data</span>
+<span class="sd">            minLen (int, optional): minimum list length to apply encoder. Defaults to 40.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: runlength encoded integer list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;RunLength&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcSize&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)}</span>
+        <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">colVal</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">val</span><span class="p">,</span> <span class="n">repeat</span><span class="p">))</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">colVal</span>
+                <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">repeat</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">val</span><span class="p">,</span> <span class="n">repeat</span><span class="p">))</span>
+        <span class="c1"># Check for any gains and possibly retreat</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
+
+    <span class="k">def</span> <span class="nf">stringArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode the input data column (string) along with the incompleteness mask.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): input data column (string)</span>
+<span class="sd">            colMaskList (list): incompleteness mask</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+        <span class="n">uniqStringIndex</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># keys are substrings, values indices</span>
+        <span class="n">uniqStringList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">indexList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">strVal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">colMaskList</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">colMaskList</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">indexList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tS</span> <span class="o">=</span> <span class="n">strVal</span>
+                <span class="n">tS</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tS</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">uniqStringIndex</span><span class="p">:</span>
+                    <span class="n">uniqStringIndex</span><span class="p">[</span><span class="n">tS</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uniqStringIndex</span><span class="p">)</span>
+                    <span class="n">uniqStringList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tS</span><span class="p">)</span>
+                <span class="n">indexList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uniqStringIndex</span><span class="p">[</span><span class="n">tS</span><span class="p">])</span>
+        <span class="n">offsetList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">runningLen</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">tS</span> <span class="ow">in</span> <span class="n">uniqStringList</span><span class="p">:</span>
+            <span class="n">runningLen</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tS</span><span class="p">)</span>
+            <span class="n">offsetList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runningLen</span><span class="p">)</span>
+
+        <span class="n">encodedOffsetList</span><span class="p">,</span> <span class="n">offsetEncodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">offsetList</span><span class="p">,</span> <span class="n">integerEncoderList</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>
+        <span class="n">encodedIndexList</span><span class="p">,</span> <span class="n">indexEncodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">indexList</span><span class="p">,</span> <span class="n">integerEncoderList</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>
+
+        <span class="n">encodingDict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;StringArray&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;dataEncoding&quot;</span><span class="p">):</span> <span class="n">indexEncodingDictL</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;stringData&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uniqStringList</span><span class="p">)),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;offsetEncoding&quot;</span><span class="p">):</span> <span class="n">offsetEncodingDictL</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;offsets&quot;</span><span class="p">):</span> <span class="n">encodedOffsetList</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">encodedIndexList</span><span class="p">,</span> <span class="p">[</span><span class="n">encodingDict</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">intArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode the input data column (integer) along with the incompleteness mask.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): input data column (string)</span>
+<span class="sd">            colMaskList (list): incompleteness mask</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
+            <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="n">colDataList</span>
+        <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">integerEncoderList</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+    <span class="k">def</span> <span class="nf">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode the input data column (float) along with the incompleteness mask.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): input data column (string)</span>
+<span class="sd">            colMaskList (list): incompleteness mask</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">floatEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
+            <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="n">colDataList</span>
+        <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">floatEncoderList</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+    <span class="k">def</span> <span class="nf">getMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an incompleteness mask list identifying missing/omitted values in the input data column.</span>
+<span class="sd">        The mask is assigned: 0 = Value is present, 1 = &#39;.&#39; (value not specified), and 2 = &#39;?&#39; (value unknown).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): input data column</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list or None: mask list or None if the column contains no missing values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">colVal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">colVal</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__unknown</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="n">mask</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">colVal</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">colVal</span> <span class="o">==</span> <span class="s2">&quot;?&quot;</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">mask</span>
+
+    <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            strVal (string): input string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            string or bytes: optionally converted string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">strVal</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="k">else</span> <span class="n">strVal</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Bad type for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strVal</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">strVal</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2187,10 +2591,10 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

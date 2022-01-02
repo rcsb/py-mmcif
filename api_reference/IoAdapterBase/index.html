@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/IoAdapterBase/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -840,6 +840,298 @@ mmcif.io.IoAdapterBase.IoAdapterBase        </code>
 
       <p>Base class presenting essential mmCIF I/O methods.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/IoAdapterBase.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IoAdapterBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class presenting essential mmCIF I/O methods.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;General options controlling I/O method operations:</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raiseExceptions (bool, optional): Flag to indicate that API errors should generate exceptions (True) or catch and log errors (default=False)</span>
+<span class="sd">            maxInputLineLength (int, optional):  Default maximum input line length (default=4096)</span>
+<span class="sd">            useCharRefs (bool, optional): Replace non-ascii characters with XML Character References (default=True)</span>
+<span class="sd">            readEncodingErrors (str, optional): treatment of encoding errors at read time (default=&#39;ignore&#39;)</span>
+<span class="sd">            timing (bool, optional):  log timing details for parsing and processing steps (default=False)</span>
+<span class="sd">            verbose (bool,optional):  log verbose output from wrapped libraries</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;raiseExceptions&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxInputLineLength</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;maxInputLineLength&quot;</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_useCharRefs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;useCharRefs&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__logFilePath</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_debug</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timing&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbose&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readEncodingErrors</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;readEncodingErrors&quot;</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read file method. (abstract)</span>
+
+<span class="sd">         Args:</span>
+<span class="sd">            inputFilePath (string):  Input file path/uri</span>
+<span class="sd">                   kw:  optional key-value arguments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of DataContainer Objects:  list of data or definition container objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;To be implemented in subclass&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write file method - (abstract)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            outputFilePath (string):  output file path</span>
+<span class="sd">            containerList (list of DataContainer objects):  list of data or definition containers objects for output</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Completion status</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;To be implemented in subclass&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getReadDiags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return any diagnostics from the last read operation. (abstract)&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;To be implemented in subclass&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setContainerProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">kw</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="n">container</span><span class="o">.</span><span class="n">setProp</span><span class="p">(</span><span class="n">kw</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">kw</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_getTimeStamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">utcnow</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">utcnow</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">:%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ts</span>
+
+    <span class="k">def</span> <span class="nf">_getCategoryNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an ordered list of categories in the input container subject to</span>
+<span class="sd">        input category name lists.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           container (DataContainer object):  Input DataContainer object</span>
+<span class="sd">           lastInOrder (list):  names of categories to be shifted to the end of the container.</span>
+<span class="sd">           selectOrder (list):  preferred order of category names</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           catNameList: list:  augmented category list or full list (default)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">catNameList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">lastInOrder</span><span class="p">:</span>
+            <span class="n">objNameList</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">()</span>
+            <span class="n">lastList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">objNameList</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">lastInOrder</span><span class="p">:</span>
+                    <span class="n">lastList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">catNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+            <span class="n">catNameList</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lastList</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">selectOrder</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">selectOrder</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">nm</span><span class="p">):</span>
+                    <span class="n">catNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">catNameList</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">catNameList</span>
+
+    <span class="k">def</span> <span class="nf">_setLogFilePath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the log file path.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__logFilePath</span> <span class="o">=</span> <span class="n">filePath</span>
+
+    <span class="k">def</span> <span class="nf">_getLogFilePath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return current log file path.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__logFilePath</span>
+
+    <span class="k">def</span> <span class="nf">_appendToLog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Append input string list to the current log file -&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__logFilePath</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__logFilePath</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
+                <span class="n">ofh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stList</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_logError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience method to log error messages and optionally raise general exceptions (PdbxError).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_readLogRecords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the contents of the current log file as list of strings.&quot;&quot;&quot;</span>
+        <span class="n">diagL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__logFilePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ifh</span><span class="p">:</span>
+                    <span class="n">diagL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No logfile found </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__logFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">diagL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">diagL</span>
+
+    <span class="k">def</span> <span class="nf">__getDiscriminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal method returning a string which can discriminate among default file names -&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_chooseTemporaryPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Select a path for temporary files in the priority order</span>
+<span class="sd">        outDirpath, directory containing the input filePath, current working directory,</span>
+<span class="sd">        dynamically created temporary directory.</span>
+
+<span class="sd">        These choices harmonize various legacy api behaviors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">outDirPath</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">outDirPath</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">oPath</span> <span class="ow">in</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filePath</span><span class="p">),</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()]:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">oPath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">oPath</span>
+
+    <span class="k">def</span> <span class="nf">_getDefaultFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s2">&quot;cif-parser&quot;</span><span class="p">,</span> <span class="n">fileExt</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return default file path for the target input file subject to input attributes and the output path.&quot;&quot;&quot;</span>
+        <span class="n">returnFilePath</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+            <span class="n">bn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="n">ft</span> <span class="o">=</span> <span class="n">fileType</span> <span class="k">if</span> <span class="n">fileType</span> <span class="k">else</span> <span class="s2">&quot;temp&quot;</span>
+            <span class="n">fex</span> <span class="o">=</span> <span class="n">fileExt</span> <span class="k">if</span> <span class="n">fileExt</span> <span class="k">else</span> <span class="s2">&quot;tmp&quot;</span>
+            <span class="c1">#</span>
+            <span class="n">sf</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">ft</span> <span class="o">+</span> <span class="s2">&quot;_P&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getDiscriminator</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">fex</span>
+            <span class="c1">#</span>
+            <span class="c1"># pth = outDirPath if outDirPath else &#39;.&#39;</span>
+            <span class="n">pth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chooseTemporaryPath</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">outDirPath</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="n">verify</span><span class="p">:</span>
+                <span class="c1"># test if pth is actually writable ?  Throw exception otherwise -</span>
+                <span class="c1">#</span>
+                <span class="n">testfile</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">pth</span><span class="p">)</span>
+                <span class="n">testfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="c1">#</span>
+            <span class="n">returnFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="n">bn</span> <span class="o">+</span> <span class="n">sf</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed creating default filename for </span><span class="si">%s</span><span class="s2"> type </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">returnFilePath</span>
+
+    <span class="k">def</span> <span class="nf">_fileExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Verify that input file path exists and is readable.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Missing file </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filePath</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="c1">#</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reading from file path </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filePath</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;File check error for </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_cleanupFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">filePath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove the input file path subject to the input test condition.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">test</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_toAscii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">chunkSize</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">encodingErrors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">readEncodingErrors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Encode input file to Ascii and write this to the target output file.   Handle encoding</span>
+<span class="sd">        errors according to the input settting (&#39;ignore&#39;, &#39;escape&#39;, &#39;xmlcharrefreplace&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="n">readEncodingErrors</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ifh</span><span class="p">:</span>
+                    <span class="c1"># chunk.append(line.encode(&#39;ascii&#39;, &#39;xmlcharrefreplace&#39;).decode(&#39;ascii&#39;))</span>
+                    <span class="n">chunk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">encodingErrors</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="o">==</span> <span class="n">chunkSize</span><span class="p">:</span>
+                        <span class="n">ofh</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                        <span class="n">chunk</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">ofh</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timing</span><span class="p">:</span>
+                <span class="n">stepTime1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Timing text file </span><span class="si">%s</span><span class="s2"> encoded to as ascii in </span><span class="si">%.4f</span><span class="s2"> seconds&quot;</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">stepTime1</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failing text ascii encoding for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_uncompress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">outputDir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uncompress the input file if the path name has a recognized compression type file extension.file</span>
+
+<span class="sd">        Return the file name of the uncompressed file (in outDir) or the original input file path.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">)</span>
+            <span class="n">bn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+            <span class="n">outputFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outputDir</span><span class="p">,</span> <span class="n">bn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">inputFilePath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpF</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outF</span><span class="p">:</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">inpF</span><span class="p">,</span> <span class="n">outF</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">inputFilePath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.bz2&quot;</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpF</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outF</span><span class="p">:</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">inpF</span><span class="p">,</span> <span class="n">outF</span><span class="p">)</span>
+            <span class="c1"># elif inputFilePath.endswith(&quot;.xz&quot;):</span>
+            <span class="c1">#    with lzma.open(inputFilePath, mode=&quot;rb&quot;) as inpF:</span>
+            <span class="c1">#        with io.open(outputFilePath, &quot;wb&quot;) as outF:</span>
+            <span class="c1">#            shutil.copyfileobj(inpF, outF)</span>
+            <span class="k">elif</span> <span class="n">inputFilePath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpF</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outF</span><span class="p">:</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">inpF</span><span class="p">,</span> <span class="n">outF</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">outputFilePath</span> <span class="o">=</span> <span class="n">inputFilePath</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timing</span><span class="p">:</span>
+                <span class="n">stepTime1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Timing text file </span><span class="si">%s</span><span class="s2"> uncompressed in </span><span class="si">%.4f</span><span class="s2"> seconds&quot;</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">stepTime1</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span>
+            <span class="c1">#</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failing uncompress for file </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Returning file path </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">outputFilePath</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1177,10 +1469,10 @@ mmcif.io.IoAdapterBase.IoAdapterBase        </code>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

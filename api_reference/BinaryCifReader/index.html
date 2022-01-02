@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/BinaryCifReader/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1044,6 +1044,147 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
 
       <p>Reader methods for the binary CIF format.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reader methods for the binary CIF format.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF reader class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.</span>
+<span class="sd">            defaultStringEncoding (str, optional): default encoding for string data. Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
+
+    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deserialize the input binary CIF file stored in the file/URL locator path.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): input file path or URL</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: list DataContainer objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isLocal</span><span class="p">(</span><span class="n">locator</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">locator</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.gz&quot;</span> <span class="k">else</span> <span class="nb">open</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                    <span class="n">cL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deserialize</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">locator</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
+                    <span class="n">customHeader</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">}</span>
+                    <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">customHeader</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                        <span class="n">ufh</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+                        <span class="n">cL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deserialize</span><span class="p">(</span><span class="n">ufh</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                        <span class="n">cL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deserialize</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">cL</span>
+
+    <span class="k">def</span> <span class="nf">__deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">cL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dec</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="p">(</span><span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="n">storeStringsAsBytes</span><span class="p">)</span>
+            <span class="n">bD</span> <span class="o">=</span> <span class="n">msgpack</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;bD.keys() </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">bD</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;bD[&#39;dataBlocks&#39;] </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">bD</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;dataBlocks&quot;</span><span class="p">)])</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">dataBlock</span> <span class="ow">in</span> <span class="n">bD</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;dataBlocks&quot;</span><span class="p">)]:</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fromBytes</span><span class="p">(</span><span class="n">dataBlock</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">)])</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dataBlock</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;header </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;dataBlock </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dataBlock</span><span class="p">)</span>
+                <span class="c1">#</span>
+                <span class="n">dc</span> <span class="o">=</span> <span class="n">DataContainer</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+                <span class="n">categoryList</span> <span class="o">=</span> <span class="n">dataBlock</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;categories&quot;</span><span class="p">)]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;categories&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dataBlock</span> <span class="k">else</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categoryList</span><span class="p">:</span>
+                    <span class="n">catName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fromBytes</span><span class="p">(</span><span class="n">category</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)])[</span><span class="mi">1</span><span class="p">:]</span>
+                    <span class="n">colList</span> <span class="o">=</span> <span class="n">category</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;columns&quot;</span><span class="p">)]</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;catName </span><span class="si">%r</span><span class="s2"> columns </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">colList</span><span class="p">)</span>
+                    <span class="n">colD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="n">atNameList</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">colList</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;col.keys() </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                        <span class="n">atName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fromBytes</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)])</span>
+                        <span class="n">atData</span> <span class="o">=</span> <span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)]</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;atData encoding (</span><span class="si">%d</span><span class="s2">) data (</span><span class="si">%d</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">atData</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">atData</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)]))</span>
+                        <span class="n">atMask</span> <span class="o">=</span> <span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">)]</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;catName </span><span class="si">%r</span><span class="s2"> atName </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot; &gt;atData.data    </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atData</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)])</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot; &gt;atData.encoding (</span><span class="si">%d</span><span class="s2">) </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">atData</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)]),</span> <span class="n">atData</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)])</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot; &gt;mask </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atMask</span><span class="p">)</span>
+                        <span class="n">tVal</span> <span class="o">=</span> <span class="n">dec</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)][</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)],</span> <span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)][</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)])</span>
+                        <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">)]:</span>
+                            <span class="n">mVal</span> <span class="o">=</span> <span class="n">dec</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">)][</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)],</span> <span class="n">col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">)][</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)])</span>
+                            <span class="n">tVal</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tVal</span><span class="p">,</span> <span class="n">mVal</span><span class="p">)]</span>
+                        <span class="n">colD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">tVal</span>
+                        <span class="n">atNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategory</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="o">=</span><span class="n">atNameList</span><span class="p">)</span>
+                    <span class="n">genL</span> <span class="o">=</span> <span class="p">[</span><span class="n">colGen</span> <span class="k">for</span> <span class="n">colGen</span> <span class="ow">in</span> <span class="n">colD</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+                    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">genL</span><span class="p">):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;row </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+                        <span class="n">cObj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="n">dc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cObj</span><span class="p">)</span>
+                <span class="n">cL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">cL</span>
+
+    <span class="k">def</span> <span class="nf">__isLocal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns true if input string can be interpreted as a local file path.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): url or path string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if locator is a local path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">locSp</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">locSp</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;For locator </span><span class="si">%r</span><span class="s2"> failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            strVal (string): input string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            string or bytes: optionally converted string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">strVal</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="k">else</span> <span class="n">strVal</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Bad type for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strVal</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">strVal</span>
+
+    <span class="k">def</span> <span class="nf">__fromBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byteVal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional conversion of the input value according to the class setting (storeStringsAsBytes).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            byteVal (string): input byte object</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            string: optionally converted input value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">byteVal</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="k">else</span> <span class="n">byteVal</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Bad type for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">byteVal</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">byteVal</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1238,6 +1379,271 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <p>and in the specification at <a href="https://github.com/molstar/BinaryCIF/blob/master/encoding.md">https://github.com/molstar/BinaryCIF/blob/master/encoding.md</a></p>
 <p>and from the I/HM Python implementation at <a href="https://github.com/ihmwg/python-ihm[summary">https://github.com/ihmwg/python-ihm[summary</a>]</p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifDecoders</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Column oriented Binary CIF decoders implementing</span>
+<span class="sd">    StringArray, ByteArray, IntegerPacking, Delta, RunLength,</span>
+<span class="sd">    FixedPoint, and  IntervalQuantization from the BinaryCIF</span>
+<span class="sd">    specification described in:</span>
+
+<span class="sd">    Sehnal D, Bittrich S, Velankar S, Koca J, Svobodova R, Burley SK, Rose AS.</span>
+<span class="sd">    BinaryCIF and CIFTools-Lightweight, efficient and extensible macromolecular data management.</span>
+<span class="sd">    PLoS Comput Biol. 2020 Oct 19;16(10):e1008247.</span>
+<span class="sd">    doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</span>
+
+<span class="sd">    and in the specification at https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">    and from the I/HM Python implementation at https://github.com/ihmwg/python-ihm[summary]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">bCifCodeTypeD</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;integer_8&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;integer_16&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;integer_32&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;unsigned_integer_8&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;unsigned_integer_16&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;unsigned_integer_32&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="s2">&quot;float_32&quot;</span><span class="p">,</span> <span class="mi">33</span><span class="p">:</span> <span class="s2">&quot;float_64&quot;</span><span class="p">}</span>
+    <span class="sd">&quot;&quot;&quot;Binary CIF protocol internal data type codes to integer and float types</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bCifTypeD</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;integer_8&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mh">0x7F</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mh">0x7F</span><span class="p">},</span>
+        <span class="s2">&quot;integer_16&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mh">0x7FFF</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mh">0x7FFF</span><span class="p">},</span>
+        <span class="s2">&quot;integer_32&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mh">0x7FFFFFFF</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mh">0x7FFFFFFF</span><span class="p">},</span>
+        <span class="s2">&quot;unsigned_integer_8&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mh">0xFF</span><span class="p">},</span>
+        <span class="s2">&quot;unsigned_integer_16&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mh">0xFFFF</span><span class="p">},</span>
+        <span class="s2">&quot;unsigned_integer_32&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mh">0xFFFFFFFF</span><span class="p">},</span>
+        <span class="s2">&quot;float_32&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">1.175494351e-38</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">3.402823466e38</span><span class="p">},</span>
+        <span class="s2">&quot;float_64&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">2.2250738585072014e-308</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623158e308</span><span class="p">},</span>
+    <span class="p">}</span>
+    <span class="sd">&quot;&quot;&quot;Binary CIF data type feature dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF encoder class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            storeStringsAsBytes (bool, optional): express keys and strings as byte types otherwise follow the default encoding. Defaults to False.</span>
+<span class="sd">            defaultStringEncoding (str, optional): default encoding for string types. Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">            verbose(bool, optional): provide tracking of type conversion issues. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__encodersMethodD</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;StringArray&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stringArrayDecoder</span><span class="p">,</span>
+            <span class="s2">&quot;ByteArray&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayDecoder</span><span class="p">,</span>
+            <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">integerPackingDecoder</span><span class="p">,</span>
+            <span class="s2">&quot;Delta&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaDecoder</span><span class="p">,</span>
+            <span class="s2">&quot;RunLength&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthDecoder</span><span class="p">,</span>
+            <span class="s2">&quot;FixedPoint&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedPointDecoder</span><span class="p">,</span>
+            <span class="s2">&quot;IntervalQuantization&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">intervalQuantizationDecoder</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the decoded input data column using the input list of encodings</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDictList (list): list of dictionary holding binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of column data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">encodingDictList</span><span class="p">):</span>
+            <span class="n">encType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fromBytes</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">)])</span>
+            <span class="n">colDataList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodersMethodD</span><span class="p">[</span><span class="n">encType</span><span class="p">](</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">colDataList</span>
+
+    <span class="k">def</span> <span class="nf">stringArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode an array of strings stored as a concatenation of all unique</span>
+<span class="sd">        strings, a list of offsets to construct the unique substrings, and indices into</span>
+<span class="sd">        the offset array.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDict (dict): dictionary of binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of string data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">offsetList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;offsets&quot;</span><span class="p">)],</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;offsetEncoding&quot;</span><span class="p">)]))</span>
+        <span class="n">lookupIndexIt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;dataEncoding&quot;</span><span class="p">)])</span>
+
+        <span class="n">stringData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fromBytes</span><span class="p">(</span><span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;stringData&quot;</span><span class="p">)])</span>
+        <span class="n">uniqueStringList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">iBegin</span><span class="p">,</span> <span class="n">iEnd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">offsetList</span><span class="p">,</span> <span class="n">offsetList</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="n">uniqueStringList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stringData</span><span class="p">[</span><span class="n">iBegin</span><span class="p">:</span><span class="n">iEnd</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;iBegin </span><span class="si">%d</span><span class="s2"> iEnd </span><span class="si">%d</span><span class="s2"> </span><span class="si">%r</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">iBegin</span><span class="p">,</span> <span class="n">iEnd</span><span class="p">,</span> <span class="n">stringData</span><span class="p">[</span><span class="n">iBegin</span><span class="p">:</span><span class="n">iEnd</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">lookupIndexIt</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">uniqueStringList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">if</span> <span class="n">ii</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">byteArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode input byte list into a list of integers/floats</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDict (dict): dictionary of binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of integer/float data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">structKey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="p">[</span><span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)]]</span>
+        <span class="n">structFormatCode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">structKey</span><span class="p">][</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">]</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="o">//</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="n">structFormatCode</span><span class="p">)</span>
+        <span class="c1"># struct.unpack() format string for little-endian  = &lt; format_string code * counts</span>
+        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">structFormatCode</span> <span class="o">*</span> <span class="n">count</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unsignedDecode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="n">upperLimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="s2">&quot;unsigned_integer_8&quot;</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;byteCount&quot;</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="s2">&quot;unsigned_integer_16&quot;</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">]</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">ii</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">tVal</span> <span class="o">=</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+            <span class="k">while</span> <span class="n">tVal</span> <span class="o">==</span> <span class="n">upperLimit</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">+=</span> <span class="n">tVal</span>
+                <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">tVal</span> <span class="o">=</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">value</span> <span class="o">+</span> <span class="n">tVal</span>
+            <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__signedDecode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="n">upperLimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="s2">&quot;integer_8&quot;</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;byteCount&quot;</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="s2">&quot;integer_16&quot;</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">]</span>
+        <span class="n">lowerLimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="s2">&quot;integer_8&quot;</span><span class="p">][</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;byteCount&quot;</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="s2">&quot;integer_16&quot;</span><span class="p">][</span><span class="s2">&quot;min&quot;</span><span class="p">]</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">ii</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">tVal</span> <span class="o">=</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+            <span class="k">while</span> <span class="n">tVal</span> <span class="o">==</span> <span class="n">upperLimit</span> <span class="ow">or</span> <span class="n">tVal</span> <span class="o">==</span> <span class="n">lowerLimit</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">+=</span> <span class="n">tVal</span>
+                <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">tVal</span> <span class="o">=</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">value</span> <span class="o">+</span> <span class="n">tVal</span>
+            <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">integerPackingDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode a (32-bit) integer list packed into 8- or 16-bit values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDict (dict): dictionary of binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of integer data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;isUnsigned&quot;</span><span class="p">)]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__unsignedDecode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__signedDecode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deltaDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode an integer list stored as a list of consecutive differences.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDict (dict): dictionary of binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of integer data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">diff</span>
+            <span class="k">yield</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">runLengthDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode an integer list stored as pairs of (value, number of repeats).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDict (dict): dictionary of binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of integer data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">encodingDict</span>
+        <span class="n">colDataList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">colDataList</span><span class="p">[</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>
+                <span class="k">yield</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">fixedPointDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode a floating point list stored as integers and a multiplicative factor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDict (dict): dictionary of binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of float data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;factor&quot;</span><span class="p">)])</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="n">factor</span>
+
+    <span class="k">def</span> <span class="nf">intervalQuantizationDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode a list of 32-bit integers quantized within a given interval into a list of floats.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): column of data to be decoded</span>
+<span class="sd">            encodingDict (dict): dictionary of binary CIF encoding details</span>
+<span class="sd">                                 elements described in the specification at</span>
+<span class="sd">                                 https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: decoded list of float data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)]</span> <span class="o">-</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">)])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;numSteps&quot;</span><span class="p">)]</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">minVal</span> <span class="o">=</span> <span class="n">encodingDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">minVal</span> <span class="o">+</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            strVal (string): input string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            string or bytes: optionally converted string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">strVal</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="k">else</span> <span class="n">strVal</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Bad type for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strVal</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">strVal</span>
+
+    <span class="k">def</span> <span class="nf">__fromBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byteVal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional conversion of the input value according to the class setting (storeStringsAsBytes).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            byteVal (string): input byte object</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            string: optionally converted input value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">byteVal</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="k">else</span> <span class="n">byteVal</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Bad type for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">byteVal</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">byteVal</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1408,11 +1814,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of integer/float data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of integer/float data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">byteArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
@@ -1480,11 +1897,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of column data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of column data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictList</span><span class="p">):</span>
@@ -1551,11 +1979,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of integer data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of integer data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">deltaDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
@@ -1622,11 +2061,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of float data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of float data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fixedPointDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
@@ -1692,11 +2142,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of integer data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of integer data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">integerPackingDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
@@ -1764,11 +2225,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of float data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of float data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">intervalQuantizationDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
@@ -1836,11 +2308,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of integer data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of integer data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">runLengthDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
@@ -1910,11 +2393,22 @@ the offset array.</p>
         <td><em>required</em></td>
       </tr>
   </tbody>
-</table>      <div class="admonition yields">
-<p class="admonition-title">Yields</p>
-<p>list: decoded list of string data</p>
-</div>
-
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>decoded list of string data</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">stringArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
@@ -2022,10 +2516,10 @@ the offset array.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

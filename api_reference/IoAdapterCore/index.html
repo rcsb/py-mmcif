@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/IoAdapterCore/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -827,6 +827,348 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a title="mmcif.io.IoAdapterBas
 
       <p>Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/IoAdapterCore.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IoAdapterCore</span><span class="p">(</span><span class="n">IoAdapterBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.&quot;&quot;&quot;</span>
+
+    <span class="c1"># def __init__(self, *args, **kwargs):</span>
+    <span class="c1">#    super(IoAdapterCore, self).__init__(*args, **kwargs)</span>
+    <span class="c1"># pylint: disable=arguments-differ</span>
+    <span class="k">def</span> <span class="nf">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse the data blocks in the input mmCIF format data file into list of DataContainers().  The data category content within each data block</span>
+<span class="sd">           is stored a collection of DataCategory objects within each DataContainer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            inputFilePath (string): Input file path</span>
+<span class="sd">            enforceAscii (bool, optional): Flag to requiring pre-filtering operation to convert input file to ASCII encoding. See encoding error options.</span>
+<span class="sd">            selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)</span>
+<span class="sd">            excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list</span>
+<span class="sd">            logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)</span>
+<span class="sd">            outDirPath (string, optional): Path for translated/reencoded files and default logfiles.</span>
+<span class="sd">            cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.</span>
+<span class="sd">            **kwargs: Placeholder for missing keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of DataContainers: Contents of input file parsed into a list of DataContainer objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">asciiFilePath</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">filePath</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">)</span>
+        <span class="c1"># oPath = outDirPath if outDirPath else &#39;.&#39;</span>
+        <span class="n">oPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chooseTemporaryPath</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">outDirPath</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="n">lPath</span> <span class="o">=</span> <span class="n">logFilePath</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">lPath</span><span class="p">:</span>
+                <span class="n">lPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDefaultFileName</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s2">&quot;cif-parser-log&quot;</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">oPath</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setLogFilePath</span><span class="p">(</span><span class="n">lPath</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fileExists</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="c1">#</span>
+            <span class="n">filePath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncompress</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">oPath</span><span class="p">)</span>
+            <span class="n">tPath</span> <span class="o">=</span> <span class="n">filePath</span>
+            <span class="k">if</span> <span class="n">enforceAscii</span><span class="p">:</span>
+                <span class="n">asciiFilePath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDefaultFileName</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s2">&quot;cif-parser-ascii&quot;</span><span class="p">,</span> <span class="n">fileExt</span><span class="o">=</span><span class="s2">&quot;cif&quot;</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">oPath</span><span class="p">)</span>
+                <span class="n">encodingErrors</span> <span class="o">=</span> <span class="s2">&quot;xmlcharrefreplace&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_useCharRefs</span> <span class="k">else</span> <span class="s2">&quot;ignore&quot;</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Filtering input file to </span><span class="si">%s</span><span class="s2"> using encoding errors as </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">asciiFilePath</span><span class="p">,</span> <span class="n">encodingErrors</span><span class="p">)</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toAscii</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">asciiFilePath</span><span class="p">,</span> <span class="n">chunkSize</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">encodingErrors</span><span class="o">=</span><span class="n">encodingErrors</span><span class="p">,</span> <span class="n">readEncodingErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_readEncodingErrors</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                    <span class="n">tPath</span> <span class="o">=</span> <span class="n">asciiFilePath</span>
+            <span class="c1">#</span>
+            <span class="n">readDef</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">selectList</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">selectList</span><span class="p">:</span>
+                <span class="n">readDef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getSelectionDef</span><span class="p">(</span><span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="n">containerL</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__readData</span><span class="p">(</span><span class="n">tPath</span><span class="p">,</span> <span class="n">readDef</span><span class="o">=</span><span class="n">readDef</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="n">cleanUp</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="n">lPath</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxInputLineLength</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="n">cleanUp</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">asciiFilePath</span><span class="p">,</span> <span class="n">asciiFilePath</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">filePath</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">),</span> <span class="n">filePath</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setContainerProperties</span><span class="p">(</span><span class="n">containerL</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">),</span> <span class="n">load_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_getTimeStamp</span><span class="p">(),</span> <span class="n">uid</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">return</span> <span class="n">containerL</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">PdbxError</span><span class="p">,</span> <span class="n">PdbxSyntaxError</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">asciiFilePath</span> <span class="ow">and</span> <span class="n">cleanUp</span><span class="p">,</span> <span class="n">asciiFilePath</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="n">raise_from</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="c1"># raise ex from None</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">asciiFilePath</span> <span class="ow">and</span> <span class="n">cleanUp</span><span class="p">,</span> <span class="n">asciiFilePath</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failing read for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">getReadDiags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Recover the diagnostics for the previous readFile() operation.readFile</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          list of strings:  List of parsing and processing diagnostics from last readFile() operation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readLogRecords</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getSelectionDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal method to package selection/exclusion list for the C++ parser library.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           CifFileReadDef() object:  object prepared for parsing library</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">readDef</span> <span class="o">=</span> <span class="n">CifFileReadDef</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">excludeFlag</span><span class="p">:</span>
+                <span class="n">readDef</span><span class="o">.</span><span class="n">SetCategoryList</span><span class="p">(</span><span class="n">selectList</span><span class="p">,</span> <span class="n">PdbxType</span><span class="o">.</span><span class="n">D</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">readDef</span><span class="o">.</span><span class="n">SetCategoryList</span><span class="p">(</span><span class="n">selectList</span><span class="p">,</span> <span class="n">PdbxType</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">readDef</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failing read selection with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__processReadLogFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal method to process logfiles and either log errors or raise exceptions (See: Class PdbxExceptions).</span>
+<span class="sd">        The behavior is controlled by the class attribute _raiseExcetions.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         list of strings:  List of records in the input log file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diagL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readLogRecords</span><span class="p">()</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="n">diagL</span><span class="p">:</span>
+            <span class="n">numErrors</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">numSyntaxErrors</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">numWarnings</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">diag</span> <span class="ow">in</span> <span class="n">diagL</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;ERROR&quot;</span> <span class="ow">in</span> <span class="n">diag</span><span class="p">:</span>
+                    <span class="n">numErrors</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="s2">&quot;WARN&quot;</span> <span class="ow">in</span> <span class="n">diag</span><span class="p">:</span>
+                    <span class="n">numWarnings</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="s2">&quot;syntax&quot;</span> <span class="ow">in</span> <span class="n">diag</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">numSyntaxErrors</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1">#</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> syntax errors </span><span class="si">%d</span><span class="s2">  warnings </span><span class="si">%d</span><span class="s2"> all errors </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">numSyntaxErrors</span><span class="p">,</span> <span class="n">numWarnings</span><span class="p">,</span> <span class="n">numErrors</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="n">numSyntaxErrors</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PdbxSyntaxError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> syntax errors </span><span class="si">%d</span><span class="s2">  all errors </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">numSyntaxErrors</span><span class="p">,</span> <span class="n">numErrors</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">numErrors</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> error count is </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">numErrors</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">numErrors</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> syntax errors </span><span class="si">%d</span><span class="s2">  all errors </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">numSyntaxErrors</span><span class="p">,</span> <span class="n">numErrors</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">numWarnings</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> warnings </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">numWarnings</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">diagL</span>
+
+    <span class="k">def</span> <span class="nf">__processContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cifFileObj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal method to transfer parsed data from the wrapped input C++ CifFile object into</span>
+<span class="sd">        the list of Python DataContainer objects.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cifFileObj (wrapped CifFile object): Wrapped input C++ CifFile object</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of DataContainer objects:   List of Python DataContainer objects</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">containerList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">containerNameList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># ----- Repackage the data content  ----</span>
+            <span class="c1">#</span>
+            <span class="n">containerList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">containerNameList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">containerNameList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cifFileObj</span><span class="o">.</span><span class="n">GetBlockNames</span><span class="p">(</span><span class="n">containerNameList</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">containerName</span> <span class="ow">in</span> <span class="n">containerNameList</span><span class="p">:</span>
+                <span class="c1">#</span>
+                <span class="n">aContainer</span> <span class="o">=</span> <span class="n">DataContainer</span><span class="p">(</span><span class="n">containerName</span><span class="p">)</span>
+                <span class="c1">#</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="n">cifFileObj</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span><span class="n">containerName</span><span class="p">)</span>
+                <span class="n">tableNameList</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">tableNameList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">GetTableNames</span><span class="p">(</span><span class="n">tableNameList</span><span class="p">))</span>
+
+                <span class="k">for</span> <span class="n">tableName</span> <span class="ow">in</span> <span class="n">tableNameList</span><span class="p">:</span>
+                    <span class="n">table</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">GetTable</span><span class="p">(</span><span class="n">tableName</span><span class="p">)</span>
+                    <span class="n">attributeNameList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">GetColumnNames</span><span class="p">())</span>
+                    <span class="n">numRows</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">GetNumRows</span><span class="p">()</span>
+                    <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">numRows</span><span class="p">):</span>
+                        <span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">GetRow</span><span class="p">(</span><span class="n">iRow</span><span class="p">)</span>
+                        <span class="c1"># row = table.GetRow(iRow).decode(&#39;unicode_escape&#39;).encode(&#39;utf-8&#39;)</span>
+                        <span class="c1"># row = [p.encode(&#39;ascii&#39;, &#39;xmlcharrefreplace&#39;) for p in table.GetRow(iRow)]</span>
+                        <span class="n">rowList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+                    <span class="n">aCategory</span> <span class="o">=</span> <span class="n">DataCategory</span><span class="p">(</span><span class="n">tableName</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">rowList</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">raiseExceptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">)</span>
+                    <span class="n">aContainer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aCategory</span><span class="p">)</span>
+                <span class="n">containerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aContainer</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failing packaging with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">containerList</span>
+
+    <span class="k">def</span> <span class="nf">__readData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">readDef</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal method to read input file and return data as a list of DataContainer objects.</span>
+<span class="sd">        readDef optionally contains a selection of data categories to be returned.    Diagnostics</span>
+<span class="sd">        will be written to logFilePath (persisted if cleanuUp=False).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            inputFilePath (string):  input file path</span>
+<span class="sd">            readDef (CifFileReadDef object, optional): wrapped CifFileReadDef() object</span>
+<span class="sd">            maxLineLength (int, optional): Maximum supported line length on input</span>
+<span class="sd">            logFilePath (string, optional): Log file path</span>
+<span class="sd">            cleanUp (bool, optional): Flag to remove temporary files on exit</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of lists : DataContainer List, Diagnostics (string) List</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">containerList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">diagL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">readDef</span><span class="p">:</span>
+                <span class="n">cifFileObj</span> <span class="o">=</span> <span class="n">ParseCifSelective</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">readDef</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">,</span> <span class="n">intCaseSense</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="n">maxLineLength</span><span class="p">,</span> <span class="n">nullValue</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">parseLogFileName</span><span class="o">=</span><span class="n">logFilePath</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cifFileObj</span> <span class="o">=</span> <span class="n">ParseCifSimple</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">,</span> <span class="n">intCaseSense</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="n">maxLineLength</span><span class="p">,</span> <span class="n">nullValue</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">parseLogFileName</span><span class="o">=</span><span class="n">logFilePath</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1"># ---  Process/Handle read errors   ----</span>
+            <span class="c1">#</span>
+            <span class="n">diagL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__processReadLogFile</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Diagnostic count </span><span class="si">%d</span><span class="s2"> values </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagL</span><span class="p">),</span> <span class="n">diagL</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timing</span><span class="p">:</span>
+                <span class="n">stepTime1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Timing parsed </span><span class="si">%r</span><span class="s2"> in </span><span class="si">%.4f</span><span class="s2"> seconds&quot;</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">stepTime1</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="n">containerList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__processContent</span><span class="p">(</span><span class="n">cifFileObj</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">cleanUp</span><span class="p">,</span> <span class="n">logFilePath</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timing</span><span class="p">:</span>
+                <span class="n">stepTime2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Timing api load in </span><span class="si">%.4f</span><span class="s2"> seconds read time </span><span class="si">%.4f</span><span class="s2"> seconds&quot;</span><span class="p">,</span> <span class="n">stepTime2</span> <span class="o">-</span> <span class="n">stepTime1</span><span class="p">,</span> <span class="n">stepTime2</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">return</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">diagL</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">PdbxError</span><span class="p">,</span> <span class="n">PdbxSyntaxError</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">cleanUp</span><span class="p">,</span> <span class="n">logFilePath</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="n">raise_from</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">cleanUp</span><span class="p">,</span> <span class="n">logFilePath</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failing read for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">diagL</span>
+
+    <span class="k">def</span> <span class="nf">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write input list of data containers to the specified output file path in mmCIF format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            outputFilePath (string): output file path</span>
+<span class="sd">            containerList (list DataContainer objects, optional):</span>
+<span class="sd">            maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)</span>
+<span class="sd">            enforceAscii (bool, optional): Filter output (not implemented - content must be ascii compatible on input)</span>
+<span class="sd">            lastInOrder (list of category names, optional): Move data categories in this list to end of each data block</span>
+<span class="sd">            selectOrder (list of category names, optional): Write only data categories on this list.</span>
+<span class="sd">            **kwargs: Placeholder for unsupported key value pairs</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Completion status</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">enforceAscii</span>
+        <span class="n">lastInOrder</span> <span class="o">=</span> <span class="n">lastInOrder</span> <span class="k">if</span> <span class="n">lastInOrder</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;pdbx_nonpoly_scheme&quot;</span><span class="p">,</span> <span class="s2">&quot;pdbx_poly_seq_scheme&quot;</span><span class="p">,</span> <span class="s2">&quot;atom_site&quot;</span><span class="p">,</span> <span class="s2">&quot;atom_site_anisotrop&quot;</span><span class="p">]</span>
+        <span class="n">containerL</span> <span class="o">=</span> <span class="n">containerList</span> <span class="k">if</span> <span class="n">containerList</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;write container length </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">containerL</span><span class="p">))</span>
+            <span class="c1"># (CifFile args: placeholder, verbose: bool, caseSense: Char::eCompareType, maxLineLength: int, nullValue: str)</span>
+            <span class="n">cF</span> <span class="o">=</span> <span class="n">CifFile</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerL</span><span class="p">:</span>
+                <span class="n">containerName</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;writing container </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">containerName</span><span class="p">)</span>
+                <span class="n">cF</span><span class="o">.</span><span class="n">AddBlock</span><span class="p">(</span><span class="n">containerName</span><span class="p">)</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="n">cF</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span><span class="n">containerName</span><span class="p">)</span>
+                <span class="c1">#</span>
+                <span class="c1"># objNameList = container.getObjNameList()</span>
+                <span class="c1"># logger.debug(&quot;write category length %d\n&quot; % len(objNameList))</span>
+                <span class="c1">#</span>
+                <span class="c1"># Reorder/Filter - container object list-</span>
+                <span class="n">objNameList</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">filterObjectNameList</span><span class="p">(</span><span class="n">lastInOrder</span><span class="o">=</span><span class="n">lastInOrder</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="n">selectOrder</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;write category names  </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">objNameList</span><span class="p">)</span>
+                <span class="c1">#</span>
+                <span class="k">for</span> <span class="n">objName</span> <span class="ow">in</span> <span class="n">objNameList</span><span class="p">:</span>
+                    <span class="n">name</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">rowList</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">objName</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                    <span class="n">table</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">AddTable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">attributeName</span> <span class="ow">in</span> <span class="n">attributeNameList</span><span class="p">:</span>
+                        <span class="n">table</span><span class="o">.</span><span class="n">AddColumn</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">rLen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributeNameList</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rowList</span><span class="p">):</span>
+                            <span class="n">table</span><span class="o">.</span><span class="n">AddRow</span><span class="p">()</span>
+                            <span class="n">table</span><span class="o">.</span><span class="n">FillRow</span><span class="p">(</span><span class="n">ii</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">jj</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span> <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rLen</span><span class="p">)])</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Exception for </span><span class="si">%s</span><span class="s2"> preparing category </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%d</span><span class="s2">) attributes </span><span class="si">%r</span><span class="s2"> for writing </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rowList</span><span class="p">),</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                    <span class="c1">#</span>
+                    <span class="n">block</span><span class="o">.</span><span class="n">WriteTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timing</span><span class="p">:</span>
+                <span class="n">stepTime1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Timing </span><span class="si">%d</span><span class="s2"> container(s) api loaded in </span><span class="si">%.4f</span><span class="s2"> seconds&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">containerL</span><span class="p">),</span> <span class="n">stepTime1</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dumpBlocks</span><span class="p">(</span><span class="n">cF</span><span class="p">)</span>
+            <span class="n">cF</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timing</span><span class="p">:</span>
+                <span class="n">stepTime2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Timing </span><span class="si">%d</span><span class="s2"> container(s) written in </span><span class="si">%.4f</span><span class="s2"> seconds total time </span><span class="si">%.4f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">containerList</span><span class="p">),</span> <span class="n">stepTime2</span> <span class="o">-</span> <span class="n">stepTime1</span><span class="p">,</span> <span class="n">stepTime2</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Write failing for file </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__dumpBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal method to log the contents of the input wrapped CifFile object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cf (CifFile object): wrapped CifFile object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;cif file </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cf</span><span class="p">)</span>
+            <span class="n">blockNameList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">blockNameList</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">GetBlockNames</span><span class="p">(</span><span class="n">blockNameList</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; block name list </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">blockNameList</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">blockName</span> <span class="ow">in</span> <span class="n">blockNameList</span><span class="p">:</span>
+                <span class="c1">#</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span><span class="n">blockName</span><span class="p">)</span>
+                <span class="n">tableNameList</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">tableNameList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">GetTableNames</span><span class="p">(</span><span class="n">tableNameList</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;tables name list </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">tableNameList</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">tableName</span> <span class="ow">in</span> <span class="n">tableNameList</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;table name </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tableName</span><span class="p">)</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">IsTablePresent</span><span class="p">(</span><span class="n">tableName</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;table present </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ok</span><span class="p">)</span>
+                    <span class="n">table</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">GetTable</span><span class="p">(</span><span class="n">tableName</span><span class="p">)</span>
+
+                    <span class="n">attributeNameList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">GetColumnNames</span><span class="p">())</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Attribute name list </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">attributeNameList</span><span class="p">))</span>
+                    <span class="n">numRows</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">GetNumRows</span><span class="p">()</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;row length </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">numRows</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">numRows</span><span class="p">):</span>
+                        <span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">GetRow</span><span class="p">(</span><span class="n">iRow</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Attribute name list </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;dump failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1290,10 +1632,10 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a title="mmcif.io.IoAdapterBas
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

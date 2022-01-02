@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/DataCategory/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1149,6 +1149,538 @@ mmcif.api.DataCategory.DataCategory            (<a title="mmcif.api.DataCategory
 
       <p>Methods for creating, accessing, and formatting PDBx/mmCif data categories.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataCategory</span><span class="p">(</span><span class="n">DataCategoryBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Methods for creating, accessing, and formatting PDBx/mmCif data categories.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raiseExceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Summary</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Category name</span>
+<span class="sd">            attributeNameList (None, optional):  Initial attribute names</span>
+<span class="sd">            rowList (None, optional): Initial category data organized in rows corresponding to the attribute name list</span>
+<span class="sd">            raiseExceptions (bool, optional): Flag to control if expections are raised or handled internally</span>
+<span class="sd">            copyInputData (bool, optional):  Copy rather than reference input data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DataCategory</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">rowList</span><span class="p">,</span> <span class="n">raiseExceptions</span><span class="o">=</span><span class="n">raiseExceptions</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="n">copyInputData</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__currentAttribute</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#</span>
+
+    <span class="k">def</span> <span class="nf">setVerboseMode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolVal</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span> <span class="o">=</span> <span class="n">boolVal</span>
+
+    <span class="k">def</span> <span class="nf">getCurrentAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__currentAttribute</span>
+
+    <span class="k">def</span> <span class="nf">getRowIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span>
+
+    <span class="k">def</span> <span class="nf">getFullRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a full row based on the length of the the attribute list or a row initialized with missing values&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Returning an empty row at </span><span class="si">%d</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;?&quot;</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">getAttributeListWithOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">att</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">):</span>
+            <span class="n">oL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">att</span><span class="p">,</span> <span class="n">ii</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">oL</span>
+
+    <span class="k">def</span> <span class="nf">appendAttributeExtendRows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">):</span>
+        <span class="n">attributeNameLC</span> <span class="o">=</span> <span class="n">attributeName</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">attributeNameLC</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_catalog</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_catalog</span><span class="p">[</span><span class="n">attributeNameLC</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributeName</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_catalog</span><span class="p">[</span><span class="n">attributeNameLC</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributeName</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Appending existing attribute </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_catalog</span><span class="p">[</span><span class="n">attributeNameLC</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributeName</span>
+            <span class="c1"># add a placeholder to any existing rows for the new attribute.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                    <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">defaultValue</span><span class="p">)</span>
+            <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span>
+
+    <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__currentAttribute</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="n">attributeName</span>
+        <span class="k">if</span> <span class="n">rowIndex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rowI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rowI</span> <span class="o">=</span> <span class="n">rowIndex</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rowI</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attribute</span><span class="p">)]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">IndexError</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">getValueOrDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Within the current category return the value of input attribute in the input rowIndex [0-based].</span>
+
+<span class="sd">        On error or if the value missing or null return the default value. Empty values returned as is.</span>
+
+<span class="sd">        Exceptions on for unknown attributeNames and out-of-range indices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__currentAttribute</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="n">attributeName</span>
+        <span class="k">if</span> <span class="n">rowIndex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rowI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rowI</span> <span class="o">=</span> <span class="n">rowIndex</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rowI</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">tV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attribute</span><span class="p">)]</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">tV</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tV</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]):</span>
+                    <span class="k">return</span> <span class="n">defaultValue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">tV</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Failing attributeName </span><span class="si">%s</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> defaultValue </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="c1"># if self._raiseExceptions:</span>
+                <span class="c1">#     raise e</span>
+                <span class="c1"># Returning default -- no exception</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="n">defaultValue</span>
+
+    <span class="k">def</span> <span class="nf">getFirstValueOrDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the value from the first non-null attribute found in the input attribute list</span>
+<span class="sd">        from the row (rowIndex) in the current category object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">attributeNameList</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">at</span><span class="p">):</span>
+                    <span class="n">tV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">tV</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tV</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]):</span>
+                        <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">tV</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="c1"># if self._raiseExceptions:</span>
+            <span class="c1">#    raise e</span>
+        <span class="k">return</span> <span class="n">defaultValue</span>
+
+    <span class="k">def</span> <span class="nf">setValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the value of an existing attribute.  rowIndex values &gt;=0, where</span>
+<span class="sd">        the category will be extended in length as needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__currentAttribute</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="n">attributeName</span>
+
+        <span class="k">if</span> <span class="n">rowIndex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rowI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rowI</span> <span class="o">=</span> <span class="n">rowIndex</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rowI</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">rowI</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+                <span class="c1"># if row index is out of range - add the rows -</span>
+                <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rowI</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__emptyRow</span><span class="p">())</span>
+                <span class="c1"># self.data[rowI][attribute]=value</span>
+                <span class="n">ll</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+
+                <span class="c1"># extend the list if needed -</span>
+                <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="n">ll</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">None</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ind</span> <span class="o">-</span> <span class="p">(</span><span class="n">ll</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))])</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
+                        <span class="s2">&quot;DataCategory(setvalue) index error category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> row index </span><span class="si">%d</span><span class="s2"> col </span><span class="si">%d</span><span class="s2"> rowlen </span><span class="si">%d</span><span class="s2"> value </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
+                        <span class="n">attribute</span><span class="p">,</span>
+                        <span class="n">rowI</span><span class="p">,</span>
+                        <span class="n">ind</span><span class="p">,</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">]),</span>
+                        <span class="n">value</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;DataCategory(setvalue) attribute </span><span class="si">%r</span><span class="s2"> length attribute list </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">aV</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;DataCategory(setvalue) </span><span class="si">%d</span><span class="s2"> attributeName </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="n">aV</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">IndexError</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;DataCategory(setvalue) value error category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> row index </span><span class="si">%d</span><span class="s2"> value </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__emptyRow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))]</span>
+
+    <span class="k">def</span> <span class="nf">replaceValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oldValue</span><span class="p">,</span> <span class="n">newValue</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">numReplace</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">numReplace</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">==</span> <span class="n">oldValue</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">newValue</span>
+                    <span class="n">numReplace</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">numReplace</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">numReplace</span>
+
+    <span class="k">def</span> <span class="nf">replaceSubstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oldValue</span><span class="p">,</span> <span class="n">newValue</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">numReplace</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">numReplace</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">oldValue</span><span class="p">,</span> <span class="n">newValue</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]:</span>
+                    <span class="n">numReplace</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">numReplace</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">numReplace</span>
+
+    <span class="k">def</span> <span class="nf">selectIndices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeValue</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">rL</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">attributeValue</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]:</span>
+                    <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rL</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">rL</span>
+
+    <span class="k">def</span> <span class="nf">selectIndicesFromList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeValueList</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">):</span>
+        <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">indList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">attributeNameList</span><span class="p">:</span>
+                <span class="n">indList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">at</span><span class="p">))</span>
+            <span class="n">indValList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">indList</span><span class="p">,</span> <span class="n">attributeValueList</span><span class="p">))</span>
+            <span class="c1">#</span>
+            <span class="n">numList</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indValList</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+                <span class="n">nMatch</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">tVal</span> <span class="ow">in</span> <span class="n">indValList</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">tVal</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]:</span>
+                        <span class="n">nMatch</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">nMatch</span> <span class="o">==</span> <span class="n">numList</span><span class="p">:</span>
+                    <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection/index failure for values </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeValueList</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="k">return</span> <span class="n">rL</span>
+
+    <span class="k">def</span> <span class="nf">selectValuesWhere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">attributeValueWhere</span><span class="p">,</span> <span class="n">attributeNameWhere</span><span class="p">,</span> <span class="n">returnCount</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">iCount</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+            <span class="n">indWhere</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeNameWhere</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">attributeValueWhere</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">indWhere</span><span class="p">]:</span>
+                    <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+                    <span class="n">iCount</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">returnCount</span> <span class="ow">and</span> <span class="p">(</span><span class="n">iCount</span> <span class="o">&gt;=</span> <span class="n">returnCount</span><span class="p">):</span>
+                        <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection failure&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">rL</span>
+
+    <span class="k">def</span> <span class="nf">selectValueListWhere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">attributeValueWhere</span><span class="p">,</span> <span class="n">attributeNameWhere</span><span class="p">,</span> <span class="n">returnCount</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a  list of lists containing the values of input attributeNameList</span>
+<span class="sd">        satisfying the attribute value where condition.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">iCount</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">indList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">attributeNameList</span><span class="p">:</span>
+                <span class="n">indList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">at</span><span class="p">))</span>
+            <span class="n">indWhere</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeNameWhere</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">attributeValueWhere</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">indWhere</span><span class="p">]:</span>
+                    <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="n">indList</span><span class="p">])</span>
+                    <span class="n">iCount</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">returnCount</span> <span class="ow">and</span> <span class="p">(</span><span class="n">iCount</span> <span class="o">&gt;=</span> <span class="n">returnCount</span><span class="p">):</span>
+                        <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection failure&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">rL</span>
+
+    <span class="k">def</span> <span class="nf">selectValuesWhereConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">conditionsD</span><span class="p">,</span> <span class="n">returnCount</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">iCount</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+            <span class="n">idxD</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">conditionsD</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="c1">#</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">conditionsD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span> <span class="ow">and</span> <span class="n">ok</span>
+                <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                    <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+                    <span class="n">iCount</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">returnCount</span> <span class="ow">and</span> <span class="p">(</span><span class="n">iCount</span> <span class="o">&gt;=</span> <span class="n">returnCount</span><span class="p">):</span>
+                        <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection failure&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">rL</span>
+
+    <span class="k">def</span> <span class="nf">countValuesWhereConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditionsD</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count row instances subject to input equivalence conditions</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            conditionsD (dict): {&#39;atName&#39;: value, ....}</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            e: any failure</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: count of instances satisfying input conditions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">iCount</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">idxD</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">conditionsD</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">conditionsD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span> <span class="ow">and</span> <span class="n">ok</span>
+                <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                    <span class="n">iCount</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection failure&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">iCount</span>
+
+    <span class="k">def</span> <span class="nf">countValuesWhereOpConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditionTupleList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count row instances subject to input condition list</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            conditionTupleList (list): (attributeName, op, value) where (op = &#39;eq&#39;, &#39;gt(int)&#39;, &#39;lt(int)&#39;, &#39;in&#39;, &#39;ne&#39;, &#39;not in&#39;)</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            e: any failure</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: count of instances satisfying input conditions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">iCount</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">idxD</span> <span class="o">=</span> <span class="p">{</span><span class="n">atName</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">atName</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">conditionTupleList</span><span class="p">}</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">atName</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">conditionTupleList</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;eq&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ne&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;lt(int)&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;gt(int)&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;in&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]]</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;not in&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                    <span class="n">iCount</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection failure&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">iCount</span>
+
+    <span class="c1">#</span>
+    <span class="k">def</span> <span class="nf">getCombinationCounts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            attributeList (list): target list of attribute names</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            cD[(attribute value, ... )] = count</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cD</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">idxL</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">attributeList</span><span class="p">]</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">ky</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="n">idxL</span><span class="p">])</span>
+                <span class="n">cD</span><span class="p">[</span><span class="n">ky</span><span class="p">]</span> <span class="o">=</span> <span class="n">cD</span><span class="p">[</span><span class="n">ky</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">ky</span> <span class="ow">in</span> <span class="n">cD</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection failure&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">cD</span>
+
+    <span class="k">def</span> <span class="nf">getCombinationCountsWithConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeList</span><span class="p">,</span> <span class="n">conditionTupleList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            attributeList (list): target list of attribute names</span>
+<span class="sd">            conditionTupleList (list): (attributeName, op, value) where (op = &#39;eq&#39;, &#39;gt(int)&#39;, &#39;lt(int)&#39;, &#39;in&#39;, &#39;ne&#39;, &#39;not in&#39;)</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            cD[(attribute value, ... )] = count</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cD</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">idxL</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">attributeList</span><span class="p">]</span>
+            <span class="n">idxD</span> <span class="o">=</span> <span class="p">{</span><span class="n">atName</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">atName</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">conditionTupleList</span><span class="p">}</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">atName</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">conditionTupleList</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;eq&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ne&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;lt(int)&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;gt(int)&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;in&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]]</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                    <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;not in&quot;</span><span class="p">:</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idxD</span><span class="p">[</span><span class="n">atName</span><span class="p">]]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ok</span>
+                <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                    <span class="n">ky</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="n">idxL</span><span class="p">])</span>
+                    <span class="n">cD</span><span class="p">[</span><span class="n">ky</span><span class="p">]</span> <span class="o">=</span> <span class="n">cD</span><span class="p">[</span><span class="n">ky</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">ky</span> <span class="ow">in</span> <span class="n">cD</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Selection failure&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">cD</span>
+
+    <span class="k">def</span> <span class="nf">invokeAttributeMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">mType</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">mType</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">db</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__currentAttribute</span> <span class="o">=</span> <span class="n">attributeName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">appendAttribute</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+        <span class="n">currentRowIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span>  <span class="c1"># pylint: disable=possibly-unused-variable</span>
+        <span class="c1">#</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)]</span>
+            <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">ll</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="n">ll</span><span class="p">:</span>
+                <span class="n">row</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">None</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ind</span> <span class="o">-</span> <span class="n">ll</span><span class="p">)])</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">exec</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">getInline</span><span class="p">(),</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">())</span>  <span class="c1"># pylint: disable=exec-used</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">currentRowIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span>
+
+    <span class="k">def</span> <span class="nf">invokeCategoryMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mType</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">mType</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">db</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">exec</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">getInline</span><span class="p">(),</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">())</span>  <span class="c1"># pylint: disable=exec-used</span>
+
+    <span class="k">def</span> <span class="nf">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  Category: </span><span class="si">%s</span><span class="s2"> attribute list length: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  Category: </span><span class="si">%s</span><span class="s2"> attribute: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">at</span><span class="p">))</span>
+
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  Row value list length: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                    <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;       </span><span class="si">%30s</span><span class="s2">: </span><span class="si">%s</span><span class="s2"> ...</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)[:</span><span class="mi">30</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;+WARNING - </span><span class="si">%s</span><span class="s2"> data length </span><span class="si">%d</span><span class="s2"> attribute name length </span><span class="si">%s</span><span class="s2"> mismatched</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">dumpIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  Category: </span><span class="si">%s</span><span class="s2"> attribute list length: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  Category: </span><span class="si">%s</span><span class="s2"> attribute: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">at</span><span class="p">))</span>
+
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  Value list length: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">jj</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%4d</span><span class="s2">        </span><span class="si">%30s</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">jj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">v</span><span class="p">))</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1508,7 +2040,7 @@ mmcif.api.DataCategory.DataCategory            (<a title="mmcif.api.DataCategory
 
 
 <h4 id="mmcif.api.DataCategory.DataCategory.dumpIt" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f774c24eaf0</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f668d688f70</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -2056,7 +2588,7 @@ from the row (rowIndex) in the current category object.</p>
 
 
 <h4 id="mmcif.api.DataCategory.DataCategory.printIt" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f774c24eaf0</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f668d688f70</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -2561,10 +3093,10 @@ the category will be extended in length as needed.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>
