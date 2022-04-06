@@ -294,7 +294,7 @@ class IoAdapterCore(IoAdapterBase):
 
         return containerList, diagL
 
-    def writeFile(self, outputFilePath, containerList=None, maxLineLength=900, enforceAscii=True, lastInOrder=None, selectOrder=None, **kwargs):
+    def writeFile(self, outputFilePath, containerList=None, doubleQuotingFlag=False, maxLineLength=900, enforceAscii=True, lastInOrder=None, selectOrder=None, **kwargs):
         """Write input list of data containers to the specified output file path in mmCIF format.
 
         Args:
@@ -354,6 +354,9 @@ class IoAdapterCore(IoAdapterBase):
                 logger.info("Timing %d container(s) api loaded in %.4f seconds", len(containerL), stepTime1 - startTime)
             if self._debug:
                 self.__dumpBlocks(cF)
+            if doubleQuotingFlag:
+                cF.SetQuoting(cF.eDOUBLE)
+            #
             cF.Write(str(outputFilePath))
             if self._timing:
                 stepTime2 = time.time()
