@@ -70,3 +70,4 @@
 28-Sep-2021    V0.73 - Ignore decoding errors on read by default in IoAdapterPy.readFile()
  5-Oct-2021    V0.74 - Add support for relative local paths with DictionaryInclude()
 11-Oct-2021    V0.75 - Add the dictionary API instance as a keyword argument to any invoked method in DictMethodRunner()
+06-Apr-2022    V0.76 - Add doubleQuotingFlag parameter in IoAdapterCore.writeFile() method
