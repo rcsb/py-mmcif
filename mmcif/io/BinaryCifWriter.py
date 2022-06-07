@@ -20,8 +20,22 @@ logger = logging.getLogger(__name__)
 
 class BinaryCifWriter(object):
     """Writer methods for the binary CIF format."""
+    modelcif_saveframes = [
+        'ma_data', 'ma_model_list', 'ma_qa_metric', 'ma_qa_metric_global', 
+        'ma_qa_metric_local', 'ma_software_group', 'ma_target_entity', 
+        'ma_target_entity_instance', 'ma_target_ref_db_details'
+    ]
+    difficult_attributes = [
+        'concentration_range', 'pdb_chain_residue_range', 'axial_symmetry',
+        'concentration_range', 'point_symmetry', 'used_frames_per_image',
+        'temperature', 'pH',
+    ]
 
-    def __init__(self, dictionaryApi, storeStringsAsBytes=False, defaultStringEncoding="utf-8", applyTypes=True, useStringTypes=False, useFloat64=False):
+    def __init__(
+        self, dictionaryApi, dictionaryApi_modelcif, 
+        storeStringsAsBytes=False, defaultStringEncoding="utf-8",
+        applyTypes=True, useStringTypes=False, useFloat64=False
+    ):
         """Create an instance of the binary CIF writer class.
 
         Args:
@@ -39,6 +53,7 @@ class BinaryCifWriter(object):
         self.__useStringTypes = useStringTypes
         self.__useFloat64 = useFloat64
         self.__dApi = dictionaryApi
+        self.__dApi_modelcif = dictionaryApi_modelcif
 
     def serialize(self, filePath, containerList):
         """Serialize the input container list in binary CIF and store these data in the input file path.
@@ -57,7 +72,18 @@ class BinaryCifWriter(object):
                 for catName in container.getObjNameList():
                     cObj = container.getObj(catName)
                     if self.__applyTypes:
-                        cObj = DataCategoryTyped(cObj, dictionaryApi=self.__dApi, copyInputData=False)
+                        if catName == 'af_target_ref_db_details':
+                            continue
+                        elif catName in self.modelcif_saveframes:
+                            cObj = DataCategoryTyped(
+                                cObj, dictionaryApi=self.__dApi_modelcif, 
+                                copyInputData=False
+                            )
+                        else:
+                            cObj = DataCategoryTyped(
+                                cObj, dictionaryApi=self.__dApi, 
+                                copyInputData=False
+                            )
                     #
                     rowCount = cObj.getRowCount()
                     #
@@ -126,9 +152,17 @@ class BinaryCifWriter(object):
         Returns:
             (string): data type (string, integer or float)
         """
-        cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
+        if dObj._name in self.modelcif_saveframes:
+            cifDataType = self.__dApi_modelcif.getTypeCode(dObj.getName(), atName)
+        else:
+            cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
         cifPrimitiveType = self.__dApi.getTypePrimitive(dObj.getName(), atName)
         dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        if atName in self.difficult_attributes:
+            # this attribute is known to cause Cast Errors, either because it
+            # has 'int' in it (e.g. point_symmetry) or because it is a range, 
+            # (e.g. 'pdb_chain_residue_range')
+            dataType = "string"
         return dataType
 
 

@@ -29,6 +29,13 @@ logger = logging.getLogger(__name__)
 class DataCategoryTyped(DataCategory):
     """A subclass of DataCategory with methods to apply explicit data typing."""
 
+    difficult_attributes = [
+        'concentration_range', 'pdb_chain_residue_range', 'axial_symmetry',
+        'concentration_range', 'point_symmetry', 'used_frames_per_image',
+        'temperature', 'pH', 
+
+    ]
+
     def __init__(
         self,
         dataCategoryObj,
@@ -90,6 +97,7 @@ class DataCategoryTyped(DataCategory):
                 # colValL = self.getColumn(ii)
                 dataType, isMandatory = self.__getAttributeInfo(atName)
                 missingValue = missingValueInteger if dataType == "integer" else missingValueFloat if dataType in ["integer", "float"] else missingValueString
+                #if atName == ''print(missingValue)
                 missingValue = missingValue if not useCifUnknowns else "." if isMandatory else "?"
                 for row in self.data:
                     try:
@@ -224,6 +232,11 @@ class DataCategoryTyped(DataCategory):
         cifPrimitiveType = self.__dApi.getTypePrimitive(self.getName(), atName)
         isMandatory = self.__dApi.getMandatoryCode(self.getName(), atName) in ["yes", "implicit", "implicit-ordinal"]
         dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        if atName in self.difficult_attributes:
+            # this attribute is known to cause Cast Errors, either because it
+            # has 'int' in it (e.g. point_symmetry) or because it is a range, 
+            # (e.g. 'pdb_chain_residue_range')
+            dataType = "string"
         return dataType, isMandatory
 
     def __isClose(self, aV, bV, relTol=1e-09, absTol=1e-06):
