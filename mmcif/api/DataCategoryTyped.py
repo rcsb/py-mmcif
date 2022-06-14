@@ -223,7 +223,7 @@ class DataCategoryTyped(DataCategory):
         cifDataType = self.__dApi.getTypeCode(self.getName(), atName)
         cifPrimitiveType = self.__dApi.getTypePrimitive(self.getName(), atName)
         isMandatory = self.__dApi.getMandatoryCode(self.getName(), atName) in ["yes", "implicit", "implicit-ordinal"]
-        dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        dataType = "string" if cifDataType is None else "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
         return dataType, isMandatory
 
     def __isClose(self, aV, bV, relTol=1e-09, absTol=1e-06):

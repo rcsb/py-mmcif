@@ -128,7 +128,7 @@ class BinaryCifWriter(object):
         """
         cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
         cifPrimitiveType = self.__dApi.getTypePrimitive(dObj.getName(), atName)
-        dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        dataType = "string" if cifDataType is None else "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
         return dataType
 
 
