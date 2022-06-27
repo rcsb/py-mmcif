@@ -1,5 +1,5 @@
 mkdocs
-mkdocstrings
+mkdocstrings[python-legacy]>=0.18
 mkdocs-material
 markdown-include
 pymdown-extensions

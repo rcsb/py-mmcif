@@ -48,7 +48,6 @@ plugins:
               - "!^_[^_]"
               - "!^__json"
               - "!^__config__"
-            new_path_syntax: true
       watch:
         - mmcif
 
