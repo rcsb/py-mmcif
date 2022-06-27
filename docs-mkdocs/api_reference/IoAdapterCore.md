@@ -1,1 +1,1 @@
-::: mmcif.io.IoAdapterCore:IoAdapterCore
+::: mmcif.io.IoAdapterCore.IoAdapterCore

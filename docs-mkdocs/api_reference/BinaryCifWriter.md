@@ -1,3 +1,3 @@
-::: mmcif.io.BinaryCifWriter:BinaryCifWriter
+::: mmcif.io.BinaryCifWriter.BinaryCifWriter
 
-::: mmcif.io.BinaryCifWriter:BinaryCifEncoders
+::: mmcif.io.BinaryCifWriter.BinaryCifEncoders

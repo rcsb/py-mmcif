@@ -1,1 +1,1 @@
-::: mmcif.api.DictionaryInclude:DictionaryInclude
+::: mmcif.api.DictionaryInclude.DictionaryInclude

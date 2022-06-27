@@ -1,1 +1,1 @@
-::: mmcif.api.DictMethodRunner:DictMethodRunner
+::: mmcif.api.DictMethodRunner.DictMethodRunner
