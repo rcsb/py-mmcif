@@ -1,1 +1,1 @@
-::: mmcif.io.CifFile:CifFile
+::: mmcif.io.CifFile.CifFile

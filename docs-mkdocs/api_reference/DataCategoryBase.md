@@ -1,1 +1,1 @@
-::: mmcif.api.DataCategoryBase:DataCategoryBase
+::: mmcif.api.DataCategoryBase.DataCategoryBase

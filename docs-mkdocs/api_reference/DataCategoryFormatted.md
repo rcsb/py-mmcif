@@ -1,1 +1,1 @@
-::: mmcif.api.DataCategoryFormatted:DataCategoryFormatted
+::: mmcif.api.DataCategoryFormatted.DataCategoryFormatted

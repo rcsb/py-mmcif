@@ -1,3 +1,3 @@
-::: mmcif.api.Method:MethodDefinition
+::: mmcif.api.Method.MethodDefinition
 
-::: mmcif.api.Method:MethodReference
+::: mmcif.api.Method.MethodReference

@@ -1,1 +1,1 @@
-::: mmcif.api.MethodUtils:MethodUtils
+::: mmcif.api.MethodUtils.MethodUtils

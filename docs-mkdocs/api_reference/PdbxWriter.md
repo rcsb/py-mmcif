@@ -1,1 +1,1 @@
-::: mmcif.io.PdbxWriter:PdbxWriter
+::: mmcif.io.PdbxWriter.PdbxWriter

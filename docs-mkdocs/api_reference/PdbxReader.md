@@ -1,1 +1,1 @@
-::: mmcif.io.PdbxReader:PdbxReader
+::: mmcif.io.PdbxReader.PdbxReader

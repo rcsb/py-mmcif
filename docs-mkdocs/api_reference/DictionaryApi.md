@@ -1,1 +1,1 @@
-::: mmcif.api.DictionaryApi:DictionaryApi
+::: mmcif.api.DictionaryApi.DictionaryApi

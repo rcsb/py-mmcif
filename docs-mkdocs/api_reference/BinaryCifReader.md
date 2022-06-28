@@ -1,3 +1,3 @@
-::: mmcif.io.BinaryCifReader:BinaryCifReader
+::: mmcif.io.BinaryCifReader.BinaryCifReader
 
-::: mmcif.io.BinaryCifReader:BinaryCifDecoders
+::: mmcif.io.BinaryCifReader.BinaryCifDecoders
