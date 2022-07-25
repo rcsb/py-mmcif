@@ -133,6 +133,7 @@ class QuotingTests(unittest.TestCase):
         aCat.append([6, "Loop_my_big_data_loop"])
         aCat.append([7, "Save_my_big_data_saveframe"])
         aCat.append([8, "DatA_my_big_data_file"])
+        aCat.append([9, "Stop_in_the_name_of_love"])
         curContainer.append(aCat)
 
         return curContainer
