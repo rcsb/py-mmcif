@@ -2,6 +2,6 @@ __docformat__ = "google en"
 __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
-__version__ = "0.76"
+__version__ = "0.77"
 
 __apiUrl__ = "https://mmcif.wwpdb.org"
