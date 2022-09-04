@@ -69,12 +69,15 @@ class IoAdapterPy(IoAdapterBase):
             logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)
             outDirPath (string, optional): Path for translated/re-encoded files and default logfiles.
             cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.
+            timeout (float, optional): Timeout in seconds for fetching data from remote urls
             **kwargs: Placeholder for missing keyword arguments.
 
         Returns:
             List of DataContainers: Contents of input file parsed into a list of DataContainer objects.
 
         """
+        timeout = kwargs.pop("timeout", 30)
+
         if kwargs:
             logger.warning("Unsupported keyword arguments %s", kwargs.keys())
         filePath = str(inputFilePath)
@@ -105,7 +108,7 @@ class IoAdapterPy(IoAdapterBase):
                 else:
                     if filePath.endswith(".gz"):
                         customHeader = {"Accept-Encoding": "gzip"}
-                        with closing(requests.get(filePath, headers=customHeader)) as ifh:
+                        with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
                             gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
@@ -113,7 +116,7 @@ class IoAdapterPy(IoAdapterBase):
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
-                        with closing(requests.get(filePath)) as ifh:
+                        with closing(requests.get(filePath, timeout=timeout)) as ifh:
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
                             it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
@@ -133,7 +136,7 @@ class IoAdapterPy(IoAdapterBase):
                 else:
                     if filePath.endswith(".gz"):
                         customHeader = {"Accept-Encoding": "gzip"}
-                        with closing(requests.get(filePath, headers=customHeader)) as ifh:
+                        with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
                             gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
@@ -141,7 +144,7 @@ class IoAdapterPy(IoAdapterBase):
                             pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
-                        with closing(requests.get(filePath)) as ifh:
+                        with closing(requests.get(filePath, timeout=timeout)) as ifh:
                             if self._raiseExceptions:
                                 ifh.raise_for_status()
                             it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())

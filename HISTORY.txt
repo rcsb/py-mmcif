@@ -73,4 +73,4 @@
 06-Apr-2022    V0.76 - Add doubleQuotingFlag parameter in IoAdapterCore.writeFile() method
 08-Aug-2022    V0.77 - Upgrade macOS version for Azure and tox tasks
 04-Sep-2022    V0.78 - Ensure that data values starting with "stop_" are quoted. Pull in latest versions of modules.
-
+05-Sep-2022    V0.79 - For IoAdapterPy readFile() method, support timeout parameter for remote URLs
