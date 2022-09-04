@@ -61,6 +61,7 @@ class PdbxReadWriteTests(unittest.TestCase):
         self.__pathOutputFile3 = os.path.join(HERE, "test-output", "testOutputDataFileStopToken3.cif")
         self.__pathOutputFile4 = os.path.join(HERE, "test-output", "testOutputDataFile4.cif")
         self.__pathOutputFile5 = os.path.join(HERE, "test-output", "testOutputDataFile5.cif")
+        self.__pathOutputFile6 = os.path.join(HERE, "test-output", "testOutputDataFile6.cif")
         #
         self.__pathTestFile = os.path.join(HERE, "data", "testSingleRow.cif")
         self.__pathTestFileStop = os.path.join(HERE, "data", "testFileWithStopTokens.cif")
@@ -304,6 +305,36 @@ class PdbxReadWriteTests(unittest.TestCase):
             logger.exception("Failing with %s", str(e))
             self.fail()
 
+    def testWriteStopDataFile(self):
+        """Test case - ensure quoting of data_"""
+        try:
+            myDataList = []
+            curContainer = DataContainer("myblock")
+            aCat = DataCategory("something")
+            aCat.appendAttribute("value")
+            aCat.append(["Something"])
+            aCat.append(["Stop"])
+            aCat.append(["Stop_in_the_name_of_love"])
+
+            curContainer.append(aCat)
+
+            with open(self.__pathOutputFile6, "w") as ofh:
+                myDataList.append(curContainer)
+                pWr = PdbxWriter(ofh)
+                pWr.write(myDataList)
+            self.assertEqual(len(myDataList), 1)
+
+            # Check if quoted  XXXXX - should use reader
+            with open(self.__pathOutputFile6, "r") as ifh:
+                dat = ifh.readlines()
+            for line in dat:
+                if "Stop_in_the_name" in line:
+                    self.assertTrue('"' in line or "'" in line, "stop_ keyword not quotes")
+
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+            self.fail()
+
     def testReadWriteListAccessors(self):
         """Test cases -  for list style data access."""
         try:
@@ -494,6 +525,7 @@ def simpleSuite3():
 def quotingCasesSuite():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(PdbxReadWriteTests("testReadWriteDataFile"))
+    suiteSelect.addTest(PdbxReadWriteTests("testWriteStopDataFile"))
     return suiteSelect
 
 
