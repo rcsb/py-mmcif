@@ -71,4 +71,6 @@
  5-Oct-2021    V0.74 - Add support for relative local paths with DictionaryInclude()
 11-Oct-2021    V0.75 - Add the dictionary API instance as a keyword argument to any invoked method in DictMethodRunner()
 06-Apr-2022    V0.76 - Add doubleQuotingFlag parameter in IoAdapterCore.writeFile() method
-25-Jul-2022    V0.77 - Ensure that data values starting with "stop_" are quoted. Pull in latest versions of modules.
+08-Aug-2022    V0.77 - Upgrade macOS version for Azure and tox tasks
+04-Sep-2022    V0.78 - Ensure that data values starting with "stop_" are quoted. Pull in latest versions of modules.
+
