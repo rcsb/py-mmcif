@@ -76,7 +76,7 @@ class IoAdapterPy(IoAdapterBase):
             List of DataContainers: Contents of input file parsed into a list of DataContainer objects.
 
         """
-        timeout = kwargs.pop("timeout", 30)
+        timeout = kwargs.pop("timeout", None)
 
         if kwargs:
             logger.warning("Unsupported keyword arguments %s", kwargs.keys())

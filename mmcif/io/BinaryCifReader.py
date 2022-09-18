@@ -40,7 +40,7 @@ class BinaryCifReader(object):
         self.__storeStringsAsBytes = storeStringsAsBytes
         self.__defaultStringEncoding = defaultStringEncoding
 
-    def deserialize(self, locator, timeout=30):
+    def deserialize(self, locator, timeout=None):
         """Deserialize the input binary CIF file stored in the file/URL locator path.
 
         Args:
