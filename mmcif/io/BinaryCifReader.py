@@ -40,11 +40,12 @@ class BinaryCifReader(object):
         self.__storeStringsAsBytes = storeStringsAsBytes
         self.__defaultStringEncoding = defaultStringEncoding
 
-    def deserialize(self, locator):
+    def deserialize(self, locator, timeout=None):
         """Deserialize the input binary CIF file stored in the file/URL locator path.
 
         Args:
             locator (str): input file path or URL
+            timeout (float): timeout for fetching a remote url
 
         Returns:
             list: list DataContainer objects
@@ -57,11 +58,11 @@ class BinaryCifReader(object):
             else:
                 if locator.endswith(".gz"):
                     customHeader = {"Accept-Encoding": "gzip"}
-                    with closing(requests.get(locator, headers=customHeader)) as fh:
+                    with closing(requests.get(locator, headers=customHeader, timeout=timeout)) as fh:
                         ufh = gzip.GzipFile(fileobj=io.BytesIO(fh.content))
                         cL = self.__deserialize(ufh, storeStringsAsBytes=self.__storeStringsAsBytes)
                 else:
-                    with closing(requests.get(locator)) as fh:
+                    with closing(requests.get(locator, timeout=timeout)) as fh:
                         cL = self.__deserialize(io.BytesIO(fh.content), storeStringsAsBytes=self.__storeStringsAsBytes)
 
         except Exception as e:
