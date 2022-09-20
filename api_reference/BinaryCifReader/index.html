@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/rcsb/py-mmcif/api_reference/BinaryCifReader/">
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.1">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.3">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.2e8b5541.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7a952b86.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1066,11 +1066,12 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
 
-    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deserialize the input binary CIF file stored in the file/URL locator path.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            locator (str): input file path or URL</span>
+<span class="sd">            timeout (float): timeout for fetching a remote url</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: list DataContainer objects</span>
@@ -1083,11 +1084,11 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">locator</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
                     <span class="n">customHeader</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">}</span>
-                    <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">customHeader</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">customHeader</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
                         <span class="n">ufh</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
                         <span class="n">cL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deserialize</span><span class="p">(</span><span class="n">ufh</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
                         <span class="n">cL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deserialize</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1271,7 +1272,7 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
 
 
 <h4 id="mmcif.io.BinaryCifReader.BinaryCifReader.deserialize" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 </h4>
@@ -1297,6 +1298,12 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <td><p>input file path or URL</p></td>
         <td><em>required</em></td>
       </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>float</code></td>
+        <td><p>timeout for fetching a remote url</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
 <p><strong>Returns:</strong></p>
@@ -1316,11 +1323,12 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
 </table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Deserialize the input binary CIF file stored in the file/URL locator path.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        locator (str): input file path or URL</span>
+<span class="sd">        timeout (float): timeout for fetching a remote url</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: list DataContainer objects</span>
@@ -1333,11 +1341,11 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">locator</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
                 <span class="n">customHeader</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">}</span>
-                <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">customHeader</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">customHeader</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
                     <span class="n">ufh</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
                     <span class="n">cL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deserialize</span><span class="p">(</span><span class="n">ufh</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
                     <span class="n">cL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deserialize</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -2531,10 +2539,10 @@ the offset array.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "search": "../../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "search": "../../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d691e9de.min.js"></script>
+      <script src="../../assets/javascripts/bundle.37e9125f.min.js"></script>
       
     
   </body>
