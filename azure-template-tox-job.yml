@@ -162,9 +162,8 @@ jobs:
           #  displayName: "Build wheel"
           #
           - script: |
-              export CIBW_BEFORE_ALL_LINUX="yum install -y flex bison cmake"
               rm -rf "$(System.DefaultWorkingDirectory)/build"
-              cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
+              cibuildwheel --config cibuildwheel.toml --output-dir "$(System.DefaultWorkingDirectory)/dist" .
             displayName: "Build binary wheels"
           #
           #- script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"
