@@ -154,7 +154,7 @@ jobs:
       #  Build artifacts if this is a test target (i.e. labeled as py##)
       #
       - ? ${{ if and( startsWith(parameters.tox, 'py'), not(startsWith(parameters.python, '2.7')) ) }}
-        : - script: pip install --upgrade pip twine setuptools wheel cibuildwheel==2.1.1
+        : - script: pip install --upgrade pip twine setuptools wheel cibuildwheel==2.11.2
             displayName: "Install build tools"
           - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/dist"
             displayName: "Build source distribution"
@@ -162,9 +162,8 @@ jobs:
           #  displayName: "Build wheel"
           #
           - script: |
-              export CIBW_BEFORE_ALL_LINUX="yum install -y flex bison cmake"
               rm -rf "$(System.DefaultWorkingDirectory)/build"
-              cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
+              cibuildwheel --config cibuildwheel.toml --output-dir "$(System.DefaultWorkingDirectory)/dist" .
             displayName: "Build binary wheels"
           #
           #- script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"

@@ -1,0 +1,12 @@
+[tool.cibuildwheel]
+# Skip building PyPy version as not specifically validated/tested yet
+# Alpine linux is musslinux.  Takes long time to generate.  Will add if requested
+skip = ["pp*", "*-musllinux*"]
+
+[tool.cibuildwheel.linux]
+before-all = "yum -y install flex bison cmake"
+test-command = 'python -c "from mmcif.io.IoAdapterCore import IoAdapterCore as IoAdapter"'
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = "apk add flex bison cmake"
