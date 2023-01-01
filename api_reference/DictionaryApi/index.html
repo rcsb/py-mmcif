@@ -2348,7 +2348,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DictionaryApi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">consolidate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expandItemLinked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replaceDefinition</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return an instance of the mmCIF dictionary API.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an instance of the mmCIF dictionary API.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            containerList (list): list of definition or data containers holding dictionary content</span>
@@ -2551,7 +2551,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
             <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">getDictionaryUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get details from the first/last history element.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get details from the first/last history element.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
                 <span class="n">tD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryHistoryList</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -2564,14 +2564,14 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
             <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">getDictionaryRevisionCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the count of revision history records.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the count of revision history records.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryHistoryList</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">getDictionaryHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
         <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
@@ -2586,7 +2586,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
     <span class="c1">#</span>
     <span class="k">def</span> <span class="nf">getDictionaryComponentDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the component dictionary list as tuples [(version,title,dictionary_component_id),...]&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the component dictionary list as tuples [(version,title,dictionary_component_id),...]&quot;&quot;&quot;</span>
         <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentList</span><span class="p">:</span>
@@ -2596,21 +2596,21 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">oL</span>
 
     <span class="k">def</span> <span class="nf">getDictionaryComponentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the count of dictionary components.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the count of dictionary components.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentList</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">getDictionaryComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the list of dictionary components.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the list of dictionary components.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentHistoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">getDictionaryComponentHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryComponentId</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
         <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
@@ -2997,7 +2997,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_CLOSED_FLAG&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">getUltimateParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the first ultimate parent item for the input item.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first ultimate parent item for the input item.&quot;&quot;&quot;</span>
         <span class="c1">#        pL=self.__getList(&#39;ITEM_LINKED_PARENT&#39;,category,attribute)</span>
         <span class="n">pL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFullParentList</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">itemName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -3258,7 +3258,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">exL</span>
 
     <span class="k">def</span> <span class="nf">getParentDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a dictionary of parents relations accross all definnitions</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionary of parents relations accross all definnitions</span>
 <span class="sd">        as {child : [parent, parent,...]</span>
 
 <span class="sd">        Exclude self parents.</span>
@@ -3284,7 +3284,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">parentD</span>
 
     <span class="k">def</span> <span class="nf">getItemLinkedConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a dictionary of conditional item link relationships.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionary of conditional item link relationships.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">         (dict):  {{parent_name, child_name}: [{&quot;id&quot;: , &quot;condition_id&quot;: , &quot;condition_child_name&quot;: , &quot;condition_child_value&quot;: ,</span>
@@ -3359,7 +3359,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">rD</span>
 
     <span class="k">def</span> <span class="nf">__makeFullParentChildDictionaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a dictionaries of full parent/child relations accross all definnitions</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionaries of full parent/child relations accross all definnitions</span>
 
 <span class="sd">        as  fullParentD[child]=[parent,parent,...]</span>
 <span class="sd">        and fullChildD[parent]=[child,child,...]</span>
@@ -3396,7 +3396,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
     <span class="c1">#</span>
     <span class="k">def</span> <span class="nf">__get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">followAncestors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the last occurrence of the input dictionary metadata.  If the value</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the last occurrence of the input dictionary metadata.  If the value</span>
 <span class="sd">        for the input category/attribute is null/missing then optionally check for</span>
 <span class="sd">        an ancestor value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3413,7 +3413,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
     <span class="c1">#</span>
     <span class="k">def</span> <span class="nf">__getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the last occurrence of the input dictionary metadata (enumCode) for the input category/attribute</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the last occurrence of the input dictionary metadata (enumCode) for the input category/attribute</span>
 <span class="sd">        encountered in the list of objects stored at the indicated definition index.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3443,11 +3443,11 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">eS</span>
 
     <span class="k">def</span> <span class="nf">__getList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the list of unique values&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the list of unique values&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">__getListAll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of all values&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of all values&quot;&quot;&quot;</span>
         <span class="n">eL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">enumCode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enumD</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">eL</span>
@@ -3476,7 +3476,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodIndex</span>
 
     <span class="k">def</span> <span class="nf">__makeIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create indices of definitions, categories and items.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create indices of definitions, categories and items.&quot;&quot;&quot;</span>
         <span class="n">iD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">dD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">dD</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
@@ -3778,7 +3778,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
                         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;    group </span><span class="si">%s</span><span class="s2"> --- child item </span><span class="si">%s</span><span class="s2">   parent item </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lgI</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lgI</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
     <span class="k">def</span> <span class="nf">__addItemLinkToDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dObj</span><span class="p">,</span> <span class="n">parentName</span><span class="p">,</span> <span class="n">childName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add the input link relationship to the input definition object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the input link relationship to the input definition object.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dObj</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;item_linked&quot;</span><span class="p">):</span>
             <span class="c1"># update in place --</span>
             <span class="n">cObj</span> <span class="o">=</span> <span class="n">dObj</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="s2">&quot;item_linked&quot;</span><span class="p">)</span>
@@ -3804,7 +3804,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
             <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">__expandLoopedDefinitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Handle definitions containing looped item and item_linked categories --&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle definitions containing looped item and item_linked categories --&quot;&quot;&quot;</span>
         <span class="n">fullIndex</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">dD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">dD</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
@@ -3850,7 +3850,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
                             <span class="n">ob</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;item_linked&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__consolidateDefinitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Consolidate definition attributes into a single save frame section per definition.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Consolidate definition attributes into a single save frame section per definition.&quot;&quot;&quot;</span>
         <span class="n">fullIndex</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">dD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">dD</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
@@ -3890,7 +3890,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span> <span class="o">=</span> <span class="n">dList</span>
 
     <span class="k">def</span> <span class="nf">getDataTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;code&#39;,&#39;primitive_code&#39;,&#39;construct&#39;,&#39;detail&#39; )&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;code&#39;,&#39;primitive_code&#39;,&#39;construct&#39;,&#39;detail&#39; )&quot;&quot;&quot;</span>
         <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">tup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
@@ -3898,7 +3898,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">rowList</span>
 
     <span class="k">def</span> <span class="nf">getSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
         <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="p">[</span><span class="n">tId</span><span class="p">]</span>
@@ -3906,7 +3906,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">rowList</span>
 
     <span class="k">def</span> <span class="nf">getUnitsList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
         <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsDict</span><span class="p">[</span><span class="n">tId</span><span class="p">]</span>
@@ -3914,11 +3914,11 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <span class="k">return</span> <span class="n">rowList</span>
 
     <span class="k">def</span> <span class="nf">getUnitsConversionList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;from_code&#39;,&#39;to_code&#39;,&#39;operator&#39;,&#39;factor&#39;)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;from_code&#39;,&#39;to_code&#39;,&#39;operator&#39;,&#39;factor&#39;)&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsConversionList</span>
 
     <span class="k">def</span> <span class="nf">__getDataSections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
 
             <span class="k">if</span> <span class="n">ob</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
@@ -4223,7 +4223,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">consolidate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expandItemLinked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replaceDefinition</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return an instance of the mmCIF dictionary API.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an instance of the mmCIF dictionary API.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        containerList (list): list of definition or data containers holding dictionary content</span>
@@ -4426,7 +4426,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
 
 <h4 id="mmcif.api.DictionaryApi.DictionaryApi.dumpCategoryIndex" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpCategoryIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x107b98c10</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpCategoryIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x104ad6c10</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -4455,7 +4455,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
 
 <h4 id="mmcif.api.DictionaryApi.DictionaryApi.dumpDataSections" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpDataSections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x107b98c10</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpDataSections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x104ad6c10</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -4488,7 +4488,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
 
 <h4 id="mmcif.api.DictionaryApi.DictionaryApi.dumpEnumFeatures" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpEnumFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x107b98c10</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpEnumFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x104ad6c10</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -4527,7 +4527,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
 
 <h4 id="mmcif.api.DictionaryApi.DictionaryApi.dumpFeatures" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x107b98c10</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x104ad6c10</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -4653,7 +4653,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
 
 <h4 id="mmcif.api.DictionaryApi.DictionaryApi.dumpItemLinkedGroups" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpItemLinkedGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x107b98c10</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpItemLinkedGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x104ad6c10</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -4684,7 +4684,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
 
 
 <h4 id="mmcif.api.DictionaryApi.DictionaryApi.dumpMethods" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x107b98c10</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x104ad6c10</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -5596,7 +5596,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDataTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;code&#39;,&#39;primitive_code&#39;,&#39;construct&#39;,&#39;detail&#39; )&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;code&#39;,&#39;primitive_code&#39;,&#39;construct&#39;,&#39;detail&#39; )&quot;&quot;&quot;</span>
     <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">tup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
@@ -5782,7 +5782,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the count of dictionary components.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the count of dictionary components.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentList</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -5812,7 +5812,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponentDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the component dictionary list as tuples [(version,title,dictionary_component_id),...]&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the component dictionary list as tuples [(version,title,dictionary_component_id),...]&quot;&quot;&quot;</span>
     <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentList</span><span class="p">:</span>
@@ -5845,7 +5845,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponentHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryComponentId</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
     <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
@@ -5882,7 +5882,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the list of dictionary components.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the list of dictionary components.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentHistoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -5912,7 +5912,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
     <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
@@ -5949,7 +5949,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryRevisionCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the count of revision history records.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the count of revision history records.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryHistoryList</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -6007,7 +6007,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get details from the first/last history element.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get details from the first/last history element.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
             <span class="n">tD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryHistoryList</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -6788,7 +6788,7 @@ mmcif.api.DictionaryApi.DictionaryApi        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getItemLinkedConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a dictionary of conditional item link relationships.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a dictionary of conditional item link relationships.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">     (dict):  {{parent_name, child_name}: [{&quot;id&quot;: , &quot;condition_id&quot;: , &quot;condition_child_name&quot;: , &quot;condition_child_value&quot;: ,</span>
@@ -7282,7 +7282,7 @@ as {child : [parent, parent,...]</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getParentDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a dictionary of parents relations accross all definnitions</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a dictionary of parents relations accross all definnitions</span>
 <span class="sd">    as {child : [parent, parent,...]</span>
 
 <span class="sd">    Exclude self parents.</span>
@@ -7394,7 +7394,7 @@ as {child : [parent, parent,...]</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
     <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="p">[</span><span class="n">tId</span><span class="p">]</span>
@@ -7725,7 +7725,7 @@ as {child : [parent, parent,...]</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getUltimateParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the first ultimate parent item for the input item.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the first ultimate parent item for the input item.&quot;&quot;&quot;</span>
     <span class="c1">#        pL=self.__getList(&#39;ITEM_LINKED_PARENT&#39;,category,attribute)</span>
     <span class="n">pL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFullParentList</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
     <span class="n">itemName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -7786,7 +7786,7 @@ as {child : [parent, parent,...]</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getUnitsConversionList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;from_code&#39;,&#39;to_code&#39;,&#39;operator&#39;,&#39;factor&#39;)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;from_code&#39;,&#39;to_code&#39;,&#39;operator&#39;,&#39;factor&#39;)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsConversionList</span>
 </code></pre></div>
         </details>
@@ -7813,7 +7813,7 @@ as {child : [parent, parent,...]</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getUnitsList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
     <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsDict</span><span class="p">[</span><span class="n">tId</span><span class="p">]</span>

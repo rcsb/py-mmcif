@@ -822,17 +822,17 @@ mmcif.io.PdbxReader.PdbxReader        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/PdbxReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PdbxReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Utilities for reading mmCIF for data files and dictionaries.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Utilities for reading mmCIF for data files and dictionaries.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifh</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;ifh - input file handle returned by open()&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;ifh - input file handle returned by open()&quot;&quot;&quot;</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ifh</span> <span class="o">=</span> <span class="n">ifh</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__stateDict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_DATA_CONTAINER&quot;</span><span class="p">,</span> <span class="s2">&quot;loop&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_TABLE&quot;</span><span class="p">,</span> <span class="s2">&quot;global&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_GLOBAL_CONTAINER&quot;</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_DEFINITION&quot;</span><span class="p">,</span> <span class="s2">&quot;stop&quot;</span><span class="p">:</span> <span class="s2">&quot;ST_STOP&quot;</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Appends to input list of definition and data containers.</span>
 
 <span class="sd">        return</span>
@@ -861,7 +861,7 @@ mmcif.io.PdbxReader.PdbxReader        </code>
             <span class="k">raise</span> <span class="n">PdbxError</span><span class="p">(</span><span class="s2">&quot;Miscellaneous parsing error at line </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__allSelected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">catSelectD</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Test the input container for completeness relative to the input category selection dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the input container for completeness relative to the input category selection dictionary.&quot;&quot;&quot;</span>
         <span class="n">nl</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">if</span> <span class="n">catSelectD</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -882,11 +882,11 @@ mmcif.io.PdbxReader.PdbxReader        </code>
         <span class="k">raise</span> <span class="n">PdbxSyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__getContainerName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inWord</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the name of the data block or saveframe container&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the name of the data block or saveframe container&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">inWord</span><span class="p">[</span><span class="mi">5</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__getState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inWord</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Identifies reserved syntax elements and assigns an associated state.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Identifies reserved syntax elements and assigns an associated state.</span>
 
 <span class="sd">        on return: (reserved word, state)</span>
 <span class="sd">        where -</span>
@@ -906,7 +906,7 @@ mmcif.io.PdbxReader.PdbxReader        </code>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;ST_UNKNOWN&quot;</span>
 
     <span class="k">def</span> <span class="nf">__parser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">categorySelectionD</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parser for PDBx data files and dictionaries.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parser for PDBx data files and dictionaries.</span>
 
 <span class="sd">        Input - tokenizer() reentrant method recognizing data item names (_category.attribute)</span>
 <span class="sd">                quoted strings (single, double and multi-line semi-colon delimited), and unquoted</span>
@@ -1160,7 +1160,7 @@ mmcif.io.PdbxReader.PdbxReader        </code>
                 <span class="k">return</span>
 
     <span class="k">def</span> <span class="nf">__tokenizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifh</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Tokenizer method for the mmCIF syntax file -</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tokenizer method for the mmCIF syntax file -</span>
 
 <span class="sd">        Each return/yield from this method returns information about</span>
 <span class="sd">        the next token in the form of a tuple with the following structure.</span>
@@ -1274,7 +1274,7 @@ mmcif.io.PdbxReader.PdbxReader        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/PdbxReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;ifh - input file handle returned by open()&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ifh - input file handle returned by open()&quot;&quot;&quot;</span>
     <span class="c1">#</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__curLineNumber</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__ifh</span> <span class="o">=</span> <span class="n">ifh</span>
@@ -1305,7 +1305,7 @@ mmcif.io.PdbxReader.PdbxReader        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/PdbxReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Appends to input list of definition and data containers.</span>
 
 <span class="sd">    return</span>

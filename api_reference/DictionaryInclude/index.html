@@ -888,7 +888,7 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">__locatorIndexD</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Process any dictionary, category or item include instructions in any data containers in the</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process any dictionary, category or item include instructions in any data containers in the</span>
 <span class="sd">        input list of dictionary data and definition containers.</span>
 
 <span class="sd">        Args:</span>
@@ -915,7 +915,7 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__addIncludedContent</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">includeContentD</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__addIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">includeContentD</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Incorporate included content described in the input dictionary of include instructions produced by</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Incorporate included content described in the input dictionary of include instructions produced by</span>
 <span class="sd">        internal method __getIncludeInstructions().</span>
 
 <span class="sd">        Args:</span>
@@ -992,7 +992,7 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
         <span class="k">return</span> <span class="n">fullL</span>
 
     <span class="k">def</span> <span class="nf">__getIncludeInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extract include instructions from categories pdbx_include_dictionary,  pdbx_include_category, and pdbx_include_item.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract include instructions from categories pdbx_include_dictionary,  pdbx_include_category, and pdbx_include_item.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          containerList (list): list of input PdbxContainer data or definition container objects</span>
@@ -1065,7 +1065,7 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
         <span class="k">return</span> <span class="n">includeD</span>
 
     <span class="k">def</span> <span class="nf">__fetchIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">includeD</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fetch included content following the instructions encoded in the input data structure.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch included content following the instructions encoded in the input data structure.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            includeD (dict):  {&quot;dictionaryIncludeDict&quot;: {dictionary_id: {...include details...}},</span>
@@ -1191,7 +1191,7 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">__fetchLocator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Locate non-absolute paths relative to the dictionary incude file</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isLocal</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">locator</span><span class="p">):</span>
@@ -1441,7 +1441,7 @@ input list of dictionary data and definition containers.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryInclude.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Process any dictionary, category or item include instructions in any data containers in the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process any dictionary, category or item include instructions in any data containers in the</span>
 <span class="sd">    input list of dictionary data and definition containers.</span>
 
 <span class="sd">    Args:</span>

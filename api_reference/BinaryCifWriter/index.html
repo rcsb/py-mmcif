@@ -1014,10 +1014,10 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Writer methods for the binary CIF format.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Writer methods for the binary CIF format.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dictionaryApi (object): DictionaryApi object instance</span>
@@ -1036,7 +1036,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
 
     <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            filePath (str): output file path</span>
@@ -1098,7 +1098,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <span class="k">return</span> <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">colDataEncoded</span><span class="p">,</span> <span class="n">colDataEncodingDictL</span>
 
     <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            strVal (string): input string</span>
@@ -1113,7 +1113,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <span class="k">return</span> <span class="n">strVal</span>
 
     <span class="k">def</span> <span class="nf">__getAttributeType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dObj</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atName (str): attribute name</span>
@@ -1209,7 +1209,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dictionaryApi (object): DictionaryApi object instance</span>
@@ -1276,7 +1276,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filePath (str): output file path</span>
@@ -1367,7 +1367,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifEncoders</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Column oriented Binary CIF encoders implementing</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Column oriented Binary CIF encoders implementing</span>
 <span class="sd">    StringArray, ByteArray, IntegerPacking, Delta, RunLength,</span>
 <span class="sd">    and FixedPoint encoders from the BinaryCIF specification described in:</span>
 
@@ -1383,7 +1383,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate the binary CIF encoder class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate the binary CIF encoder class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            defaultStringEncoding (str, optional): default encoding for string data . Defaults to &quot;utf-8&quot;.</span>
@@ -1397,7 +1397,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
     <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingTypeList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode the data using the input list of encoding types returning encoded data and encoding instructions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the data using the input list of encoding types returning encoded data and encoding instructions.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): input data to be encoded</span>
@@ -1422,7 +1422,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 
     <span class="k">def</span> <span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode the data using the input mask and encoding type returning encoded data and encoding instructions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the data using the input mask and encoding type returning encoded data and encoding instructions.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (string): input data column</span>
@@ -1445,7 +1445,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 
     <span class="k">def</span> <span class="nf">__getIntegerPackingType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Determine the integer packing type of the input integer data list&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the integer packing type of the input integer data list&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">minV</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
             <span class="n">maxV</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
@@ -1469,7 +1469,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot determine interger packing type&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">byteArrayEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (list): list of integer or float data</span>
@@ -1488,7 +1488,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">),</span> <span class="o">*</span><span class="n">colDataList</span><span class="p">),</span> <span class="n">encodingD</span>
 
     <span class="k">def</span> <span class="nf">deltaEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): list of integer data</span>
@@ -1505,7 +1505,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 
     <span class="k">def</span> <span class="nf">runLengthEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): list of integer data</span>
@@ -1538,7 +1538,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 
     <span class="k">def</span> <span class="nf">stringArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode the input data column (string) along with the incompleteness mask.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the input data column (string) along with the incompleteness mask.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): input data column (string)</span>
@@ -1580,7 +1580,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">encodedIndexList</span><span class="p">,</span> <span class="p">[</span><span class="n">encodingDict</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">intArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode the input data column (integer) along with the incompleteness mask.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the input data column (integer) along with the incompleteness mask.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): input data column (string)</span>
@@ -1599,7 +1599,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 
     <span class="k">def</span> <span class="nf">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Encode the input data column (float) along with the incompleteness mask.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the input data column (float) along with the incompleteness mask.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): input data column (string)</span>
@@ -1618,7 +1618,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 
     <span class="k">def</span> <span class="nf">getMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an incompleteness mask list identifying missing/omitted values in the input data column.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an incompleteness mask list identifying missing/omitted values in the input data column.</span>
 <span class="sd">        The mask is assigned: 0 = Value is present, 1 = &#39;.&#39; (value not specified), and 2 = &#39;?&#39; (value unknown).</span>
 
 <span class="sd">        Args:</span>
@@ -1637,7 +1637,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">mask</span>
 
     <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            strVal (string): input string</span>
@@ -1716,7 +1716,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Instantiate the binary CIF encoder class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate the binary CIF encoder class.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        defaultStringEncoding (str, optional): default encoding for string data . Defaults to &quot;utf-8&quot;.</span>
@@ -1793,7 +1793,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">byteArrayEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data (list): list of integer or float data</span>
@@ -1875,7 +1875,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">deltaEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): list of integer data</span>
@@ -1961,7 +1961,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingTypeList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode the data using the input list of encoding types returning encoded data and encoding instructions.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode the data using the input list of encoding types returning encoded data and encoding instructions.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): input data to be encoded</span>
@@ -2055,7 +2055,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode the data using the input mask and encoding type returning encoded data and encoding instructions.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode the data using the input mask and encoding type returning encoded data and encoding instructions.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (string): input data column</span>
@@ -2141,7 +2141,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode the input data column (float) along with the incompleteness mask.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode the input data column (float) along with the incompleteness mask.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): input data column (string)</span>
@@ -2218,7 +2218,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create an incompleteness mask list identifying missing/omitted values in the input data column.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an incompleteness mask list identifying missing/omitted values in the input data column.</span>
 <span class="sd">    The mask is assigned: 0 = Value is present, 1 = &#39;.&#39; (value not specified), and 2 = &#39;?&#39; (value unknown).</span>
 
 <span class="sd">    Args:</span>
@@ -2300,7 +2300,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">intArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode the input data column (integer) along with the incompleteness mask.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode the input data column (integer) along with the incompleteness mask.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): input data column (string)</span>
@@ -2382,7 +2382,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">runLengthEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): list of integer data</span>
@@ -2478,7 +2478,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">stringArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Encode the input data column (string) along with the incompleteness mask.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode the input data column (string) along with the incompleteness mask.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): input data column (string)</span>

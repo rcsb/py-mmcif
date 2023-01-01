@@ -1402,7 +1402,7 @@ mmcif.api.PdbxContainers.ContainerBase        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ContainerBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Container base class for data and definition objects.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container base class for data and definition objects.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="c1"># The enclosing scope of the data container (e.g. data_/save_)</span>
@@ -1476,7 +1476,7 @@ mmcif.api.PdbxContainers.ContainerBase        </code>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span>
 
     <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add the input object to the current object catalog. An existing object</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the input object to the current object catalog. An existing object</span>
 <span class="sd">        of the same name will be overwritten.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1486,7 +1486,7 @@ mmcif.api.PdbxContainers.ContainerBase        </code>
             <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">obj</span>
 
     <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Replace an existing object with the input object&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace an existing object with the input object&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">obj</span>
 
@@ -1501,7 +1501,7 @@ mmcif.api.PdbxContainers.ContainerBase        </code>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span><span class="o">.</span><span class="n">dumpIt</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Change the name of an object in place -&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the name of an object in place -&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curName</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newName</span>
@@ -1512,7 +1512,7 @@ mmcif.api.PdbxContainers.ContainerBase        </code>
             <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove object by name.  Return True on success or False otherwise.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove object by name.  Return True on success or False otherwise.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">curName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
@@ -1527,7 +1527,7 @@ mmcif.api.PdbxContainers.ContainerBase        </code>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Merge the contents of the input container with the contents of the current container.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Merge the contents of the input container with the contents of the current container.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">objNameList</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">objName</span> <span class="ow">in</span> <span class="n">objNameList</span><span class="p">:</span>
@@ -1538,7 +1538,7 @@ mmcif.api.PdbxContainers.ContainerBase        </code>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">filterObjectNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return an ordered list of categories in the input container subject to</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an ordered list of categories in the input container subject to</span>
 <span class="sd">        input -</span>
 
 <span class="sd">           lastInOrder: list:  categories to be shifted to the end of the container.</span>
@@ -1701,7 +1701,7 @@ of the same name will be overwritten.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add the input object to the current object catalog. An existing object</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the input object to the current object catalog. An existing object</span>
 <span class="sd">    of the same name will be overwritten.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1780,7 +1780,7 @@ input -</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">filterObjectNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return an ordered list of categories in the input container subject to</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an ordered list of categories in the input container subject to</span>
 <span class="sd">    input -</span>
 
 <span class="sd">       lastInOrder: list:  categories to be shifted to the end of the container.</span>
@@ -2013,7 +2013,7 @@ input -</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Merge the contents of the input container with the contents of the current container.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge the contents of the input container with the contents of the current container.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">objNameList</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">objName</span> <span class="ow">in</span> <span class="n">objNameList</span><span class="p">:</span>
@@ -2035,7 +2035,7 @@ input -</p>
 
 
 <h4 id="mmcif.api.PdbxContainers.ContainerBase.printIt" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x106f8b430</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s1">&#39;brief&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103ec9430</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s1">&#39;brief&#39;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -2079,7 +2079,7 @@ input -</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove object by name.  Return True on success or False otherwise.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove object by name.  Return True on success or False otherwise.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">curName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
@@ -2117,7 +2117,7 @@ input -</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Change the name of an object in place -&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Change the name of an object in place -&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curName</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newName</span>
@@ -2151,7 +2151,7 @@ input -</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Replace an existing object with the input object&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace an existing object with the input object&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">obj</span>
 </code></pre></div>
@@ -2458,7 +2458,7 @@ mmcif.api.PdbxContainers.DefinitionContainer            (<a class="autorefs auto
 
 
 <h4 id="mmcif.api.PdbxContainers.DefinitionContainer.printIt" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x106f8b430</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s1">&#39;brief&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103ec9430</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">pType</span><span class="o">=</span><span class="s1">&#39;brief&#39;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -2522,7 +2522,7 @@ mmcif.api.PdbxContainers.DataContainer            (<a class="autorefs autorefs-i
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataContainer</span><span class="p">(</span><span class="n">ContainerBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Container class for DataCategory objects.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container class for DataCategory objects.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DataContainer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -2768,7 +2768,7 @@ mmcif.api.PdbxContainers.CifName        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CifName</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class of utilities for CIF-style data names -&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class of utilities for CIF-style data names -&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>

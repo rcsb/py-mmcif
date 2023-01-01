@@ -770,7 +770,7 @@
 <a href="https://github.com/pybind/pybind11">pybind11</a> wrappers for the PDB C++ Core mmCIF Library.</p>
 <h3 id="installation">Installation</h3>
 <p>Download the library source software from the project repository:</p>
-<div class="highlight"><pre><span></span><code>git clone  --recurse-submodules  https://github.com/rcsb/py-mmcif.git
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w">  </span>--recurse-submodules<span class="w">  </span>https://github.com/rcsb/py-mmcif.git
 </code></pre></div>
 <p>Optionally, run test suite using the Tox test runner. The C++ library bindings have been tested
 on Centos 7/Ubuntu 20.04 Linux with GCC/G++ &gt; 4.8.5 and MacOS (10.15) with &gt; clang-900.0.39.2 using
@@ -778,31 +778,31 @@ Python versions 2.7.18 and 3.9.4.</p>
 <div class="highlight"><pre><span></span><code>tox
 </code></pre></div>
 <p>Installation is via the program <a href="https://pypi.python.org/pypi/pip">pip</a>.</p>
-<div class="highlight"><pre><span></span><code>pip install mmcif
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mmcif
 
-or from the <span class="nb">local</span> repository:
+or<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="nb">local</span><span class="w"> </span>repository:
 
-pip install .
+pip<span class="w"> </span>install<span class="w"> </span>.
 </code></pre></div>
 <p>To generate API documentation using <a href="http://www.sphinx-doc.org/">Sphinx</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span> scripts
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>scripts
 <span class="c1"># Check Sphinx dependencies in the introductory comments to the following script.</span>
 ./initdocs.sh
 </code></pre></div>
 <p>A command-line script is provided as a preprocessor for modular dictionaries that
 include definition and data content using categories pdbx_include_dictionary,
 pdbx_include_category and pdbx_include_item.</p>
-<div class="highlight"><pre><span></span><code>build_dict_cli --help
-usage: build_dict_cli <span class="o">[</span>-h<span class="o">]</span> --op OP --input_dict_path INPUT_DICT_PATH <span class="o">[</span>--output_dict_path OUTPUT_DICT_PATH<span class="o">]</span> <span class="o">[</span>--cleanup<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>build_dict_cli<span class="w"> </span>--help
+usage:<span class="w"> </span>build_dict_cli<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>--op<span class="w"> </span>OP<span class="w"> </span>--input_dict_path<span class="w"> </span>INPUT_DICT_PATH<span class="w"> </span><span class="o">[</span>--output_dict_path<span class="w"> </span>OUTPUT_DICT_PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>--cleanup<span class="o">]</span>
 
-optional arguments:
-  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
-  --op OP               Operation <span class="o">(</span>build <span class="p">|</span> get_version<span class="o">)</span>
-  --input_dict_path INPUT_DICT_PATH
-                        Path to dictionary generator file
-  --output_dict_path OUTPUT_DICT_PATH
-                        Path to output dictionary text file
-  --cleanup             Remove include instruction categories after processing
+optional<span class="w"> </span>arguments:
+<span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">  </span>--op<span class="w"> </span>OP<span class="w">               </span>Operation<span class="w"> </span><span class="o">(</span>build<span class="w"> </span><span class="p">|</span><span class="w"> </span>get_version<span class="o">)</span>
+<span class="w">  </span>--input_dict_path<span class="w"> </span>INPUT_DICT_PATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>dictionary<span class="w"> </span>generator<span class="w"> </span>file
+<span class="w">  </span>--output_dict_path<span class="w"> </span>OUTPUT_DICT_PATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>output<span class="w"> </span>dictionary<span class="w"> </span>text<span class="w"> </span>file
+<span class="w">  </span>--cleanup<span class="w">             </span>Remove<span class="w"> </span>include<span class="w"> </span>instruction<span class="w"> </span>categories<span class="w"> </span>after<span class="w"> </span>processing
 ________________________________________________________________________________
 </code></pre></div>
 

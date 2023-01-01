@@ -837,13 +837,13 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <details class="quote">
           <summary>Source code in <code>mmcif/io/IoAdapterCore.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IoAdapterCore</span><span class="p">(</span><span class="n">IoAdapterBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.&quot;&quot;&quot;</span>
 
     <span class="c1"># def __init__(self, *args, **kwargs):</span>
     <span class="c1">#    super(IoAdapterCore, self).__init__(*args, **kwargs)</span>
     <span class="c1"># pylint: disable=arguments-differ</span>
     <span class="k">def</span> <span class="nf">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parse the data blocks in the input mmCIF format data file into list of DataContainers().  The data category content within each data block</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the data blocks in the input mmCIF format data file into list of DataContainers().  The data category content within each data block</span>
 <span class="sd">           is stored a collection of DataCategory objects within each DataContainer.</span>
 
 <span class="sd">        Args:</span>
@@ -911,7 +911,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <span class="k">return</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">getReadDiags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Recover the diagnostics for the previous readFile() operation.readFile</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recover the diagnostics for the previous readFile() operation.readFile</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          list of strings:  List of parsing and processing diagnostics from last readFile() operation</span>
@@ -919,7 +919,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readLogRecords</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__getSelectionDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal method to package selection/exclusion list for the C++ parser library.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to package selection/exclusion list for the C++ parser library.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">           CifFileReadDef() object:  object prepared for parsing library</span>
@@ -937,7 +937,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__processReadLogFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal method to process logfiles and either log errors or raise exceptions (See: Class PdbxExceptions).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to process logfiles and either log errors or raise exceptions (See: Class PdbxExceptions).</span>
 <span class="sd">        The behavior is controlled by the class attribute _raiseExcetions.</span>
 
 <span class="sd">        Returns:</span>
@@ -971,7 +971,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <span class="k">return</span> <span class="n">diagL</span>
 
     <span class="k">def</span> <span class="nf">__processContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cifFileObj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal method to transfer parsed data from the wrapped input C++ CifFile object into</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to transfer parsed data from the wrapped input C++ CifFile object into</span>
 <span class="sd">        the list of Python DataContainer objects.</span>
 
 <span class="sd">        Args:</span>
@@ -1017,7 +1017,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <span class="k">return</span> <span class="n">containerList</span>
 
     <span class="k">def</span> <span class="nf">__readData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">readDef</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal method to read input file and return data as a list of DataContainer objects.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to read input file and return data as a list of DataContainer objects.</span>
 <span class="sd">        readDef optionally contains a selection of data categories to be returned.    Diagnostics</span>
 <span class="sd">        will be written to logFilePath (persisted if cleanuUp=False).</span>
 
@@ -1071,7 +1071,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <span class="k">return</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">diagL</span>
 
     <span class="k">def</span> <span class="nf">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doubleQuotingFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Write input list of data containers to the specified output file path in mmCIF format.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write input list of data containers to the specified output file path in mmCIF format.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            outputFilePath (string): output file path</span>
@@ -1145,7 +1145,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">__dumpBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cf</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal method to log the contents of the input wrapped CifFile object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to log the contents of the input wrapped CifFile object.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            cf (CifFile object): wrapped CifFile object.</span>
@@ -1224,7 +1224,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <details class="quote">
           <summary>Source code in <code>mmcif/io/IoAdapterCore.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getReadDiags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Recover the diagnostics for the previous readFile() operation.readFile</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recover the diagnostics for the previous readFile() operation.readFile</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      list of strings:  List of parsing and processing diagnostics from last readFile() operation</span>
@@ -1332,7 +1332,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <details class="quote">
           <summary>Source code in <code>mmcif/io/IoAdapterCore.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parse the data blocks in the input mmCIF format data file into list of DataContainers().  The data category content within each data block</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the data blocks in the input mmCIF format data file into list of DataContainers().  The data category content within each data block</span>
 <span class="sd">       is stored a collection of DataCategory objects within each DataContainer.</span>
 
 <span class="sd">    Args:</span>
@@ -1493,7 +1493,7 @@ mmcif.io.IoAdapterCore.IoAdapterCore            (<a class="autorefs autorefs-int
         <details class="quote">
           <summary>Source code in <code>mmcif/io/IoAdapterCore.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doubleQuotingFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Write input list of data containers to the specified output file path in mmCIF format.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write input list of data containers to the specified output file path in mmCIF format.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        outputFilePath (string): output file path</span>

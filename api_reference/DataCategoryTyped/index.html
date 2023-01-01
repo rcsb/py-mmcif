@@ -865,7 +865,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataCategoryTyped</span><span class="p">(</span><span class="n">DataCategory</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -879,7 +879,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
         <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dataCategoryObj (object): DataCategory object instance</span>
@@ -913,7 +913,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">applyTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
 <span class="sd">        Missing values (&#39;.&#39; or &#39;?&#39;) are set to None.</span>
 
 <span class="sd">        Raises:</span>
@@ -947,7 +947,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
         <span class="k">return</span> <span class="n">ok</span>
 
     <span class="k">def</span> <span class="nf">getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atName (str): attribute name</span>
@@ -962,7 +962,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">applyStringTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Cast data types to strings in the current object.  Missing values are set to &#39;?&#39; and &#39;.&#39; for</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cast data types to strings in the current object.  Missing values are set to &#39;?&#39; and &#39;.&#39; for</span>
 <span class="sd">        optional and mandatory attributes, respectively.</span>
 
 <span class="sd">        Raises:</span>
@@ -991,7 +991,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
         <span class="k">return</span> <span class="n">ok</span>
 
     <span class="k">def</span> <span class="nf">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compare the values by attribute for current typed data category (dca) and input data category.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare the values by attribute for current typed data category (dca) and input data category.</span>
 <span class="sd">        The comparison is performed for values of the attributes common to both objects. Length differences</span>
 <span class="sd">        are treated inequality out of hand.</span>
 
@@ -1050,7 +1050,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
         <span class="k">return</span> <span class="n">rL</span>
 
     <span class="k">def</span> <span class="nf">__getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atName (str): attribute name</span>
@@ -1186,7 +1186,7 @@ mmcif.api.DataCategoryTyped.DataCategoryTyped            (<a class="autorefs aut
     <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dataCategoryObj (object): DataCategory object instance</span>
@@ -1274,7 +1274,7 @@ optional and mandatory attributes, respectively.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">applyStringTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Cast data types to strings in the current object.  Missing values are set to &#39;?&#39; and &#39;.&#39; for</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cast data types to strings in the current object.  Missing values are set to &#39;?&#39; and &#39;.&#39; for</span>
 <span class="sd">    optional and mandatory attributes, respectively.</span>
 
 <span class="sd">    Raises:</span>
@@ -1357,7 +1357,7 @@ Missing values ('.' or '?') are set to None.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">applyTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
 <span class="sd">    Missing values (&#39;.&#39; or &#39;?&#39;) are set to None.</span>
 
 <span class="sd">    Raises:</span>
@@ -1483,7 +1483,7 @@ are treated inequality out of hand.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compare the values by attribute for current typed data category (dca) and input data category.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the values by attribute for current typed data category (dca) and input data category.</span>
 <span class="sd">    The comparison is performed for values of the attributes common to both objects. Length differences</span>
 <span class="sd">    are treated inequality out of hand.</span>
 
@@ -1599,7 +1599,7 @@ are treated inequality out of hand.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        atName (str): attribute name</span>

@@ -1159,10 +1159,10 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataCategory</span><span class="p">(</span><span class="n">DataCategoryBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Methods for creating, accessing, and formatting PDBx/mmCif data categories.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Methods for creating, accessing, and formatting PDBx/mmCif data categories.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raiseExceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Summary</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Summary</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Category name</span>
@@ -1188,7 +1188,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentRowIndex</span>
 
     <span class="k">def</span> <span class="nf">getFullRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a full row based on the length of the the attribute list or a row initialized with missing values&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a full row based on the length of the the attribute list or a row initialized with missing values&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])):</span>
@@ -1244,7 +1244,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
             <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">getValueOrDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Within the current category return the value of input attribute in the input rowIndex [0-based].</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Within the current category return the value of input attribute in the input rowIndex [0-based].</span>
 
 <span class="sd">        On error or if the value missing or null return the default value. Empty values returned as is.</span>
 
@@ -1278,7 +1278,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <span class="k">return</span> <span class="n">defaultValue</span>
 
     <span class="k">def</span> <span class="nf">getFirstValueOrDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the value from the first non-null attribute found in the input attribute list</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the value from the first non-null attribute found in the input attribute list</span>
 <span class="sd">        from the row (rowIndex) in the current category object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1296,7 +1296,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <span class="k">return</span> <span class="n">defaultValue</span>
 
     <span class="k">def</span> <span class="nf">setValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the value of an existing attribute.  rowIndex values &gt;=0, where</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of an existing attribute.  rowIndex values &gt;=0, where</span>
 <span class="sd">        the category will be extended in length as needed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1446,7 +1446,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <span class="k">return</span> <span class="n">rL</span>
 
     <span class="k">def</span> <span class="nf">selectValueListWhere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">attributeValueWhere</span><span class="p">,</span> <span class="n">attributeNameWhere</span><span class="p">,</span> <span class="n">returnCount</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a  list of lists containing the values of input attributeNameList</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a  list of lists containing the values of input attributeNameList</span>
 <span class="sd">        satisfying the attribute value where condition.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1494,7 +1494,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <span class="k">return</span> <span class="n">rL</span>
 
     <span class="k">def</span> <span class="nf">countValuesWhereConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditionsD</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Count row instances subject to input equivalence conditions</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count row instances subject to input equivalence conditions</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            conditionsD (dict): {&#39;atName&#39;: value, ....}</span>
@@ -1524,7 +1524,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <span class="k">return</span> <span class="n">iCount</span>
 
     <span class="k">def</span> <span class="nf">countValuesWhereOpConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditionTupleList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Count row instances subject to input condition list</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count row instances subject to input condition list</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            conditionTupleList (list): (attributeName, op, value) where (op = &#39;eq&#39;, &#39;gt(int)&#39;, &#39;lt(int)&#39;, &#39;in&#39;, &#39;ne&#39;, &#39;not in&#39;)</span>
@@ -1566,7 +1566,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
 
     <span class="c1">#</span>
     <span class="k">def</span> <span class="nf">getCombinationCounts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            attributeList (list): target list of attribute names</span>
@@ -1591,7 +1591,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <span class="k">return</span> <span class="n">cD</span>
 
     <span class="k">def</span> <span class="nf">getCombinationCountsWithConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeList</span><span class="p">,</span> <span class="n">conditionTupleList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            attributeList (list): target list of attribute names</span>
@@ -1764,7 +1764,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raiseExceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Summary</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Summary</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        name (str): Category name</span>
@@ -1893,7 +1893,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">countValuesWhereConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditionsD</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Count row instances subject to input equivalence conditions</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count row instances subject to input equivalence conditions</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        conditionsD (dict): {&#39;atName&#39;: value, ....}</span>
@@ -1995,7 +1995,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">countValuesWhereOpConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditionTupleList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Count row instances subject to input condition list</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count row instances subject to input condition list</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        conditionTupleList (list): (attributeName, op, value) where (op = &#39;eq&#39;, &#39;gt(int)&#39;, &#39;lt(int)&#39;, &#39;in&#39;, &#39;ne&#39;, &#39;not in&#39;)</span>
@@ -2047,7 +2047,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
 
 
 <h4 id="mmcif.api.DataCategory.DataCategory.dumpIt" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dumpIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x106f8b430</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dumpIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103ec9430</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -2154,7 +2154,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getCombinationCounts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        attributeList (list): target list of attribute names</span>
@@ -2242,7 +2242,7 @@ mmcif.api.DataCategory.DataCategory            (<a class="autorefs autorefs-inte
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getCombinationCountsWithConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeList</span><span class="p">,</span> <span class="n">conditionTupleList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the value occurrences of the input attributeList in the category.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        attributeList (list): target list of attribute names</span>
@@ -2332,7 +2332,7 @@ from the row (rowIndex) in the current category object.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getFirstValueOrDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the value from the first non-null attribute found in the input attribute list</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the value from the first non-null attribute found in the input attribute list</span>
 <span class="sd">    from the row (rowIndex) in the current category object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -2373,7 +2373,7 @@ from the row (rowIndex) in the current category object.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getFullRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a full row based on the length of the the attribute list or a row initialized with missing values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a full row based on the length of the the attribute list or a row initialized with missing values&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])):</span>
@@ -2477,7 +2477,7 @@ from the row (rowIndex) in the current category object.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getValueOrDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Within the current category return the value of input attribute in the input rowIndex [0-based].</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Within the current category return the value of input attribute in the input rowIndex [0-based].</span>
 
 <span class="sd">    On error or if the value missing or null return the default value. Empty values returned as is.</span>
 
@@ -2595,7 +2595,7 @@ from the row (rowIndex) in the current category object.</p>
 
 
 <h4 id="mmcif.api.DataCategory.DataCategory.printIt" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x106f8b430</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">printIt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103ec9430</span><span class="o">&gt;</span><span class="p">)</span></code>
 
 
 </h4>
@@ -2806,7 +2806,7 @@ satisfying the attribute value where condition.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">selectValueListWhere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeNameList</span><span class="p">,</span> <span class="n">attributeValueWhere</span><span class="p">,</span> <span class="n">attributeNameWhere</span><span class="p">,</span> <span class="n">returnCount</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a  list of lists containing the values of input attributeNameList</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a  list of lists containing the values of input attributeNameList</span>
 <span class="sd">    satisfying the attribute value where condition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2941,7 +2941,7 @@ the category will be extended in length as needed.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategory.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set the value of an existing attribute.  rowIndex values &gt;=0, where</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the value of an existing attribute.  rowIndex values &gt;=0, where</span>
 <span class="sd">    the category will be extended in length as needed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

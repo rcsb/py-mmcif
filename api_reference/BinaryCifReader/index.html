@@ -1054,10 +1054,10 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reader methods for the binary CIF format.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reader methods for the binary CIF format.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF reader class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF reader class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.</span>
@@ -1067,7 +1067,7 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
 
     <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Deserialize the input binary CIF file stored in the file/URL locator path.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deserialize the input binary CIF file stored in the file/URL locator path.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            locator (str): input file path or URL</span>
@@ -1147,7 +1147,7 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <span class="k">return</span> <span class="n">cL</span>
 
     <span class="k">def</span> <span class="nf">__isLocal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns true if input string can be interpreted as a local file path.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if input string can be interpreted as a local file path.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            locator (str): url or path string</span>
@@ -1163,7 +1163,7 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            strVal (string): input string</span>
@@ -1178,7 +1178,7 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
             <span class="k">return</span> <span class="n">strVal</span>
 
     <span class="k">def</span> <span class="nf">__fromBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byteVal</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Optional conversion of the input value according to the class setting (storeStringsAsBytes).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional conversion of the input value according to the class setting (storeStringsAsBytes).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            byteVal (string): input byte object</span>
@@ -1251,7 +1251,7 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF reader class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF reader class.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.</span>
@@ -1324,7 +1324,7 @@ mmcif.io.BinaryCifReader.BinaryCifReader        </code>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Deserialize the input binary CIF file stored in the file/URL locator path.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deserialize the input binary CIF file stored in the file/URL locator path.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        locator (str): input file path or URL</span>
@@ -1397,7 +1397,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifDecoders</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Column oriented Binary CIF decoders implementing</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Column oriented Binary CIF decoders implementing</span>
 <span class="sd">    StringArray, ByteArray, IntegerPacking, Delta, RunLength,</span>
 <span class="sd">    FixedPoint, and  IntervalQuantization from the BinaryCIF</span>
 <span class="sd">    specification described in:</span>
@@ -1414,7 +1414,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">bCifCodeTypeD</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;integer_8&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;integer_16&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;integer_32&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;unsigned_integer_8&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;unsigned_integer_16&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;unsigned_integer_32&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="s2">&quot;float_32&quot;</span><span class="p">,</span> <span class="mi">33</span><span class="p">:</span> <span class="s2">&quot;float_64&quot;</span><span class="p">}</span>
-    <span class="sd">&quot;&quot;&quot;Binary CIF protocol internal data type codes to integer and float types</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Binary CIF protocol internal data type codes to integer and float types</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">bCifTypeD</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;integer_8&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mh">0x7F</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mh">0x7F</span><span class="p">},</span>
@@ -1426,11 +1426,11 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="s2">&quot;float_32&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">1.175494351e-38</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">3.402823466e38</span><span class="p">},</span>
         <span class="s2">&quot;float_64&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">:</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">2.2250738585072014e-308</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623158e308</span><span class="p">},</span>
     <span class="p">}</span>
-    <span class="sd">&quot;&quot;&quot;Binary CIF data type feature dictionary</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Binary CIF data type feature dictionary</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF encoder class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF encoder class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            storeStringsAsBytes (bool, optional): express keys and strings as byte types otherwise follow the default encoding. Defaults to False.</span>
@@ -1452,7 +1452,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the decoded input data column using the input list of encodings</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the decoded input data column using the input list of encodings</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): column of data to be decoded</span>
@@ -1469,7 +1469,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">return</span> <span class="n">colDataList</span>
 
     <span class="k">def</span> <span class="nf">stringArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode an array of strings stored as a concatenation of all unique</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode an array of strings stored as a concatenation of all unique</span>
 <span class="sd">        strings, a list of offsets to construct the unique substrings, and indices into</span>
 <span class="sd">        the offset array.</span>
 
@@ -1495,7 +1495,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">yield</span> <span class="n">uniqueStringList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">if</span> <span class="n">ii</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">byteArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode input byte list into a list of integers/floats</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode input byte list into a list of integers/floats</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): column of data to be decoded</span>
@@ -1540,7 +1540,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="nf">integerPackingDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode a (32-bit) integer list packed into 8- or 16-bit values.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode a (32-bit) integer list packed into 8- or 16-bit values.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): column of data to be decoded</span>
@@ -1558,7 +1558,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__signedDecode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">deltaDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode an integer list stored as a list of consecutive differences.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode an integer list stored as a list of consecutive differences.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): column of data to be decoded</span>
@@ -1575,7 +1575,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">yield</span> <span class="n">val</span>
 
     <span class="k">def</span> <span class="nf">runLengthDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode an integer list stored as pairs of (value, number of repeats).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode an integer list stored as pairs of (value, number of repeats).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): column of data to be decoded</span>
@@ -1593,7 +1593,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
                 <span class="k">yield</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">fixedPointDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode a floating point list stored as integers and a multiplicative factor.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode a floating point list stored as integers and a multiplicative factor.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): column of data to be decoded</span>
@@ -1609,7 +1609,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">yield</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="n">factor</span>
 
     <span class="k">def</span> <span class="nf">intervalQuantizationDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode a list of 32-bit integers quantized within a given interval into a list of floats.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode a list of 32-bit integers quantized within a given interval into a list of floats.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            colDataList (list): column of data to be decoded</span>
@@ -1627,7 +1627,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">yield</span> <span class="n">minVal</span> <span class="o">+</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">val</span>
 
     <span class="k">def</span> <span class="nf">__toBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strVal</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional conversion of the input string to bytes according to the class setting (storeStringsAsBytes).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            strVal (string): input string</span>
@@ -1643,7 +1643,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">return</span> <span class="n">strVal</span>
 
     <span class="k">def</span> <span class="nf">__fromBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byteVal</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Optional conversion of the input value according to the class setting (storeStringsAsBytes).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional conversion of the input value according to the class setting (storeStringsAsBytes).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            byteVal (string): input byte object</span>
@@ -1761,7 +1761,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF encoder class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF encoder class.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        storeStringsAsBytes (bool, optional): express keys and strings as byte types otherwise follow the default encoding. Defaults to False.</span>
@@ -1848,7 +1848,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">byteArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decode input byte list into a list of integers/floats</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode input byte list into a list of integers/floats</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): column of data to be decoded</span>
@@ -1931,7 +1931,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictList</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the decoded input data column using the input list of encodings</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the decoded input data column using the input list of encodings</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): column of data to be decoded</span>
@@ -2013,7 +2013,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">deltaDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decode an integer list stored as a list of consecutive differences.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode an integer list stored as a list of consecutive differences.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): column of data to be decoded</span>
@@ -2095,7 +2095,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fixedPointDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decode a floating point list stored as integers and a multiplicative factor.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode a floating point list stored as integers and a multiplicative factor.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): column of data to be decoded</span>
@@ -2176,7 +2176,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">integerPackingDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decode a (32-bit) integer list packed into 8- or 16-bit values.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode a (32-bit) integer list packed into 8- or 16-bit values.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): column of data to be decoded</span>
@@ -2259,7 +2259,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">intervalQuantizationDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decode a list of 32-bit integers quantized within a given interval into a list of floats.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode a list of 32-bit integers quantized within a given interval into a list of floats.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): column of data to be decoded</span>
@@ -2342,7 +2342,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">runLengthDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decode an integer list stored as pairs of (value, number of repeats).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode an integer list stored as pairs of (value, number of repeats).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        colDataList (list): column of data to be decoded</span>
@@ -2427,7 +2427,7 @@ the offset array.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifReader.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">stringArrayDecoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decode an array of strings stored as a concatenation of all unique</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode an array of strings stored as a concatenation of all unique</span>
 <span class="sd">    strings, a list of offsets to construct the unique substrings, and indices into</span>
 <span class="sd">    the offset array.</span>
 

@@ -1358,7 +1358,7 @@ row data managed by this class.</p>
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataCategoryBase</span><span class="p">(</span><span class="n">UserList</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;Base object definition for a data category -</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base object definition for a data category -</span>
 
 <span class="sd">    This class subclasses UserList and implements many list-like features for</span>
 <span class="sd">    row data managed by this class.</span>
@@ -1514,7 +1514,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numAttributes</span>
 
     <span class="k">def</span> <span class="nf">renameAttributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Rename attributes according to mapping information in the input mapping dictionary {oldName: newName}&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rename attributes according to mapping information in the input mapping dictionary {oldName: newName}&quot;&quot;&quot;</span>
         <span class="n">atL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">:</span>
             <span class="n">atL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapDict</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="k">if</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">mapDict</span> <span class="k">else</span> <span class="n">atName</span><span class="p">)</span>
@@ -1608,7 +1608,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="n">rD</span>
 
     <span class="k">def</span> <span class="nf">getAttributeValueList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of attribute values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of attribute values.&quot;&quot;&quot;</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeIndex</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
@@ -1620,7 +1620,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="n">rL</span>
 
     <span class="k">def</span> <span class="nf">getAttributeUniqueValueList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a sorted list of unique attribute values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a sorted list of unique attribute values.&quot;&quot;&quot;</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">rD</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1655,7 +1655,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">removeDuplicateRows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove duplicate rows from the category</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove duplicate rows from the category</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            e: any exception</span>
@@ -1676,7 +1676,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">removeAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove the attribute from the attribute list along with any</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the attribute from the attribute list along with any</span>
 <span class="sd">        corresponding row data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeIndex</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
@@ -1697,7 +1697,7 @@ row data managed by this class.</p>
     <span class="c1">##</span>
     <span class="c1">##</span>
     <span class="k">def</span> <span class="nf">__updateItemLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal method to create mmCIF style item names for the current attribute</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to create mmCIF style item names for the current attribute</span>
 <span class="sd">        list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_itemNameList</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1707,7 +1707,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_itemNameList</span>
 
     <span class="k">def</span> <span class="nf">__alignLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal method which aligns the list of input attributes with row data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method which aligns the list of input attributes with row data.</span>
 
 <span class="sd">        If there are fewer labels than data elements in a row, then placeholder labels</span>
 <span class="sd">        are created (e.g. &quot;unlabeled_#&quot;)</span>
@@ -1720,7 +1720,7 @@ row data managed by this class.</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__updateItemLabels</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">setMapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mType</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Controls the manner in which this class returns data when accessed by</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Controls the manner in which this class returns data when accessed by</span>
 <span class="sd">        index or in the context of an iterator:</span>
 
 <span class="sd">        DATA      = list of row data elements as these were input. [default]</span>
@@ -1785,7 +1785,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">cmpAttributeNames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compare the attributeNameList in current data category (dca) and input data category .</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare the attributeNameList in current data category (dca) and input data category .</span>
 
 <span class="sd">        Return: (current attributes not in dcObj), (attributes common to both), (attributes in dcObj not in current data category)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1794,7 +1794,7 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sa</span> <span class="o">-</span> <span class="n">sb</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sa</span> <span class="o">&amp;</span> <span class="n">sb</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sb</span> <span class="o">-</span> <span class="n">sa</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compare the values by attribute for current data category (dca) and input data category.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare the values by attribute for current data category (dca) and input data category.</span>
 <span class="sd">        The comparison is performed independently for the values of corresponding attributes.</span>
 <span class="sd">        Length differences are treated inequality out of hand.</span>
 
@@ -1824,19 +1824,19 @@ row data managed by this class.</p>
         <span class="k">return</span> <span class="n">rL</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Override the default Equals behavior&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override the default Equals behavior&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
     <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Define a non-equality test&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define a non-equality test&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
     <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Override the default hash behavior (that returns the id or the object)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override the default hash behavior (that returns the id or the object)&quot;&quot;&quot;</span>
         <span class="c1"># return hash(tuple(sorted(self.__dict__.items())))</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
 
@@ -1876,7 +1876,7 @@ row data managed by this class.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Override the default Equals behavior&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the default Equals behavior&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span>
     <span class="k">return</span> <span class="bp">NotImplemented</span>
@@ -1936,7 +1936,7 @@ row data managed by this class.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Override the default hash behavior (that returns the id or the object)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the default hash behavior (that returns the id or the object)&quot;&quot;&quot;</span>
     <span class="c1"># return hash(tuple(sorted(self.__dict__.items())))</span>
     <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
 </code></pre></div>
@@ -2077,7 +2077,7 @@ row data managed by this class.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Define a non-equality test&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define a non-equality test&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">NotImplemented</span>
@@ -2272,7 +2272,7 @@ row data managed by this class.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cmpAttributeNames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compare the attributeNameList in current data category (dca) and input data category .</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the attributeNameList in current data category (dca) and input data category .</span>
 
 <span class="sd">    Return: (current attributes not in dcObj), (attributes common to both), (attributes in dcObj not in current data category)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2307,7 +2307,7 @@ Length differences are treated inequality out of hand.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compare the values by attribute for current data category (dca) and input data category.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the values by attribute for current data category (dca) and input data category.</span>
 <span class="sd">    The comparison is performed independently for the values of corresponding attributes.</span>
 <span class="sd">    Length differences are treated inequality out of hand.</span>
 
@@ -2543,7 +2543,7 @@ Length differences are treated inequality out of hand.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getAttributeUniqueValueList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a sorted list of unique attribute values.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a sorted list of unique attribute values.&quot;&quot;&quot;</span>
     <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">rD</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2579,7 +2579,7 @@ Length differences are treated inequality out of hand.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getAttributeValueList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a list of attribute values.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of attribute values.&quot;&quot;&quot;</span>
     <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeIndex</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
@@ -2894,7 +2894,7 @@ corresponding row data.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">removeAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove the attribute from the attribute list along with any</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove the attribute from the attribute list along with any</span>
 <span class="sd">    corresponding row data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeIndex</span><span class="p">(</span><span class="n">attributeName</span><span class="p">)</span>
@@ -2965,7 +2965,7 @@ corresponding row data.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">removeDuplicateRows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove duplicate rows from the category</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove duplicate rows from the category</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        e: any exception</span>
@@ -3075,7 +3075,7 @@ corresponding row data.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">renameAttributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rename attributes according to mapping information in the input mapping dictionary {oldName: newName}&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rename attributes according to mapping information in the input mapping dictionary {oldName: newName}&quot;&quot;&quot;</span>
     <span class="n">atL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">:</span>
         <span class="n">atL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapDict</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="k">if</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">mapDict</span> <span class="k">else</span> <span class="n">atName</span><span class="p">)</span>
@@ -3140,7 +3140,7 @@ index or in the context of an iterator:</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryBase.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setMapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Controls the manner in which this class returns data when accessed by</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Controls the manner in which this class returns data when accessed by</span>
 <span class="sd">    index or in the context of an iterator:</span>
 
 <span class="sd">    DATA      = list of row data elements as these were input. [default]</span>
