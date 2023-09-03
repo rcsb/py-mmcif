@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.7">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.0e669242.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.046329b4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
@@ -548,41 +548,15 @@
       
         <li class="md-nav__item">
   <a href="#mmcif.api.DictionaryInclude.DictionaryInclude" class="md-nav__link">
-    DictionaryInclude
-  </a>
-  
-    <nav class="md-nav" aria-label="DictionaryInclude">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mmcif.api.DictionaryInclude.DictionaryInclude-methods" class="md-nav__link">
-    Methods
-  </a>
-  
-    <nav class="md-nav" aria-label="Methods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mmcif.api.DictionaryInclude.DictionaryInclude.__init__" class="md-nav__link">
-    __init__()
+    mmcif.api.DictionaryInclude.DictionaryInclude
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#mmcif.api.DictionaryInclude.DictionaryInclude.processIncludedContent" class="md-nav__link">
     processIncludedContent()
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -920,41 +894,15 @@
       
         <li class="md-nav__item">
   <a href="#mmcif.api.DictionaryInclude.DictionaryInclude" class="md-nav__link">
-    DictionaryInclude
-  </a>
-  
-    <nav class="md-nav" aria-label="DictionaryInclude">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mmcif.api.DictionaryInclude.DictionaryInclude-methods" class="md-nav__link">
-    Methods
-  </a>
-  
-    <nav class="md-nav" aria-label="Methods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mmcif.api.DictionaryInclude.DictionaryInclude.__init__" class="md-nav__link">
-    __init__()
+    mmcif.api.DictionaryInclude.DictionaryInclude
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#mmcif.api.DictionaryInclude.DictionaryInclude.processIncludedContent" class="md-nav__link">
     processIncludedContent()
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -980,16 +928,7 @@
 
 <div class="doc doc-object doc-class">
 
-
-
-<h2 id="mmcif.api.DictionaryInclude.DictionaryInclude" class="doc doc-heading">
-        <code>
-mmcif.api.DictionaryInclude.DictionaryInclude        </code>
-
-
-
-</h2>
-
+<a id="mmcif.api.DictionaryInclude.DictionaryInclude"></a>
     <div class="doc doc-contents first">
 
 
@@ -1455,96 +1394,6 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
 
 
 
-<h3 id="mmcif.api.DictionaryInclude.DictionaryInclude-methods">Methods</h3>
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h4 id="mmcif.api.DictionaryInclude.DictionaryInclude.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h4>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>mmcif/api/DictionaryInclude.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1">#</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__itemNameRelatives</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;_item.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_examples.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_ndb_item_description.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_related.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_category_key.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_structure.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_methods.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_aliases.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_dependent.dependent_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_default.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_examples.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_units.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_related.related_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_description.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_dependent.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_range.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_sub_category.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_range.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked.condition_child_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_ndb_item_examples.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_value_condition.item_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_ndb_item_range.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_linked.child_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_description.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_context.item_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_enumeration_details.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked_group_list.child_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked_group_list.parent_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_value_condition_list.target_item_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_ndb_item_enumeration.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked.child_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_value_condition.dependent_item_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_enumeration.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_linked.parent_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_value_condition_list.dependent_item_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_type.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_type_conditions.name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked.parent_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item_enumeration.name&quot;</span><span class="p">,</span>
-    <span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__categoryIdRelatives</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;_category.id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_category_key.id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked_group.category_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_category_examples.id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_item.category_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_category_context.category_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked_group_list.parent_category_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_category_group.category_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_category_description.id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_ndb_category_examples.id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_category_examples.id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_category_methods.category_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_ndb_category_description.id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_pdbx_item_linked_group_list.child_category_id&quot;</span><span class="p">,</span>
-    <span class="p">]</span>
-    <span class="c1">#</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__dirPath</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dirPath&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Local dictionary include path relative to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dirPath</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__locatorIndexD</span> <span class="o">=</span> <span class="p">{}</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
 
 
 
@@ -1552,11 +1401,11 @@ mmcif.api.DictionaryInclude.DictionaryInclude        </code>
 
 
 
-<h4 id="mmcif.api.DictionaryInclude.DictionaryInclude.processIncludedContent" class="doc doc-heading">
+<h2 id="mmcif.api.DictionaryInclude.DictionaryInclude.processIncludedContent" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
-</h4>
+</h2>
 
     <div class="doc doc-contents ">
 
@@ -1696,7 +1545,7 @@ input list of dictionary data and definition containers.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.dff1b7c8.min.js"></script>
       
     
   </body>
