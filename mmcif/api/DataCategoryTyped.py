@@ -220,6 +220,7 @@ class DataCategoryTyped(DataCategory):
         Returns:
             (string, bool): data type (string, integer or float) and mandatory code
         """
+        logger.debug("Working on cat %r, atName %r", self.getName(), atName)
         cifDataType = self.__dApi.getTypeCode(self.getName(), atName)
         cifPrimitiveType = self.__dApi.getTypePrimitive(self.getName(), atName)
         isMandatory = self.__dApi.getMandatoryCode(self.getName(), atName) in ["yes", "implicit", "implicit-ordinal"]
