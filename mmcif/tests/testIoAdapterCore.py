@@ -264,6 +264,8 @@ class IoAdapterTests(unittest.TestCase):
             logger.info("Read %d data blocks from mmCIF file %r", len(containerList), ifp)
             ok = len(containerList) > 0
             self.assertTrue(ok)
+            #
+            logger.info("Skipping test of writing BCIF file WITH typing until dictionary reading is fixed (%r)", ofpTyped)
             # # Test writing to file WITH typing
             # ioDict = IoAdapter(raiseExceptions=False)
             # dApiContainerList = ioDict.readFile(self.__pathPdbxDictFile, enforceAscii=False, outDirPath=self.__pathOutputDir)
