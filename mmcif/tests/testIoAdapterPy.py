@@ -115,8 +115,8 @@ class IoAdapterTests(unittest.TestCase):
     def __testFileReader(self, fp, enforceAscii=False):
         """Test case -  read PDBx file"""
         try:
-            io = IoAdapter(cleanup=False, raiseExceptions=True)
-            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
+            io = IoAdapter(raiseExceptions=True)
+            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             self.assertEqual(len(containerList), 1)
         except Exception as e:
@@ -144,11 +144,11 @@ class IoAdapterTests(unittest.TestCase):
     def testDownloadReader(self):
         """Test case -  download/read text and compressed file"""
         try:
-            io = IoAdapter(cleanup=False, raiseExceptions=True)
+            io = IoAdapter(raiseExceptions=True)
             containerList = io.readFile(self.__pathGzipUrl, outDirPath=self.__pathOutputDir)
             logger.info("Read %d data blocks", len(containerList))
             self.assertGreaterEqual(len(containerList[0].getObjNameList()), 60)
-            io = IoAdapter(cleanup=False, raiseExceptions=True)
+            io = IoAdapter(raiseExceptions=True)
             containerList = io.readFile(self.__pathTextUrl, outDirPath=self.__pathOutputDir)
             logger.info("Read %d data blocks", len(containerList))
             self.assertGreaterEqual(len(containerList[0].getObjNameList()), 60)
@@ -168,14 +168,14 @@ class IoAdapterTests(unittest.TestCase):
 
     def __testFileReaderExceptionHandler1(self, fp, enforceAscii=False):
         """Test case -  read selected categories from PDBx file and handle exceptions"""
-        io = IoAdapter(cleanup=False, raiseExceptions=True)
+        io = IoAdapter(raiseExceptions=True)
         self.assertRaises(PdbxSyntaxError, io.readFile, fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
 
     def __testFileReaderExceptionHandler2(self, fp, enforceAscii=False, readEncodingErrors="ignore"):
         """Test case -  read selected categories from PDBx and handle exceptions"""
         ok = True
         try:
-            io = IoAdapter(cleanup=False, raiseExceptions=True, readEncodingErrors=readEncodingErrors)
+            io = IoAdapter(raiseExceptions=True, readEncodingErrors=readEncodingErrors)
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
             logger.debug("Containerlist length %d ", len(containerList))
             #
@@ -212,8 +212,8 @@ class IoAdapterTests(unittest.TestCase):
         try:
             enforceAscii = kwargs.get("enforceAscii", True)
             useCharRefs = True if enforceAscii else False
-            io = IoAdapter(cleanup=False, raiseExceptions=True, useCharRefs=useCharRefs)
-            containerList = io.readFile(ifp)
+            io = IoAdapter(raiseExceptions=True, useCharRefs=useCharRefs)
+            containerList = io.readFile(ifp, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, **kwargs)
             self.assertTrue(ok)
@@ -230,8 +230,8 @@ class IoAdapterTests(unittest.TestCase):
     def __testFileReaderWriterSelect(self, ifp, ofp, selectList=None, excludeFlag=False):
         """Test case -  read and then write PDBx file with selection."""
         try:
-            io = IoAdapter(cleanup=False, raiseExceptions=False, useCharRefs=True)
-            containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir)
+            io = IoAdapter(raiseExceptions=False, useCharRefs=True)
+            containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, enforceAscii=True)
             self.assertTrue(ok)
