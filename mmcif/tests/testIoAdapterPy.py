@@ -116,7 +116,7 @@ class IoAdapterTests(unittest.TestCase):
         """Test case -  read PDBx file"""
         try:
             io = IoAdapter(raiseExceptions=True)
-            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
+            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             self.assertEqual(len(containerList), 1)
         except Exception as e:
@@ -213,7 +213,7 @@ class IoAdapterTests(unittest.TestCase):
             enforceAscii = kwargs.get("enforceAscii", True)
             useCharRefs = True if enforceAscii else False
             io = IoAdapter(raiseExceptions=True, useCharRefs=useCharRefs)
-            containerList = io.readFile(ifp)
+            containerList = io.readFile(ifp, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, **kwargs)
             self.assertTrue(ok)
@@ -231,7 +231,7 @@ class IoAdapterTests(unittest.TestCase):
         """Test case -  read and then write PDBx file with selection."""
         try:
             io = IoAdapter(raiseExceptions=False, useCharRefs=True)
-            containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir)
+            containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, enforceAscii=True)
             self.assertTrue(ok)

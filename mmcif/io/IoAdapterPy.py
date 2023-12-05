@@ -13,7 +13,8 @@
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
 #  5-Apr-2021 jdw allow access to data/dictionary artifacts over HTTP(S)
-#  5-Dec-2023 dwp Add support for binary mmCIF (BCIF) reading and writing
+#  5-Dec-2023 dwp Add support for binary mmCIF (BCIF) reading and writing;
+#                 Set cleanup default to True (delete temporary files and logs after reading)
 ##
 """
 Python implementation of IoAdapterBase class providing read and write
