@@ -13,7 +13,7 @@
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
 #  5-Apr-2021 jdw allow access to data/dictionary artifacts over HTTP(S)
-# 30-Oct-2023 dwp Add support for binary mmCIF (BCIF) reading and writing
+#  5-Dec-2023 dwp Add support for binary mmCIF (BCIF) reading and writing
 ##
 """
 Python implementation of IoAdapterBase class providing read and write
@@ -55,10 +55,8 @@ logger = logging.getLogger(__name__)
 
 
 class IoAdapterPy(IoAdapterBase):
-    """Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF data files -"""
+    """Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF and BCIF data files -"""
 
-    # def __init__(self, *args, **kwargs):
-    #     super(IoAdapterPy, self).__init__(*args, **kwargs)
     # pylint: disable=arguments-differ
     def readFile(
         self,
@@ -68,19 +66,19 @@ class IoAdapterPy(IoAdapterBase):
         excludeFlag=False,
         logFilePath=None,
         outDirPath=None,
-        cleanUp=False,
+        cleanUp=True,
         fmt="mmcif",
         timeout=None,
         storeStringsAsBytes=False,
         defaultStringEncoding="utf-8",
         **kwargs
     ):
-        """Parse the data blocks in the input mmCIF format data file into list of data or definition containers.  The data category content within
-            each data block is stored a collection of DataCategory objects within each container.
+        """Parse the data blocks in the input mmCIF or BCIF format data file into list of data or definition containers. The data category
+           content within each data block is stored a collection of DataCategory objects within each container.
 
         Args:
             inputFilePath (string): Input file path
-            enforceAscii (bool, optional): Flag to requiring ASCII encoding. See encoding error options.
+            enforceAscii (bool, optional): Flag to require ASCII encoding when reading in 'mmcif' file. See encoding error options. Defaults to False.
             selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)
             excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list
             logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)
@@ -120,6 +118,8 @@ class IoAdapterPy(IoAdapterBase):
             if self.__isLocal(filePath) and not self._fileExists(filePath):
                 return []
             #
+            fmt = fmt.lower()
+            #
             if sys.version_info[0] > 2:  # Check if using Python version higher than 2
                 if fmt == "mmcif":
                     if self.__isLocal(filePath):
@@ -148,11 +148,13 @@ class IoAdapterPy(IoAdapterBase):
                     # local vs. remote and gzip business is already done in BinaryCifReader
                     bcifRd = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes, defaultStringEncoding=defaultStringEncoding)
                     containerList = bcifRd.deserialize(filePath)
+                else:
+                    logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
             else:
                 logger.warning("Support for Python 2 will be deprecated soon. Please use Python 3.")
                 if fmt == "bcif":
                     logger.error("Support for BCIF reading only available in Python 3.")
-                else:
+                elif fmt == "mmcif":
                     if self.__isLocal(filePath):
                         filePath = self._uncompress(filePath, oPath)
                         if enforceAscii:
@@ -180,6 +182,9 @@ class IoAdapterPy(IoAdapterBase):
                                 it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
                                 pRd = PdbxReader(it)
                                 pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                else:
+                    logger.error("Unsupported fmt %r for Python2 installation of mmcif.io.IoAdapterPy. Currently only 'mmcif' is supported. Upgrade to Python3 for 'bcif' support", fmt)
+
             if cleanUp:
                 self._cleanupFile(lPath, lPath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
@@ -212,7 +217,7 @@ class IoAdapterPy(IoAdapterBase):
         outputFilePath,
         containerList,
         maxLineLength=900,
-        enforceAscii=True,
+        enforceAscii=False,
         lastInOrder=None,
         selectOrder=None,
         columnAlignFlag=True,
@@ -221,20 +226,20 @@ class IoAdapterPy(IoAdapterBase):
         fmt="mmcif",
         storeStringsAsBytes=False,
         defaultStringEncoding="utf-8",
-        applyTypes=False,
+        applyTypes=True,
         dictionaryApi=None,
-        useStringTypes=True,
+        useStringTypes=False,
         useFloat64=False,
         copyInputData=False,
         **kwargs
     ):
-        """Write input list of data containers to the specified output file path in mmCIF format.
+        """Write input list of data containers to the specified output file path in mmCIF or BCIF format.
 
         Args:
             outputFilePath (string): output file path
             containerList (list DataContainer objects, optional)
             maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)
-            enforceAscii (bool, optional): Filter output (not implemented - content must be ascii compatible on input)
+            enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to False.
             lastInOrder (list of category names, optional): Move data categories in this list to end of each data block
             selectOrder (list of category names, optional): Write only data categories on this list.
             columnAlignFlag (bool, optional): Format the output in aligned columns (default=True) (Native Python Only)
@@ -245,9 +250,9 @@ class IoAdapterPy(IoAdapterBase):
             # BCIF-specific args:
             storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.
             defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".
-            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to False.
+            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.
             dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.
-            useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to True.
+            useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.
             useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.
             copyInputData (bool, optional): make a new copy input data (for BCIF files only). Defaults to False.
 
@@ -255,7 +260,6 @@ class IoAdapterPy(IoAdapterBase):
 
         Returns:
             bool: Completion status
-
 
         """
         lastInOrder = lastInOrder if lastInOrder else ["pdbx_nonpoly_scheme", "pdbx_poly_seq_scheme", "atom_site", "atom_site_anisotrop"]
@@ -266,6 +270,8 @@ class IoAdapterPy(IoAdapterBase):
                 encoding = "ascii"
             else:
                 encoding = "utf-8"
+            #
+            fmt = fmt.lower()
             #
             if sys.version_info[0] > 2:  # Check if using Python version higher than 2
                 if fmt == "mmcif":
@@ -293,12 +299,15 @@ class IoAdapterPy(IoAdapterBase):
                         copyInputData=copyInputData,
                     )
                     bcifW.serialize(outputFilePath, containerList)
+                else:
+                    logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
+                    return False
             else:
                 logger.warning("Support for Python 2 will be deprecated soon. Please use Python 3.")
                 if fmt == "bcif":
                     logger.error("Support for BCIF writing only available in Python 3.")
                     return False
-                else:
+                elif fmt == "mmcif":
                     if enforceAscii:
                         with io.open(outputFilePath, "w", encoding=encoding) as ofh:
                             self.__writeFile(
@@ -327,6 +336,9 @@ class IoAdapterPy(IoAdapterBase):
                                 enforceAscii=enforceAscii,
                                 cnvCharRefs=self._useCharRefs,
                             )
+                else:
+                    logger.error("Unsupported fmt %r for Python2 installation of mmcif.io.IoAdapterPy. Currently only 'mmcif' is supported. Upgrade to Python3 for 'bcif' support", fmt)
+                    return False
             return True
         except Exception as ex:
             if self._raiseExceptions:
