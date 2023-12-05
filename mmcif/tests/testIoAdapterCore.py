@@ -50,8 +50,8 @@ logger.setLevel(logging.INFO)
 
 class IoAdapterTests(unittest.TestCase):
     def setUp(self):
-        # self.__lfh = sys.stdout
-        # self.__verbose = True
+        self.__lfh = sys.stdout
+        self.__verbose = True
         #
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "1kip.cif")
         self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif.gz")
