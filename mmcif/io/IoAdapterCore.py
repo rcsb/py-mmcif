@@ -16,6 +16,8 @@
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
 # 27-Nov-2018 jdw propagate raise exception flag on all DataCategory instantiations.
+#  5-Dec-2023 dwp Add format parameter to readFile and writeFile (currently only supports 'mmcif',
+#                 but to potentially be extended to support 'bcif' as IoAdapterPy does)
 #
 ##
 """
@@ -63,10 +65,19 @@ except ImportError:
 class IoAdapterCore(IoAdapterBase):
     """Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library."""
 
-    # def __init__(self, *args, **kwargs):
-    #    super(IoAdapterCore, self).__init__(*args, **kwargs)
     # pylint: disable=arguments-differ
-    def readFile(self, inputFilePath, enforceAscii=True, selectList=None, excludeFlag=False, logFilePath=None, outDirPath=None, cleanUp=True, **kwargs):
+    def readFile(
+        self,
+        inputFilePath,
+        enforceAscii=True,
+        selectList=None,
+        excludeFlag=False,
+        logFilePath=None,
+        outDirPath=None,
+        cleanUp=True,
+        fmt="mmcif",
+        **kwargs
+    ):
         """Parse the data blocks in the input mmCIF format data file into list of DataContainers().  The data category content within each data block
            is stored a collection of DataCategory objects within each DataContainer.
 
@@ -78,6 +89,8 @@ class IoAdapterCore(IoAdapterBase):
             logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)
             outDirPath (string, optional): Path for translated/reencoded files and default logfiles.
             cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.
+            fmt (string, optional): Format of input file (currently only supports "mmcif"). Defaults to "mmcif".
+
             **kwargs: Placeholder for missing keyword arguments.
 
         Returns:
@@ -89,6 +102,7 @@ class IoAdapterCore(IoAdapterBase):
         filePath = str(inputFilePath)
         # oPath = outDirPath if outDirPath else '.'
         oPath = self._chooseTemporaryPath(inputFilePath, outDirPath=outDirPath)
+        containerL = []
         try:
             #
             lPath = logFilePath
@@ -100,28 +114,33 @@ class IoAdapterCore(IoAdapterBase):
             if not self._fileExists(filePath):
                 return []
             #
-            filePath = self._uncompress(filePath, oPath)
-            tPath = filePath
-            if enforceAscii:
-                asciiFilePath = self._getDefaultFileName(filePath, fileType="cif-parser-ascii", fileExt="cif", outDirPath=oPath)
-                encodingErrors = "xmlcharrefreplace" if self._useCharRefs else "ignore"
-                logger.debug("Filtering input file to %s using encoding errors as %s", asciiFilePath, encodingErrors)
-                ok = self._toAscii(filePath, asciiFilePath, chunkSize=5000, encodingErrors=encodingErrors, readEncodingErrors=self._readEncodingErrors)
-                if ok:
-                    tPath = asciiFilePath
+            fmt = fmt.lower()
             #
-            readDef = None
-            if selectList is not None and selectList:
-                readDef = self.__getSelectionDef(selectList, excludeFlag)
+            if fmt == "mmcif":
+                filePath = self._uncompress(filePath, oPath)
+                tPath = filePath
+                if enforceAscii:
+                    asciiFilePath = self._getDefaultFileName(filePath, fileType="cif-parser-ascii", fileExt="cif", outDirPath=oPath)
+                    encodingErrors = "xmlcharrefreplace" if self._useCharRefs else "ignore"
+                    logger.debug("Filtering input file to %s using encoding errors as %s", asciiFilePath, encodingErrors)
+                    ok = self._toAscii(filePath, asciiFilePath, chunkSize=5000, encodingErrors=encodingErrors, readEncodingErrors=self._readEncodingErrors)
+                    if ok:
+                        tPath = asciiFilePath
+                #
+                readDef = None
+                if selectList is not None and selectList:
+                    readDef = self.__getSelectionDef(selectList, excludeFlag)
+                #
+                containerL, _ = self.__readData(tPath, readDef=readDef, cleanUp=cleanUp, logFilePath=lPath, maxLineLength=self._maxInputLineLength)
+                #
+                if cleanUp:
+                    self._cleanupFile(asciiFilePath, asciiFilePath)
+                    self._cleanupFile(filePath != str(inputFilePath), filePath)
+                self._setContainerProperties(containerL, locator=str(inputFilePath), load_date=self._getTimeStamp(), uid=uuid.uuid4().hex)
             #
-            containerL, _ = self.__readData(tPath, readDef=readDef, cleanUp=cleanUp, logFilePath=lPath, maxLineLength=self._maxInputLineLength)
-            #
-            if cleanUp:
-                self._cleanupFile(asciiFilePath, asciiFilePath)
-                self._cleanupFile(filePath != str(inputFilePath), filePath)
-            self._setContainerProperties(containerL, locator=str(inputFilePath), load_date=self._getTimeStamp(), uid=uuid.uuid4().hex)
-            #
-            return containerL
+            else:
+                logger.error("Unsupported fmt %r. Currently only 'mmcif' is supported by IoAdapterCore. For 'bcif', use IoAdapterPy instead.", fmt)
+        #
         except (PdbxError, PdbxSyntaxError) as ex:
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
             if self._raiseExceptions:
@@ -132,7 +151,7 @@ class IoAdapterCore(IoAdapterBase):
             msg = "Failing read for %s with %s" % (filePath, str(e))
             self._logError(msg)
 
-        return []
+        return containerL
 
     def getReadDiags(self):
         """Recover the diagnostics for the previous readFile() operation.readFile
@@ -294,7 +313,18 @@ class IoAdapterCore(IoAdapterBase):
 
         return containerList, diagL
 
-    def writeFile(self, outputFilePath, containerList=None, doubleQuotingFlag=False, maxLineLength=900, enforceAscii=True, lastInOrder=None, selectOrder=None, **kwargs):
+    def writeFile(
+        self,
+        outputFilePath,
+        containerList=None,
+        doubleQuotingFlag=False,
+        maxLineLength=900,
+        enforceAscii=True,
+        lastInOrder=None,
+        selectOrder=None,
+        fmt="mmcif",
+        **kwargs
+    ):
         """Write input list of data containers to the specified output file path in mmCIF format.
 
         Args:
@@ -304,11 +334,12 @@ class IoAdapterCore(IoAdapterBase):
             enforceAscii (bool, optional): Filter output (not implemented - content must be ascii compatible on input)
             lastInOrder (list of category names, optional): Move data categories in this list to end of each data block
             selectOrder (list of category names, optional): Write only data categories on this list.
+            fmt (string, optional): Format of input file (currently only supports "mmcif"). Defaults to "mmcif".
+
             **kwargs: Placeholder for unsupported key value pairs
 
         Returns:
             bool: Completion status
-
 
         """
         _ = enforceAscii
@@ -319,45 +350,53 @@ class IoAdapterCore(IoAdapterBase):
         try:
             startTime = time.time()
             logger.debug("write container length %d", len(containerL))
-            # (CifFile args: placeholder, verbose: bool, caseSense: Char::eCompareType, maxLineLength: int, nullValue: str)
-            cF = CifFile(True, self._verbose, 0, maxLineLength, "?")
-            for container in containerL:
-                containerName = container.getName()
-                logger.debug("writing container %s", containerName)
-                cF.AddBlock(containerName)
-                block = cF.GetBlock(containerName)
-                #
-                # objNameList = container.getObjNameList()
-                # logger.debug("write category length %d\n" % len(objNameList))
-                #
-                # Reorder/Filter - container object list-
-                objNameList = container.filterObjectNameList(lastInOrder=lastInOrder, selectOrder=selectOrder)
-                logger.debug("write category names  %r", objNameList)
-                #
-                for objName in objNameList:
-                    name, attributeNameList, rowList = container.getObj(objName).get()
-                    table = block.AddTable(name)
-                    for attributeName in attributeNameList:
-                        table.AddColumn(attributeName)
-                    try:
-                        rLen = len(attributeNameList)
-                        for ii, row in enumerate(rowList):
-                            table.AddRow()
-                            table.FillRow(ii, [str(row[jj]) if row[jj] is not None else "?" for jj in range(0, rLen)])
-                    except Exception as e:
-                        logger.error("Exception for %s preparing category %r (%d) attributes %r for writing %s", outputFilePath, name, len(rowList), attributeNameList, str(e))
+            fmt = fmt.lower()
+            #
+            if fmt == "mmcif":
+                # (CifFile args: placeholder, verbose: bool, caseSense: Char::eCompareType, maxLineLength: int, nullValue: str)
+                cF = CifFile(True, self._verbose, 0, maxLineLength, "?")
+                for container in containerL:
+                    containerName = container.getName()
+                    logger.debug("writing container %s", containerName)
+                    cF.AddBlock(containerName)
+                    block = cF.GetBlock(containerName)
                     #
-                    block.WriteTable(table)
+                    # objNameList = container.getObjNameList()
+                    # logger.debug("write category length %d\n" % len(objNameList))
+                    #
+                    # Reorder/Filter - container object list-
+                    objNameList = container.filterObjectNameList(lastInOrder=lastInOrder, selectOrder=selectOrder)
+                    logger.debug("write category names  %r", objNameList)
+                    #
+                    for objName in objNameList:
+                        name, attributeNameList, rowList = container.getObj(objName).get()
+                        table = block.AddTable(name)
+                        for attributeName in attributeNameList:
+                            table.AddColumn(attributeName)
+                        try:
+                            rLen = len(attributeNameList)
+                            for ii, row in enumerate(rowList):
+                                table.AddRow()
+                                table.FillRow(ii, [str(row[jj]) if row[jj] is not None else "?" for jj in range(0, rLen)])
+                        except Exception as e:
+                            logger.error("Exception for %s preparing category %r (%d) attributes %r for writing %s", outputFilePath, name, len(rowList), attributeNameList, str(e))
+                        #
+                        block.WriteTable(table)
+                #
+                if self._timing:
+                    stepTime1 = time.time()
+                    logger.info("Timing %d container(s) api loaded in %.4f seconds", len(containerL), stepTime1 - startTime)
+                if self._debug:
+                    self.__dumpBlocks(cF)
+                if doubleQuotingFlag:
+                    cF.SetQuoting(cF.eDOUBLE)
+                #
+                cF.Write(str(outputFilePath))
             #
-            if self._timing:
-                stepTime1 = time.time()
-                logger.info("Timing %d container(s) api loaded in %.4f seconds", len(containerL), stepTime1 - startTime)
-            if self._debug:
-                self.__dumpBlocks(cF)
-            if doubleQuotingFlag:
-                cF.SetQuoting(cF.eDOUBLE)
+            else:
+                logger.error("Unsupported fmt %r. Currently only 'mmcif' is supported by IoAdapterCore. For 'bcif', use IoAdapterPy instead.", fmt)
+                return False
             #
-            cF.Write(str(outputFilePath))
             if self._timing:
                 stepTime2 = time.time()
                 logger.info("Timing %d container(s) written in %.4f seconds total time %.4f", len(containerList), stepTime2 - stepTime1, stepTime2 - startTime)

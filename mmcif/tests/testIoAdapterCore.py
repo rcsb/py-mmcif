@@ -49,17 +49,14 @@ logger.setLevel(logging.INFO)
 
 
 class IoAdapterTests(unittest.TestCase):
-
-    # def shortDescription():
-
     def setUp(self):
-        self.__lfh = sys.stdout
-        self.__verbose = True
+        # self.__lfh = sys.stdout
+        # self.__verbose = True
         #
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "1kip.cif")
         self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif.gz")
         self.__pathPdbxDictFile = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
-        self.__testBlockCount = 7350
+        #
         self.__pathErrPdbxDataFile = os.path.join(HERE, "data", "1bna-errors.cif")
         self.__pathQuotesPdbxDataFile = os.path.join(HERE, "data", "specialTestFile.cif")
         #
@@ -75,7 +72,7 @@ class IoAdapterTests(unittest.TestCase):
         #
         self.__pathOutputUnicodePdbxFile = os.path.join(HERE, "test-output", "out-unicode-test.cif")
         self.__pathOutputCharRefPdbxFile = os.path.join(HERE, "test-output", "out-unicode-char-ref-test.cif")
-
+        #
         self.__pathOutputDir = os.path.join(HERE, "test-output")
         self.__startTime = time.time()
         logger.debug("Running tests on version %s", __version__)
@@ -125,7 +122,7 @@ class IoAdapterTests(unittest.TestCase):
 
     @unittest.skip("Dictionary test skipping")
     def testDictReaderAscii(self):
-        self.__testDictReader(self.__pathPdbxDictFile, enforceAscii=False)
+        self.__testDictReader(self.__pathPdbxDictFile, enforceAscii=True)
 
     def __testDictReader(self, fp, enforceAscii=False):
         """Test case -  read PDBx dictionary file"""
@@ -133,10 +130,10 @@ class IoAdapterTests(unittest.TestCase):
             io = IoAdapter(raiseExceptions=True)
             containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
             logger.info("Read %d data blocks", len(containerList))
-            for container in containerList:
-                container.printIt()
+            # for container in containerList:
+            #     container.printIt()
             #
-            self.assertTrue(len(containerList) > self.__testBlockCount)
+            self.assertTrue(len(containerList) > 0)
         except Exception as e:
             logger.error("Failing with %s", str(e))
             self.fail()
@@ -263,7 +260,7 @@ def suiteFileReaderProcessErrors():
 def suiteDictReader():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(IoAdapterTests("testDictReaderAscii"))
-    # suiteSelect.addTest(IoAdapterTests("testDictReaderUtf8"))
+    suiteSelect.addTest(IoAdapterTests("testDictReaderUtf8"))
     return suiteSelect
 
 

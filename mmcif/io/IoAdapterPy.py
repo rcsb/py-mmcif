@@ -13,6 +13,8 @@
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
 #  5-Apr-2021 jdw allow access to data/dictionary artifacts over HTTP(S)
+#  5-Dec-2023 dwp Add support for binary mmCIF (BCIF) reading and writing;
+#                 Set cleanup default to True (delete temporary files and logs after reading)
 ##
 """
 Python implementation of IoAdapterBase class providing read and write
@@ -35,6 +37,8 @@ from mmcif.io.PdbxExceptions import PdbxError
 from mmcif.io.PdbxExceptions import PdbxSyntaxError
 from mmcif.io.PdbxReader import PdbxReader
 from mmcif.io.PdbxWriter import PdbxWriter
+from mmcif.io.BinaryCifReader import BinaryCifReader
+from mmcif.io.BinaryCifWriter import BinaryCifWriter
 
 try:
     from urllib.parse import urlsplit
@@ -52,32 +56,48 @@ logger = logging.getLogger(__name__)
 
 
 class IoAdapterPy(IoAdapterBase):
-    """Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF data files -"""
+    """Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF and BCIF data files -"""
 
-    # def __init__(self, *args, **kwargs):
-    #     super(IoAdapterPy, self).__init__(*args, **kwargs)
     # pylint: disable=arguments-differ
-    def readFile(self, inputFilePath, enforceAscii=False, selectList=None, excludeFlag=False, logFilePath=None, outDirPath=None, cleanUp=False, **kwargs):
-        """Parse the data blocks in the input mmCIF format data file into list of data or definition containers.  The data category content within
-            each data block is stored a collection of DataCategory objects within each container.
+    def readFile(
+        self,
+        inputFilePath,
+        enforceAscii=False,
+        selectList=None,
+        excludeFlag=False,
+        logFilePath=None,
+        outDirPath=None,
+        cleanUp=True,
+        fmt="mmcif",
+        timeout=None,
+        storeStringsAsBytes=False,
+        defaultStringEncoding="utf-8",
+        **kwargs
+    ):
+        """Parse the data blocks in the input mmCIF or BCIF format data file into list of data or definition containers. The data category
+           content within each data block is stored a collection of DataCategory objects within each container.
 
         Args:
             inputFilePath (string): Input file path
-            enforceAscii (bool, optional): Flag to requiring ASCII encoding. See encoding error options.
+            enforceAscii (bool, optional): Flag to require ASCII encoding when reading in 'mmcif' file. See encoding error options. Defaults to False.
             selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)
             excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list
             logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)
             outDirPath (string, optional): Path for translated/re-encoded files and default logfiles.
             cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.
+            fmt (string, optional): Format of input file (either "mmcif" or "bcif"). Defaults to "mmcif".
             timeout (float, optional): Timeout in seconds for fetching data from remote urls
+
+            # BCIF-specific args:
+            storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.
+            defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".
+
             **kwargs: Placeholder for missing keyword arguments.
 
         Returns:
             List of DataContainers: Contents of input file parsed into a list of DataContainer objects.
 
         """
-        timeout = kwargs.pop("timeout", None)
-
         if kwargs:
             logger.warning("Unsupported keyword arguments %s", kwargs.keys())
         filePath = str(inputFilePath)
@@ -99,57 +119,73 @@ class IoAdapterPy(IoAdapterBase):
             if self.__isLocal(filePath) and not self._fileExists(filePath):
                 return []
             #
-            if sys.version_info[0] > 2:
-                if self.__isLocal(filePath):
-                    filePath = self._uncompress(filePath, oPath)
-                    with open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
-                        pRd = PdbxReader(ifh)
-                        pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+            fmt = fmt.lower()
+            #
+            if sys.version_info[0] > 2:  # Check if using Python version higher than 2
+                if fmt == "mmcif":
+                    if self.__isLocal(filePath):
+                        filePath = self._uncompress(filePath, oPath)
+                        with open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
+                            pRd = PdbxReader(ifh)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    else:  # handle files from the internet...
+                        if filePath.endswith(".gz"):
+                            customHeader = {"Accept-Encoding": "gzip"}
+                            with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
+                                if self._raiseExceptions:
+                                    ifh.raise_for_status()
+                                gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
+                                it = (line.decode(encoding, "ignore") for line in gzit)
+                                pRd = PdbxReader(it)
+                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                        else:
+                            with closing(requests.get(filePath, timeout=timeout)) as ifh:
+                                if self._raiseExceptions:
+                                    ifh.raise_for_status()
+                                it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
+                                pRd = PdbxReader(it)
+                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                elif fmt == "bcif":
+                    # local vs. remote and gzip business is already done in BinaryCifReader
+                    bcifRd = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes, defaultStringEncoding=defaultStringEncoding)
+                    containerList = bcifRd.deserialize(filePath)
                 else:
-                    if filePath.endswith(".gz"):
-                        customHeader = {"Accept-Encoding": "gzip"}
-                        with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
-                            if self._raiseExceptions:
-                                ifh.raise_for_status()
-                            gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
-                            it = (line.decode(encoding, "ignore") for line in gzit)
-                            pRd = PdbxReader(it)
-                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                    else:
-                        with closing(requests.get(filePath, timeout=timeout)) as ifh:
-                            if self._raiseExceptions:
-                                ifh.raise_for_status()
-                            it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
-                            pRd = PdbxReader(it)
-                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
             else:
-                if self.__isLocal(filePath):
-                    filePath = self._uncompress(filePath, oPath)
-                    if enforceAscii:
-                        with io.open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
-                            pRd = PdbxReader(ifh)
-                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                logger.warning("Support for Python 2 will be deprecated soon. Please use Python 3.")
+                if fmt == "bcif":
+                    logger.error("Support for BCIF reading only available in Python 3.")
+                elif fmt == "mmcif":
+                    if self.__isLocal(filePath):
+                        filePath = self._uncompress(filePath, oPath)
+                        if enforceAscii:
+                            with io.open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
+                                pRd = PdbxReader(ifh)
+                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                        else:
+                            with open(filePath, "r") as ifh:
+                                pRd = PdbxReader(ifh)
+                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
-                        with open(filePath, "r") as ifh:
-                            pRd = PdbxReader(ifh)
-                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                        if filePath.endswith(".gz"):
+                            customHeader = {"Accept-Encoding": "gzip"}
+                            with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
+                                if self._raiseExceptions:
+                                    ifh.raise_for_status()
+                                gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
+                                it = (line.decode(encoding, "ignore") for line in gzit)
+                                pRd = PdbxReader(it)
+                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                        else:
+                            with closing(requests.get(filePath, timeout=timeout)) as ifh:
+                                if self._raiseExceptions:
+                                    ifh.raise_for_status()
+                                it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
+                                pRd = PdbxReader(it)
+                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                 else:
-                    if filePath.endswith(".gz"):
-                        customHeader = {"Accept-Encoding": "gzip"}
-                        with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
-                            if self._raiseExceptions:
-                                ifh.raise_for_status()
-                            gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
-                            it = (line.decode(encoding, "ignore") for line in gzit)
-                            pRd = PdbxReader(it)
-                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                    else:
-                        with closing(requests.get(filePath, timeout=timeout)) as ifh:
-                            if self._raiseExceptions:
-                                ifh.raise_for_status()
-                            it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
-                            pRd = PdbxReader(it)
-                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                    logger.error("Unsupported fmt %r for Python2 installation of mmcif.io.IoAdapterPy. Currently only 'mmcif' is supported. Upgrade to Python3 for 'bcif' support", fmt)
+
             if cleanUp:
                 self._cleanupFile(lPath, lPath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
@@ -188,26 +224,43 @@ class IoAdapterPy(IoAdapterBase):
         columnAlignFlag=True,
         useStopTokens=False,
         formattingStep=None,
+        fmt="mmcif",
+        storeStringsAsBytes=False,
+        defaultStringEncoding="utf-8",
+        applyTypes=True,
+        dictionaryApi=None,
+        useStringTypes=False,
+        useFloat64=False,
+        copyInputData=False,
         **kwargs
     ):
-        """Write input list of data containers to the specified output file path in mmCIF format.
+        """Write input list of data containers to the specified output file path in mmCIF or BCIF format.
 
         Args:
             outputFilePath (string): output file path
             containerList (list DataContainer objects, optional)
             maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)
-            enforceAscii (bool, optional): Filter output (not implemented - content must be ascii compatible on input)
+            enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to True.
             lastInOrder (list of category names, optional): Move data categories in this list to end of each data block
             selectOrder (list of category names, optional): Write only data categories on this list.
-
             columnAlignFlag (bool, optional): Format the output in aligned columns (default=True) (Native Python Only)
             useStopTokens (bool, optional): Include terminating 'stop_' tokens at the end of mmCIF categories (loop_'s) (Native Python only)
             formattingStep (int, optional): The number row samples within each category used to estimate maximum column width for data alignment (Native Python only)
+            fmt (string, optional): Format of output file (either "mmcif" or "bcif"). Defaults to "mmcif".
+
+            # BCIF-specific args:
+            storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.
+            defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".
+            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.
+            dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.
+            useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.
+            useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.
+            copyInputData (bool, optional): make a new copy input data (for BCIF files only). Defaults to False.
+
             **kwargs: Placeholder for unsupported key value pairs
 
         Returns:
             bool: Completion status
-
 
         """
         lastInOrder = lastInOrder if lastInOrder else ["pdbx_nonpoly_scheme", "pdbx_poly_seq_scheme", "atom_site", "atom_site_anisotrop"]
@@ -219,49 +272,74 @@ class IoAdapterPy(IoAdapterBase):
             else:
                 encoding = "utf-8"
             #
-            if sys.version_info[0] > 2:
-                with open(outputFilePath, "w", encoding=encoding) as ofh:
-                    self.__writeFile(
-                        ofh,
-                        containerList,
-                        maxLineLength=maxLineLength,
-                        columnAlignFlag=columnAlignFlag,
-                        lastInOrder=lastInOrder,
-                        selectOrder=selectOrder,
-                        useStopTokens=useStopTokens,
-                        formattingStep=formattingStep,
-                        enforceAscii=enforceAscii,
-                        cnvCharRefs=self._useCharRefs,
+            fmt = fmt.lower()
+            #
+            if sys.version_info[0] > 2:  # Check if using Python version higher than 2
+                if fmt == "mmcif":
+                    with open(outputFilePath, "w", encoding=encoding) as ofh:
+                        self.__writeFile(
+                            ofh,
+                            containerList,
+                            maxLineLength=maxLineLength,
+                            columnAlignFlag=columnAlignFlag,
+                            lastInOrder=lastInOrder,
+                            selectOrder=selectOrder,
+                            useStopTokens=useStopTokens,
+                            formattingStep=formattingStep,
+                            enforceAscii=enforceAscii,
+                            cnvCharRefs=self._useCharRefs,
+                        )
+                elif fmt == "bcif":
+                    bcifW = BinaryCifWriter(
+                        dictionaryApi=dictionaryApi,
+                        storeStringsAsBytes=storeStringsAsBytes,
+                        defaultStringEncoding=defaultStringEncoding,
+                        applyTypes=applyTypes,
+                        useStringTypes=useStringTypes,
+                        useFloat64=useFloat64,
+                        copyInputData=copyInputData,
                     )
-            else:
-                if enforceAscii:
-                    with io.open(outputFilePath, "w", encoding=encoding) as ofh:
-                        self.__writeFile(
-                            ofh,
-                            containerList,
-                            maxLineLength=maxLineLength,
-                            columnAlignFlag=columnAlignFlag,
-                            lastInOrder=lastInOrder,
-                            selectOrder=selectOrder,
-                            useStopTokens=useStopTokens,
-                            formattingStep=formattingStep,
-                            enforceAscii=enforceAscii,
-                            cnvCharRefs=self._useCharRefs,
-                        )
+                    bcifW.serialize(outputFilePath, containerList)
                 else:
-                    with open(outputFilePath, "wb") as ofh:
-                        self.__writeFile(
-                            ofh,
-                            containerList,
-                            maxLineLength=maxLineLength,
-                            columnAlignFlag=columnAlignFlag,
-                            lastInOrder=lastInOrder,
-                            selectOrder=selectOrder,
-                            useStopTokens=useStopTokens,
-                            formattingStep=formattingStep,
-                            enforceAscii=enforceAscii,
-                            cnvCharRefs=self._useCharRefs,
-                        )
+                    logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
+                    return False
+            else:
+                logger.warning("Support for Python 2 will be deprecated soon. Please use Python 3.")
+                if fmt == "bcif":
+                    logger.error("Support for BCIF writing only available in Python 3.")
+                    return False
+                elif fmt == "mmcif":
+                    if enforceAscii:
+                        with io.open(outputFilePath, "w", encoding=encoding) as ofh:
+                            self.__writeFile(
+                                ofh,
+                                containerList,
+                                maxLineLength=maxLineLength,
+                                columnAlignFlag=columnAlignFlag,
+                                lastInOrder=lastInOrder,
+                                selectOrder=selectOrder,
+                                useStopTokens=useStopTokens,
+                                formattingStep=formattingStep,
+                                enforceAscii=enforceAscii,
+                                cnvCharRefs=self._useCharRefs,
+                            )
+                    else:
+                        with open(outputFilePath, "wb") as ofh:
+                            self.__writeFile(
+                                ofh,
+                                containerList,
+                                maxLineLength=maxLineLength,
+                                columnAlignFlag=columnAlignFlag,
+                                lastInOrder=lastInOrder,
+                                selectOrder=selectOrder,
+                                useStopTokens=useStopTokens,
+                                formattingStep=formattingStep,
+                                enforceAscii=enforceAscii,
+                                cnvCharRefs=self._useCharRefs,
+                            )
+                else:
+                    logger.error("Unsupported fmt %r for Python2 installation of mmcif.io.IoAdapterPy. Currently only 'mmcif' is supported. Upgrade to Python3 for 'bcif' support", fmt)
+                    return False
             return True
         except Exception as ex:
             if self._raiseExceptions:

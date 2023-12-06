@@ -26,6 +26,7 @@ import unittest
 
 from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
 from mmcif.io.PdbxReader import PdbxError, PdbxSyntaxError
+from mmcif.api.DictionaryApi import DictionaryApi
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -50,8 +51,8 @@ logger.setLevel(logging.INFO)
 
 class IoAdapterTests(unittest.TestCase):
     def setUp(self):
-        self.__lfh = sys.stdout
-        self.__verbose = True
+        # self.__lfh = sys.stdout
+        # self.__verbose = True
         #
         self.__pathPdbxDataFile = os.path.join(HERE, "data", "1kip.cif")
         self.__pathBigPdbxDataFile = os.path.join(HERE, "data", "1ffk.cif.gz")
@@ -72,6 +73,11 @@ class IoAdapterTests(unittest.TestCase):
         #
         self.__pathOutputUnicodePdbxFile = os.path.join(HERE, "test-output", "out-unicode-test.cif")
         self.__pathOutputCharRefPdbxFile = os.path.join(HERE, "test-output", "out-unicode-char-ref-test.cif")
+        #
+        self.__pathRcsbBcifGzip = os.path.join(HERE, "data", "1bna.bcif.gz")
+        self.__pathOutputRcsbBcifTranslated = os.path.join(HERE, "test-output", "1bna-translated-from-bcif.cif")
+        self.__pathOutputPdbxBcif = os.path.join(HERE, "test-output", "1kip-generated.bcif")
+        self.__pathOutputPdbxBcifTyped = os.path.join(HERE, "test-output", "1kip-generated-typed.bcif")
         #
         self.__pathGzipUrl = "https://files.rcsb.org/download/1KIP.cif.gz"
         self.__pathTextUrl = "https://files.rcsb.org/download/1KIP.cif"
@@ -110,7 +116,7 @@ class IoAdapterTests(unittest.TestCase):
         """Test case -  read PDBx file"""
         try:
             io = IoAdapter(raiseExceptions=True)
-            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir)
+            containerList = io.readFile(fp, enforceAscii=enforceAscii, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             self.assertEqual(len(containerList), 1)
         except Exception as e:
@@ -207,7 +213,7 @@ class IoAdapterTests(unittest.TestCase):
             enforceAscii = kwargs.get("enforceAscii", True)
             useCharRefs = True if enforceAscii else False
             io = IoAdapter(raiseExceptions=True, useCharRefs=useCharRefs)
-            containerList = io.readFile(ifp)
+            containerList = io.readFile(ifp, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, **kwargs)
             self.assertTrue(ok)
@@ -225,9 +231,98 @@ class IoAdapterTests(unittest.TestCase):
         """Test case -  read and then write PDBx file with selection."""
         try:
             io = IoAdapter(raiseExceptions=False, useCharRefs=True)
-            containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir)
+            containerList = io.readFile(ifp, enforceAscii=True, selectList=selectList, excludeFlag=excludeFlag, outDirPath=self.__pathOutputDir, cleanUp=False)
             logger.debug("Read %d data blocks", len(containerList))
             ok = io.writeFile(ofp, containerList=containerList, enforceAscii=True)
+            self.assertTrue(ok)
+        except Exception as e:
+            logger.exception("Failing input %s and output %s with %s", ifp, ofp, str(e))
+            self.fail()
+
+    def testBcifReaderWriter(self):
+        self.__testBcifToCif(self.__pathRcsbBcifGzip, self.__pathOutputRcsbBcifTranslated)
+        self.__testCifToBcif(self.__pathPdbxDataFile, self.__pathOutputPdbxBcif, self.__pathOutputPdbxBcifTyped)
+
+    def __testBcifToCif(self, ifp, ofp):
+        """Test case -  read binary (BCIF) PDBx file."""
+        try:
+            io = IoAdapter(raiseExceptions=True)
+            containerList = io.readFile(ifp, fmt="bcif", outDirPath=self.__pathOutputDir)
+            logger.info("Read %d data blocks from BCIF file %r", len(containerList), ifp)
+            ok = len(containerList) > 0
+            self.assertTrue(ok)
+            ok = io.writeFile(ofp, containerList=containerList)
+            logger.info("Wrote %d data blocks to mmCIF file (%r) %r", ok, len(containerList), ofp)
+            self.assertTrue(ok)
+            containerListTranslated = io.readFile(ofp, fmt="mmcif", outDirPath=self.__pathOutputDir)
+            logger.info("Read %d data blocks from translated mmCIF file %r", len(containerListTranslated), ofp)
+            ok = len(containerListTranslated) > 0
+            self.assertTrue(ok)
+            ok = len(containerListTranslated) == len(containerList)
+            self.assertTrue(ok)
+        except Exception as e:
+            logger.exception("Failing input %s and output %s with %s", ifp, ofp, str(e))
+            self.fail()
+
+    def __testCifToBcif(self, ifp, ofp, ofpTyped):
+        """Test case -  write binary (BCIF) PDBx file."""
+        try:
+            io = IoAdapter(raiseExceptions=True)
+            containerList = io.readFile(ifp, fmt="mmcif", outDirPath=self.__pathOutputDir)
+            logger.info("Read %d data blocks from mmCIF file %r", len(containerList), ifp)
+            ok = len(containerList) > 0
+            if ok:
+                logger.info("Read mmCIF category _cell.angle_alpha: %r", containerList[0].getObj("cell").getAttributeValueList("angle_alpha"))
+            self.assertTrue(ok)
+            #
+            # Test writing to file WITH typing
+            dApiContainerList = io.readFile(inputFilePath=self.__pathPdbxDictFile)
+            ok = len(dApiContainerList) > 0
+            self.assertTrue(ok)
+            dApi = DictionaryApi(containerList=dApiContainerList, consolidate=True)
+            ok = io.writeFile(ofpTyped, containerList=containerList, fmt="bcif", applyTypes=True, dictionaryApi=dApi, useFloat64=True, copyInputData=False)
+            logger.info("Wrote %d data blocks to typed BCIF file (%r) %r", ok, len(containerList), ofpTyped)
+            self.assertTrue(ok)
+            #
+            # Test writing to file WITHOUT typing (treat everything as a string) -- this keeps everything the exact same as the input
+            ok = io.writeFile(ofp, containerList=containerList, fmt="bcif", applyTypes=False, useStringTypes=True, copyInputData=False)
+            logger.info("Wrote %d data blocks to untyped BCIF file (%r) %r", ok, len(containerList), ofp)
+            self.assertTrue(ok)
+            #
+            # Test reading in the translated (typed) BCIF file and comparing its data with the original mmCIF
+            containerListBcif = io.readFile(ofpTyped, fmt="bcif", outDirPath=self.__pathOutputDir)
+            # containerListBcif = io.readFile(ofp, fmt="bcif", outDirPath=self.__pathOutputDir)
+            logger.info("Read %d data blocks from translated BCIF file %r", len(containerListBcif), ofp)
+            ok = len(containerListBcif) > 0
+            if ok:
+                logger.info("Read mmCIF-translated category _cell.angle_alpha: %r", containerListBcif[0].getObj("cell").getAttributeValueList("angle_alpha"))
+            self.assertTrue(ok)
+            ok = len(containerListBcif) == len(containerList)
+            self.assertTrue(ok)
+            cCif = containerList[0]
+            cBcif = containerListBcif[0]
+            ok = True
+            for cat in cCif.getObjNameList():
+                for attr in cCif.getObj(cat).getAttributeList():
+                    cCifAttrL = cCif.getObj(cat).getAttributeValueList(attr)
+                    cBcifAttrL = cBcif.getObj(cat).getAttributeValueList(attr)
+                    cCifAttrTypedL = []
+                    cBcifAttrTypedL = []
+                    if len(cBcifAttrL) > 0:
+                        for i, _ in enumerate(cBcifAttrL):
+                            if isinstance(cBcifAttrL[i], float):
+                                cCifAttrTypedL.append(float(cCifAttrL[i]))
+                                cBcifAttrTypedL.append(float(cBcifAttrL[i]))
+                            elif isinstance(cBcifAttrL[i], int):
+                                cCifAttrTypedL.append(int(cCifAttrL[i]))
+                                cBcifAttrTypedL.append(int(cBcifAttrL[i]))
+                            else:
+                                cCifAttrTypedL.append(str(cCifAttrL[i]).replace(".", "?"))  # These may be swapped between mmCIF and BCIF
+                                cBcifAttrTypedL.append(str(cBcifAttrL[i]).replace(".", "?"))
+                    matchOk = cCifAttrTypedL == cBcifAttrTypedL
+                    if not matchOk:
+                        logger.error("Category and attribute translation mismatch %r %r: %r (cif) vs. %r (bcif)", cat, attr, cCifAttrTypedL, cBcifAttrTypedL)
+                        ok = False
             self.assertTrue(ok)
         except Exception as e:
             logger.exception("Failing input %s and output %s with %s", ifp, ofp, str(e))
@@ -293,6 +388,12 @@ def suiteReaderWriterUnicode():
     return suiteSelect
 
 
+def suiteReaderWriterBcif():
+    suiteSelect = unittest.TestSuite()
+    suiteSelect.addTest(IoAdapterTests("testBcifReaderWriter"))
+    return suiteSelect
+
+
 if __name__ == "__main__":
 
     mySuite = suiteFileReaderRaw()
@@ -317,5 +418,8 @@ if __name__ == "__main__":
     unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 
     mySuite = suiteReaderWriterSelect()
+    unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
+
+    mySuite = suiteReaderWriterBcif()
     unittest.TextTestRunner(verbosity=2, descriptions=False).run(mySuite)
 #
