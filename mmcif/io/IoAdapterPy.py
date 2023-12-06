@@ -218,7 +218,7 @@ class IoAdapterPy(IoAdapterBase):
         outputFilePath,
         containerList,
         maxLineLength=900,
-        enforceAscii=False,
+        enforceAscii=True,
         lastInOrder=None,
         selectOrder=None,
         columnAlignFlag=True,
@@ -240,7 +240,7 @@ class IoAdapterPy(IoAdapterBase):
             outputFilePath (string): output file path
             containerList (list DataContainer objects, optional)
             maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)
-            enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to False.
+            enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to True.
             lastInOrder (list of category names, optional): Move data categories in this list to end of each data block
             selectOrder (list of category names, optional): Write only data categories on this list.
             columnAlignFlag (bool, optional): Format the output in aligned columns (default=True) (Native Python Only)
