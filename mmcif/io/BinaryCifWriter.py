@@ -21,7 +21,17 @@ logger = logging.getLogger(__name__)
 class BinaryCifWriter(object):
     """Writer methods for the binary CIF format."""
 
-    def __init__(self, dictionaryApi, storeStringsAsBytes=False, defaultStringEncoding="utf-8", applyTypes=True, useStringTypes=False, useFloat64=False, copyInputData=False):
+    def __init__(
+        self,
+        dictionaryApi,
+        storeStringsAsBytes=False,
+        defaultStringEncoding="utf-8",
+        applyTypes=True,
+        useStringTypes=False,
+        useFloat64=False,
+        copyInputData=False,
+        ignoreCastErrors=False
+    ):
         """Create an instance of the binary CIF writer class.
 
         Args:
@@ -32,6 +42,7 @@ class BinaryCifWriter(object):
             useStringTypes (bool, optional): assume all types are string. Defaults to False.
             useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
+            ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
         """
         self.__version = "0.01"
         self.__storeStringsAsBytes = storeStringsAsBytes
@@ -41,6 +52,7 @@ class BinaryCifWriter(object):
         self.__useFloat64 = useFloat64
         self.__dApi = dictionaryApi
         self.__copyInputData = copyInputData
+        self.__ignoreCastErrors = ignoreCastErrors
 
     def serialize(self, filePath, containerList):
         """Serialize the input container list in binary CIF and store these data in the input file path.
@@ -59,7 +71,7 @@ class BinaryCifWriter(object):
                 for catName in container.getObjNameList():
                     cObj = container.getObj(catName)
                     if self.__applyTypes:
-                        cObj = DataCategoryTyped(cObj, dictionaryApi=self.__dApi, copyInputData=self.__copyInputData)
+                        cObj = DataCategoryTyped(cObj, dictionaryApi=self.__dApi, copyInputData=self.__copyInputData, ignoreCastErrors=self.__ignoreCastErrors)
                     #
                     rowCount = cObj.getRowCount()
                     #
@@ -130,7 +142,12 @@ class BinaryCifWriter(object):
         """
         cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
         cifPrimitiveType = self.__dApi.getTypePrimitive(dObj.getName(), atName)
-        dataType = "string" if cifDataType is None else "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        if cifDataType is None:
+            dataType = "string"
+            if not self.__ignoreCastErrors:
+                logger.error("Undefined type for category %s attribute %s - Will treat as string", dObj.getName(), atName)
+        else:
+            dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
         return dataType
 
 

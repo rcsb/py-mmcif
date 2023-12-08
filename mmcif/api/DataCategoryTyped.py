@@ -89,6 +89,10 @@ class DataCategoryTyped(DataCategory):
             for ii, atName in enumerate(self.getAttributeList()):
                 # colValL = self.getColumn(ii)
                 dataType, isMandatory = self.__getAttributeInfo(atName)
+                if not dataType:
+                    if not ignoreCastErrors:
+                        logger.error("Undefined type for category %s attribute %s - Will treat as string", self.getName(), atName)
+                    dataType = "string"  # Treat undefined attributes as strings
                 missingValue = missingValueInteger if dataType == "integer" else missingValueFloat if dataType in ["integer", "float"] else missingValueString
                 missingValue = missingValue if not useCifUnknowns else "." if isMandatory else "?"
                 for row in self.data:
@@ -224,7 +228,10 @@ class DataCategoryTyped(DataCategory):
         cifDataType = self.__dApi.getTypeCode(self.getName(), atName)
         cifPrimitiveType = self.__dApi.getTypePrimitive(self.getName(), atName)
         isMandatory = self.__dApi.getMandatoryCode(self.getName(), atName) in ["yes", "implicit", "implicit-ordinal"]
-        dataType = "string" if cifDataType is None else "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        if cifDataType is None:
+            dataType = None
+        else:
+            dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
         return dataType, isMandatory
 
     def __isClose(self, aV, bV, relTol=1e-09, absTol=1e-06):
