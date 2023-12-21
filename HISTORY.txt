@@ -78,5 +78,5 @@
 04-Dec-2022    V0.80.1 - Correct non-wheel build of legacy python
 08-Apr-2023    V0.81 - When using C++ writer, a string with a tab in middle with no other whitespace must be quoted
  5-Dec-2023    V0.82 - Add support for binary mmCIF (BCIF) reading and writing in IoAdapterPy
- 8-Dec-2023    V0.83 - Updates to error suppression flags for undefined attribute types in BCIF conversion (set default to on)
-21-Dec-2023    V0.84 - Update wheel builds for Apple Silicon (arm64).
+21-Dec-2023    V0.83 - Update wheel builds for Apple Silicon (arm64).
+21-Dec-2023    V0.84 - Updates to error suppression flags for undefined attribute types in BCIF conversion (set default to on)
