@@ -1195,7 +1195,17 @@
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BinaryCifWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Writer methods for the binary CIF format.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dictionaryApi</span><span class="p">,</span>
+        <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+        <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
 
 <span class="sd">        Args:</span>
@@ -1206,6 +1216,7 @@
 <span class="sd">            useStringTypes (bool, optional): assume all types are string. Defaults to False.</span>
 <span class="sd">            useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.</span>
 <span class="sd">            copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
+<span class="sd">            ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="s2">&quot;0.01&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
@@ -1215,6 +1226,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
 
     <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
@@ -1233,7 +1245,7 @@
                 <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
                     <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
-                        <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">)</span>
+                        <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">)</span>
                     <span class="c1">#</span>
                     <span class="n">rowCount</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()</span>
                     <span class="c1">#</span>
@@ -1304,7 +1316,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cifDataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
         <span class="n">cifPrimitiveType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypePrimitive</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-        <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span> <span class="k">if</span> <span class="n">cifDataType</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;integer&quot;</span> <span class="k">if</span> <span class="s2">&quot;int&quot;</span> <span class="ow">in</span> <span class="n">cifDataType</span> <span class="k">else</span> <span class="s2">&quot;float&quot;</span> <span class="k">if</span> <span class="n">cifPrimitiveType</span> <span class="o">==</span> <span class="s2">&quot;numb&quot;</span> <span class="k">else</span> <span class="s2">&quot;string&quot;</span>
+        <span class="k">if</span> <span class="n">cifDataType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string&quot;</span><span class="p">,</span> <span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span> <span class="k">if</span> <span class="s2">&quot;int&quot;</span> <span class="ow">in</span> <span class="n">cifDataType</span> <span class="k">else</span> <span class="s2">&quot;float&quot;</span> <span class="k">if</span> <span class="n">cifPrimitiveType</span> <span class="o">==</span> <span class="s2">&quot;numb&quot;</span> <span class="k">else</span> <span class="s2">&quot;string&quot;</span>
         <span class="k">return</span> <span class="n">dataType</span>
 </code></pre></div>
         </details>
@@ -1326,7 +1343,7 @@
 
 
 <h2 id="mmcif.io.BinaryCifWriter.BinaryCifWriter.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1391,11 +1408,27 @@
         <td><p>make a new copy input data. Defaults to False.</p></td>
         <td><code>False</code></td>
       </tr>
+      <tr>
+        <td><code>ignoreCastErrors</code></td>
+        <td><code>bool</code></td>
+        <td><p>suppress errors when casting attribute types with dictionaryApi. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">dictionaryApi</span><span class="p">,</span>
+    <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+    <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
 
 <span class="sd">    Args:</span>
@@ -1406,6 +1439,7 @@
 <span class="sd">        useStringTypes (bool, optional): assume all types are string. Defaults to False.</span>
 <span class="sd">        useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.</span>
 <span class="sd">        copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
+<span class="sd">        ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="s2">&quot;0.01&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
@@ -1415,6 +1449,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
 </code></pre></div>
         </details>
     </div>
@@ -1481,7 +1516,7 @@
             <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
                 <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
-                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">)</span>
+                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">)</span>
                 <span class="c1">#</span>
                 <span class="n">rowCount</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()</span>
                 <span class="c1">#</span>
