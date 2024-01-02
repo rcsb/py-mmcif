@@ -232,6 +232,7 @@ class IoAdapterPy(IoAdapterBase):
         useStringTypes=False,
         useFloat64=False,
         copyInputData=False,
+        ignoreCastErrors=False,
         **kwargs
     ):
         """Write input list of data containers to the specified output file path in mmCIF or BCIF format.
@@ -256,6 +257,7 @@ class IoAdapterPy(IoAdapterBase):
             useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.
             useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.
             copyInputData (bool, optional): make a new copy input data (for BCIF files only). Defaults to False.
+            ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
 
             **kwargs: Placeholder for unsupported key value pairs
 
@@ -298,6 +300,7 @@ class IoAdapterPy(IoAdapterBase):
                         useStringTypes=useStringTypes,
                         useFloat64=useFloat64,
                         copyInputData=copyInputData,
+                        ignoreCastErrors=ignoreCastErrors,
                     )
                     bcifW.serialize(outputFilePath, containerList)
                 else:
