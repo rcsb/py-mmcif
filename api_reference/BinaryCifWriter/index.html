@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -1218,7 +1218,7 @@
 <span class="sd">            copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
 <span class="sd">            ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="s2">&quot;0.01&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">__version__</span><span class="p">)</span> <span class="k">if</span> <span class="n">__version__</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">__version__</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s2">&quot;0.85.0&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="o">=</span> <span class="n">applyTypes</span>
@@ -1441,7 +1441,7 @@
 <span class="sd">        copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
 <span class="sd">        ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="s2">&quot;0.01&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">__version__</span><span class="p">)</span> <span class="k">if</span> <span class="n">__version__</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">__version__</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s2">&quot;0.85.0&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="o">=</span> <span class="n">applyTypes</span>
@@ -2794,10 +2794,10 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand"], "search": "../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>
