@@ -80,3 +80,7 @@
  5-Dec-2023    V0.82 - Add support for binary mmCIF (BCIF) reading and writing in IoAdapterPy
 21-Dec-2023    V0.83 - Update wheel builds for Apple Silicon (arm64).
  2-Jan-2024    V0.84 - Updates to error suppression flags for undefined attribute types in BCIF conversion (set default to on)
+16-Jan-2024    V0.85.0 - Update BinaryCifReader to read in DataCategory data items into lists instead of tuples;
+                         Update BinaryCifWriter to set version tag to that of the active mmcif package installation,
+                         to enable compatibility with Mol* and other tools (which requires >= 0.3.0, in that format);
+                         Update package version format to `major.minor.patch` (!!! MUST USE THIS FORMAT MOVING FORWARD !!!)
