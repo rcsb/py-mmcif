@@ -12,7 +12,6 @@ import logging
 import struct
 import msgpack
 
-from mmcif import __version__
 from mmcif.api.DataCategoryTyped import DataCategoryTyped
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
 
@@ -45,7 +44,7 @@ class BinaryCifWriter(object):
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
             ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
         """
-        self.__version = str(__version__) if __version__ and len(str(__version__).split(".")) == 3 else "0.85.0"
+        self.__version = "0.3.0"
         self.__storeStringsAsBytes = storeStringsAsBytes
         self.__defaultStringEncoding = defaultStringEncoding
         self.__applyTypes = applyTypes
