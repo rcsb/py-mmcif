@@ -103,7 +103,7 @@ class BinaryCifWriter(object):
         return False
 
     def __encodeColumnData(self, colDataList, dataType):
-        colMaskDict = {}
+        colMaskDict = None  # Use None when no mask and not {}
         enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
         #
         maskEncoderList = ["Delta", "RunLength", "ByteArray"]
