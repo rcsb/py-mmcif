@@ -200,6 +200,8 @@ class BinaryCifEncoders(object):
                 colDataList, encDict = self.deltaEncoder(colDataList)
             elif encType == "RunLength":
                 colDataList, encDict = self.runLengthEncoder(colDataList)
+            elif encType == "IntegerPacking":
+                colDataList, encDict = self.integerPackingEncoder(colDataList)
             else:
                 logger.info("unsupported encoding %r", encType)
             if encDict is not None:
@@ -230,7 +232,7 @@ class BinaryCifEncoders(object):
         return encodedColDataList, encodingDictL
 
     def __getIntegerPackingType(self, colDataList):
-        """Determine the integer packing type of the input integer data list"""
+        """Determine the integer packing type of the input integer data list."""
         try:
             minV = min(colDataList)
             maxV = max(colDataList)
@@ -332,7 +334,7 @@ class BinaryCifEncoders(object):
         Returns:
             (list, list): encoded data column, list of encoding instructions
         """
-        integerEncoderList = ["Delta", "RunLength", "ByteArray"]
+        integerEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
         uniqStringIndex = {}  # keys are substrings, values indices
         uniqStringList = []
         indexList = []
@@ -374,7 +376,7 @@ class BinaryCifEncoders(object):
         Returns:
             (list, list): encoded data column, list of encoding instructions
         """
-        integerEncoderList = ["Delta", "RunLength", "ByteArray"]
+        integerEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
 
         if colMaskList:
             maskedColDataList = [-1 if m else d for m, d in zip(colMaskList, colDataList)]
@@ -435,3 +437,100 @@ class BinaryCifEncoders(object):
         except (UnicodeDecodeError, AttributeError):
             logger.exception("Bad type for %r", strVal)
         return strVal
+
+    # Support for IntegerPacking
+    def _determine_packing(self, colDataList):
+        """Determines what the optimal IntegerPacking will be for a set of data.
+        IntegerPacking allows for values above maximum by duplicating MaxV, so it is not simply based on the maximum value.
+
+        Return information on data length and bytes per element.
+
+        """
+
+        def packing_size_signed(colDataList, upper_limit):
+            """For signed data, determine packing with upper_limit, allowing repeats of max_val"""
+            lower_limit = -upper_limit - 1
+            size = 0
+            for colVal in colDataList:
+                if colVal >= 0:
+                    size += int(colVal / upper_limit)
+                else:
+                    size += int(colVal / lower_limit)
+            return size + len(colDataList)
+
+        def packing_size_unsigned(colDataList, upper_limit):
+            """For unsigned data, determine packing with upper_limit, allowing repeats of max_val"""
+            size = 0
+            for colVal in colDataList:
+                size += int(colVal / upper_limit)
+            return size + len(colDataList)
+
+        try:
+            minV = min(colDataList)
+            is_signed = True if minV < 0 else False
+
+            size8 = packing_size_signed(colDataList, 0x7F) if is_signed else packing_size_unsigned(colDataList, 0xFF)
+            size16 = packing_size_signed(colDataList, 0x7FFF) if is_signed else packing_size_unsigned(colDataList, 0xFFFF)
+            dlen = len(colDataList)
+
+            # Determine optimal packing
+            if dlen * 4 < size16 * 2:
+                size = dlen
+                nbytes = 4
+
+            elif size16 * 2 < size8:
+                size = size16
+                nbytes = 2
+
+            else:
+                size = size8
+                nbytes = 1
+
+            return {"size": size, "bytes": nbytes, "isSigned": is_signed}
+
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+        raise TypeError("Cannot determine integer packing type")
+
+    def integerPackingEncoder(self, colDataList):
+        """Encode a 32-bit integer array as 8-bit or 16-bit encoding
+
+        Args:
+            colDataList (list): list of integer data
+
+        Returns:
+            list: packed encoded 8-bit/16-bit integer list
+        """
+        packing = self._determine_packing(colDataList)
+        nbytes = packing["bytes"]
+        isSigned = packing["isSigned"]
+
+        if nbytes == 4:
+            # We will not be packing
+            return colDataList, None
+
+        encodingD = {self.__toBytes("kind"): self.__toBytes("IntegerPacking"), self.__toBytes("byteCount"): nbytes,
+                     self.__toBytes("srcSize"): len(colDataList), self.__toBytes("isUnsigned"): not isSigned}
+        encodedColDataList = []
+
+        if isSigned:
+            upper_limit = 0x7F if nbytes == 1 else 0x7FFF
+        else:
+            upper_limit = 0xFF if nbytes == 1 else 0xFFFF
+
+        lower_limit = -upper_limit - 1
+
+        # Pack data
+        for colVal in colDataList:
+            if colVal >= 0:
+                while colVal >= upper_limit:
+                    encodedColDataList.append(upper_limit)
+                    colVal -= upper_limit
+            else:
+                while colVal <= lower_limit:
+                    encodedColDataList.append(lower_limit)
+                    colVal -= lower_limit
+
+            encodedColDataList.append(colVal)
+
+        return encodedColDataList, encodingD
