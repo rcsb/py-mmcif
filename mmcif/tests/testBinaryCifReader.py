@@ -136,7 +136,7 @@ def suiteBCifReader():
     suiteSelect.addTest(BinaryCifReaderTests("testDeserializeLocalRcsb"))
     suiteSelect.addTest(BinaryCifReaderTests("testDeserializeRemoteMolStar"))
     suiteSelect.addTest(BinaryCifReaderTests("testDeserializeLocalPdbdev"))
-    suiteSelect.addTest(BinaryCifReaderTests("testDeserializeIhm"))    
+    suiteSelect.addTest(BinaryCifReaderTests("testDeserializeIhm"))
     return suiteSelect
 
 
