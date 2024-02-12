@@ -12,7 +12,8 @@ import logging
 import struct
 import msgpack
 
-from mmcif.api.DataCategoryTyped import DataCategoryTyped
+from mmcif.api.DataCategoryTyped import DataCategoryTyped, DataCategoryHints
+from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
 
 logger = logging.getLogger(__name__)
@@ -30,7 +31,8 @@ class BinaryCifWriter(object):
         useStringTypes=False,
         useFloat64=False,
         copyInputData=False,
-        ignoreCastErrors=False
+        ignoreCastErrors=False,
+        **kwargs
     ):
         """Create an instance of the binary CIF writer class.
 
@@ -43,6 +45,7 @@ class BinaryCifWriter(object):
             useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
             ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
+            applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints
         """
         self.__version = "0.3.0"
         self.__storeStringsAsBytes = storeStringsAsBytes
@@ -53,6 +56,7 @@ class BinaryCifWriter(object):
         self.__dApi = dictionaryApi
         self.__copyInputData = copyInputData
         self.__ignoreCastErrors = ignoreCastErrors
+        self.__applyMolStarTypes = kwargs.get("applyMolStarTypes", True)
 
     def serialize(self, filePath, containerList):
         """Serialize the input container list in binary CIF and store these data in the input file path.
@@ -71,7 +75,8 @@ class BinaryCifWriter(object):
                 for catName in container.getObjNameList():
                     cObj = container.getObj(catName)
                     if self.__applyTypes:
-                        cObj = DataCategoryTyped(cObj, dictionaryApi=self.__dApi, copyInputData=self.__copyInputData, ignoreCastErrors=self.__ignoreCastErrors)
+                        cObj = DataCategoryTyped(cObj, dictionaryApi=self.__dApi, copyInputData=self.__copyInputData,
+                                                 ignoreCastErrors=self.__ignoreCastErrors, applyMolStarTypes=self.__applyMolStarTypes)
                     #
                     rowCount = cObj.getRowCount()
                     #
@@ -148,6 +153,14 @@ class BinaryCifWriter(object):
                 logger.error("Undefined type for category %s attribute %s - Will treat as string", dObj.getName(), atName)
         else:
             dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+
+        # Only if applying types, do we allow Mol* hints
+        if self.__applyTypes and self.__applyMolStarTypes:
+            dch = DataCategoryHints()
+            nm = CifName().itemName(dObj.getName(), atName)
+            if nm in dch.getMolStarIntHints():
+                dataType = "integer"
+
         return dataType
 
 

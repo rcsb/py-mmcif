@@ -72,7 +72,7 @@ class BinaryCifWriterTests(unittest.TestCase):
                     tc = DataContainer(cName)
                     for catName in container.getObjNameList():
                         dObj = container.getObj(catName)
-                        tObj = DataCategoryTyped(dObj, dictionaryApi=self.__dApi, copyInputData=True)
+                        tObj = DataCategoryTyped(dObj, dictionaryApi=self.__dApi, copyInputData=True, applyMolStarTypes=False)
                         tc.append(tObj)
                     tcL.append(tc)
                 #
