@@ -45,7 +45,7 @@ class BinaryCifWriter(object):
             useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
             ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
-            applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints
+            applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints. Defaults to True.
         """
         self.__version = "0.3.0"
         self.__storeStringsAsBytes = storeStringsAsBytes
@@ -108,7 +108,7 @@ class BinaryCifWriter(object):
         return False
 
     def __encodeColumnData(self, colDataList, dataType):
-        colMaskDict = None  # Use None when no mask and not {}
+        colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
         enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
         #
         maskEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
@@ -207,17 +207,8 @@ class BinaryCifEncoders(object):
         self.__useFloat64 = useFloat64
         self.__bCifTypeCodeD = {v: k for k, v in BinaryCifDecoders.bCifCodeTypeD.items()}
 
-    def __isSignedIntegerData(self, array):
-        if array.dtype in ["integer_8", "integer_16", "integer_32"]:
-            return True
-        else:
-            for val in array.data:
-                if val < 0:
-                    return False
-            return True
-
     def __getDataType(self, colTypedDataList):
-        """Returns type of data array - or "integer_32" """
+        """Returns type of data array - or 'integer_32' """
         if colTypedDataList.dtype:
             return colTypedDataList.dtype
         else:
@@ -282,7 +273,7 @@ class BinaryCifEncoders(object):
         return encodedColDataList, encodingDictL
 
     def __getIntegerPackingType(self, colDataList):
-        """Determine the integer packing type of the input integer data list."""
+        """Determine the integer packing type of the input integer data list"""
         try:
             minV = min(colDataList)
             maxV = max(colDataList)
@@ -343,7 +334,6 @@ class BinaryCifEncoders(object):
 
     def deltaEncoder(self, colDataList, minLen=40):
         """Encode an integer list as a list of consecutive differences.
-        Must be unsigned array
 
         Args:
             colDataList (list): list of integer data
@@ -359,7 +349,6 @@ class BinaryCifEncoders(object):
 
     def deltaEncoderTyped(self, colTypedDataList, minLen=40):
         """Encode an integer list as a list of consecutive differences.
-        Must be unsigned array
 
         Args:
             colTypedDataList (list): list of integer data
@@ -369,7 +358,7 @@ class BinaryCifEncoders(object):
             TypedArray: delta encoded integer list (integer_8, integer_16, integer_32)
         """
 
-        if colTypedDataList.dtype and not self.__isSignedIntegerData(colTypedDataList):
+        if colTypedDataList.dtype and colTypedDataList.dtype not in ["integer_8", "integer_16", "integer_32"]:
             raise TypeError("Only signed integer types can be encoded with delta encoder: %s" % colTypedDataList.dtype)
 
         if len(colTypedDataList.data) <= minLen:

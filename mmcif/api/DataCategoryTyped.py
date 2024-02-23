@@ -57,8 +57,8 @@ class DataCategoryHints:
 
 
 class DataCategoryTyped(DataCategory):
-
     """A subclass of DataCategory with methods to apply explicit data typing."""
+
     def __init__(
         self,
         dataCategoryObj,
@@ -84,7 +84,7 @@ class DataCategoryTyped(DataCategory):
             missingValueString (str, optional): missing string value . Defaults to None.
             missingValueInteger (integer, optional): missing integer value. Defaults to None.
             missingValueFloat (float, optional): missing float value. Defaults to None.
-            applyMolStarTypes (bool, optional): use mol* forced integer types.  Defaults to True
+            applyMolStarTypes (bool, optional): use Mol* forced integer types.  Defaults to True.
         """
         self.__dcObj = dataCategoryObj
         super(DataCategoryTyped, self).__init__(
@@ -267,7 +267,7 @@ class DataCategoryTyped(DataCategory):
         else:
             dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
 
-        # Allow for forced mol* integer types
+        # Allow for forced Mol* integer types
         if self.__applyMolStarTypes:
             dch = DataCategoryHints()
             nm = CifName().itemName(self.getName(), atName)
