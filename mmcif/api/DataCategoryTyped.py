@@ -125,7 +125,7 @@ class DataCategoryTyped(DataCategory):
                 dataType, isMandatory = self.__getAttributeInfo(atName)
                 if not dataType:
                     if not ignoreCastErrors:
-                        logger.error("Undefined type for category %s attribute %s - Will treat as string", self.getName(), atName)
+                        logger.warning("Undefined type for category %s attribute %s - Will treat as string", self.getName(), atName)
                     dataType = "string"  # Treat undefined attributes as strings
                 missingValue = missingValueInteger if dataType == "integer" else missingValueFloat if dataType in ["integer", "float"] else missingValueString
                 missingValue = missingValue if not useCifUnknowns else "." if isMandatory else "?"

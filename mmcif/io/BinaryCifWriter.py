@@ -57,6 +57,10 @@ class BinaryCifWriter(object):
         self.__copyInputData = copyInputData
         self.__ignoreCastErrors = ignoreCastErrors
         self.__applyMolStarTypes = kwargs.get("applyMolStarTypes", True)
+        if self.__applyTypes and self.__applyMolStarTypes:
+            self.__dch = DataCategoryHints()
+        else:
+            self.__dch = None
 
     def serialize(self, filePath, containerList):
         """Serialize the input container list in binary CIF and store these data in the input file path.
@@ -150,15 +154,14 @@ class BinaryCifWriter(object):
         if cifDataType is None:
             dataType = "string"
             if not self.__ignoreCastErrors:
-                logger.error("Undefined type for category %s attribute %s - Will treat as string", dObj.getName(), atName)
+                logger.warning("Undefined type for category %s attribute %s - Will treat as string", dObj.getName(), atName)
         else:
             dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
 
         # Only if applying types, do we allow Mol* hints
         if self.__applyTypes and self.__applyMolStarTypes:
-            dch = DataCategoryHints()
             nm = CifName().itemName(dObj.getName(), atName)
-            if nm in dch.getMolStarIntHints():
+            if nm in self.__dch.getMolStarIntHints():
                 dataType = "integer"
 
         return dataType
