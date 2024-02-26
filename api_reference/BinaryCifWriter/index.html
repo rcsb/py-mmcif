@@ -774,9 +774,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.byteArrayEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      byteArrayEncoderTyped()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.deltaEncoder" class="md-nav__link">
     <span class="md-ellipsis">
       deltaEncoder()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.deltaEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      deltaEncoderTyped()
     </span>
   </a>
   
@@ -828,9 +846,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.integerPackingEncoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      integerPackingEncoder()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.integerPackingEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      integerPackingEncoderTyped()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.runLengthEncoder" class="md-nav__link">
     <span class="md-ellipsis">
       runLengthEncoder()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.runLengthEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      runLengthEncoderTyped()
     </span>
   </a>
   
@@ -1095,9 +1140,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.byteArrayEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      byteArrayEncoderTyped()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.deltaEncoder" class="md-nav__link">
     <span class="md-ellipsis">
       deltaEncoder()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.deltaEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      deltaEncoderTyped()
     </span>
   </a>
   
@@ -1149,9 +1212,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.integerPackingEncoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      integerPackingEncoder()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.integerPackingEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      integerPackingEncoderTyped()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.runLengthEncoder" class="md-nav__link">
     <span class="md-ellipsis">
       runLengthEncoder()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.runLengthEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      runLengthEncoderTyped()
     </span>
   </a>
   
@@ -1207,7 +1297,8 @@
         <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span>
+        <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
 
@@ -1220,6 +1311,7 @@
 <span class="sd">            useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.</span>
 <span class="sd">            copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
 <span class="sd">            ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.</span>
+<span class="sd">            applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints. Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="s2">&quot;0.3.0&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
@@ -1230,6 +1322,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applyMolStarTypes&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
@@ -1248,7 +1345,8 @@
                 <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
                     <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
-                        <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">)</span>
+                        <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span>
+                                                 <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">,</span> <span class="n">applyMolStarTypes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">)</span>
                     <span class="c1">#</span>
                     <span class="n">rowCount</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()</span>
                     <span class="c1">#</span>
@@ -1280,10 +1378,10 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">__encodeColumnData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
-        <span class="n">colMaskDict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">colMaskDict</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Use None when no mask and not {} - per Mol* implementation</span>
         <span class="n">enc</span> <span class="o">=</span> <span class="n">BinaryCifEncoders</span><span class="p">(</span><span class="n">defaultStringEncoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span><span class="p">)</span>
         <span class="c1">#</span>
-        <span class="n">maskEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+        <span class="n">maskEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
         <span class="n">typeEncoderD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="s2">&quot;StringArrayMasked&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="s2">&quot;IntArrayMasked&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;FloatArrayMasked&quot;</span><span class="p">}</span>
         <span class="n">colMaskList</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">getMask</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
         <span class="n">dataEncType</span> <span class="o">=</span> <span class="n">typeEncoderD</span><span class="p">[</span><span class="n">dataType</span><span class="p">]</span>
@@ -1322,9 +1420,16 @@
         <span class="k">if</span> <span class="n">cifDataType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string&quot;</span><span class="p">,</span> <span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string&quot;</span><span class="p">,</span> <span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span> <span class="k">if</span> <span class="s2">&quot;int&quot;</span> <span class="ow">in</span> <span class="n">cifDataType</span> <span class="k">else</span> <span class="s2">&quot;float&quot;</span> <span class="k">if</span> <span class="n">cifPrimitiveType</span> <span class="o">==</span> <span class="s2">&quot;numb&quot;</span> <span class="k">else</span> <span class="s2">&quot;string&quot;</span>
+
+        <span class="c1"># Only if applying types, do we allow Mol* hints</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
+            <span class="n">nm</span> <span class="o">=</span> <span class="n">CifName</span><span class="p">()</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">getMolStarIntHints</span><span class="p">():</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span>
+
         <span class="k">return</span> <span class="n">dataType</span>
 </code></pre></div>
         </details>
@@ -1346,7 +1451,7 @@
 
 
 <h2 id="mmcif.io.BinaryCifWriter.BinaryCifWriter.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1417,6 +1522,12 @@
         <td><p>suppress errors when casting attribute types with dictionaryApi. Defaults to False.</p></td>
         <td><code>False</code></td>
       </tr>
+      <tr>
+        <td><code>applyMolStarTypes</code></td>
+        <td></td>
+        <td><p>(bool, optional): If applyTypes is used, will use specific molstar hints. Defaults to True.</p></td>
+        <td><em>required</em></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -1430,7 +1541,8 @@
     <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the binary CIF writer class.</span>
 
@@ -1443,6 +1555,7 @@
 <span class="sd">        useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.</span>
 <span class="sd">        copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
 <span class="sd">        ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.</span>
+<span class="sd">        applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints. Defaults to True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="s2">&quot;0.3.0&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
@@ -1453,6 +1566,11 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applyMolStarTypes&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
         </details>
     </div>
@@ -1519,7 +1637,8 @@
             <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
                 <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
-                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">)</span>
+                    <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span>
+                                             <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">,</span> <span class="n">applyMolStarTypes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">)</span>
                 <span class="c1">#</span>
                 <span class="n">rowCount</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">()</span>
                 <span class="c1">#</span>
@@ -1614,11 +1733,18 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
+    <span class="k">def</span> <span class="nf">__getDataType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns type of data array - or &#39;integer_32&#39; &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;integer_32&quot;</span>
+
     <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingTypeList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the data using the input list of encoding types returning encoded data and encoding instructions.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            colDataList (list): input data to be encoded</span>
+<span class="sd">            colDataList (list or TypedArray): input data to be encoded</span>
 <span class="sd">            encodingTypeList (list): list of encoding types (ByteArray, Delta, or RunLength)</span>
 <span class="sd">            dataType (string):  column input data type (string, integer, float)</span>
 
@@ -1626,17 +1752,27 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">            (list, list ): encoded data column, list of encoding instructions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">encodingDictL</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">legacy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="n">colDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="n">legacy</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="k">for</span> <span class="n">encType</span> <span class="ow">in</span> <span class="n">encodingTypeList</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">:</span>
-                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;Delta&quot;</span><span class="p">:</span>
-                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">:</span>
-                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">:</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integerPackingEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;unsupported encoding </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encType</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">encDict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">encodingDictL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encDict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">legacy</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colDataList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encodingDictL</span>
         <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 
     <span class="k">def</span> <span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">):</span>
@@ -1684,7 +1820,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
                         <span class="k">return</span> <span class="n">byteArrayType</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot determine interger packing type&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot determine integer packing type&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">byteArrayEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
@@ -1696,14 +1832,31 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            bytes: byte encoded packed data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+        <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+
+    <span class="k">def</span> <span class="nf">byteArrayEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (TypedArray): list of integer or float data</span>
+<span class="sd">            dataType (str): data type (integer|float)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TypedArray: byte encoded packed data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
             <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_64&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_32&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;ByteArray&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">]][</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">]</span>
         <span class="c1"># Data are encoded little-endian &#39;&lt;&#39;</span>
-        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">),</span> <span class="o">*</span><span class="n">colDataList</span><span class="p">),</span> <span class="n">encodingD</span>
+        <span class="n">encodedData</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="o">*</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">encodedTypedData</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedData</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">encodedTypedData</span><span class="p">,</span> <span class="n">encodingD</span>
 
     <span class="k">def</span> <span class="nf">deltaEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
@@ -1715,12 +1868,33 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            list: delta encoded integer list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
-        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
-        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;Delta&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">):</span> <span class="n">colDataList</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
-        <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">colDataList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">))]</span>
-        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
+        <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+        <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+
+    <span class="k">def</span> <span class="nf">deltaEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colTypedDataList (list): list of integer data</span>
+<span class="sd">            minLen (int, optional): minimum list length to apply encoder. Defaults to 40.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TypedArray: delta encoded integer list (integer_8, integer_16, integer_32)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">and</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer_8&quot;</span><span class="p">,</span> <span class="s2">&quot;integer_16&quot;</span><span class="p">,</span> <span class="s2">&quot;integer_32&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only signed integer types can be encoded with delta encoder: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getDataType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="p">)</span>
+        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;Delta&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">):</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">]}</span>
+        <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">))]</span>
+        <span class="n">encodedTypedColDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">byteArrayType</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">encodedTypedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 
     <span class="k">def</span> <span class="nf">runLengthEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
@@ -1732,15 +1906,32 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            list: runlength encoded integer list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
-        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
-        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;RunLength&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcSize&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)}</span>
+        <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+
+    <span class="k">def</span> <span class="nf">runLengthEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colTypedDataList (TypedArray): list of integer data (signed and unsigned 8/16/32 bit types)</span>
+<span class="sd">            minLen (int, optional): minimum list length to apply encoder. Defaults to 40.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TypedArray: runlength encoded integer list (integer_32)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="s2">&quot;integer_32&quot;</span>
+        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;RunLength&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">],</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcSize&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)}</span>
         <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">val</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">colVal</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">val</span><span class="p">,</span> <span class="n">repeat</span><span class="p">))</span>
@@ -1750,10 +1941,11 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
                 <span class="n">repeat</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">val</span><span class="p">,</span> <span class="n">repeat</span><span class="p">))</span>
         <span class="c1"># Check for any gains and possibly retreat</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
+            <span class="n">encodedTypedColDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">byteArrayType</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">encodedTypedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 
     <span class="k">def</span> <span class="nf">stringArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the input data column (string) along with the incompleteness mask.</span>
@@ -1765,7 +1957,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
         <span class="n">uniqStringIndex</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># keys are substrings, values indices</span>
         <span class="n">uniqStringList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">indexList</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1807,7 +1999,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
             <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)]</span>
@@ -1868,6 +2060,127 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Bad type for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strVal</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">strVal</span>
+
+    <span class="c1"># Support for IntegerPacking</span>
+    <span class="k">def</span> <span class="nf">_determine_packing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determines what the optimal IntegerPacking will be for a set of data.</span>
+<span class="sd">        IntegerPacking allows for values above maximum by duplicating MaxV, so it is not simply based on the maximum value.</span>
+
+<span class="sd">        Return information on data length and bytes per element.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">packing_size_signed</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">upper_limit</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;For signed data, determine packing with upper_limit, allowing repeats of max_val&quot;&quot;&quot;</span>
+            <span class="n">lower_limit</span> <span class="o">=</span> <span class="o">-</span><span class="n">upper_limit</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">colVal</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">colVal</span> <span class="o">/</span> <span class="n">upper_limit</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">colVal</span> <span class="o">/</span> <span class="n">lower_limit</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">size</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">packing_size_unsigned</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">upper_limit</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;For unsigned data, determine packing with upper_limit, allowing repeats of max_val&quot;&quot;&quot;</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">colVal</span> <span class="o">/</span> <span class="n">upper_limit</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">size</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">minV</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="n">is_signed</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">minV</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+
+            <span class="n">size8</span> <span class="o">=</span> <span class="n">packing_size_signed</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="mh">0x7F</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_signed</span> <span class="k">else</span> <span class="n">packing_size_unsigned</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="mh">0xFF</span><span class="p">)</span>
+            <span class="n">size16</span> <span class="o">=</span> <span class="n">packing_size_signed</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="mh">0x7FFF</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_signed</span> <span class="k">else</span> <span class="n">packing_size_unsigned</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="mh">0xFFFF</span><span class="p">)</span>
+            <span class="n">dlen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+            <span class="c1"># Determine optimal packing</span>
+            <span class="k">if</span> <span class="n">dlen</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">&lt;</span> <span class="n">size16</span> <span class="o">*</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">dlen</span>
+                <span class="n">nbytes</span> <span class="o">=</span> <span class="mi">4</span>
+
+            <span class="k">elif</span> <span class="n">size16</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">size8</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">size16</span>
+                <span class="n">nbytes</span> <span class="o">=</span> <span class="mi">2</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">size8</span>
+                <span class="n">nbytes</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span> <span class="s2">&quot;bytes&quot;</span><span class="p">:</span> <span class="n">nbytes</span><span class="p">,</span> <span class="s2">&quot;isSigned&quot;</span><span class="p">:</span> <span class="n">is_signed</span><span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot determine integer packing type&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">integerPackingEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode a 32-bit integer array as 8-bit or 16-bit encoding</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colDataList (list): list of integer data</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: packed encoded 8-bit/16-bit integer list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+        <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integerPackingEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+
+    <span class="k">def</span> <span class="nf">integerPackingEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode a 32-bit integer array as 8-bit or 16-bit encoding</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colTypedDataList (TypedArray): list of integer data (integer_32 required)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TypedArray: packed encoded 8-bit/16-bit integer list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">and</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer_32&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only integer-32 can be encoded with delta encoder: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">packing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_packing</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">nbytes</span> <span class="o">=</span> <span class="n">packing</span><span class="p">[</span><span class="s2">&quot;bytes&quot;</span><span class="p">]</span>
+        <span class="n">isSigned</span> <span class="o">=</span> <span class="n">packing</span><span class="p">[</span><span class="s2">&quot;isSigned&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="c1"># We will not be packing</span>
+            <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;IntegerPacking&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;byteCount&quot;</span><span class="p">):</span> <span class="n">nbytes</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcSize&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;isUnsigned&quot;</span><span class="p">):</span> <span class="ow">not</span> <span class="n">isSigned</span><span class="p">}</span>
+        <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">isSigned</span><span class="p">:</span>
+            <span class="n">upper_limit</span> <span class="o">=</span> <span class="mh">0x7F</span> <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mh">0x7FFF</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">upper_limit</span> <span class="o">=</span> <span class="mh">0xFF</span> <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mh">0xFFFF</span>
+
+        <span class="n">lower_limit</span> <span class="o">=</span> <span class="o">-</span><span class="n">upper_limit</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Pack data</span>
+        <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">colVal</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">colVal</span> <span class="o">&gt;=</span> <span class="n">upper_limit</span><span class="p">:</span>
+                    <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">upper_limit</span><span class="p">)</span>
+                    <span class="n">colVal</span> <span class="o">-=</span> <span class="n">upper_limit</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">colVal</span> <span class="o">&lt;=</span> <span class="n">lower_limit</span><span class="p">:</span>
+                    <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lower_limit</span><span class="p">)</span>
+                    <span class="n">colVal</span> <span class="o">-=</span> <span class="n">lower_limit</span>
+
+            <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">colVal</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="s2">&quot;integer_8&quot;</span> <span class="k">if</span> <span class="n">isSigned</span> <span class="k">else</span> <span class="s2">&quot;unsigned_integer_8&quot;</span>
+        <span class="k">elif</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="s2">&quot;integer_16&quot;</span> <span class="k">if</span> <span class="n">isSigned</span> <span class="k">else</span> <span class="s2">&quot;unsigned_integer_16&quot;</span>
+
+        <span class="n">encodedTypedColDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">byteArrayType</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">encodedTypedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 </code></pre></div>
         </details>
 
@@ -2020,14 +2333,94 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        bytes: byte encoded packed data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+    <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.byteArrayEncoderTyped" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Encode integer or float list in a packed byte array.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>TypedArray</code></td>
+        <td><p>list of integer or float data</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>dataType</code></td>
+        <td><code>str</code></td>
+        <td><p>data type (integer|float)</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>TypedArray</code></td>
+      <td><p>byte encoded packed data</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">byteArrayEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode integer or float list in a packed byte array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (TypedArray): list of integer or float data</span>
+<span class="sd">        dataType (str): data type (integer|float)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        TypedArray: byte encoded packed data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
         <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_64&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_32&quot;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;ByteArray&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
     <span class="n">fmt</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">]][</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">]</span>
     <span class="c1"># Data are encoded little-endian &#39;&lt;&#39;</span>
-    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">),</span> <span class="o">*</span><span class="n">colDataList</span><span class="p">),</span> <span class="n">encodingD</span>
+    <span class="n">encodedData</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="o">*</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">encodedTypedData</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedData</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">encodedTypedData</span><span class="p">,</span> <span class="n">encodingD</span>
 </code></pre></div>
         </details>
     </div>
@@ -2102,12 +2495,96 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        list: delta encoded integer list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
-    <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
-    <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;Delta&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">):</span> <span class="n">colDataList</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
-    <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">colDataList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">colDataList</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">))]</span>
-    <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
+    <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+    <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.deltaEncoderTyped" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Encode an integer list as a list of consecutive differences.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>colTypedDataList</code></td>
+        <td><code>list</code></td>
+        <td><p>list of integer data</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>minLen</code></td>
+        <td><code>int</code></td>
+        <td><p>minimum list length to apply encoder. Defaults to 40.</p></td>
+        <td><code>40</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>TypedArray</code></td>
+      <td><p>delta encoded integer list (integer_8, integer_16, integer_32)</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">deltaEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode an integer list as a list of consecutive differences.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        colTypedDataList (list): list of integer data</span>
+<span class="sd">        minLen (int, optional): minimum list length to apply encoder. Defaults to 40.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        TypedArray: delta encoded integer list (integer_8, integer_16, integer_32)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">and</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer_8&quot;</span><span class="p">,</span> <span class="s2">&quot;integer_16&quot;</span><span class="p">,</span> <span class="s2">&quot;integer_32&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only signed integer types can be encoded with delta encoder: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getDataType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="p">)</span>
+    <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;Delta&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">):</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">]}</span>
+    <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">))]</span>
+    <span class="n">encodedTypedColDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">byteArrayType</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">encodedTypedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 </code></pre></div>
         </details>
     </div>
@@ -2143,7 +2620,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
   <tbody>
       <tr>
         <td><code>colDataList</code></td>
-        <td><code>list</code></td>
+        <td><code>list or TypedArray</code></td>
         <td><p>input data to be encoded</p></td>
         <td><em>required</em></td>
       </tr>
@@ -2182,7 +2659,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode the data using the input list of encoding types returning encoded data and encoding instructions.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        colDataList (list): input data to be encoded</span>
+<span class="sd">        colDataList (list or TypedArray): input data to be encoded</span>
 <span class="sd">        encodingTypeList (list): list of encoding types (ByteArray, Delta, or RunLength)</span>
 <span class="sd">        dataType (string):  column input data type (string, integer, float)</span>
 
@@ -2190,17 +2667,27 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        (list, list ): encoded data column, list of encoding instructions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">encodingDictL</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">legacy</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">colDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="n">legacy</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="k">for</span> <span class="n">encType</span> <span class="ow">in</span> <span class="n">encodingTypeList</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">:</span>
-            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;Delta&quot;</span><span class="p">:</span>
-            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">:</span>
-            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">:</span>
+            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integerPackingEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;unsupported encoding </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encType</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">encDict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">encodingDictL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encDict</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">legacy</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">colDataList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encodingDictL</span>
     <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 </code></pre></div>
         </details>
@@ -2527,7 +3014,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    Returns:</span>
 <span class="sd">        (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
         <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)]</span>
@@ -2535,6 +3022,187 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
         <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="n">colDataList</span>
     <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">integerEncoderList</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.integerPackingEncoder" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">integerPackingEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Encode a 32-bit integer array as 8-bit or 16-bit encoding</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>colDataList</code></td>
+        <td><code>list</code></td>
+        <td><p>list of integer data</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>packed encoded 8-bit/16-bit integer list</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">integerPackingEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode a 32-bit integer array as 8-bit or 16-bit encoding</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        colDataList (list): list of integer data</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: packed encoded 8-bit/16-bit integer list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+    <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integerPackingEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.integerPackingEncoderTyped" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">integerPackingEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Encode a 32-bit integer array as 8-bit or 16-bit encoding</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>colTypedDataList</code></td>
+        <td><code>TypedArray</code></td>
+        <td><p>list of integer data (integer_32 required)</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>TypedArray</code></td>
+      <td><p>packed encoded 8-bit/16-bit integer list</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">integerPackingEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode a 32-bit integer array as 8-bit or 16-bit encoding</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        colTypedDataList (TypedArray): list of integer data (integer_32 required)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        TypedArray: packed encoded 8-bit/16-bit integer list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">and</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer_32&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only integer-32 can be encoded with delta encoder: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">packing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_packing</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">nbytes</span> <span class="o">=</span> <span class="n">packing</span><span class="p">[</span><span class="s2">&quot;bytes&quot;</span><span class="p">]</span>
+    <span class="n">isSigned</span> <span class="o">=</span> <span class="n">packing</span><span class="p">[</span><span class="s2">&quot;isSigned&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="c1"># We will not be packing</span>
+        <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;IntegerPacking&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;byteCount&quot;</span><span class="p">):</span> <span class="n">nbytes</span><span class="p">,</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcSize&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;isUnsigned&quot;</span><span class="p">):</span> <span class="ow">not</span> <span class="n">isSigned</span><span class="p">}</span>
+    <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">isSigned</span><span class="p">:</span>
+        <span class="n">upper_limit</span> <span class="o">=</span> <span class="mh">0x7F</span> <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mh">0x7FFF</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">upper_limit</span> <span class="o">=</span> <span class="mh">0xFF</span> <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mh">0xFFFF</span>
+
+    <span class="n">lower_limit</span> <span class="o">=</span> <span class="o">-</span><span class="n">upper_limit</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="c1"># Pack data</span>
+    <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">colVal</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">colVal</span> <span class="o">&gt;=</span> <span class="n">upper_limit</span><span class="p">:</span>
+                <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">upper_limit</span><span class="p">)</span>
+                <span class="n">colVal</span> <span class="o">-=</span> <span class="n">upper_limit</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">colVal</span> <span class="o">&lt;=</span> <span class="n">lower_limit</span><span class="p">:</span>
+                <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lower_limit</span><span class="p">)</span>
+                <span class="n">colVal</span> <span class="o">-=</span> <span class="n">lower_limit</span>
+
+        <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">colVal</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="s2">&quot;integer_8&quot;</span> <span class="k">if</span> <span class="n">isSigned</span> <span class="k">else</span> <span class="s2">&quot;unsigned_integer_8&quot;</span>
+    <span class="k">elif</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="s2">&quot;integer_16&quot;</span> <span class="k">if</span> <span class="n">isSigned</span> <span class="k">else</span> <span class="s2">&quot;unsigned_integer_16&quot;</span>
+
+    <span class="n">encodedTypedColDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">byteArrayType</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">encodedTypedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 </code></pre></div>
         </details>
     </div>
@@ -2609,15 +3277,95 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    Returns:</span>
 <span class="sd">        list: runlength encoded integer list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
-    <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
-    <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;RunLength&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcSize&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)}</span>
+    <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encDict</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.runLengthEncoderTyped" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">runLengthEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Encode an integer array as pairs of (value, number of repeats)</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>colTypedDataList</code></td>
+        <td><code>TypedArray</code></td>
+        <td><p>list of integer data (signed and unsigned 8/16/32 bit types)</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>minLen</code></td>
+        <td><code>int</code></td>
+        <td><p>minimum list length to apply encoder. Defaults to 40.</p></td>
+        <td><code>40</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>TypedArray</code></td>
+      <td><p>runlength encoded integer list (integer_32)</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">runLengthEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">minLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode an integer array as pairs of (value, number of repeats)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        colTypedDataList (TypedArray): list of integer data (signed and unsigned 8/16/32 bit types)</span>
+<span class="sd">        minLen (int, optional): minimum list length to apply encoder. Defaults to 40.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        TypedArray: runlength encoded integer list (integer_32)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">minLen</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">byteArrayType</span> <span class="o">=</span> <span class="s2">&quot;integer_32&quot;</span>
+    <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;RunLength&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcType&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">],</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;srcSize&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)}</span>
     <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">val</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">colVal</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">val</span><span class="p">,</span> <span class="n">repeat</span><span class="p">))</span>
@@ -2627,10 +3375,11 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
             <span class="n">repeat</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">val</span><span class="p">,</span> <span class="n">repeat</span><span class="p">))</span>
     <span class="c1"># Check for any gains and possibly retreat</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
+        <span class="n">encodedTypedColDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">byteArrayType</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">encodedTypedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 </code></pre></div>
         </details>
     </div>
@@ -2705,7 +3454,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    Returns:</span>
 <span class="sd">        (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
+    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Delta&quot;</span><span class="p">,</span> <span class="s2">&quot;RunLength&quot;</span><span class="p">,</span> <span class="s2">&quot;IntegerPacking&quot;</span><span class="p">,</span> <span class="s2">&quot;ByteArray&quot;</span><span class="p">]</span>
     <span class="n">uniqStringIndex</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># keys are substrings, values indices</span>
     <span class="n">uniqStringList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">indexList</span> <span class="o">=</span> <span class="p">[]</span>
