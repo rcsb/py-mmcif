@@ -20,6 +20,7 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
+import sys
 import bz2
 import datetime
 import gzip
@@ -100,7 +101,10 @@ class IoAdapterBase(object):
             return False
 
     def _getTimeStamp(self):
-        utcnow = datetime.datetime.utcnow()
+        if sys.version_info[0] > 2:
+            utcnow = datetime.datetime.now(datetime.timezone.utc)
+        else:
+            utcnow = datetime.datetime.utcnow()
         ts = utcnow.strftime("%Y-%m-%d:%H:%M:%S")
         return ts
 
