@@ -87,3 +87,4 @@
 17-Jan-2024    V0.85.1 - Set BinaryCIF version tag to specifically 0.3.0 to ensure compatibility with Mol* and other tools
 23-Feb-2024    V0.86.0 - BinaryCIF writer properly tracks integer types to ensure
                          proper types passed through encoders.  Ensure compatibility with ciftools-java and Mol*.
+ 6-Apr-2024    V0.87.0 - Correct internal data of PdbxContainers when rename operation is used
