@@ -203,6 +203,7 @@ class ContainerBase(object):
             self.__objNameList[i] = newName
             self.__objCatalog[newName] = self.__objCatalog[curName]
             self.__objCatalog[newName].setName(newName)
+            del self.__objCatalog[curName]
             return True
         except Exception:
             return False

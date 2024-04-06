@@ -85,3 +85,4 @@
                          to enable compatibility with Mol* and other tools (which requires >= 0.3.0, in that format);
                          Update package version format to `major.minor.patch` (!!! MUST USE THIS FORMAT MOVING FORWARD !!!)
 17-Jan-2024    V0.85.1 - Set BinaryCIF version tag to specifically 0.3.0 to ensure compatibility with Mol* and other tools
+ 6-Apr-2024    V0.86.0 - Correct internal data of PdbxContainers when rename operation is used
