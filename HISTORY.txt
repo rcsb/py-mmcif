@@ -88,3 +88,4 @@
 23-Feb-2024    V0.86.0 - BinaryCIF writer properly tracks integer types to ensure
                          proper types passed through encoders.  Ensure compatibility with ciftools-java and Mol*.
  6-Apr-2024    V0.87.0 - Correct internal data of PdbxContainers when rename operation is used
+24-Apr-2024    V0.88.0 - Add copy method to PdbxContainers for copying entire categories

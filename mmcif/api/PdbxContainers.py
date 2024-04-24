@@ -20,6 +20,7 @@
 #    4-Apr-2018   jdw adding internal __eq__ and __hash__ methods
 #    6-Aug-2018   jdw add setters/getters for container properties
 #    5-Feb-2019   jdw add merge method and logging
+#   24-Apr-2024   dwp add copy method
 ##
 """
 
@@ -46,6 +47,7 @@ from __future__ import absolute_import
 
 import logging
 import sys
+import copy
 
 __docformat__ = "google en"
 __author__ = "John Westbrook"
@@ -85,7 +87,7 @@ class CifName(object):
             if i == -1:
                 return None
             else:
-                return name[i + 1 :]
+                return name[i + 1:]
         except Exception:
             return None
 
@@ -204,6 +206,16 @@ class ContainerBase(object):
             self.__objCatalog[newName] = self.__objCatalog[curName]
             self.__objCatalog[newName].setName(newName)
             del self.__objCatalog[curName]
+            return True
+        except Exception:
+            return False
+
+    def copy(self, curName, newName):
+        """Copy the object to a new name"""
+        try:
+            obj = copy.deepcopy(self.__objCatalog[curName])
+            obj.setName(newName)
+            self.append(obj)
             return True
         except Exception:
             return False
