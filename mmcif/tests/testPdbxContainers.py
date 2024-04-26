@@ -122,11 +122,38 @@ class PdbxContainersTests(unittest.TestCase):
         self.assertIsNone(blk.getObj(curName))
         self.assertIsNotNone(blk.getObj(newName))
 
+    def testCopy(self):
+        """Tests copy method
+        """
+        blk = self.__createContainer()
+
+        curName = "pdbx_seqtool_mapping_ref"
+        newName = "newName"
+
+        # Test non-existent copy (should return False)
+        self.assertFalse(blk.copy("noname", "othernoname"))
+
+        # Test actual copy
+        self.assertTrue(blk.copy(curName, newName))
+        self.assertTrue(blk.exists(curName))
+        self.assertTrue(blk.exists(newName))
+
+        # Test copy to already existent destination
+        self.assertFalse(blk.copy(curName, newName))
+
+        # Check that things look as expected
+        self.assertEqual(blk.getObjNameList(), [curName, newName])
+        self.assertTrue(blk.exists(curName))
+        self.assertTrue(blk.exists(newName))
+        self.assertIsNotNone(blk.getObj(curName))
+        self.assertIsNotNone(blk.getObj(newName))
+
 
 def containerSuite():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(PdbxContainersTests("testGeneral"))
     suiteSelect.addTest(PdbxContainersTests("testRename"))
+    suiteSelect.addTest(PdbxContainersTests("testCopy"))
     return suiteSelect
 
 

@@ -199,25 +199,61 @@ class ContainerBase(object):
                 self.__objCatalog[nm].dumpIt(fh)
 
     def rename(self, curName, newName):
-        """Change the name of an object in place -"""
+        """Change the name of an object in place
+
+        Args:
+            curName (str): current category name
+            newName (str): new category name
+
+        Returns:
+            (bool): True for success or False otherwise
+        """
+
         try:
+            # first check if requested new category already exists
+            if newName in self.__objNameList:
+                logger.error("Category already exists, %r", newName)
+                return False
+            # also check if current category exists
+            if curName not in self.__objNameList:
+                logger.error("Category doesn't exist, %r", curName)
+                return False
             i = self.__objNameList.index(curName)
             self.__objNameList[i] = newName
             self.__objCatalog[newName] = self.__objCatalog[curName]
             self.__objCatalog[newName].setName(newName)
             del self.__objCatalog[curName]
             return True
-        except Exception:
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
             return False
 
     def copy(self, curName, newName):
-        """Copy the object to a new name"""
+        """Copy the object to a new category name
+
+        Args:
+            curName (str): current category name
+            newName (str): new category name
+
+        Returns:
+            (bool): True for success or False otherwise
+        """
         try:
+            # first check if requested new category already exists
+            if newName in self.__objNameList:
+                logger.error("Category already exists, %r", newName)
+                return False
+            # also check if current category exists
+            if curName not in self.__objNameList:
+                logger.error("Category doesn't exist, %r", curName)
+                return False
+            # now do the copy
             obj = copy.deepcopy(self.__objCatalog[curName])
             obj.setName(newName)
             self.append(obj)
             return True
-        except Exception:
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
             return False
 
     def remove(self, curName):
