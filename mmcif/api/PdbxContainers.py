@@ -200,6 +200,7 @@ class ContainerBase(object):
 
     def rename(self, curName, newName):
         """Change the name of an object in place
+        Will fail if newName already exists or curName doesn't exist.
 
         Args:
             curName (str): current category name
@@ -229,7 +230,8 @@ class ContainerBase(object):
             return False
 
     def copy(self, curName, newName):
-        """Copy the object to a new category name
+        """Copy the object to a new category name.
+        Will fail if newName already exists or curName doesn't exist.
 
         Args:
             curName (str): current category name
