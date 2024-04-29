@@ -102,8 +102,18 @@ class PdbxContainersTests(unittest.TestCase):
         self.assertIsNone(blk.getObj(newName))
 
         # Now rename
-        # Test non existant
+        # Test non existent
+        logger.info("test non-existent")
         self.assertFalse(blk.rename("noname", "othernoname"))
+
+        # Test overwrite
+        logger.info("test overwrite")
+        # First create a new category
+        self.assertTrue(blk.copy(curName, "othernoname"))
+        # Next test overwriting that name
+        self.assertFalse(blk.rename(curName, "othernoname"))
+        # Now remove that new category
+        self.assertTrue(blk.remove("othernoname"))
 
         # Expect nothing changed
         self.assertEqual(blk.getObjNameList(), [curName])
@@ -122,11 +132,38 @@ class PdbxContainersTests(unittest.TestCase):
         self.assertIsNone(blk.getObj(curName))
         self.assertIsNotNone(blk.getObj(newName))
 
+    def testCopy(self):
+        """Tests copy method
+        """
+        blk = self.__createContainer()
+
+        curName = "pdbx_seqtool_mapping_ref"
+        newName = "newName"
+
+        # Test non-existent copy (should Fail)
+        self.assertFalse(blk.copy("noname", "othernoname"))
+
+        # Test actual copy
+        self.assertTrue(blk.copy(curName, newName))
+        self.assertTrue(blk.exists(curName))
+        self.assertTrue(blk.exists(newName))
+
+        # Test copy to already existent destination (should Fail)
+        self.assertFalse(blk.copy(curName, newName))
+
+        # Check that things look as expected
+        self.assertEqual(blk.getObjNameList(), [curName, newName])
+        self.assertTrue(blk.exists(curName))
+        self.assertTrue(blk.exists(newName))
+        self.assertIsNotNone(blk.getObj(curName))
+        self.assertIsNotNone(blk.getObj(newName))
+
 
 def containerSuite():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(PdbxContainersTests("testGeneral"))
     suiteSelect.addTest(PdbxContainersTests("testRename"))
+    suiteSelect.addTest(PdbxContainersTests("testCopy"))
     return suiteSelect
 
 
