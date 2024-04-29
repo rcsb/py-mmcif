@@ -20,7 +20,8 @@
 #    4-Apr-2018   jdw adding internal __eq__ and __hash__ methods
 #    6-Aug-2018   jdw add setters/getters for container properties
 #    5-Feb-2019   jdw add merge method and logging
-#   24-Apr-2024   dwp add copy method
+#   24-Apr-2024   dwp add copy method; update rename method to fail if new category name already exists
+#                     (i.e., don't allow overwrite)
 ##
 """
 
