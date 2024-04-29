@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../static/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.19">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.20">
     
     
       
@@ -648,6 +648,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      copy()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mmcif.api.PdbxContainers.ContainerBase.filterObjectNameList" class="md-nav__link">
     <span class="md-ellipsis">
       filterObjectNameList()
@@ -1032,6 +1041,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mmcif.api.PdbxContainers.ContainerBase.copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      copy()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mmcif.api.PdbxContainers.ContainerBase.filterObjectNameList" class="md-nav__link">
     <span class="md-ellipsis">
       filterObjectNameList()
@@ -1241,15 +1259,63 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span><span class="o">.</span><span class="n">dumpIt</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the name of an object in place -&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the name of an object in place</span>
+<span class="sd">        Will fail if newName already exists or curName doesn&#39;t exist.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            curName (str): current category name</span>
+<span class="sd">            newName (str): new category name</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (bool): True for success or False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># first check if requested new category already exists</span>
+            <span class="k">if</span> <span class="n">newName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category already exists, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newName</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="c1"># also check if current category exists</span>
+            <span class="k">if</span> <span class="n">curName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category doesn&#39;t exist, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">curName</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
             <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curName</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newName</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">newName</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">newName</span><span class="p">]</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="n">newName</span><span class="p">)</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy the object to a new category name.</span>
+<span class="sd">        Will fail if newName already exists or curName doesn&#39;t exist.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            curName (str): current category name</span>
+<span class="sd">            newName (str): new category name</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (bool): True for success or False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># first check if requested new category already exists</span>
+            <span class="k">if</span> <span class="n">newName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category already exists, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newName</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="c1"># also check if current category exists</span>
+            <span class="k">if</span> <span class="n">curName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category doesn&#39;t exist, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">curName</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="c1"># now do the copy</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">])</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="n">newName</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">):</span>
@@ -1353,6 +1419,99 @@ of the same name will be overwritten.</p>
             <span class="c1"># self.__objNameList is keeping track of object order here --</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">obj</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="mmcif.api.PdbxContainers.ContainerBase.copy" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Copy the object to a new category name.
+Will fail if newName already exists or curName doesn't exist.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>curName</code></td>
+        <td><code>str</code></td>
+        <td><p>current category name</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>newName</code></td>
+        <td><code>str</code></td>
+        <td><p>new category name</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(bool)</code></td>
+      <td><p>True for success or False otherwise</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Copy the object to a new category name.</span>
+<span class="sd">    Will fail if newName already exists or curName doesn&#39;t exist.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        curName (str): current category name</span>
+<span class="sd">        newName (str): new category name</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (bool): True for success or False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># first check if requested new category already exists</span>
+        <span class="k">if</span> <span class="n">newName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category already exists, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newName</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># also check if current category exists</span>
+        <span class="k">if</span> <span class="n">curName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category doesn&#39;t exist, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">curName</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># now do the copy</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="n">newName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
         </details>
     </div>
@@ -1524,20 +1683,80 @@ input -</p>
 
     <div class="doc doc-contents ">
 
-      <p>Change the name of an object in place -</p>
+      <p>Change the name of an object in place
+Will fail if newName already exists or curName doesn't exist.</p>
 
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>curName</code></td>
+        <td><code>str</code></td>
+        <td><p>current category name</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>newName</code></td>
+        <td><code>str</code></td>
+        <td><p>new category name</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(bool)</code></td>
+      <td><p>True for success or False otherwise</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/PdbxContainers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curName</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Change the name of an object in place -&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Change the name of an object in place</span>
+<span class="sd">    Will fail if newName already exists or curName doesn&#39;t exist.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        curName (str): current category name</span>
+<span class="sd">        newName (str): new category name</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (bool): True for success or False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># first check if requested new category already exists</span>
+        <span class="k">if</span> <span class="n">newName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category already exists, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newName</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># also check if current category exists</span>
+        <span class="k">if</span> <span class="n">curName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Category doesn&#39;t exist, </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">curName</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curName</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__objNameList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newName</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">newName</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">newName</span><span class="p">]</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="n">newName</span><span class="p">)</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__objCatalog</span><span class="p">[</span><span class="n">curName</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
         </details>
@@ -1796,7 +2015,7 @@ input -</p>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">name</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
+                <span class="k">return</span> <span class="n">name</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
