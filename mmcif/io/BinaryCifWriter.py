@@ -235,6 +235,7 @@ class BinaryCifEncoders(object):
             colDataList = TypedArray(colDataList)
             legacy = True
 
+        encDict = None
         for encType in encodingTypeList:
             if encType == "ByteArray":
                 colDataList, encDict = self.byteArrayEncoderTyped(colDataList, dataType)
@@ -650,6 +651,7 @@ class BinaryCifEncoders(object):
 
             encodedColDataList.append(colVal)
 
+        byteArrayType = None  # Should never happen, but keep pylint happy. 4 bytes handled above
         if nbytes == 1:
             byteArrayType = "integer_8" if isSigned else "unsigned_integer_8"
         elif nbytes == 2:
