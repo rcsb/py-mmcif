@@ -37,13 +37,13 @@ jobs:
         submodules: true
       #
       - ${{ if startsWith(parameters.os, 'macos') }}:
-          - bash: |
-              set -e
-              ls -la /Applications/Xcode*
-              sudo xcode-select --switch /Applications/Xcode_14.2.app/Contents/Developer
-              which g++
-              c++ --version
-            displayName: "setup Xcode"
+          # - bash: |
+          #     set -e
+          #     ls -la /Applications/Xcode*
+          #     sudo xcode-select --switch /Applications/Xcode_14.2.app/Contents/Developer
+          #     which g++
+          #     c++ --version
+          #   displayName: "setup Xcode"
           #
           - script: which brew
             displayName: "Check package manager"
