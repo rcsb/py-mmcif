@@ -4,7 +4,7 @@
 skip = ["pp*", "*-musllinux*"]
 
 [tool.cibuildwheel.linux]
-before-all = "yum -y install flex bison cmake"
+before-all = "sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo ; sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo; yum -y install flex bison cmake"
 test-command = 'python -c "from mmcif.io.IoAdapterCore import IoAdapterCore as IoAdapter"'
 
 [[tool.cibuildwheel.overrides]]
