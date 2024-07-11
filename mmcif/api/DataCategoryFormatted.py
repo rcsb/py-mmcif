@@ -133,7 +133,7 @@ class DataCategoryFormatted(DataCategory):
                     return (self.__doubleQuotedList(inp), "DT_ITEM_NAME")
                 elif inp[0] in ["[", "]", "$", "#", ";"]:
                     return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
-                elif inp[:5].lower() in ["data_", "loop_", "save_", "stop_"]:
+                elif inp[:5].lower() in ["data_", "loop_", "save_", "stop_"] or inp[:7].lower() in ["global_"]:
                     return (self.__doubleQuotedList(inp), "DT_DOUBLE_QUOTED_STRING")
                 else:
                     return ([str(inp)], "DT_UNQUOTED_STRING")

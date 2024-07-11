@@ -90,3 +90,4 @@
  6-Apr-2024    V0.87.0 - Correct internal data of PdbxContainers when rename operation is used
 24-Apr-2024    V0.88.0 - Add copy method to PdbxContainers for copying entire categories;
                          Update rename method to fail if new category name already exists (i.e., don't allow overwrite)
+20-Jun-2024    V0.89.0 - When writing output cif, always quote strings that start global_
