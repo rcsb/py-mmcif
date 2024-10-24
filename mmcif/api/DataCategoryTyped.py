@@ -107,16 +107,16 @@ class DataCategoryHints:
     def __init__(self, **kwargs):
         pass
 
-    def inMolStarIntHints(self, field):
-        """Returns True if field is in Mol* enforced-integer list; False otherwise
+    def inMolStarIntHints(self, name):
+        """Returns True if field name is in Mol* enforced-integer list; False otherwise
 
         Args:
-            field: field name
+            name: field name
 
         Returns:
-            (bool): True if field is in Mol* enforced-integer list; False otherwise
+            (bool): True if field name is in Mol* enforced-integer list; False otherwise
         """
-        return field in self.__molstar_forced_ints
+        return name in self.__molstar_forced_ints
 
     def getPdbxItemType(self, typeCode):
         """Returns the item type corresponding to a given _item_type.code from PDBx dictionary

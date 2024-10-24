@@ -74,7 +74,8 @@ class BinaryCifWriterTests(unittest.TestCase):
     def setUp(self):
         #
         self.__pathOutputDir = os.path.join(HERE, "test-output")
-        self.__pathTextCif = os.path.join(HERE, "data", "1bna.cif")
+        self.__baseCifUrl = "https://files.rcsb.org/download/"
+        self.__testCifList = ["1BNA", "1A2C", "1ACJ", "1J59", "1D3I", "1ONX", "1PGA", "4CXL", "5ZMZ", "200L", "4HHB", "7NO1", "1OCD"]
         self.__testBcifOutput = os.path.join(self.__pathOutputDir, "1bna-generated.bcif")
         self.__testBcifTranslated = os.path.join(self.__pathOutputDir, "1bna-generated-translated.bcif")
         self.__testBcifTypeOutput = os.path.join(self.__pathOutputDir, "type-generated.bcif")
@@ -96,31 +97,34 @@ class BinaryCifWriterTests(unittest.TestCase):
 
     def testSerialize(self):
         try:
-            for storeStringsAsBytes in [True, False]:
-                tcL = []
-                ioPy = IoAdapter()
-                containerList = ioPy.readFile(self.__pathTextCif)
-                for container in containerList:
-                    cName = container.getName()
-                    tc = DataContainer(cName)
-                    for catName in container.getObjNameList():
-                        dObj = container.getObj(catName)
-                        tObj = DataCategoryTyped(dObj, dictionaryApi=self.__dApi, copyInputData=True, applyMolStarTypes=False)
-                        tc.append(tObj)
-                    tcL.append(tc)
-                #
-                bcw = BinaryCifWriter(self.__dApi, storeStringsAsBytes=storeStringsAsBytes, applyTypes=False, useFloat64=True)
-                bcw.serialize(self.__testBcifOutput, tcL)
-                self.assertEqual(containerList[0], containerList[0])
-                self.assertEqual(tcL[0], tcL[0])
+            for cifId in self.__testCifList:
+                cifFileUrl = os.path.join(self.__baseCifUrl, cifId + ".cif")
+                for storeStringsAsBytes in [True, False]:
+                    logger.info("serializing cif %s (storeStringAsBytes %r)", cifFileUrl, storeStringsAsBytes)
+                    tcL = []
+                    ioPy = IoAdapter()
+                    containerList = ioPy.readFile(cifFileUrl)
+                    for container in containerList:
+                        cName = container.getName()
+                        tc = DataContainer(cName)
+                        for catName in container.getObjNameList():
+                            dObj = container.getObj(catName)
+                            tObj = DataCategoryTyped(dObj, dictionaryApi=self.__dApi, copyInputData=True, applyMolStarTypes=False)
+                            tc.append(tObj)
+                        tcL.append(tc)
+                    #
+                    bcw = BinaryCifWriter(self.__dApi, storeStringsAsBytes=storeStringsAsBytes, applyTypes=False, useFloat64=True)
+                    bcw.serialize(self.__testBcifOutput, tcL)
+                    self.assertEqual(containerList[0], containerList[0])
+                    self.assertEqual(tcL[0], tcL[0])
 
-                bcr = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes)
-                cL = bcr.deserialize(self.__testBcifOutput)
-                #
-                ioPy = IoAdapter()
-                ok = ioPy.writeFile(self.__testBcifTranslated, cL)
-                self.assertTrue(ok)
-                self.assertTrue(self.__same(tcL[0], cL[0]))
+                    bcr = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes)
+                    cL = bcr.deserialize(self.__testBcifOutput)
+                    #
+                    ioPy = IoAdapter()
+                    ok = ioPy.writeFile(self.__testBcifTranslated, cL)
+                    self.assertTrue(ok)
+                    self.assertTrue(self.__same(tcL[0], cL[0]))
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()
