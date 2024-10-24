@@ -9,10 +9,12 @@ import logging
 import os
 import sys
 import time
+from io import StringIO
 import unittest
 
 from mmcif.api.DataCategoryTyped import DataCategoryTyped
 from mmcif.api.DictionaryApi import DictionaryApi
+from mmcif.api.DataCategory import DataCategory
 from mmcif.api.PdbxContainers import DataContainer
 from mmcif.io.BinaryCifReader import BinaryCifReader
 from mmcif.io.BinaryCifWriter import BinaryCifWriter
@@ -39,13 +41,45 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
+# The following is from https://stackoverflow.com/questions/7472863/pydev-unittesting-how-to-capture-text-logged-to-a-logging-logger-in-captured-o
+class CaptureLogger:
+    """Context manager to capture `logging` streams
+
+    Args:
+        - logobj: 'logging` logger object
+
+    Results:
+        The captured output is available via `self.out`
+
+    """
+    def __init__(self, logobj):
+        self.logger = logobj
+        self.io = StringIO()
+        self.sh = logging.StreamHandler(self.io)
+        self.out = ''
+
+    def __enter__(self):
+        self.logger.addHandler(self.sh)
+        return self
+
+    def __exit__(self, *exc):
+        self.logger.removeHandler(self.sh)
+        self.out = self.io.getvalue()
+
+    def __repr__(self):
+        return f"captured: {self.out}\n"
+
+
 class BinaryCifWriterTests(unittest.TestCase):
     def setUp(self):
         #
         self.__pathOutputDir = os.path.join(HERE, "test-output")
-        self.__pathTextCif = os.path.join(HERE, "data", "1bna.cif")
+        self.__baseCifUrl = "https://files.rcsb.org/download/"
+        self.__testCifList = ["1BNA", "1A2C", "1ACJ", "1J59", "1D3I", "1ONX", "1PGA", "4CXL", "5ZMZ", "200L", "4HHB", "7NO1", "1OCD"]
         self.__testBcifOutput = os.path.join(self.__pathOutputDir, "1bna-generated.bcif")
         self.__testBcifTranslated = os.path.join(self.__pathOutputDir, "1bna-generated-translated.bcif")
+        self.__testBcifTypeOutput = os.path.join(self.__pathOutputDir, "type-generated.bcif")
+
         #
         self.__pathPdbxDictionary = os.path.join(HERE, "data", "mmcif_pdbx_v5_next.dic")
         myIo = IoAdapter(raiseExceptions=True)
@@ -63,31 +97,34 @@ class BinaryCifWriterTests(unittest.TestCase):
 
     def testSerialize(self):
         try:
-            for storeStringsAsBytes in [True, False]:
-                tcL = []
-                ioPy = IoAdapter()
-                containerList = ioPy.readFile(self.__pathTextCif)
-                for container in containerList:
-                    cName = container.getName()
-                    tc = DataContainer(cName)
-                    for catName in container.getObjNameList():
-                        dObj = container.getObj(catName)
-                        tObj = DataCategoryTyped(dObj, dictionaryApi=self.__dApi, copyInputData=True, applyMolStarTypes=False)
-                        tc.append(tObj)
-                    tcL.append(tc)
-                #
-                bcw = BinaryCifWriter(self.__dApi, storeStringsAsBytes=storeStringsAsBytes, applyTypes=False, useFloat64=True)
-                bcw.serialize(self.__testBcifOutput, tcL)
-                self.assertEqual(containerList[0], containerList[0])
-                self.assertEqual(tcL[0], tcL[0])
+            for cifId in self.__testCifList:
+                cifFileUrl = os.path.join(self.__baseCifUrl, cifId + ".cif")
+                for storeStringsAsBytes in [True, False]:
+                    logger.info("serializing cif %s (storeStringAsBytes %r)", cifFileUrl, storeStringsAsBytes)
+                    tcL = []
+                    ioPy = IoAdapter()
+                    containerList = ioPy.readFile(cifFileUrl)
+                    for container in containerList:
+                        cName = container.getName()
+                        tc = DataContainer(cName)
+                        for catName in container.getObjNameList():
+                            dObj = container.getObj(catName)
+                            tObj = DataCategoryTyped(dObj, dictionaryApi=self.__dApi, copyInputData=True, applyMolStarTypes=False)
+                            tc.append(tObj)
+                        tcL.append(tc)
+                    #
+                    bcw = BinaryCifWriter(self.__dApi, storeStringsAsBytes=storeStringsAsBytes, applyTypes=False, useFloat64=True)
+                    bcw.serialize(self.__testBcifOutput, tcL)
+                    self.assertEqual(containerList[0], containerList[0])
+                    self.assertEqual(tcL[0], tcL[0])
 
-                bcr = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes)
-                cL = bcr.deserialize(self.__testBcifOutput)
-                #
-                ioPy = IoAdapter()
-                ok = ioPy.writeFile(self.__testBcifTranslated, cL)
-                self.assertTrue(ok)
-                self.assertTrue(self.__same(tcL[0], cL[0]))
+                    bcr = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes)
+                    cL = bcr.deserialize(self.__testBcifOutput)
+                    #
+                    ioPy = IoAdapter()
+                    ok = ioPy.writeFile(self.__testBcifTranslated, cL)
+                    self.assertTrue(ok)
+                    self.assertTrue(self.__same(tcL[0], cL[0]))
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()
@@ -148,10 +185,29 @@ class BinaryCifWriterTests(unittest.TestCase):
         #
         return True
 
+    def testItemTypes(self):
+        """Tests int vs string types based on dictionary type"""
+        myDataList = []
+        curContainer = DataContainer("myblock")
+        aCat = DataCategory("em_single_particle_entity")
+        aCat.appendAttribute("point_symmetry")
+        aCat.append(["I", ])  # , because of single value in tuple
+        curContainer.append(aCat)
+
+        myDataList.append(curContainer)
+
+        bcw = BinaryCifWriter(self.__dApi, useStringTypes=True)
+
+        # The older code would log a cast error
+        with CaptureLogger(logger) as cl:
+            bcw.serialize(self.__testBcifTypeOutput, myDataList)
+        self.assertNotIn("Cast error", cl.out)
+
 
 def suiteBcifWriter():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(BinaryCifWriterTests("testSerialize"))
+    suiteSelect.addTest(BinaryCifWriterTests("testItemTypes"))
 
     return suiteSelect
 
