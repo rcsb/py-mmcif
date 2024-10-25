@@ -1323,10 +1323,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applyMolStarTypes&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize the input container list in binary CIF and store these data in the input file path.</span>
@@ -1416,18 +1413,19 @@
 <span class="sd">            (string): data type (string, integer or float)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cifDataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-        <span class="n">cifPrimitiveType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypePrimitive</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+        <span class="c1"># cifPrimitiveType = self.__dApi.getTypePrimitive(dObj.getName(), atName)</span>
         <span class="k">if</span> <span class="n">cifDataType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string&quot;</span><span class="p">,</span> <span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span> <span class="k">if</span> <span class="s2">&quot;int&quot;</span> <span class="ow">in</span> <span class="n">cifDataType</span> <span class="k">else</span> <span class="s2">&quot;float&quot;</span> <span class="k">if</span> <span class="n">cifPrimitiveType</span> <span class="o">==</span> <span class="s2">&quot;numb&quot;</span> <span class="k">else</span> <span class="s2">&quot;string&quot;</span>
+            <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">getPdbxItemType</span><span class="p">(</span><span class="n">cifDataType</span><span class="p">)</span>
+            <span class="c1"># dataType = &quot;integer&quot; if &quot;int&quot; in cifDataType else &quot;float&quot; if cifPrimitiveType == &quot;numb&quot; else &quot;string&quot;</span>
 
         <span class="c1"># Only if applying types, do we allow Mol* hints</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
             <span class="n">nm</span> <span class="o">=</span> <span class="n">CifName</span><span class="p">()</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">nm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">getMolStarIntHints</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">inMolStarIntHints</span><span class="p">(</span><span class="n">nm</span><span class="p">):</span>
                 <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span>
 
         <span class="k">return</span> <span class="n">dataType</span>
@@ -1567,10 +1565,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applyMolStarTypes&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
