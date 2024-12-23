@@ -14,6 +14,7 @@
 #   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
 #    5-May-2019   jdw add selectValuesWhereConditions() and countValuesWhereConditions()
 #    7-Aug-2019   jdw don't raise exception for *OrDefault() methods.
+#   23-Dec-2024    bv add selectIndicesWhereOpConditions
 ##
 """
 
@@ -445,6 +446,49 @@ class DataCategory(DataCategoryBase):
             if self._raiseExceptions:
                 raise e
         return iCount
+
+    def selectIndicesWhereOpConditions(self, conditionTupleList):
+        """Select row indices subject to input condition list
+
+        Args:
+            conditionTupleList (list): (attributeName, op, value) where (op = 'eq', 'gt(int)', 'lt(int)', 'in', 'ne', 'not in')
+
+        Raises:
+            e: any failure
+
+        Returns:
+            List: Row indices satisfying input conditions
+        """
+        try:
+            rL = []
+
+            cTL = [(atName, op, value) for (atName, op, value) in conditionTupleList if atName in self._attributeNameList]
+            idxD = {atName: self._attributeNameList.index(atName) for (atName, op, value) in cTL}
+
+            for ii, row in enumerate(self.data):
+                ok = True
+                for (atName, op, v) in cTL:
+                    if op == "eq":
+                        ok = (v == row[idxD[atName]]) and ok
+                    elif op == "ne":
+                        ok = (v != row[idxD[atName]]) and ok
+                    elif op == "lt(int)":
+                        ok = (int(row[idxD[atName]]) < v) and ok
+                    elif op == "gt(int)":
+                        ok = (int(row[idxD[atName]]) > v) and ok
+                    elif op == "in":
+                        ok = (row[idxD[atName]] in v) and ok
+                    elif op == "not in":
+                        ok = (row[idxD[atName]] not in v) and ok
+                if ok:
+                    rL.append(ii)
+
+        except Exception as e:
+            if self.__verbose:
+                logger.exception("Selection failure")
+            if self._raiseExceptions:
+                raise e
+        return rL
 
     #
     def getCombinationCounts(self, attributeList):
