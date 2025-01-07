@@ -512,7 +512,7 @@ class DataCategory(DataCategoryBase):
             cTL = [(atName, op, value) for (atName, op, value) in conditionTupleList if atName in self._attributeNameList]
             idxD = {atName: self._attributeNameList.index(atName) for (atName, op, value) in cTL}
 
-            for ii, row in enumerate(self.data):
+            for _, row in enumerate(self.data):
                 ok = True
                 for (atName, op, v) in cTL:
                     if op == "eq":
