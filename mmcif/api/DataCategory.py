@@ -14,7 +14,7 @@
 #   11-Nov-2018   jdw update consistent handling of raiseExceptions flag.
 #    5-May-2019   jdw add selectValuesWhereConditions() and countValuesWhereConditions()
 #    7-Aug-2019   jdw don't raise exception for *OrDefault() methods.
-#   23-Dec-2024    bv add selectIndicesWhereOpConditions, selectValuesWhereOpConditions, and getValueDictWhereOpConditions
+#   23-Dec-2024    bv add selectIndicesWhereOpConditions and selectValuesWhereOpConditions
 ##
 """
 
@@ -599,55 +599,6 @@ class DataCategory(DataCategoryBase):
                 if ok:
                     ky = tuple([row[jj] for jj in idxL])
                     cD[ky] = cD[ky] + 1 if ky in cD else 1
-        except Exception as e:
-            if self.__verbose:
-                logger.exception("Selection failure")
-            if self._raiseExceptions:
-                raise e
-        return cD
-
-    def getValueDictWhereOpConditions(self, attributeKey, attributeList, conditionTupleList):
-        """Get values as a dictionary subject to input condition list
-
-        Args:
-            attributeKey: attribute to be used as key in return dictionary
-            attributeList: [attribute 1, ....]; attribute values to be returned
-            conditionTupleList (list): (attributeName, op, value) where (op = 'eq', 'gt(int)', 'lt(int)', 'in', 'ne', 'not in')
-
-        Raises:
-            e: any failure
-
-        Returns:
-            cD[attributeKey] = (attribute value 1, ... )
-        """
-        cD = {}
-        try:
-
-            ind = self._attributeNameList.index(attributeKey)
-            idxL = [self._attributeNameList.index(atName) for atName in attributeList]
-            cTL = [(atName, op, value) for (atName, op, value) in conditionTupleList if atName in self._attributeNameList]
-            idxD = {atName: self._attributeNameList.index(atName) for (atName, op, value) in cTL}
-
-            for ii, row in enumerate(self.data):
-                ok = True
-                for (atName, op, v) in cTL:
-                    if op == "eq":
-                        ok = (v == row[idxD[atName]]) and ok
-                    elif op == "ne":
-                        ok = (v != row[idxD[atName]]) and ok
-                    elif op == "lt(int)":
-                        ok = (int(row[idxD[atName]]) < v) and ok
-                    elif op == "gt(int)":
-                        ok = (int(row[idxD[atName]]) > v) and ok
-                    elif op == "in":
-                        ok = (row[idxD[atName]] in v) and ok
-                    elif op == "not in":
-                        ok = (row[idxD[atName]] not in v) and ok
-                    if not ok:
-                        break
-                if ok:
-                    cD[row[ind]] = tuple([row[jj] for jj in idxL])
-
         except Exception as e:
             if self.__verbose:
                 logger.exception("Selection failure")
