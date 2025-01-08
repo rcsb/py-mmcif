@@ -490,6 +490,7 @@ class DataCategoryTests(unittest.TestCase):
             logger.exception("Failing with %s", str(e))
             self.fail()
 
+
 def suiteBase():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(DataCategoryTests("testBaseBasicAscii"))
