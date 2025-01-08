@@ -978,8 +978,8 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryInclude.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DictionaryInclude</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DictionaryInclude</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__itemNameRelatives</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;_item.name&quot;</span><span class="p">,</span>
@@ -1045,7 +1045,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dirStack</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__locatorIndexD</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Process any dictionary, category or item include instructions in any data containers in the</span>
 <span class="sd">        input list of dictionary data and definition containers.</span>
 
@@ -1072,7 +1072,7 @@
         <span class="n">includeContentD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fetchIncludedContent</span><span class="p">(</span><span class="n">includeD</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__addIncludedContent</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">includeContentD</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__addIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">includeContentD</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__addIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">includeContentD</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Incorporate included content described in the input dictionary of include instructions produced by</span>
 <span class="sd">        internal method __getIncludeInstructions().</span>
 
@@ -1149,7 +1149,7 @@
         <span class="c1">#</span>
         <span class="k">return</span> <span class="n">fullL</span>
 
-    <span class="k">def</span> <span class="nf">__getIncludeInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getIncludeInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract include instructions from categories pdbx_include_dictionary,  pdbx_include_category, and pdbx_include_item.</span>
 
 <span class="sd">        Args:</span>
@@ -1222,7 +1222,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Include processing failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">includeD</span>
 
-    <span class="k">def</span> <span class="nf">__fetchIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">includeD</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__fetchIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">includeD</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch included content following the instructions encoded in the input data structure.</span>
 
 <span class="sd">        Args:</span>
@@ -1340,7 +1340,7 @@
 
         <span class="k">return</span> <span class="n">includeDataD</span>
 
-    <span class="k">def</span> <span class="nf">__isLocal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__isLocal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">locSp</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">locSp</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">]</span>
@@ -1348,7 +1348,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Bad include file path (</span><span class="si">%r</span><span class="s2">) : </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">__fetchLocator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__fetchLocator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Locate non-absolute paths relative to the dictionary incude file</span>
@@ -1371,17 +1371,17 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">containerList</span>
 
-    <span class="k">def</span> <span class="nf">__substituteCategoryPrefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__substituteCategoryPrefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">catName</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">catName</span> <span class="ow">and</span> <span class="n">catName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">)</span> <span class="k">else</span> <span class="n">catName</span>
 
-    <span class="k">def</span> <span class="nf">__substituteItemPrefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">itemName</span><span class="p">,</span> <span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__substituteItemPrefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">itemName</span><span class="p">,</span> <span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">):</span>
         <span class="n">atName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">attributePart</span><span class="p">(</span><span class="n">itemName</span><span class="p">)</span>
         <span class="n">atName</span> <span class="o">=</span> <span class="n">atName</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">atName</span> <span class="ow">and</span> <span class="n">atName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">)</span> <span class="k">else</span> <span class="n">atName</span>
         <span class="n">catName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">categoryPart</span><span class="p">(</span><span class="n">itemName</span><span class="p">)</span>
         <span class="n">catName</span> <span class="o">=</span> <span class="n">catName</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">,</span> <span class="n">newPrefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">atName</span> <span class="ow">and</span> <span class="n">catName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">curPrefix</span><span class="p">)</span> <span class="k">else</span> <span class="n">catName</span>
         <span class="k">return</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__renameItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">newItemName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__renameItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">newItemName</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">container</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">container</span><span class="o">.</span><span class="n">isAttribute</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">newItemName</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">container</span>
         <span class="c1">#</span>
@@ -1404,7 +1404,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">container</span>
 
-    <span class="k">def</span> <span class="nf">__renameCategory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">newCategoryName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__renameCategory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">newCategoryName</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">container</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">container</span><span class="o">.</span><span class="n">isCategory</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">newCategoryName</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">container</span>
         <span class="c1">#</span>
@@ -1508,7 +1508,7 @@ input list of dictionary data and definition containers.</p>
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryInclude.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">processIncludedContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Process any dictionary, category or item include instructions in any data containers in the</span>
 <span class="sd">    input list of dictionary data and definition containers.</span>
 

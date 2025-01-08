@@ -997,10 +997,10 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictMethodRunner.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DictMethodRunner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DictMethodRunner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Manage the invocation of dictionary methods implemented as class methods.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">modulePathMap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">modulePathMap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Manage invocation of dictionary methods referenced in external modules.</span>
 
 <span class="sd">        Arguments:</span>
@@ -1026,7 +1026,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__methodD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getMethodInfo</span><span class="p">(</span><span class="n">implementationSource</span><span class="o">=</span><span class="n">implementationSource</span><span class="p">,</span> <span class="n">methodCodes</span><span class="o">=</span><span class="n">methodCodes</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Method index </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodD</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">__getMethodInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">implementationSource</span><span class="o">=</span><span class="s2">&quot;reference&quot;</span><span class="p">,</span> <span class="n">methodCodes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getMethodInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">implementationSource</span><span class="o">=</span><span class="s2">&quot;reference&quot;</span><span class="p">,</span> <span class="n">methodCodes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get method implementation with the input implementation source.&quot;&quot;&quot;</span>
         <span class="n">catName</span> <span class="o">=</span> <span class="n">atName</span> <span class="o">=</span> <span class="n">mId</span> <span class="o">=</span> <span class="n">mType</span> <span class="o">=</span> <span class="n">methDef</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">methodCodes</span> <span class="o">=</span> <span class="n">methodCodes</span> <span class="k">if</span> <span class="n">methodCodes</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;calculation&quot;</span><span class="p">]</span>
@@ -1059,7 +1059,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Method dictionary </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methodD</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">methodD</span>
 
-    <span class="k">def</span> <span class="nf">__invokeAttributeMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__invokeAttributeMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Invoke the input attribute method&quot;&quot;&quot;</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1071,7 +1071,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed invoking attribute </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> method </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ok</span>
 
-    <span class="k">def</span> <span class="nf">__invokeCategoryMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__invokeCategoryMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Invoke the input category method&quot;&quot;&quot;</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1083,7 +1083,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed invoking category </span><span class="si">%s</span><span class="s2"> method </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ok</span>
 
-    <span class="k">def</span> <span class="nf">__invokeDatablockMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">,</span> <span class="n">blockName</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__invokeDatablockMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">,</span> <span class="n">blockName</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Invoke the input data block method&quot;&quot;&quot;</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1095,7 +1095,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed invoking block </span><span class="si">%s</span><span class="s2"> method </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">blockName</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ok</span>
 
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply category, attribute and block level dictionary methods on the input data container.&quot;&quot;&quot;</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kwargs</span>
         <span class="n">mTupL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getCategoryMethods</span><span class="p">()</span>
@@ -1115,7 +1115,7 @@
 
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__getDatablockMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getDatablockMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">mL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">dictName</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">mDL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1129,7 +1129,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing dictName </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dictName</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">mL</span>
 
-    <span class="k">def</span> <span class="nf">__getCategoryMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getCategoryMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">mL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">mDL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1143,7 +1143,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing catName </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">mL</span>
 
-    <span class="k">def</span> <span class="nf">__getAttributeMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getAttributeMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">mL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">),</span> <span class="n">mDL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1157,7 +1157,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing catName </span><span class="si">%s</span><span class="s2"> atName </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">mL</span>
 
-    <span class="k">def</span> <span class="nf">__methodPathSplit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__methodPathSplit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract module path and the method name from the input path.  Optional</span>
 <span class="sd">           remap the module path.</span>
 
@@ -1178,7 +1178,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failing for method path </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methodPath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__getModuleInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modulePath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getModuleInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modulePath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1">#</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cacheModuleFlag</span> <span class="ow">and</span> <span class="n">modulePath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__moduleCache</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__moduleCache</span><span class="p">[</span><span class="n">modulePath</span><span class="p">]</span>
@@ -1267,7 +1267,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictMethodRunner.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">modulePathMap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">modulePathMap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Manage invocation of dictionary methods referenced in external modules.</span>
 
 <span class="sd">    Arguments:</span>
@@ -1316,7 +1316,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictMethodRunner.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataContainer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply category, attribute and block level dictionary methods on the input data container.&quot;&quot;&quot;</span>
     <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kwargs</span>
     <span class="n">mTupL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getCategoryMethods</span><span class="p">()</span>

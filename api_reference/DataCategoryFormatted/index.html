@@ -961,10 +961,10 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryFormatted.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataCategoryFormatted</span><span class="p">(</span><span class="n">DataCategory</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DataCategoryFormatted</span><span class="p">(</span><span class="n">DataCategory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory including additional formatting methods.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataCategoryObj</span><span class="p">,</span> <span class="n">preferDoubleQuotes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataCategoryObj</span><span class="p">,</span> <span class="n">preferDoubleQuotes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span> <span class="o">=</span> <span class="n">dataCategoryObj</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DataCategoryFormatted</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="c1">#</span>
@@ -1022,7 +1022,7 @@
         <span class="c1">#</span>
         <span class="c1"># self.__string_types = basestring</span>
 
-    <span class="k">def</span> <span class="nf">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Format input data following PDBx quoting rules -&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">inp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1106,7 +1106,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__dataTypePdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__dataTypePdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect the PDBx data type -&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">inp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span>
@@ -1153,21 +1153,21 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">return</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__singleQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__singleQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
         <span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ll</span>
 
-    <span class="k">def</span> <span class="nf">__doubleQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__doubleQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
         <span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ll</span>
 
-    <span class="k">def</span> <span class="nf">__semiColonQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__semiColonQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
         <span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">inp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
@@ -1184,7 +1184,7 @@
 
         <span class="k">return</span> <span class="n">ll</span>
 
-    <span class="k">def</span> <span class="nf">getValueFormatted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getValueFormatted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rowIndex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">attributeName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">attribute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentAttribute</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1209,7 +1209,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot; Type error - string types </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getValueFormattedByIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getValueFormattedByIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fList</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
@@ -1220,7 +1220,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">  - attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
             <span class="k">raise</span> <span class="n">e</span>
 
-    <span class="k">def</span> <span class="nf">getAttributeValueMaxLengthList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getAttributeValueMaxLengthList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">mList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))]</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[::</span><span class="n">steps</span><span class="p">]:</span>
             <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)):</span>
@@ -1233,7 +1233,7 @@
                 <span class="n">mList</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mList</span><span class="p">[</span><span class="n">indx</span><span class="p">],</span> <span class="n">tLen</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mList</span>
 
-    <span class="k">def</span> <span class="nf">getFormatTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getFormatTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">curFormatTypeList</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">curDataTypeList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DT_NULL_VALUE&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))]</span>

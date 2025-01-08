@@ -977,11 +977,11 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/io/PdbxWriter.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PdbxWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PdbxWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write mmCIF data files or dictionaries using the input container or container list.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ofh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ofh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ofh</span> <span class="o">=</span> <span class="n">ofh</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__maximumLineLength</span> <span class="o">=</span> <span class="mi">2048</span>
@@ -1004,37 +1004,37 @@
         <span class="c1"># else:</span>
         <span class="c1">#    self.__string_types = basestring</span>
 
-    <span class="k">def</span> <span class="nf">setSetEnforceAscii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolVal</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setSetEnforceAscii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolVal</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__enforceAscii</span> <span class="o">=</span> <span class="n">boolVal</span>
 
-    <span class="k">def</span> <span class="nf">setConvertCharRefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setConvertCharRefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__cnvCharRefs</span> <span class="o">=</span> <span class="n">flag</span>
 
-    <span class="k">def</span> <span class="nf">setUseStopTokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUseStopTokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__useStopTokens</span> <span class="o">=</span> <span class="n">flag</span>
 
-    <span class="k">def</span> <span class="nf">setMaxLineLength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numChars</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setMaxLineLength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numChars</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__maximumLineLength</span> <span class="o">=</span> <span class="n">numChars</span>
 
-    <span class="k">def</span> <span class="nf">setAlignmentFlag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setAlignmentFlag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__useAlignedColumns</span> <span class="o">=</span> <span class="n">flag</span>
 
-    <span class="k">def</span> <span class="nf">setPreferSingleQuotes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setPreferSingleQuotes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__preferDoubleQuotes</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">setPreferDoubleQuotes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setPreferDoubleQuotes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__preferDoubleQuotes</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">setRowPartition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numParts</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setRowPartition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numParts</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum number of partitions used to format value length for column alignment&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__rowPartition</span> <span class="o">=</span> <span class="n">numParts</span>
 
-    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span> <span class="o">=</span> <span class="n">containerList</span>
         <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">writeContainer</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="n">lastInOrder</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="n">selectOrder</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">writeContainer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContainer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">indS</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__indentDefinition</span>
         <span class="k">if</span> <span class="n">container</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;definition&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__write</span><span class="p">(</span><span class="s2">&quot;save_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">container</span><span class="o">.</span><span class="n">getName</span><span class="p">())</span>
@@ -1083,7 +1083,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">save_</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__write</span><span class="p">(</span><span class="s2">&quot;#</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">st</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">st</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cnvCharRefs</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__ofh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="s2">&quot;xmlcharrefreplace&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
@@ -1098,7 +1098,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;write fails with </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">st</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__writeItemValueFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryObj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__writeItemValueFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryObj</span><span class="p">):</span>
         <span class="c1"># indS = &quot; &quot; * self.__INDENT_DEFINITION</span>
         <span class="n">myCategory</span> <span class="o">=</span> <span class="n">DataCategoryFormatted</span><span class="p">(</span><span class="n">categoryObj</span><span class="p">,</span> <span class="n">preferDoubleQuotes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__preferDoubleQuotes</span><span class="p">)</span>
         <span class="c1"># Compute the maximum item name length within this category -</span>
@@ -1123,7 +1123,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lineList</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">__writeTableFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryObj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__writeTableFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryObj</span><span class="p">):</span>
         <span class="c1"># indS = &quot; &quot; * self.__INDENT_DEFINITION</span>
         <span class="n">myCategory</span> <span class="o">=</span> <span class="n">DataCategoryFormatted</span><span class="p">(</span><span class="n">categoryObj</span><span class="p">,</span> <span class="n">preferDoubleQuotes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__preferDoubleQuotes</span><span class="p">)</span>
         <span class="c1"># Write the declaration of the loop_</span>
@@ -1200,7 +1200,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useStopTokens</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__write</span><span class="p">(</span><span class="s2">&quot;stop_</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__writeTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryObj</span><span class="p">,</span> <span class="n">numSteps</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__writeTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryObj</span><span class="p">,</span> <span class="n">numSteps</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="n">indS</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__indentDefinition</span>
         <span class="n">myCategory</span> <span class="o">=</span> <span class="n">DataCategoryFormatted</span><span class="p">(</span><span class="n">categoryObj</span><span class="p">,</span> <span class="n">preferDoubleQuotes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__preferDoubleQuotes</span><span class="p">)</span>
         <span class="c1"># Write the declaration of the loop_</span>
@@ -1290,7 +1290,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/io/PdbxWriter.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setRowPartition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numParts</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">setRowPartition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numParts</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum number of partitions used to format value length for column alignment&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__rowPartition</span> <span class="o">=</span> <span class="n">numParts</span>
 </code></pre></div>

@@ -960,8 +960,8 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/MethodUtils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MethodUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictContainerList</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MethodUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictContainerList</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="c1"># list of dictionary data &amp; definition containers</span>
@@ -972,22 +972,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dataContainerList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1">#</span>
 
-    <span class="k">def</span> <span class="nf">setDataContainerList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataContainerList</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setDataContainerList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataContainerList</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dataContainerList</span> <span class="o">=</span> <span class="n">dataContainerList</span>
 
-    <span class="k">def</span> <span class="nf">getDataContainerList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDataContainerList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataContainerList</span>
 
-    <span class="k">def</span> <span class="nf">getDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span>
 
-    <span class="k">def</span> <span class="nf">getMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getMethodIndex</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">getMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mId</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mId</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getMethod</span><span class="p">(</span><span class="n">mId</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">invokeMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">invokeMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="n">_</span> <span class="o">=</span> <span class="n">fh</span>
         <span class="n">mI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getMethodIndex</span><span class="p">()</span>
         <span class="n">lenD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mI</span><span class="p">)</span>
@@ -1033,10 +1033,10 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">dumpMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">dumpMethods</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">dumpDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="n">lenD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictContainerList</span><span class="p">)</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------DUMP DICTIONARY------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1052,7 +1052,7 @@
 
     <span class="c1">#</span>
 
-    <span class="k">def</span> <span class="nf">dumpDataFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpDataFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="n">lenD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataContainerList</span><span class="p">)</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------DUMP DATAFILE--------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>

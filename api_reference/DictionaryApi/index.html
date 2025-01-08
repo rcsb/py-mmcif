@@ -1230,8 +1230,8 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DictionaryApi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">consolidate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expandItemLinked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replaceDefinition</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DictionaryApi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">consolidate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expandItemLinked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replaceDefinition</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an instance of the mmCIF dictionary API.</span>
 
 <span class="sd">        Args:</span>
@@ -1396,45 +1396,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__getDataSections</span><span class="p">()</span>
         <span class="c1">#</span>
 
-    <span class="k">def</span> <span class="nf">testCache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">testCache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
     <span class="c1">#</span>
     <span class="c1">#  Methods for data sections --</span>
     <span class="c1">#</span>
 
-    <span class="k">def</span> <span class="nf">getItemValueConditionDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemValueConditionDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemValueConditionDict</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemValueConditionDict</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">getComparisonOperators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getComparisonOperators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__compOpDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compOpDict</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getComparisonOperatorDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getComparisonOperatorDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compOpDict</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compOpDict</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">getDictionaryVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">tD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryDictList</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getDictionaryTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">tD</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">tD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryDictList</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getDictionaryUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get details from the first/last history element.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
@@ -1447,14 +1447,14 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getDictionaryRevisionCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryRevisionCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the count of revision history records.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryHistoryList</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">getDictionaryHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
         <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1469,7 +1469,7 @@
         <span class="k">return</span> <span class="n">oL</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">getDictionaryComponentDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponentDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the component dictionary list as tuples [(version,title,dictionary_component_id),...]&quot;&quot;&quot;</span>
         <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1479,21 +1479,21 @@
             <span class="k">pass</span>
         <span class="k">return</span> <span class="n">oL</span>
 
-    <span class="k">def</span> <span class="nf">getDictionaryComponentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the count of dictionary components.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentList</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">getDictionaryComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the list of dictionary components.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentHistoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getDictionaryComponentHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryComponentId</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponentHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryComponentId</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
         <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1508,7 +1508,7 @@
         <span class="k">return</span> <span class="n">oL</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">__makeCategoryGroupIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__makeCategoryGroupIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">catNameList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCategoryList</span><span class="p">()</span>
         <span class="c1"># add categories in group to self.__categoryGroupDict[&lt;groupName&gt;][&#39;categories&#39;]</span>
         <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">catNameList</span><span class="p">:</span>
@@ -1536,25 +1536,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__groupIndex</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">getCategoryGroupDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryGroupDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__categoryGroupDict</span><span class="p">[</span><span class="n">groupName</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryGroupParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryGroupParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__categoryGroupDict</span><span class="p">[</span><span class="n">groupName</span><span class="p">][</span><span class="s2">&quot;parent_id&quot;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryGroupChildGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentGroupName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryGroupChildGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentGroupName</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__groupChildIndex</span><span class="p">[</span><span class="n">parentGroupName</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryGroupCategories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">followChildren</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryGroupCategories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">followChildren</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__groupIndex</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__makeCategoryGroupIndex</span><span class="p">()</span>
@@ -1573,7 +1573,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;DictionaryApi.getCategoryGroupCategories failed for group </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">groupName</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">kL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__categoryGroupDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">kL</span>
@@ -1581,7 +1581,7 @@
             <span class="k">return</span> <span class="p">[]</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">getParentCategories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getParentCategories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryName</span><span class="p">):</span>
         <span class="n">itemNameList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getItemNameList</span><span class="p">(</span><span class="n">categoryName</span><span class="p">)</span>
         <span class="n">parentCategories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">itemName</span> <span class="ow">in</span> <span class="n">itemNameList</span><span class="p">:</span>
@@ -1593,7 +1593,7 @@
                 <span class="n">parentCategories</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">parentCategoryName</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">parentCategories</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getChildCategories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getChildCategories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categoryName</span><span class="p">):</span>
         <span class="n">itemNameList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getItemNameList</span><span class="p">(</span><span class="n">categoryName</span><span class="p">)</span>
         <span class="n">childCategories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">itemName</span> <span class="ow">in</span> <span class="n">itemNameList</span><span class="p">:</span>
@@ -1606,27 +1606,27 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">childCategories</span><span class="p">)</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">definitionExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definitionName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">definitionExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definitionName</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">definitionName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__definitionIndex</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">getTypeConditionsCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeConditionsCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_TYPE_CONDITIONS_CODE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getItemDependentNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemDependentNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_DEPENDENT_DEPENDENT_NAME&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getItemValueConditionDependentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemValueConditionDependentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_VALUE_CONDITION_DEPENDENT_NAME&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getItemSubCategoryIdList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemSubCategoryIdList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_SUB_CATEGORY_ID&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getItemSubCategoryLabelList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemSubCategoryLabelList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_SUB_CATEGORY_LABEL&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getItemSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">aL</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">itemName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1644,7 +1644,7 @@
                     <span class="n">aL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idVal</span><span class="p">,</span> <span class="n">labVal</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">aL</span>
 
-    <span class="k">def</span> <span class="nf">getItemAliasList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemAliasList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">aNL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_ALIAS_ALIAS_NAME&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">aDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_ALIAS_DICTIONARY&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">aVL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_ALIAS_VERSION&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1653,7 +1653,7 @@
             <span class="n">aL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">aN</span><span class="p">,</span> <span class="n">aD</span><span class="p">,</span> <span class="n">aV</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">aL</span>
 
-    <span class="k">def</span> <span class="nf">getEnumListWithDetail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumListWithDetail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">eVL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">eDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_DETAIL&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1672,7 +1672,7 @@
             <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dD</span><span class="p">[</span><span class="n">ky</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">rL</span>
 
-    <span class="k">def</span> <span class="nf">getEnumListAltWithFullDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumListAltWithFullDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dD</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1705,7 +1705,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing dD </span><span class="si">%r</span><span class="s2"> rL </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dD</span><span class="p">,</span> <span class="n">rL</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rL</span>
 
-    <span class="k">def</span> <span class="nf">getEnumListWithFullDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumListWithFullDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dD</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1727,7 +1727,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> dD </span><span class="si">%r</span><span class="s2"> rL </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">dD</span><span class="p">,</span> <span class="n">rL</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rL</span>
 
-    <span class="k">def</span> <span class="nf">getEnumListAltWithDetail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumListAltWithDetail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">eVL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">eDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_DETAIL_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
@@ -1751,7 +1751,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">rL</span>
 
-    <span class="k">def</span> <span class="nf">getItemRelatedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemRelatedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">rNL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RELATED_RELATED_NAME&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">rFL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RELATED_FUNCTION_CODE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1759,10 +1759,10 @@
             <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">rN</span><span class="p">,</span> <span class="n">rF</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rL</span>
 
-    <span class="k">def</span> <span class="nf">getTypeCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;DATA_TYPE_CODE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">followAncestors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getTypeCodeAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeCodeAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCodePdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCodeNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1770,19 +1770,19 @@
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
-    <span class="k">def</span> <span class="nf">getTypeCodeNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeCodeNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;DATA_TYPE_CODE_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">followAncestors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getTypeCodePdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeCodePdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;DATA_TYPE_CODE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">followAncestors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getDefaultValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDefaultValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_DEFAULT_VALUE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getMandatoryCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMandatoryCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_MANDATORY_CODE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getMandatoryCodeAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMandatoryCodeAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMandatoryCodePdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMandatoryCodeNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1790,19 +1790,19 @@
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMandatoryCode</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
-    <span class="k">def</span> <span class="nf">getMandatoryCodeNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMandatoryCodeNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_MANDATORY_CODE_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getMandatoryCodePdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMandatoryCodePdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_MANDATORY_CODE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getTypeRegex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeRegex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getTypeRegexAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeRegexAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeRegexPdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeRegexNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1810,43 +1810,43 @@
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeRegex</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
-    <span class="k">def</span> <span class="nf">getTypeRegexNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeRegexNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCodeNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getTypeRegexPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeRegexPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCodePdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getTypePrimitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypePrimitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getTypeDetail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTypeDetail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getContextList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getContextList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_CONTEXT&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryContextList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryContextList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;CATEGORY_CONTEXT&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getEnumList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">sortFlag</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getEnumListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getEnumListPdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="n">sortFlag</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">vL</span><span class="p">:</span>
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getEnumListNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="n">sortFlag</span><span class="p">)</span>
@@ -1854,22 +1854,22 @@
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getEnumList</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="n">sortFlag</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vL</span>
 
-    <span class="k">def</span> <span class="nf">getEnumListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">sortFlag</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getEnumListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sortFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">sortFlag</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">isEnumerated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isEnumerated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">isEnumeratedAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isEnumeratedAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">eC</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">eC</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">eC</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">))</span>
@@ -1877,10 +1877,10 @@
             <span class="n">eC</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_VALUE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">eC</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">getEnumerationClosedFlag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEnumerationClosedFlag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ENUMERATION_CLOSED_FLAG&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getUltimateParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getUltimateParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first ultimate parent item for the input item.&quot;&quot;&quot;</span>
         <span class="c1">#        pL=self.__getList(&#39;ITEM_LINKED_PARENT&#39;,category,attribute)</span>
         <span class="n">pL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFullParentList</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1893,7 +1893,7 @@
             <span class="c1"># pL=self.__getList(&#39;ITEM_LINKED_PARENT&#39;,catN,attN)</span>
         <span class="k">return</span> <span class="n">itemName</span>
 
-    <span class="k">def</span> <span class="nf">getParentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">stripSelfParent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getParentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">stripSelfParent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">stripSelfParent</span><span class="p">:</span>
             <span class="n">itemName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
             <span class="n">pL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_LINKED_PARENT&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1906,17 +1906,17 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_LINKED_PARENT&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getChildList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getChildList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;ITEM_LINKED_CHILD&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getFullChildList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getFullChildList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">itemName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fullChildD</span><span class="p">[</span><span class="n">itemName</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getFullDescendentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getFullDescendentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">itemNameL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">itemName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1938,7 +1938,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing for </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">itemNameL</span>
 
-    <span class="k">def</span> <span class="nf">getFullParentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">stripSelfParent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getFullParentList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">stripSelfParent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">itemName</span> <span class="o">=</span> <span class="n">CifName</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
             <span class="n">pL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fullParentD</span><span class="p">[</span><span class="n">itemName</span><span class="p">]</span>
@@ -1954,10 +1954,10 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getUnits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getUnits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_UNITS&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getImplicitList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getImplicitList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">iL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">dL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__definitionIndex</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">dD</span> <span class="ow">in</span> <span class="n">dL</span><span class="p">:</span>
@@ -1970,10 +1970,10 @@
                             <span class="n">iL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">iL</span>
 
-    <span class="k">def</span> <span class="nf">getDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_DESCRIPTION&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getDescriptionAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDescriptionAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDescriptionPdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDescriptionNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -1981,13 +1981,13 @@
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDescription</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
-    <span class="k">def</span> <span class="nf">getDescriptionNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDescriptionNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_DESCRIPTION_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getDescriptionPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDescriptionPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ITEM_DESCRIPTION_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getExampleList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getExampleList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">exCL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_EXAMPLE_CASE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">exDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_EXAMPLE_DETAIL&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">exL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1999,7 +1999,7 @@
                 <span class="n">exL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exC</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">exL</span>
 
-    <span class="k">def</span> <span class="nf">getExampleListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getExampleListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getExampleListPdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">vL</span><span class="p">:</span>
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getExampleListNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -2007,7 +2007,7 @@
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getExampleList</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vL</span>
 
-    <span class="k">def</span> <span class="nf">getExampleListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getExampleListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">exCL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_EXAMPLE_CASE_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">exDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_EXAMPLE_DETAIL_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">exL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2019,7 +2019,7 @@
                 <span class="n">exL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exC</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">exL</span>
 
-    <span class="k">def</span> <span class="nf">getExampleListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getExampleListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">exCL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_EXAMPLE_CASE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">exDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_EXAMPLE_DETAIL_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">exL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2031,7 +2031,7 @@
                 <span class="n">exL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exC</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">exL</span>
 
-    <span class="k">def</span> <span class="nf">getBoundaryList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBoundaryList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">minL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RANGE_MINIMUM&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">maxL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RANGE_MAXIMUM&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">bL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2039,7 +2039,7 @@
             <span class="n">bL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">vMin</span><span class="p">,</span> <span class="n">vMax</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">bL</span>
 
-    <span class="k">def</span> <span class="nf">getBoundaryListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBoundaryListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBoundaryListPdbx</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">vL</span><span class="p">:</span>
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBoundaryListNdb</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -2047,7 +2047,7 @@
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBoundaryList</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vL</span>
 
-    <span class="k">def</span> <span class="nf">getBoundaryListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBoundaryListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">minL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RANGE_MINIMUM_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">maxL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RANGE_MAXIMUM_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">bL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2056,7 +2056,7 @@
         <span class="c1">#</span>
         <span class="k">return</span> <span class="n">bL</span>
 
-    <span class="k">def</span> <span class="nf">getBoundaryListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBoundaryListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
         <span class="n">minL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RANGE_MINIMUM_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">maxL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;ITEM_RANGE_MAXIMUM_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="n">bL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2065,22 +2065,22 @@
         <span class="c1">#</span>
         <span class="k">return</span> <span class="n">bL</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryKeyList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryKeyList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;CATEGORY_KEY_ITEMS&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryGroupList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryGroupList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getList</span><span class="p">(</span><span class="s2">&quot;CATEGORY_GROUP&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryMandatoryCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryMandatoryCode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;CATEGORY_MANDATORY_CODE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;CATEGORY_DESCRIPTION&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryNxMappingDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryNxMappingDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;CATEGORY_NX_MAPPING_DETAILS&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryDescriptionAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryDescriptionAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCategoryDescriptionPdbx</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCategoryDescriptionNdb</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
@@ -2088,15 +2088,15 @@
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCategoryDescription</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryDescriptionNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryDescriptionNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;CATEGORY_DESCRIPTION_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">val</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryDescriptionPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryDescriptionPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;CATEGORY_DESCRIPTION_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">val</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryExampleList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryExampleList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="n">exCL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;CATEGORY_EXAMPLE_CASE&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">exDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;CATEGORY_EXAMPLE_DETAIL&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">exL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2108,7 +2108,7 @@
                 <span class="n">exL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exC</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">exL</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryExampleListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryExampleListAlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">fallBack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCategoryExampleListPdbx</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">vL</span><span class="p">:</span>
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCategoryExampleListNdb</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
@@ -2116,7 +2116,7 @@
             <span class="n">vL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCategoryExampleList</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vL</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryExampleListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryExampleListNdb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="n">exCL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;CATEGORY_EXAMPLE_CASE_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">exDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;CATEGORY_EXAMPLE_DETAIL_NDB&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">exL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2128,7 +2128,7 @@
                 <span class="n">exL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exC</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">exL</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryExampleListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryExampleListPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="n">exCL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;CATEGORY_EXAMPLE_CASE_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">exDL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="s2">&quot;CATEGORY_EXAMPLE_DETAIL_PDBX&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">exL</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2141,7 +2141,7 @@
 
         <span class="k">return</span> <span class="n">exL</span>
 
-    <span class="k">def</span> <span class="nf">getParentDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getParentDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionary of parents relations accross all definnitions</span>
 <span class="sd">        as {child : [parent, parent,...]</span>
 
@@ -2167,7 +2167,7 @@
         <span class="c1">#</span>
         <span class="k">return</span> <span class="n">parentD</span>
 
-    <span class="k">def</span> <span class="nf">getItemLinkedConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemLinkedConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionary of conditional item link relationships.</span>
 
 <span class="sd">        Returns:</span>
@@ -2242,7 +2242,7 @@
 
         <span class="k">return</span> <span class="n">rD</span>
 
-    <span class="k">def</span> <span class="nf">__makeFullParentChildDictionaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__makeFullParentChildDictionaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionaries of full parent/child relations accross all definnitions</span>
 
 <span class="sd">        as  fullParentD[child]=[parent,parent,...]</span>
@@ -2279,7 +2279,7 @@
         <span class="k">return</span> <span class="n">fullParentD</span><span class="p">,</span> <span class="n">fullChildD</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">__get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">followAncestors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">followAncestors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the last occurrence of the input dictionary metadata.  If the value</span>
 <span class="sd">        for the input category/attribute is null/missing then optionally check for</span>
 <span class="sd">        an ancestor value.</span>
@@ -2296,7 +2296,7 @@
         <span class="k">return</span> <span class="n">v0</span>
 
     <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">__getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the last occurrence of the input dictionary metadata (enumCode) for the input category/attribute</span>
 <span class="sd">        encountered in the list of objects stored at the indicated definition index.</span>
 
@@ -2326,11 +2326,11 @@
                             <span class="n">eS</span> <span class="o">=</span> <span class="p">[</span><span class="n">rv</span> <span class="k">for</span> <span class="n">rv</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">eS</span>
 
-    <span class="k">def</span> <span class="nf">__getList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the list of unique values&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getListAll</span><span class="p">(</span><span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)))</span>
 
-    <span class="k">def</span> <span class="nf">__getListAll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getListAll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enumCode</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of all values&quot;&quot;&quot;</span>
         <span class="n">eL</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">enumCode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enumD</span><span class="p">:</span>
@@ -2356,10 +2356,10 @@
 
         <span class="k">return</span> <span class="n">eL</span>
 
-    <span class="k">def</span> <span class="nf">getMethodIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMethodIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodIndex</span>
 
-    <span class="k">def</span> <span class="nf">__makeIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__makeIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create indices of definitions, categories and items.&quot;&quot;&quot;</span>
         <span class="n">iD</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">dD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
@@ -2404,45 +2404,45 @@
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__itemNameList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iD</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">getDefinitionIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDefinitionIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__definitionIndex</span>
 
-    <span class="k">def</span> <span class="nf">getFullIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getFullIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fullIndex</span>
 
-    <span class="k">def</span> <span class="nf">getMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mId</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mId</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mId</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodDict</span><span class="p">[</span><span class="n">mId</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__catNameIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">getCategoryIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCategoryIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__catNameIndex</span>
 
-    <span class="k">def</span> <span class="nf">getAttributeNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getAttributeNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__catNameIndex</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getItemNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getItemNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__catNameItemIndex</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">getSubCategoryDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subCategoryName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getSubCategoryDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subCategoryName</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">subCategoryName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="p">[</span><span class="n">subCategoryName</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__getMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__methodDict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__methodIndex</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
@@ -2495,14 +2495,14 @@
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodIndex</span>
 
-    <span class="k">def</span> <span class="nf">dumpCategoryIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpCategoryIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">vL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__catNameIndex</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">uvL</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">vL</span><span class="p">))</span>
             <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Category: </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> attributes</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">uvL</span><span class="p">)))</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">uvL</span><span class="p">):</span>
                 <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  Attribute: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">v</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">dumpMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">vL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__methodIndex</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Method index key: </span><span class="si">%s</span><span class="s2"> length </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vL</span><span class="p">)))</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vL</span><span class="p">:</span>
@@ -2520,7 +2520,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Missing method for </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">v</span><span class="o">.</span><span class="n">getId</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">dumpEnumFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpEnumFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">vL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__catNameIndex</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">uvL</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">vL</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">uvL</span><span class="p">):</span>
@@ -2537,7 +2537,7 @@
                     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">itL</span><span class="p">:</span>
                         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;      Enum: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">it</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">dumpFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">vL</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__catNameIndex</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">uvL</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">vL</span><span class="p">))</span>
             <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;-----------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2641,7 +2641,7 @@
                     <span class="k">for</span> <span class="n">it1</span> <span class="ow">in</span> <span class="n">itL</span><span class="p">:</span>
                         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;      Dependent item name   </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">it1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">dumpDataSections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpDataSections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Datablock:  </span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataBlockDictList</span><span class="p">))</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Dictionary: </span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryDictList</span><span class="p">))</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Dictionary History: </span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryHistoryList</span><span class="p">)</span>
@@ -2652,7 +2652,7 @@
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Item linked groups: </span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__itemLinkedGroupDict</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Item linked group item list: </span><span class="si">%r</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__itemLinkedGroupItemDict</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
 
-    <span class="k">def</span> <span class="nf">dumpItemLinkedGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dumpItemLinkedGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">categoryId</span><span class="p">,</span> <span class="n">lgList</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemLinkedGroupDict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">lg</span> <span class="ow">in</span> <span class="n">lgList</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">categoryId</span><span class="p">,</span> <span class="n">lg</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemLinkedGroupItemDict</span><span class="p">:</span>
@@ -2661,7 +2661,7 @@
                     <span class="k">for</span> <span class="n">lgI</span> <span class="ow">in</span> <span class="n">lgIList</span><span class="p">:</span>
                         <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;    group </span><span class="si">%s</span><span class="s2"> --- child item </span><span class="si">%s</span><span class="s2">   parent item </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lgI</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lgI</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
-    <span class="k">def</span> <span class="nf">__addItemLinkToDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dObj</span><span class="p">,</span> <span class="n">parentName</span><span class="p">,</span> <span class="n">childName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__addItemLinkToDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dObj</span><span class="p">,</span> <span class="n">parentName</span><span class="p">,</span> <span class="n">childName</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the input link relationship to the input definition object.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dObj</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;item_linked&quot;</span><span class="p">):</span>
             <span class="c1"># update in place --</span>
@@ -2687,7 +2687,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Created new item link in category </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">())</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__expandLoopedDefinitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__expandLoopedDefinitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle definitions containing looped item and item_linked categories --&quot;&quot;&quot;</span>
         <span class="n">fullIndex</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">dD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
@@ -2733,7 +2733,7 @@
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">ob</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;item_linked&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__consolidateDefinitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__consolidateDefinitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Consolidate definition attributes into a single save frame section per definition.&quot;&quot;&quot;</span>
         <span class="n">fullIndex</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">dD</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
@@ -2773,7 +2773,7 @@
         <span class="c1"># update lists</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span> <span class="o">=</span> <span class="n">dList</span>
 
-    <span class="k">def</span> <span class="nf">getDataTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDataTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;code&#39;,&#39;primitive_code&#39;,&#39;construct&#39;,&#39;detail&#39; )&quot;&quot;&quot;</span>
         <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -2781,7 +2781,7 @@
             <span class="n">rowList</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">code</span><span class="p">,</span> <span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tup</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">rowList</span>
 
-    <span class="k">def</span> <span class="nf">getSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
         <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -2789,7 +2789,7 @@
             <span class="n">rowList</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tId</span><span class="p">,</span> <span class="n">description</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rowList</span>
 
-    <span class="k">def</span> <span class="nf">getUnitsList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getUnitsList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
         <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -2797,11 +2797,11 @@
             <span class="n">rowList</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tId</span><span class="p">,</span> <span class="n">description</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rowList</span>
 
-    <span class="k">def</span> <span class="nf">getUnitsConversionList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getUnitsConversionList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;from_code&#39;,&#39;to_code&#39;,&#39;operator&#39;,&#39;factor&#39;)&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsConversionList</span>
 
-    <span class="k">def</span> <span class="nf">__getDataSections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getDataSections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__containerList</span><span class="p">:</span>
 
@@ -3106,7 +3106,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">consolidate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expandItemLinked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replaceDefinition</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">consolidate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expandItemLinked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replaceDefinition</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an instance of the mmCIF dictionary API.</span>
 
 <span class="sd">    Args:</span>
@@ -3331,7 +3331,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDataTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDataTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;code&#39;,&#39;primitive_code&#39;,&#39;construct&#39;,&#39;detail&#39; )&quot;&quot;&quot;</span>
     <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__typesDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -3368,7 +3368,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the count of dictionary components.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentList</span><span class="p">)</span>
@@ -3398,7 +3398,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponentDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponentDetails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the component dictionary list as tuples [(version,title,dictionary_component_id),...]&quot;&quot;&quot;</span>
     <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
@@ -3431,7 +3431,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponentHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryComponentId</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponentHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryComponentId</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
     <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
@@ -3468,7 +3468,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the list of dictionary components.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryComponentHistoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -3498,7 +3498,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the revision history as a list of tuples [(version,update,revisionText,dictionary),...]&quot;&quot;&quot;</span>
     <span class="n">oL</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
@@ -3535,7 +3535,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryRevisionCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryRevisionCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the count of revision history records.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionaryHistoryList</span><span class="p">)</span>
@@ -3566,7 +3566,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getDictionaryUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDictionaryUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;reverse&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get details from the first/last history element.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
@@ -3656,7 +3656,7 @@
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getItemLinkedConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getItemLinkedConditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a dictionary of conditional item link relationships.</span>
 
 <span class="sd">    Returns:</span>
@@ -3770,7 +3770,7 @@ as {child : [parent, parent,...]</p>
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getParentDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getParentDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a dictionary of parents relations accross all definnitions</span>
 <span class="sd">    as {child : [parent, parent,...]</span>
 
@@ -3821,7 +3821,7 @@ as {child : [parent, parent,...]</p>
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getSubCategoryList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
     <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__subCategoryDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -3863,7 +3863,7 @@ as {child : [parent, parent,...]</p>
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getUltimateParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getUltimateParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the first ultimate parent item for the input item.&quot;&quot;&quot;</span>
     <span class="c1">#        pL=self.__getList(&#39;ITEM_LINKED_PARENT&#39;,category,attribute)</span>
     <span class="n">pL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFullParentList</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
@@ -3900,7 +3900,7 @@ as {child : [parent, parent,...]</p>
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getUnitsConversionList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getUnitsConversionList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;from_code&#39;,&#39;to_code&#39;,&#39;operator&#39;,&#39;factor&#39;)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsConversionList</span>
 </code></pre></div>
@@ -3927,7 +3927,7 @@ as {child : [parent, parent,...]</p>
 
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DictionaryApi.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getUnitsList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getUnitsList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of tuples containing (&#39;id&#39;, &#39;description&#39;)&quot;&quot;&quot;</span>
     <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">tId</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__itemUnitsDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
