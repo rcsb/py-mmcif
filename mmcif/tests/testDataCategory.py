@@ -298,7 +298,6 @@ class DataCategoryTests(unittest.TestCase):
             row = dcA.getFullRow(dcA.getRowCount() + 1)
             for cV in row:
                 self.assertEqual(cV, "?")
-
             #
         except Exception as e:
             logger.exception("Failing with %s", str(e))
