@@ -92,4 +92,5 @@
                          Update rename method to fail if new category name already exists (i.e., don't allow overwrite)
 20-Jun-2024    V0.89.0 - When writing output cif, always quote strings that start global_
 25-Oct-2024    V0.90.0 - Use explicit item type map to determine field types and encodings for BCIF
-23-Dec-2024    V0.91.0 - Add selectIndicesWhereOpConditions and selectValuesWhereOpConditions methods to DataCategory
+ 7-Jan-2025    V0.91.0 - Add selectIndicesWhereOpConditions and selectValuesWhereOpConditions methods to DataCategory
+                         Update testDataCategory.py

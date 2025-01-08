@@ -467,6 +467,29 @@ class DataCategoryTests(unittest.TestCase):
             logger.exception("Failing with %s", str(e))
             self.fail()
 
+    def testCondOpSelectValues(self):
+        """Test case - indices and value selections using conditions with operators"""
+        try:
+            dcM = DataCategory("A", self.__attributeListMiss, self.__rowListUnicodeMiss)
+            atL = dcM.getAttributeList()
+            cndL1 = [(self.__attributeListMiss[-1], "eq", self.__testRowUnicodeMiss[-1])]
+            cndL2 = [(self.__attributeListMiss[-1], "ne", self.__testRowUnicodeMiss[-1])]
+            cndL3 = [(self.__attributeListMiss[-1], "in", self.__testRowUnicodeMiss)]
+            cndL4 = [(self.__attributeListMiss[-1], "not in", self.__testRowUnicodeMiss)]
+            #
+            self.assertEqual(len(dcM.selectIndicesWhereOpConditions(cndL1)), dcM.getRowCount())
+            self.assertEqual(len(dcM.selectIndicesWhereOpConditions(cndL2)), 0)
+            self.assertEqual(len(dcM.selectIndicesWhereOpConditions(cndL3)), dcM.getRowCount())
+            self.assertEqual(len(dcM.selectIndicesWhereOpConditions(cndL4)), 0)
+            #
+            for at in atL[1:-1]:
+                self.assertEqual(len(dcM.selectValuesWhereOpConditions(at, cndL1)), dcM.getRowCount())
+                self.assertEqual(len(dcM.selectValuesWhereOpConditions(at, cndL2)), 0)
+                self.assertEqual(len(dcM.selectValuesWhereOpConditions(at, cndL3)), dcM.getRowCount())
+                self.assertEqual(len(dcM.selectValuesWhereOpConditions(at, cndL4)), 0)
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+            self.fail()
 
 def suiteBase():
     suiteSelect = unittest.TestSuite()
@@ -494,6 +517,7 @@ def suiteSubclass():
     suiteSelect.addTest(DataCategoryTests("testCompareAttributes"))
     suiteSelect.addTest(DataCategoryTests("testCompareValues"))
     suiteSelect.addTest(DataCategoryTests("testCondSelectValues"))
+    suiteSelect.addTest(DataCategoryTests("testCondOpSelectValues"))
     #
     return suiteSelect
 
