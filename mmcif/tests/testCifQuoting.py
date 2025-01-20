@@ -11,8 +11,6 @@
 Test cases for reading and writing mmCIF data files using Python Wrapper
 to ensure quoting is case insensitive
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import sys

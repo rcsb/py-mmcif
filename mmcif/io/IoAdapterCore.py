@@ -24,16 +24,12 @@
 Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.
 
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import sys
 import time
 import uuid
 import warnings
-
-from six.moves import range
 
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.PdbxContainers import DataContainer

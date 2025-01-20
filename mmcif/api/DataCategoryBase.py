@@ -23,14 +23,11 @@
 A collection of container classes supporting the PDBx/mmCIF storage model.
 
 """
-from __future__ import absolute_import
-
 import copy
 import logging
 
 # from mmcif.api import __STRING_TYPES__
-from past.builtins import basestring
-from six.moves import UserList, range, zip
+from collections import UserList
 
 __docformat__ = "google en"
 __author__ = "John Westbrook"
@@ -104,7 +101,7 @@ class DataCategoryBase(UserList):
         self._catalog = {}
         self._numAttributes = 0
         #
-        self._stringTypes = basestring
+        self._stringTypes = str
         self.__setup()
 
     def __setup(self):

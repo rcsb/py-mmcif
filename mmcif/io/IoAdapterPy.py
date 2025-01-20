@@ -21,8 +21,6 @@ Python implementation of IoAdapterBase class providing read and write
         methods for PDBx/mmCIF data files -
 
 """
-from __future__ import absolute_import
-
 import gzip
 import io
 import logging
