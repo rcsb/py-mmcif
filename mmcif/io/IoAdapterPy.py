@@ -342,7 +342,7 @@ class IoAdapterPy(IoAdapterBase):
             return True
         except Exception as ex:
             if self._raiseExceptions:
-                raise_from(ex, None)
+                raise ex from None
             else:
                 logger.exception("Failing write for %s with %s", outputFilePath, str(ex))
                 logger.error("Failing write for %s with %s", outputFilePath, str(ex))

@@ -299,7 +299,7 @@ class IoAdapterCore(IoAdapterBase):
         except (PdbxError, PdbxSyntaxError) as ex:
             self._cleanupFile(cleanUp, logFilePath)
             if self._raiseExceptions:
-                raise_from(ex, None)
+                raise ex from None
         except Exception as e:
             self._cleanupFile(cleanUp, logFilePath)
             msg = "Failing read for %s with %s" % (inputFilePath, str(e))
