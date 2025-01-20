@@ -16,8 +16,6 @@ IoAdapterCore wrapper which provides an API to the C++ CifFile class
 library of file and dictionary tools that is conforms to our Native
 Python library.
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import sys

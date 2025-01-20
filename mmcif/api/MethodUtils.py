@@ -8,8 +8,6 @@
 """
 Utility classes for applying inline dictionary methods on PDBx/mmCIF data files.
 """
-from __future__ import absolute_import
-
 import logging
 import sys
 

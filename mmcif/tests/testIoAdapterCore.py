@@ -16,8 +16,6 @@ Test cases for reading and updating mmCIF data files using Python Wrapper
 IoAdapterCore wrapper which provides an API to the C++ CifFile class
 library of file and dictionary tools conforming to our native Python library.
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import sys

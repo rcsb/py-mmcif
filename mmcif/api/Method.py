@@ -12,8 +12,6 @@
 Utility classes for applying dictionary methods on PDBx/mmCIF data files.
 """
 
-from __future__ import absolute_import
-
 import sys
 
 __docformat__ = "google en"

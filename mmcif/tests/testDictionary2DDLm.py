@@ -8,8 +8,6 @@
 Tests cases for Dictionary API generating alternative DDLm metadata format.
 
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import sys

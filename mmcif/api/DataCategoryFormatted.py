@@ -15,13 +15,8 @@
 A subclass of DataCategory including additional formatting methods.
 
 """
-from __future__ import absolute_import
-
 import logging
 import re
-
-from six.moves import range
-from six import string_types
 
 from mmcif.api.DataCategory import DataCategory
 
@@ -187,11 +182,11 @@ class DataCategoryFormatted(DataCategory):
 
         # pure numerical values are returned as unquoted strings
         # if isinstance(inp, int) or self.__intRe.search(str(inp)):
-        if isinstance(inp, int) or (isinstance(inp, string_types) and self.__intRe.search(inp)):
+        if isinstance(inp, int) or (isinstance(inp, str) and self.__intRe.search(inp)):
             return "DT_INTEGER"
 
         # if isinstance(inp, float) or self.__floatRe.search(str(inp)):
-        if isinstance(inp, float) or (isinstance(inp, string_types) and self.__floatRe.search(inp)):
+        if isinstance(inp, float) or (isinstance(inp, str) and self.__floatRe.search(inp)):
             return "DT_FLOAT"
 
         # null value handling -
