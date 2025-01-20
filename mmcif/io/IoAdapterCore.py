@@ -33,7 +33,6 @@ import time
 import uuid
 import warnings
 
-from future.utils import raise_from
 from six.moves import range
 
 from mmcif.api.DataCategory import DataCategory
@@ -144,8 +143,7 @@ class IoAdapterCore(IoAdapterBase):
         except (PdbxError, PdbxSyntaxError) as ex:
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
             if self._raiseExceptions:
-                raise_from(ex, None)
-                # raise ex from None
+                raise ex from None
         except Exception as e:
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
             msg = "Failing read for %s with %s" % (filePath, str(e))

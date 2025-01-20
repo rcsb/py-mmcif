@@ -31,7 +31,6 @@ import uuid
 from contextlib import closing
 
 import requests
-from future.utils import raise_from
 from mmcif.io.IoAdapterBase import IoAdapterBase
 from mmcif.io.PdbxExceptions import PdbxError
 from mmcif.io.PdbxExceptions import PdbxSyntaxError
@@ -195,8 +194,7 @@ class IoAdapterPy(IoAdapterBase):
             self._appendToLog([msg])
             self._cleanupFile(lPath and cleanUp, lPath)
             if self._raiseExceptions:
-                raise_from(ex, None)
-                # raise ex from None
+                raise ex from None
         except Exception as e:
             msg = "File %r with %s" % (filePath, str(e))
             self._appendToLog([msg])
