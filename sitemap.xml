@@ -2,86 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/rcsb/py-mmcif/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/BinaryCifReader/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/BinaryCifWriter/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/CifFile/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/DataCategory/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/DataCategoryBase/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/DataCategoryFormatted/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/DataCategoryTyped/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/DictMethodRunner/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/DictionaryApi/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/DictionaryInclude/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/IoAdapterBase/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/IoAdapterCore/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/IoAdapterPy/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/Method/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/MethodUtils/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/PdbxContainers/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/PdbxExceptions/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/PdbxReader/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
     <url>
          <loc>https://github.com/rcsb/py-mmcif/api_reference/PdbxWriter/</loc>
-         <lastmod>2025-02-09</lastmod>
+         <lastmod>2025-02-23</lastmod>
     </url>
 </urlset>
