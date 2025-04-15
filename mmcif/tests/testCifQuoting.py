@@ -136,6 +136,14 @@ class QuotingTests(unittest.TestCase):
         aCat.append([9, "Stop_in_the_name_of_love"])
         curContainer.append(aCat)
 
+        # This category is for testing of quoting of global.  Python parser will lose registration and not parse
+        aCat = DataCategory("pdbx_test_global")
+        aCat.appendAttribute("a")
+        aCat.appendAttribute("b")
+        aCat.appendAttribute("c")
+        aCat.append(["Global_should_be_ok", "test", "value"])
+        curContainer.append(aCat)
+
         return curContainer
 
     def __testValues(self, containerList):
@@ -145,6 +153,9 @@ class QuotingTests(unittest.TestCase):
         catObj = c0.getObj("pdbx_test")
         self.assertIsNotNone(catObj)
         self.assertEqual(catObj.getValue("details", 7), "DatA_my_big_data_file")
+        catObj = c0.getObj("pdbx_test_global")
+        self.assertIsNotNone(catObj)
+        self.assertEqual(catObj.getValue("a", 0), "Global_should_be_ok")
 
 
 def suiteFileCase():

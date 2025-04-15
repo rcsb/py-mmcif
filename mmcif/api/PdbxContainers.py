@@ -20,6 +20,8 @@
 #    4-Apr-2018   jdw adding internal __eq__ and __hash__ methods
 #    6-Aug-2018   jdw add setters/getters for container properties
 #    5-Feb-2019   jdw add merge method and logging
+#   24-Apr-2024   dwp add copy method; update rename method to fail if new category name already exists
+#                     (i.e., don't allow overwrite)
 ##
 """
 
@@ -46,6 +48,7 @@ from __future__ import absolute_import
 
 import logging
 import sys
+import copy
 
 __docformat__ = "google en"
 __author__ = "John Westbrook"
@@ -85,7 +88,7 @@ class CifName(object):
             if i == -1:
                 return None
             else:
-                return name[i + 1 :]
+                return name[i + 1:]
         except Exception:
             return None
 
@@ -197,14 +200,63 @@ class ContainerBase(object):
                 self.__objCatalog[nm].dumpIt(fh)
 
     def rename(self, curName, newName):
-        """Change the name of an object in place -"""
+        """Change the name of an object in place
+        Will fail if newName already exists or curName doesn't exist.
+
+        Args:
+            curName (str): current category name
+            newName (str): new category name
+
+        Returns:
+            (bool): True for success or False otherwise
+        """
+
         try:
+            # first check if requested new category already exists
+            if newName in self.__objNameList:
+                logger.error("Category already exists, %r", newName)
+                return False
+            # also check if current category exists
+            if curName not in self.__objNameList:
+                logger.error("Category doesn't exist, %r", curName)
+                return False
             i = self.__objNameList.index(curName)
             self.__objNameList[i] = newName
             self.__objCatalog[newName] = self.__objCatalog[curName]
             self.__objCatalog[newName].setName(newName)
+            del self.__objCatalog[curName]
             return True
-        except Exception:
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
+            return False
+
+    def copy(self, curName, newName):
+        """Copy the object to a new category name.
+        Will fail if newName already exists or curName doesn't exist.
+
+        Args:
+            curName (str): current category name
+            newName (str): new category name
+
+        Returns:
+            (bool): True for success or False otherwise
+        """
+        try:
+            # first check if requested new category already exists
+            if newName in self.__objNameList:
+                logger.error("Category already exists, %r", newName)
+                return False
+            # also check if current category exists
+            if curName not in self.__objNameList:
+                logger.error("Category doesn't exist, %r", curName)
+                return False
+            # now do the copy
+            obj = copy.deepcopy(self.__objCatalog[curName])
+            obj.setName(newName)
+            self.append(obj)
+            return True
+        except Exception as e:
+            logger.exception("Failing with %s", str(e))
             return False
 
     def remove(self, curName):

@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import logging
 
 from mmcif.api.DataCategory import DataCategory
+from mmcif.api.PdbxContainers import CifName
 
 
 __docformat__ = "google en"
@@ -24,6 +25,109 @@ __license__ = "Apache 2.0"
 
 
 logger = logging.getLogger(__name__)
+
+
+class DataCategoryHints:
+    """A class which will support hints for data types"""
+    #
+    __molstar_forced_ints = {
+        "_atom_site.id": "integer",
+        "_atom_site.auth_seq_id": "integer",
+        "_atom_site_anisotrop.id": "integer",
+        "_pdbx_struct_mod_residue.auth_seq_id": "integer",
+        "_struct_conf.beg_auth_seq_id": "integer",
+        "_struct_conf.end_auth_seq_id": "integer",
+        "_struct_conn.ptnr1_auth_seq_id": "integer",
+        "_struct_conn.ptnr2_auth_seq_id": "integer",
+        "_struct_sheet_range.beg_auth_seq_id": "integer",
+        "_struct_sheet_range.end_auth_seq_id": "integer",
+    }
+    #
+    __pdbx_item_type_list_map = {
+        # Strings
+        "code": "string",  # char
+        "line": "string",  # char
+        "text": "string",  # char
+        "boolean": "string",  # char
+        "ucode": "string",  # uchar
+        "uline": "string",  # uchar
+        "name": "string",  # uchar
+        "idname": "string",  # uchar
+        "any": "string",  # char
+        "yyyy-mm-dd": "string",  # char
+        "yyyy-mm-dd:hh:mm-flex": "string",  # char
+        "uchar3": "string",  # uchar
+        "uchar5": "string",  # uchar
+        "uchar1": "string",  # uchar
+        "symop": "string",  # char
+        "atcode": "string",  # char
+        "yyyy-mm-dd:hh:mm": "string",  # char
+        "fax": "string",  # uchar
+        "phone": "string",  # uchar
+        "email": "string",  # uchar
+        "code30": "string",  # char
+        "binary": "string",  # char
+        "operation_expression": "string",  # char
+        "ec-type": "string",  # char
+        "seq-one-letter-code": "string",  # char
+        "ucode-alphanum-csv": "string",  # uchar
+        "point_symmetry": "string",  # char
+        "asym_id": "string",  # char
+        "id_list": "string",  # char
+        "id_list_spc": "string",  # char
+        "3x4_matrices": "string",  # char
+        "3x4_matrix": "string",  # char
+        "pdbx_related_db_id": "string",  # char
+        "pdbx_PDB_obsoleted_db_id": "string",  # char
+        "emd_id": "string",  # char
+        "pdb_id": "string",  # char
+        "pdb_id_u": "string",  # uchar
+        "point_group": "string",  # char
+        "point_group_helical": "string",  # char
+        "author": "string",  # char
+        "orcid_id": "string",  # char
+        "symmetry_operation": "string",  # char
+        "sequence_dep": "string",  # char
+        "date_dep": "string",  # char
+        "citation_doi": "string",  # char
+        "exp_data_doi": "string",  # char
+        "deposition_email": "string",  # uchar
+        "entity_id_list": "string",  # uchar
+        "int_list": "string",  # uchar
+        "uniprot_ptm_id": "string",  # char
+        "int-range": "string",  # numb
+        "float-range": "string",  # numb
+        # Integers
+        "int": "integer",  # numb,
+        "positive_int": "integer",  # numb,
+        # Floats
+        "float": "float",  # numb,
+    }
+
+    def __init__(self, **kwargs):
+        pass
+
+    def inMolStarIntHints(self, name):
+        """Returns True if field name is in Mol* enforced-integer list; False otherwise
+
+        Args:
+            name: field name
+
+        Returns:
+            (bool): True if field name is in Mol* enforced-integer list; False otherwise
+        """
+        return name in self.__molstar_forced_ints
+
+    def getPdbxItemType(self, typeCode):
+        """Returns the item type corresponding to a given _item_type.code from PDBx dictionary
+
+        Args:
+            typeCode: field type code
+
+        Returns:
+            (str): item type corresponding to given type codes; else, if not present, "string"
+        """
+        return self.__pdbx_item_type_list_map.get(typeCode, "string")
 
 
 class DataCategoryTyped(DataCategory):
@@ -40,6 +144,7 @@ class DataCategoryTyped(DataCategory):
         missingValueString=None,
         missingValueInteger=None,
         missingValueFloat=None,
+        **kwargs
     ):
         """A subclass of DataCategory with methods to apply explicit data typing.
 
@@ -53,6 +158,7 @@ class DataCategoryTyped(DataCategory):
             missingValueString (str, optional): missing string value . Defaults to None.
             missingValueInteger (integer, optional): missing integer value. Defaults to None.
             missingValueFloat (float, optional): missing float value. Defaults to None.
+            applyMolStarTypes (bool, optional): use Mol* forced integer types.  Defaults to True.
         """
         self.__dcObj = dataCategoryObj
         super(DataCategoryTyped, self).__init__(
@@ -66,6 +172,9 @@ class DataCategoryTyped(DataCategory):
         self.__dApi = dictionaryApi
         self.__attributeTypeD = {}
         self.__castD = {"integer": int, "float": float, "string": str}
+        self.__applyMolStarTypes = kwargs.get("applyMolStarTypes", True)
+        self.__dch = DataCategoryHints()
+
         self.__typesSet = self.applyTypes(
             ignoreCastErrors=ignoreCastErrors,
             useCifUnknowns=useCifUnknowns,
@@ -89,6 +198,10 @@ class DataCategoryTyped(DataCategory):
             for ii, atName in enumerate(self.getAttributeList()):
                 # colValL = self.getColumn(ii)
                 dataType, isMandatory = self.__getAttributeInfo(atName)
+                if not dataType:
+                    if not ignoreCastErrors:
+                        logger.warning("Undefined type for category %s attribute %s - Will treat as string", self.getName(), atName)
+                    dataType = "string"  # Treat undefined attributes as strings
                 missingValue = missingValueInteger if dataType == "integer" else missingValueFloat if dataType in ["integer", "float"] else missingValueString
                 missingValue = missingValue if not useCifUnknowns else "." if isMandatory else "?"
                 for row in self.data:
@@ -222,9 +335,20 @@ class DataCategoryTyped(DataCategory):
         """
         logger.debug("Working on cat %r, atName %r", self.getName(), atName)
         cifDataType = self.__dApi.getTypeCode(self.getName(), atName)
-        cifPrimitiveType = self.__dApi.getTypePrimitive(self.getName(), atName)
+        # cifPrimitiveType = self.__dApi.getTypePrimitive(self.getName(), atName)
         isMandatory = self.__dApi.getMandatoryCode(self.getName(), atName) in ["yes", "implicit", "implicit-ordinal"]
-        dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        if cifDataType is None:
+            dataType = None
+        else:
+            dataType = self.__dch.getPdbxItemType(cifDataType)
+            # dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+
+        # Allow for forced Mol* integer types
+        if self.__applyMolStarTypes:
+            nm = CifName().itemName(self.getName(), atName)
+            if self.__dch.inMolStarIntHints(nm):
+                dataType = "integer"
+
         return dataType, isMandatory
 
     def __isClose(self, aV, bV, relTol=1e-09, absTol=1e-06):

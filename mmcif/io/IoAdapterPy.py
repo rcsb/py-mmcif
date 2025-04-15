@@ -13,7 +13,8 @@
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
 #  5-Apr-2021 jdw allow access to data/dictionary artifacts over HTTP(S)
-#  5-Dec-2023 dwp Add support for binary mmCIF (BCIF) reading and writing
+#  5-Dec-2023 dwp Add support for binary mmCIF (BCIF) reading and writing;
+#                 Set cleanup default to True (delete temporary files and logs after reading)
 ##
 """
 Python implementation of IoAdapterBase class providing read and write
@@ -217,7 +218,7 @@ class IoAdapterPy(IoAdapterBase):
         outputFilePath,
         containerList,
         maxLineLength=900,
-        enforceAscii=False,
+        enforceAscii=True,
         lastInOrder=None,
         selectOrder=None,
         columnAlignFlag=True,
@@ -231,6 +232,7 @@ class IoAdapterPy(IoAdapterBase):
         useStringTypes=False,
         useFloat64=False,
         copyInputData=False,
+        ignoreCastErrors=False,
         **kwargs
     ):
         """Write input list of data containers to the specified output file path in mmCIF or BCIF format.
@@ -239,7 +241,7 @@ class IoAdapterPy(IoAdapterBase):
             outputFilePath (string): output file path
             containerList (list DataContainer objects, optional)
             maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)
-            enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to False.
+            enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to True.
             lastInOrder (list of category names, optional): Move data categories in this list to end of each data block
             selectOrder (list of category names, optional): Write only data categories on this list.
             columnAlignFlag (bool, optional): Format the output in aligned columns (default=True) (Native Python Only)
@@ -255,6 +257,7 @@ class IoAdapterPy(IoAdapterBase):
             useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.
             useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.
             copyInputData (bool, optional): make a new copy input data (for BCIF files only). Defaults to False.
+            ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
 
             **kwargs: Placeholder for unsupported key value pairs
 
@@ -297,6 +300,7 @@ class IoAdapterPy(IoAdapterBase):
                         useStringTypes=useStringTypes,
                         useFloat64=useFloat64,
                         copyInputData=copyInputData,
+                        ignoreCastErrors=ignoreCastErrors,
                     )
                     bcifW.serialize(outputFilePath, containerList)
                 else:

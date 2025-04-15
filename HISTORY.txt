@@ -78,3 +78,19 @@
 04-Dec-2022    V0.80.1 - Correct non-wheel build of legacy python
 08-Apr-2023    V0.81 - When using C++ writer, a string with a tab in middle with no other whitespace must be quoted
  5-Dec-2023    V0.82 - Add support for binary mmCIF (BCIF) reading and writing in IoAdapterPy
+21-Dec-2023    V0.83 - Update wheel builds for Apple Silicon (arm64).
+ 2-Jan-2024    V0.84 - Updates to error suppression flags for undefined attribute types in BCIF conversion (set default to on)
+16-Jan-2024    V0.85.0 - Update BinaryCifReader to read in DataCategory data items into lists instead of tuples;
+                         Update BinaryCifWriter to set version tag to that of the active mmcif package installation,
+                         to enable compatibility with Mol* and other tools (which requires >= 0.3.0, in that format);
+                         Update package version format to `major.minor.patch` (!!! MUST USE THIS FORMAT MOVING FORWARD !!!)
+17-Jan-2024    V0.85.1 - Set BinaryCIF version tag to specifically 0.3.0 to ensure compatibility with Mol* and other tools
+23-Feb-2024    V0.86.0 - BinaryCIF writer properly tracks integer types to ensure
+                         proper types passed through encoders.  Ensure compatibility with ciftools-java and Mol*.
+ 6-Apr-2024    V0.87.0 - Correct internal data of PdbxContainers when rename operation is used
+24-Apr-2024    V0.88.0 - Add copy method to PdbxContainers for copying entire categories;
+                         Update rename method to fail if new category name already exists (i.e., don't allow overwrite)
+20-Jun-2024    V0.89.0 - When writing output cif, always quote strings that start global_
+25-Oct-2024    V0.90.0 - Use explicit item type map to determine field types and encodings for BCIF
+ 7-Jan-2025    V0.91.0 - Add selectIndicesWhereOpConditions and selectValuesWhereOpConditions methods to DataCategory
+                         Update testDataCategory.py

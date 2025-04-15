@@ -110,7 +110,8 @@ class BinaryCifReader(object):
                     #
                     cObj = DataCategory(catName, attributeNameList=atNameList)
                     genL = [colGen for colGen in colD.values()]
-                    for row in zip(*genL):
+                    for rowTup in zip(*genL):
+                        row = list(rowTup)
                         logger.debug("row %r", row)
                         cObj.append(row)
                     #
