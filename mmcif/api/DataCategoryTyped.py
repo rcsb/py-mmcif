@@ -296,8 +296,10 @@ class DataCategoryTyped(DataCategory):
                 return [(atName, False) for atName in atNameComList]
             #
             for atName in atNameComList:
+                # If dictionary does not include definition, dataType will be
+                # None
                 dataType, _ = self.__getAttributeInfo(atName)
-                if dataType in ["string", "integer"]:
+                if dataType in ["string", "integer", None]:
                     if ignoreOrder:
                         same = sorted(self.getAttributeValueList(atName)) == sorted(dcObj.getAttributeValueList(atName))
                     else:

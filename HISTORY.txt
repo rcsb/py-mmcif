@@ -94,3 +94,6 @@
 25-Oct-2024    V0.90.0 - Use explicit item type map to determine field types and encodings for BCIF
  7-Jan-2025    V0.91.0 - Add selectIndicesWhereOpConditions and selectValuesWhereOpConditions methods to DataCategory
                          Update testDataCategory.py
+ 7-May-2025    V0.92.0 - BinaryCIF ByteArray Encoder failed to use the provided
+                         array type in recorded output type.  Warn deprecation of
+			 obsolete encoders
