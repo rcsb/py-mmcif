@@ -38,7 +38,8 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          rendering:
+          paths: [mmcif]
+          options:
             group_by_category: true
             show_category_heading: true
             show_if_no_docstring: true
@@ -48,8 +49,6 @@ plugins:
               - "!^_[^_]"
               - "!^__json"
               - "!^__config__"
-      watch:
-        - mmcif
 
 theme:
   name: material
