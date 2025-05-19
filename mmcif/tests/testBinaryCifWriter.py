@@ -7,6 +7,7 @@
 
 import logging
 import os
+import subprocess
 import sys
 import time
 from io import StringIO
@@ -75,7 +76,10 @@ class BinaryCifWriterTests(unittest.TestCase):
         #
         self.__pathOutputDir = os.path.join(HERE, "test-output")
         self.__baseCifUrl = "https://files.rcsb.org/download/"
-        self.__testCifList = ["1BNA", "1A2C", "1ACJ", "1J59", "1D3I", "1ONX", "1PGA", "4CXL", "5ZMZ", "200L", "4HHB", "7NO1", "1OCD"]
+        # 8CCS caused failure to decode
+        self.__testCifList = ["1BNA", "1A2C", "1ACJ", "1J59", "1D3I",
+                              "1ONX", "1PGA", "4CXL", "5ZMZ", "200L",
+                              "4HHB", "7NO1", "1OCD", "8CCS"]
         self.__testBcifOutput = os.path.join(self.__pathOutputDir, "1bna-generated.bcif")
         self.__testBcifTranslated = os.path.join(self.__pathOutputDir, "1bna-generated-translated.bcif")
         self.__testBcifTypeOutput = os.path.join(self.__pathOutputDir, "type-generated.bcif")
@@ -118,6 +122,7 @@ class BinaryCifWriterTests(unittest.TestCase):
                     self.assertEqual(containerList[0], containerList[0])
                     self.assertEqual(tcL[0], tcL[0])
 
+                    self.__verifyEncoding(self.__testBcifOutput, storeStringsAsBytes)
                     bcr = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes)
                     cL = bcr.deserialize(self.__testBcifOutput)
                     #
@@ -128,6 +133,18 @@ class BinaryCifWriterTests(unittest.TestCase):
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()
+
+    def __verifyEncoding(self, fname, storeStringsAsBytes):
+        """Verifies encoding"""
+        exe = sys.executable
+        args = [exe, os.path.join(HERE, "bcifprint.py"), fname]
+        if storeStringsAsBytes:
+            args.append("--storestringsasbytes")
+        res = subprocess.run(args, capture_output=True, check=False)
+
+        if res.returncode != 0:
+            sys.stderr.write("Failure %s\n" % res.args)
+        self.assertEqual(res.returncode, 0, "Checking " + fname)
 
     def __same(self, cA, cB):
         """[summary]
