@@ -7,11 +7,11 @@
 
 import logging
 import os
-import subprocess
 import sys
 import time
 from io import StringIO
 import unittest
+import msgpack
 
 from mmcif.api.DataCategoryTyped import DataCategoryTyped
 from mmcif.api.DictionaryApi import DictionaryApi
@@ -20,6 +20,7 @@ from mmcif.api.PdbxContainers import DataContainer
 from mmcif.io.BinaryCifReader import BinaryCifReader
 from mmcif.io.BinaryCifWriter import BinaryCifWriter
 from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
+from mmcif.tests.bcifprint import BcifPrint
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -136,15 +137,15 @@ class BinaryCifWriterTests(unittest.TestCase):
 
     def __verifyEncoding(self, fname, storeStringsAsBytes):
         """Verifies encoding"""
-        exe = sys.executable
-        args = [exe, os.path.join(HERE, "bcifprint.py"), fname]
-        if storeStringsAsBytes:
-            args.append("--storestringsasbytes")
-        res = subprocess.run(args, capture_output=True, check=False)
+        with open(fname, "rb") as fin:
+            bD = msgpack.unpack(fin)
 
-        if res.returncode != 0:
-            sys.stderr.write("Failure %s\n" % res.args)
-        self.assertEqual(res.returncode, 0, "Checking " + fname)
+        bc = BcifPrint(storeStringsAsBytes)
+        bc.dump(bD, output=False)
+        err = bc.getError()
+        if err:
+            sys.stderr.write("Failure %s\n" % fname)
+        self.assertFalse(err)
 
     def __same(self, cA, cB):
         """[summary]

@@ -10,78 +10,85 @@ class BcifPrint:
         self.__storeStringsAsBytes = storebytes
         self.__defaultStringEncoding = "utf-8"
         self.__error = False
+        self.__output = True
 
     def __getindent(self, indent):
         return " " * indent
 
-    def dump(self, bD):
+    def dump(self, bD, output=True):
         """Recursively parse"""
+        self.__output = output
         self.__decodeFile(bD, 0)
 
     def getError(self):
         """Returns the error flag"""
         return self.__error
 
+    def __print(self, *args, **kwargs):
+        if self.__output:
+            print(*args, **kwargs)
+
     def __decodeFile(self, bD, indent):
         pindent = self.__getindent(indent)
         indent += 2
         pindent2 = self.__getindent(indent)
 
-        print("%s File {" % pindent)
-        # print(bD.keys())
-        print("%s version: %s" % (pindent2, bD[self.__toBytes("version")]))
-        print("%s encoder: %s" % (pindent2, bD[self.__toBytes("encoder")]))
-        print("%s datablocks: [ (len=%s)" % (pindent2, len(bD[self.__toBytes("dataBlocks")])))
+        self.__print("%s File {" % pindent)
+        # self.__print(bD.keys())
+        self.__print("%s version: %s" % (pindent2, bD[self.__toBytes("version")]))
+        self.__print("%s encoder: %s" % (pindent2, bD[self.__toBytes("encoder")]))
+        self.__print("%s datablocks: [ (len=%s)" % (pindent2, len(bD[self.__toBytes("dataBlocks")])))
         self.__decodeDataBlocks(bD[self.__toBytes("dataBlocks")], indent + 2)
-        print("%s ]" % pindent2)
-        print("%s }" % pindent)
+        self.__print("%s ]" % pindent2)
+        self.__print("%s }" % pindent)
 
     def __decodeDataBlocks(self, dbs, indent):
         pindent = self.__getindent(indent)
         indent += 2
         pindent2 = self.__getindent(indent)
         for db in dbs:
-            print("%s DataBlock {" % pindent)
-            print("%s header: %s" % (pindent2, db[self.__toBytes("header")]))
-            print("%s categories: [ (len=%s)" % (pindent2,
-                                                 len(db[self.__toBytes("categories")])))
+            self.__print("%s DataBlock {" % pindent)
+            self.__print("%s header: %s" % (pindent2,
+                                            db[self.__toBytes("header")]))
+            self.__print("%s categories: [ (len=%s)" % (pindent2,
+                                                        len(db[self.__toBytes("categories")])))
             self.__decodeCategories(db[self.__toBytes("categories")], indent + 2)
-            print("%s ]" % pindent2)
-            print("%s }" % pindent)
+            self.__print("%s ]" % pindent2)
+            self.__print("%s }" % pindent)
 
     def __decodeCategories(self, cats, indent):
         pindent = self.__getindent(indent)
         indent += 2
         pindent2 = self.__getindent(indent)
         for cat in cats:
-            print("%s Category {" % pindent)
-            print("%s name: %s" % (pindent2, cat[self.__toBytes("name")]))
-            print("%s rowcount: %s" % (pindent2, cat[self.__toBytes("rowCount")]))
-            print("%s columns: [" % pindent2)
+            self.__print("%s Category {" % pindent)
+            self.__print("%s name: %s" % (pindent2, cat[self.__toBytes("name")]))
+            self.__print("%s rowcount: %s" % (pindent2, cat[self.__toBytes("rowCount")]))
+            self.__print("%s columns: [" % pindent2)
             self.__decodeColumns(cat[self.__toBytes("columns")], indent + 2)
-            print("%s ]" % pindent2)
-            print("%s }" % pindent)
+            self.__print("%s ]" % pindent2)
+            self.__print("%s }" % pindent)
 
     def __decodeColumns(self, cols, indent):
         pindent = self.__getindent(indent)
         indent += 2
         pindent2 = self.__getindent(indent)
         for col in cols:
-            print("%s Column {" % pindent)
-            print("%s name: %s" % (pindent2, col[self.__toBytes("name")]))
-            print("%s data: {" % pindent2)
+            self.__print("%s Column {" % pindent)
+            self.__print("%s name: %s" % (pindent2, col[self.__toBytes("name")]))
+            self.__print("%s data: {" % pindent2)
             self.__decodeData(col[self.__toBytes("data")], indent + 6)
-            print("%s }" % pindent2)
+            self.__print("%s }" % pindent2)
 
             val = col[self.__toBytes("mask")]
             if val:
-                print("%s mask: {" % pindent2)
+                self.__print("%s mask: {" % pindent2)
                 self.__decodeData(col[self.__toBytes("mask")], indent + 6)
-                print("%s }" % pindent2)
+                self.__print("%s }" % pindent2)
             else:
-                print("%s mask: %s" % (pindent2, val))
+                self.__print("%s mask: %s" % (pindent2, val))
 
-            print("%s }" % pindent)
+            self.__print("%s }" % pindent)
 
     def __decodeData(self, data, indent):
         pindent = self.__getindent(indent)
@@ -90,11 +97,11 @@ class BcifPrint:
         val = data[self.__toBytes("data")]
 
         val = val[:30] + b"..." if len(val) > 30 else val
-        print("%s data: %s" % (pindent2, val))
-        print("%s encoding: [" % pindent2)
+        self.__print("%s data: %s" % (pindent2, val))
+        self.__print("%s encoding: [" % pindent2)
         self.__decodeEncodings(data[self.__toBytes("encoding")], indent + 2)
 
-        print("%s }" % pindent)
+        self.__print("%s }" % pindent)
 
     def __decodeEncodings(self, encs, indent):
         self.__verifyEncodings(encs, indent)
@@ -108,55 +115,55 @@ class BcifPrint:
         if kind == self.__toBytes("ByteArray"):
             etype = enc[self.__toBytes("type")]
             detype = self.__decodeType(etype)
-            print(f"{pindent} ByteArray {{type: {etype} ({detype})}}")
+            self.__print(f"{pindent} ByteArray {{type: {etype} ({detype})}}")
         elif kind == self.__toBytes("FixedPoint"):
             stype = enc[self.__toBytes("srcType")]
             dstype = self.__decodeType(stype)
             factor = enc[self.__toBytes("factor")]
-            print(f"{pindent} FixedPoint {{factor: {factor}, srcType: {stype} ({dstype})}}")
+            self.__print(f"{pindent} FixedPoint {{factor: {factor}, srcType: {stype} ({dstype})}}")
         elif kind == self.__toBytes("IntervalQuantization"):
             stype = enc[self.__toBytes("srcType")]
             dstype = self.__decodeType(stype)
             minv = enc[self.__toBytes("min")]
             maxv = enc[self.__toBytes("max")]
             numsteps = enc["numSteps"]
-            print(f"{pindent} IntervalQuantization {{min: {minv}, max: {maxv}, numSteps: {numsteps}, srcType: {stype} ({dstype})}}")
+            self.__print(f"{pindent} IntervalQuantization {{min: {minv}, max: {maxv}, numSteps: {numsteps}, srcType: {stype} ({dstype})}}")
         elif kind == self.__toBytes("RunLength"):
             stype = enc[self.__toBytes("srcType")]
             dstype = self.__decodeType(stype)
             srcsize = enc[self.__toBytes("srcSize")]
-            print(f"{pindent} RunLength {{srcType: {stype} ({dstype}), srcSize={srcsize}}}")
+            self.__print(f"{pindent} RunLength {{srcType: {stype} ({dstype}), srcSize={srcsize}}}")
         elif kind == self.__toBytes("Delta"):
             stype = enc[self.__toBytes("srcType")]
             dstype = self.__decodeType(stype)
             origin = enc[self.__toBytes("origin")]
-            print(f"{pindent} Delta {{origin: {origin}, srcType: {stype} ({dstype})}}")
+            self.__print(f"{pindent} Delta {{origin: {origin}, srcType: {stype} ({dstype})}}")
         elif kind == self.__toBytes("IntegerPacking"):
             byteCount = enc[self.__toBytes("byteCount")]
             srcSize = enc[self.__toBytes("srcSize")]
             isUnsigned = enc[self.__toBytes("isUnsigned")]
-            print(f"{pindent} IntegerPacking {{byteCount: {byteCount}, srcSize: {srcSize}, isUnsigned: {isUnsigned}}}")
+            self.__print(f"{pindent} IntegerPacking {{byteCount: {byteCount}, srcSize: {srcSize}, isUnsigned: {isUnsigned}}}")
         elif kind == self.__toBytes("StringArray"):
             sdata = enc[self.__toBytes("stringData")]
             sdata_trim = sdata[:60] + self.__toBytes("...") if len(sdata) > 60 else sdata
 
             offsets = enc[self.__toBytes("offsets")]
             offset_list = self.__Uint8ArrayToList(offsets)
-            print(f"{pindent} StringArray {{stringData: \"{sdata_trim}\"")
+            self.__print(f"{pindent} StringArray {{stringData: \"{sdata_trim}\"")
             pindent_tmp = self.__getindent(indent + 11)
-            print(f"{pindent_tmp} offsets: {offset_list}")
+            self.__print(f"{pindent_tmp} offsets: {offset_list}")
 
             pindent_tmp = self.__getindent(indent + 11)
-            print(f"{pindent_tmp} dataEncoding: [")
+            self.__print(f"{pindent_tmp} dataEncoding: [")
             self.__decodeEncodings(enc[self.__toBytes("dataEncoding")],
                                    indent + 28)
-            print(f"{pindent_tmp}               ]")
+            self.__print(f"{pindent_tmp}               ]")
 
             pindent_tmp = self.__getindent(indent + 11)
-            print(f"{pindent_tmp} offsetEncoding: [")
+            self.__print(f"{pindent_tmp} offsetEncoding: [")
             self.__decodeEncodings(enc[self.__toBytes("offsetEncoding")],
                                    indent + 30)
-            print(f"{pindent_tmp}                 ]")
+            self.__print(f"{pindent_tmp}                 ]")
 
         else:
             print(f"{pindent} UNKNOWN ENCODING {enc}")
