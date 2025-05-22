@@ -20,7 +20,7 @@ from mmcif.api.PdbxContainers import DataContainer
 from mmcif.io.BinaryCifReader import BinaryCifReader
 from mmcif.io.BinaryCifWriter import BinaryCifWriter
 from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
-from mmcif.tests.bcifprint import BcifPrint
+from mmcif.tests.BcifPrint import BcifPrint
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
