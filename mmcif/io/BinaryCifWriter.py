@@ -11,6 +11,7 @@
 import logging
 import struct
 import msgpack
+import warnings
 
 from mmcif.api.DataCategoryTyped import DataCategoryTyped, DataCategoryHints
 from mmcif.api.PdbxContainers import CifName
@@ -308,6 +309,7 @@ class BinaryCifEncoders(object):
         Returns:
             bytes: byte encoded packed data
         """
+        warnings.warn("byteArrayEncode should be replaced with typed encoder.  This will be removed in 2026.", DeprecationWarning)
         colDataListTyped = TypedArray(colDataList)
 
         cList, encDict = self.byteArrayEncoderTyped(colDataListTyped, dataType)
@@ -326,7 +328,10 @@ class BinaryCifEncoders(object):
         if dataType == "float":
             byteArrayType = self.__bCifTypeCodeD["float_64"] if self.__useFloat64 else self.__bCifTypeCodeD["float_32"]
         else:
-            byteArrayType = self.__getIntegerPackingType(colTypedDataList.data)
+            if colTypedDataList.dtype:
+                byteArrayType = self.__bCifTypeCodeD[colTypedDataList.dtype]
+            else:
+                byteArrayType = self.__getIntegerPackingType(colTypedDataList.data)
         encodingD = {self.__toBytes("kind"): self.__toBytes("ByteArray"), self.__toBytes("type"): byteArrayType}
         fmt = BinaryCifDecoders.bCifTypeD[BinaryCifDecoders.bCifCodeTypeD[byteArrayType]]["struct_format_code"]
         # Data are encoded little-endian '<'
@@ -344,6 +349,7 @@ class BinaryCifEncoders(object):
         Returns:
             list: delta encoded integer list
         """
+        warnings.warn("deltaEncoder should be replaced with typed encoder.  This will be removed in 2026.", DeprecationWarning)
         colDataListTyped = TypedArray(colDataList)
 
         cList, encDict = self.deltaEncoderTyped(colDataListTyped, minLen)
@@ -382,6 +388,8 @@ class BinaryCifEncoders(object):
         Returns:
             list: runlength encoded integer list
         """
+        warnings.warn("runLengthEncoder should be replaced with typed encoder.  This will be removed in 2026.", DeprecationWarning)
+
         colDataListTyped = TypedArray(colDataList)
 
         cList, encDict = self.runLengthEncoderTyped(colDataListTyped, minLen)
@@ -600,6 +608,7 @@ class BinaryCifEncoders(object):
         Returns:
             list: packed encoded 8-bit/16-bit integer list
         """
+        warnings.warn("integerPackingEncoder should be replaced with typed encoder.  This will be removed in 2026.", DeprecationWarning, 4)
         colDataListTyped = TypedArray(colDataList)
 
         cList, encDict = self.integerPackingEncoderTyped(colDataListTyped)
@@ -622,7 +631,8 @@ class BinaryCifEncoders(object):
         isSigned = packing["isSigned"]
 
         if nbytes == 4:
-            # We will not be packing
+            # no packing done, Int32 encoding will be used
+            # We will not be packing - as already integer 32 on way in
             return colTypedDataList, None
 
         encodingD = {self.__toBytes("kind"): self.__toBytes("IntegerPacking"), self.__toBytes("byteCount"): nbytes,
