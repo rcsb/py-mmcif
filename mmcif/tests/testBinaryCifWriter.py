@@ -11,6 +11,7 @@ import sys
 import time
 from io import StringIO
 import unittest
+import msgpack
 
 from mmcif.api.DataCategoryTyped import DataCategoryTyped
 from mmcif.api.DictionaryApi import DictionaryApi
@@ -19,6 +20,7 @@ from mmcif.api.PdbxContainers import DataContainer
 from mmcif.io.BinaryCifReader import BinaryCifReader
 from mmcif.io.BinaryCifWriter import BinaryCifWriter
 from mmcif.io.IoAdapterPy import IoAdapterPy as IoAdapter
+from mmcif.tests.BcifPrint import BcifPrint
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(HERE))
@@ -75,7 +77,10 @@ class BinaryCifWriterTests(unittest.TestCase):
         #
         self.__pathOutputDir = os.path.join(HERE, "test-output")
         self.__baseCifUrl = "https://files.rcsb.org/download/"
-        self.__testCifList = ["1BNA", "1A2C", "1ACJ", "1J59", "1D3I", "1ONX", "1PGA", "4CXL", "5ZMZ", "200L", "4HHB", "7NO1", "1OCD"]
+        # 8CCS caused failure to decode
+        self.__testCifList = ["1BNA", "1A2C", "1ACJ", "1J59", "1D3I",
+                              "1ONX", "1PGA", "4CXL", "5ZMZ", "200L",
+                              "4HHB", "7NO1", "1OCD", "8CCS"]
         self.__testBcifOutput = os.path.join(self.__pathOutputDir, "1bna-generated.bcif")
         self.__testBcifTranslated = os.path.join(self.__pathOutputDir, "1bna-generated-translated.bcif")
         self.__testBcifTypeOutput = os.path.join(self.__pathOutputDir, "type-generated.bcif")
@@ -118,6 +123,7 @@ class BinaryCifWriterTests(unittest.TestCase):
                     self.assertEqual(containerList[0], containerList[0])
                     self.assertEqual(tcL[0], tcL[0])
 
+                    self.__verifyEncoding(self.__testBcifOutput, storeStringsAsBytes)
                     bcr = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes)
                     cL = bcr.deserialize(self.__testBcifOutput)
                     #
@@ -128,6 +134,18 @@ class BinaryCifWriterTests(unittest.TestCase):
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()
+
+    def __verifyEncoding(self, fname, storeStringsAsBytes):
+        """Verifies encoding"""
+        with open(fname, "rb") as fin:
+            bD = msgpack.unpack(fin)
+
+        bc = BcifPrint(storeStringsAsBytes)
+        bc.dump(bD, output=False)
+        err = bc.getError()
+        if err:
+            sys.stderr.write("Failure %s\n" % fname)
+        self.assertFalse(err)
 
     def __same(self, cA, cB):
         """[summary]
