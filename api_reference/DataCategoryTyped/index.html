@@ -1332,8 +1332,10 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
                 <span class="k">return</span> <span class="p">[(</span><span class="n">atName</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">atNameComList</span><span class="p">]</span>
             <span class="c1">#</span>
             <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">atNameComList</span><span class="p">:</span>
+                <span class="c1"># If dictionary does not include definition, dataType will be</span>
+                <span class="c1"># None</span>
                 <span class="n">dataType</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
                         <span class="n">same</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -1851,8 +1853,10 @@ are treated inequality out of hand.</p>
             <span class="k">return</span> <span class="p">[(</span><span class="n">atName</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">atNameComList</span><span class="p">]</span>
         <span class="c1">#</span>
         <span class="k">for</span> <span class="n">atName</span> <span class="ow">in</span> <span class="n">atNameComList</span><span class="p">:</span>
+            <span class="c1"># If dictionary does not include definition, dataType will be</span>
+            <span class="c1"># None</span>
             <span class="n">dataType</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
                     <span class="n">same</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>

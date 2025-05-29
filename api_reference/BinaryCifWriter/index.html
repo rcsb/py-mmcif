@@ -1991,6 +1991,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            bytes: byte encoded packed data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;byteArrayEncode should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
         <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
         <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
@@ -2009,7 +2010,10 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
             <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_64&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_32&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;ByteArray&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">]][</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">]</span>
         <span class="c1"># Data are encoded little-endian &#39;&lt;&#39;</span>
@@ -2027,6 +2031,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            list: delta encoded integer list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;deltaEncoder should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
         <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
         <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
@@ -2065,6 +2070,8 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            list: runlength encoded integer list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;runLengthEncoder should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+
         <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
         <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
@@ -2283,6 +2290,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            list: packed encoded 8-bit/16-bit integer list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;integerPackingEncoder should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
         <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integerPackingEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">)</span>
@@ -2305,7 +2313,8 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="n">isSigned</span> <span class="o">=</span> <span class="n">packing</span><span class="p">[</span><span class="s2">&quot;isSigned&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="c1"># We will not be packing</span>
+            <span class="c1"># no packing done, Int32 encoding will be used</span>
+            <span class="c1"># We will not be packing - as already integer 32 on way in</span>
             <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;IntegerPacking&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;byteCount&quot;</span><span class="p">):</span> <span class="n">nbytes</span><span class="p">,</span>
@@ -2493,6 +2502,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        bytes: byte encoded packed data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;byteArrayEncode should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
     <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
     <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
@@ -2574,7 +2584,10 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
     <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
         <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_64&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="s2">&quot;float_32&quot;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">byteArrayType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getIntegerPackingType</span><span class="p">(</span><span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;ByteArray&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">):</span> <span class="n">byteArrayType</span><span class="p">}</span>
     <span class="n">fmt</span> <span class="o">=</span> <span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifTypeD</span><span class="p">[</span><span class="n">BinaryCifDecoders</span><span class="o">.</span><span class="n">bCifCodeTypeD</span><span class="p">[</span><span class="n">byteArrayType</span><span class="p">]][</span><span class="s2">&quot;struct_format_code&quot;</span><span class="p">]</span>
     <span class="c1"># Data are encoded little-endian &#39;&lt;&#39;</span>
@@ -2655,6 +2668,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        list: delta encoded integer list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;deltaEncoder should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
     <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
     <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
@@ -3250,6 +3264,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    Returns:</span>
 <span class="sd">        list: packed encoded 8-bit/16-bit integer list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;integerPackingEncoder should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
     <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integerPackingEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">)</span>
@@ -3329,7 +3344,8 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
     <span class="n">isSigned</span> <span class="o">=</span> <span class="n">packing</span><span class="p">[</span><span class="s2">&quot;isSigned&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">nbytes</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="c1"># We will not be packing</span>
+        <span class="c1"># no packing done, Int32 encoding will be used</span>
+        <span class="c1"># We will not be packing - as already integer 32 on way in</span>
         <span class="k">return</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;IntegerPacking&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">&quot;byteCount&quot;</span><span class="p">):</span> <span class="n">nbytes</span><span class="p">,</span>
@@ -3439,6 +3455,8 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    Returns:</span>
 <span class="sd">        list: runlength encoded integer list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;runLengthEncoder should be replaced with typed encoder.  This will be removed in 2026.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+
     <span class="n">colDataListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
 
     <span class="n">cList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runLengthEncoderTyped</span><span class="p">(</span><span class="n">colDataListTyped</span><span class="p">,</span> <span class="n">minLen</span><span class="p">)</span>
