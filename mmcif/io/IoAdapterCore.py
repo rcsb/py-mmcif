@@ -24,17 +24,12 @@
 Adapter between Python mmCIF API and Pybind11 wrappers for the PDB C++ Core mmCIF Library.
 
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import sys
 import time
 import uuid
 import warnings
-
-from future.utils import raise_from
-from six.moves import range
 
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.PdbxContainers import DataContainer
@@ -144,8 +139,7 @@ class IoAdapterCore(IoAdapterBase):
         except (PdbxError, PdbxSyntaxError) as ex:
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
             if self._raiseExceptions:
-                raise_from(ex, None)
-                # raise ex from None
+                raise ex from None
         except Exception as e:
             self._cleanupFile(asciiFilePath and cleanUp, asciiFilePath)
             msg = "Failing read for %s with %s" % (filePath, str(e))
@@ -305,7 +299,7 @@ class IoAdapterCore(IoAdapterBase):
         except (PdbxError, PdbxSyntaxError) as ex:
             self._cleanupFile(cleanUp, logFilePath)
             if self._raiseExceptions:
-                raise_from(ex, None)
+                raise ex from None
         except Exception as e:
             self._cleanupFile(cleanUp, logFilePath)
             msg = "Failing read for %s with %s" % (inputFilePath, str(e))

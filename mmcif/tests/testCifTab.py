@@ -11,8 +11,6 @@
 Test cases for reading and writing mmCIF data files to ensure a tab
 with no white space triggers quoting.
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import sys

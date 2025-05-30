@@ -8,8 +8,6 @@
 Test cases for simple star file reader/writer  --
 
 """
-from __future__ import absolute_import
-
 import logging
 import os
 import os.path
