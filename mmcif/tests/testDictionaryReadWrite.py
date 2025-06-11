@@ -8,7 +8,6 @@
 Test cases for simple dictionary read and write operations.
 
 """
-from __future__ import absolute_import
 
 import logging
 import os

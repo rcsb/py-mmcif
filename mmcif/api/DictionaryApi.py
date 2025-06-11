@@ -25,13 +25,12 @@
 """
 Accessors for PDBx/mmCIF dictionary attributes -
 """
-from __future__ import absolute_import
 
 import logging
 import sys
 
 from collections import OrderedDict
-from six.moves import zip, zip_longest
+from itertools import zip_longest
 
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.Method import MethodDefinition, MethodReference
