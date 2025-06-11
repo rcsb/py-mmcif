@@ -14,5 +14,5 @@ include modules/cpp-*/src/*.l
 include modules/cpp-*/src/*.y
 include modules/cpp-*/src/*.cpp
 graft modules/pybind11
-graft modules/pybind11_2_6_3_dev1
+graft modules/pybind11_2_12_1
 #
