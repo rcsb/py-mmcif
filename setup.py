@@ -163,6 +163,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
     ],
+    python_requires=">= 3.6",
     #
     install_requires=packagesRequired,
     tests_require=packagesTest,

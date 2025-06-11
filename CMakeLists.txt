@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.13)
 project(mmciflib)
 #
 # File: CMakeLists.txt -
@@ -9,12 +9,15 @@ project(mmciflib)
 #
 # C++ wrappers using  https://github.com/RosettaCommons/pybind11.git
 #
-if (POLICY CMP0048)
-  # cmake warns if loaded from a min-3.0-required parent dir, so silence the warning:
-  cmake_policy(SET CMP0048 NEW)
+if (POLICY CMP0148)
+  # cmake warns cmake > 3.12 still using FindPythonInterp
+  cmake_policy(SET CMP0148 OLD)
 endif()
 #
 #
+# Should be changed to (Python REQUIRED COMPONENTS Interpreter Development)
+# but will require changes to how cmake invoked in setup.py
+# Believe will need Python vs Python3 due to pybind-11 CMakeLists.txt
 find_package(PythonInterp)
 find_package(PythonLibs)
 include_directories(${PYTHON_INCLUDE_DIRS})
@@ -22,8 +25,9 @@ message(STATUS "Python include path set to " ${PYTHON_INCLUDE_DIRS})
 #
 #  -- Build a wrapper library  --
 #
-if(${PYTHON_VERSION_STRING} VERSION_LESS "3.6")
-  add_subdirectory("modules/pybind11_2_6_3_dev1")
+message(STATUS "Python version is " ${PYTHON_VERSION_STRING})
+if(${PYTHON_VERSION_STRING} VERSION_LESS "3.8")
+  add_subdirectory("modules/pybind11_2_12_1")
 else()
   add_subdirectory("modules/pybind11")  
 endif()
