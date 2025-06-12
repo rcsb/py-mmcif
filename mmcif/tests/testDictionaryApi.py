@@ -8,7 +8,6 @@
 Tests cases for Dictionary API.
 
 """
-from __future__ import absolute_import, print_function
 
 import json
 import logging

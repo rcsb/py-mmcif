@@ -10,7 +10,6 @@
 A subclass of DataCategory including explicit typing.
 
 """
-from __future__ import absolute_import
 
 import logging
 

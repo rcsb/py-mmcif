@@ -11,7 +11,6 @@
 Test cases for reading PDBx/mmCIF data files PdbxReader class -
 
 """
-from __future__ import absolute_import
 
 import logging
 import os
