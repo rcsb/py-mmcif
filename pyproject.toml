@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+#test-command = "python -m pytest tests"
+#test-sources = ["pyproject.toml", "tests"]
+#test-groups = ["test"]
+# Skip building PyPy version as not specifically validated/tested yet
+# Alpine linux is musslinux.  Takes long time to generate.  Will add if requested
+skip = ["pp*", "*-musllinux*"]
+
+[tool.cibuildwheel.linux]
+before-all = "yum -y install cmake"
+test-command = 'python -c "from wwpdb.utils.align.alignlib import PairwiseAlign"'
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = "apk add cmake"
+
+
+#[tool.cibuildwheel]
+#manylinux-x86_64-image = "manylinux2014"
+
+[[tool.cibuildwheel.overrides]]
+# We still require glibc 2.27 for centos-7 for python 3.8
+select = "cp3?-*" # This targets CPython 3.x (e.g., 3.6, 3.7, 3.8, 3.9)
+manylinux-x86_64-image = "manylinux2014"
+
