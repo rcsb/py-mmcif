@@ -1,4 +1,2 @@
-# future is required by pybind11
-#future
 requests >= 2.25
 msgpack
