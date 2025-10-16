@@ -7,9 +7,7 @@ name = "mmcif"
 description="mmCIF Core Access Library"
 readme = "README.md"
 requires-python = ">= 3.6"
-# XXXXXXXXXX
-#license = "Apache 2.0"
-#license-files = ["LICENSE"]
+license = {text = "Apache-2.0"}
 authors = [
  { name = "John Westbrook", email = "john.westbrook@rcsb.org" }	
 ]
