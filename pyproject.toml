@@ -46,9 +46,6 @@ optional-dependencies.all = { file = ["requirements-test.txt"] }
 exclude = ["mmcif.tests", "tests.*"]
 namespaces = false
 
-[tool.setuptools.package-data]
-mmcif = ["*.md", "*.rst", "*.txt", "*.h", "*.C", ".c", "*.cpp"]
-    
 [project.urls]
 Homepage = "https://mmcif.wwpdb.org"
 Repository = "https://github.com/rcsb/py-mmcif"
