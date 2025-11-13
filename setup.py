@@ -4,6 +4,7 @@
 # Update:  17-Jan-2018 jdw - resolve python virtual env issues with Tox.
 #           8-Aug-2018 jdw - add py3.7
 #          14-May-2021 jdw - make requirements*.txt authoritative
+#          18-Oct-2025 ep  - move metadata to pyproject.toml
 #
 import glob
 import os
@@ -13,7 +14,7 @@ import subprocess
 import sys
 from distutils.version import LooseVersion  # pylint: disable=no-name-in-module,import-error
 
-from setuptools import Extension, find_packages, setup
+from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
 
 
@@ -118,69 +119,7 @@ class CMakeBuild(build_ext):
         subprocess.check_call(["cmake", "--build", "."] + buildArgs, cwd=self.build_temp)
 
 
-packages = []
-thisPackage = "mmcif"
-
-# Load packages from requirements*.txt
-with open("requirements.txt", "r") as ifh:
-    packagesRequired = [ln.strip() for ln in ifh.readlines()]
-
-with open("requirements-test.txt", "r") as ifh:
-    packagesTest = [ln.strip() for ln in ifh.readlines()]
-
-with open("requirements-doc.txt", "r") as ifh:
-    packagesDoc = [ln.strip() for ln in ifh.readlines()]
-
-with open("README.md", "r") as ifh:
-    longDescription = ifh.read()
-
-with open("mmcif/__init__.py", "r") as ifh:
-    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', ifh.read(), re.MULTILINE).group(1)
-
-if not version:
-    raise RuntimeError("Cannot find version information")
-
 setup(
-    name=thisPackage,
-    version=version,
-    description="mmCIF Core Access Library",
-    long_description=longDescription,
-    long_description_content_type="text/markdown",
-    author="John Westbrook",
-    author_email="john.westbrook@rcsb.org",
-    url="http://mmcif.wwpdb.org",
-    #
-    license="Apache 2.0",
-    classifiers=[
-        # "Development Status :: 3 - Alpha",
-        "Development Status :: 4 - Beta",
-        # 'Development Status :: 5 - Production/Stable',
-        "Intended Audience :: Developers",
-        "Natural Language :: English",
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
-    ],
-    #
-    install_requires=packagesRequired,
-    tests_require=packagesTest,
-    extras_require={"all": packagesRequired + packagesTest + packagesTest, "test": packagesTest, "docs": packagesTest},
-    #
-    packages=find_packages(exclude=["mmcif.tests", "tests.*"]),
-    package_data={
-        # If any package contains *.md or *.rst ...  files, include them:
-        "": ["*.md", "*.rst", "*.txt", "*.h", "*.C", ".c", "*.cpp"]
-    },
-    test_suite="mmcif.tests",
-    #
     ext_modules=[CMakeExtension("mmcif.core.mmciflib")],
     cmdclass=dict(build_ext=CMakeBuild),
-    zip_safe=False,
-    entry_points={
-        "console_scripts": [
-            "build_dict_cli=mmcif.io.BuildDictionaryExec:main",
-        ]
-    },
 )

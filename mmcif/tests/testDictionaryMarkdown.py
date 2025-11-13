@@ -8,7 +8,6 @@
 Example/test of dictionary API to format dictioanry definition content in Markdown markup -
 
 """
-from __future__ import absolute_import
 
 import logging
 import os

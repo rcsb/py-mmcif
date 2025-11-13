@@ -11,7 +11,6 @@
 """  Various tests cases for PDBx/mmCIF data file and dictionary reader and writer.
 """
 
-from __future__ import absolute_import
 
 import logging
 import os
@@ -19,8 +18,6 @@ import os.path
 import sys
 import time
 import unittest
-
-from six.moves import range
 
 from mmcif.api.DataCategory import DataCategory
 from mmcif.api.DataCategoryBase import DataCategoryBase

@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mmcif"
+description="mmCIF Core Access Library"
+readme = "README.md"
+requires-python = ">= 3.6"
+license = {text = "Apache-2.0"}
+authors = [
+ { name = "John Westbrook", email = "john.westbrook@rcsb.org" }	
+]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",  
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Natural Language :: English"
+]
+
+dependencies = [
+   "requests >= 2.25",
+   "msgpack"
+]
+
+dynamic = ["version", "optional-dependencies"]
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = { attr = "mmcif.__version__" }
+optional-dependencies.test = { file = ["requirements-test.txt"] }
+optional-dependencies.docs = { file = ["requirements-test.txt", "requirements-doc.txt"] }
+optional-dependencies.all = { file = ["requirements-test.txt"] }
+
+[tool.setuptools.packages.find]
+exclude = ["mmcif.tests", "tests.*"]
+namespaces = false
+
+[project.urls]
+Homepage = "https://mmcif.wwpdb.org"
+Repository = "https://github.com/rcsb/py-mmcif"
+
+[project.scripts]
+build_dict_cli = "mmcif.io.BuildDictionaryExec:main"
+
+[tool.cibuildwheel]
+# Skip building PyPy version as not specifically validated/tested yet
+# Alpine linux is musslinux.  Takes long time to generate.  Will add if requested
+skip = ["pp*", "*-musllinux*"]
+
+[tool.cibuildwheel.linux]
+before-all = "yum -y install cmake bison flex"
+test-command = 'python -c "from mmcif.io.IoAdapterCore import IoAdapterCore as IoAdapter"'
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = "apk add cmake bison flex"
+
+
+#[tool.cibuildwheel]
+#manylinux-x86_64-image = "manylinux2014"
+
+[[tool.cibuildwheel.overrides]]
+# We still require glibc 2.27 for centos-7 for python 3.8
+select = "cp3?-*" # This targets CPython 3.x (e.g., 3.6, 3.7, 3.8, 3.9)
+manylinux-x86_64-image = "manylinux2014"
+

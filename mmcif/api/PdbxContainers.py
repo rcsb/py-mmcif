@@ -44,7 +44,6 @@ The DataCategory class provides base storage container for instance
 data and definition meta data.
 
 """
-from __future__ import absolute_import
 
 import logging
 import sys

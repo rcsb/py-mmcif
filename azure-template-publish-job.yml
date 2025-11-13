@@ -63,8 +63,6 @@ jobs:
             continueOnError: true
       #
       # Checkout and update documentation -
-      - script: pip install -r requirements.txt
-        displayName: "Install package dependencies"
       - script: pip install -e .
         displayName: "Install package locally"
       - script: pip install -r requirements-doc.txt

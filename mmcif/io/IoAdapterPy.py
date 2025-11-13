@@ -21,7 +21,6 @@ Python implementation of IoAdapterBase class providing read and write
         methods for PDBx/mmCIF data files -
 
 """
-from __future__ import absolute_import
 
 import gzip
 import io
@@ -31,7 +30,6 @@ import uuid
 from contextlib import closing
 
 import requests
-from future.utils import raise_from
 from mmcif.io.IoAdapterBase import IoAdapterBase
 from mmcif.io.PdbxExceptions import PdbxError
 from mmcif.io.PdbxExceptions import PdbxSyntaxError
@@ -195,8 +193,7 @@ class IoAdapterPy(IoAdapterBase):
             self._appendToLog([msg])
             self._cleanupFile(lPath and cleanUp, lPath)
             if self._raiseExceptions:
-                raise_from(ex, None)
-                # raise ex from None
+                raise ex from None
         except Exception as e:
             msg = "File %r with %s" % (filePath, str(e))
             self._appendToLog([msg])
@@ -346,7 +343,7 @@ class IoAdapterPy(IoAdapterBase):
             return True
         except Exception as ex:
             if self._raiseExceptions:
-                raise_from(ex, None)
+                raise ex from None
             else:
                 logger.exception("Failing write for %s with %s", outputFilePath, str(ex))
                 logger.error("Failing write for %s with %s", outputFilePath, str(ex))

@@ -97,3 +97,7 @@
  7-May-2025    V0.92.0 - BinaryCIF ByteArray Encoder failed to use the provided
                          array type in recorded output type.  Warn deprecation of
 			 obsolete encoders
+16-Oct-2025    V1.0.0 - Remove support for python 2.X, retain support for
+                        python 3.6 and newer.  Switch to using pyproject.toml for
+			metadata. Build wheels for python 3.8->3.14
+

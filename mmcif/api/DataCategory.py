@@ -22,13 +22,10 @@ A collection of container classes supporting the PDBx/mmCIF storage model.
 
 """
 
-from __future__ import absolute_import
 
 import logging
 import sys
 
-from six.moves import range
-from six.moves import zip
 
 from mmcif.api.DataCategoryBase import DataCategoryBase
 

@@ -22,3 +22,6 @@
 [submodule "modules/pybind11"]
 	path = modules/pybind11
 	url = https://github.com/pybind/pybind11.git
+[submodule "modules/pybind11_2_12_1"]
+	path = modules/pybind11_2_12_1
+	url = https://github.com/pybind/pybind11.git
