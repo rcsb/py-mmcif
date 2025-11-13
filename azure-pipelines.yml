@@ -26,19 +26,19 @@ schedules:
 
 jobs:
   - template: azure-template-tox-job.yml
-    parameters: { tox: "format_pep8", python: "3.11", os: "linux" }
+    parameters: { tox: "format_pep8", python: "3.14", os: "linux" }
   - template: azure-template-tox-job.yml
-    parameters: { tox: "lint_pylint", python: "3.11", os: "linux" }
+    parameters: { tox: "lint_pylint", python: "3.14", os: "linux" }
   - template: azure-template-tox-job.yml
-    parameters: { tox: "test_coverage", python: "3.11", os: "linux" }
+    parameters: { tox: "test_coverage", python: "3.14", os: "linux" }
     #
   - template: azure-template-tox-job.yml
-    parameters: { tox: "py311", python: "3.11", os: "linux" }
+    parameters: { tox: "py314", python: "3.14", os: "linux" }
   #
   - template: azure-template-tox-job.yml
-    parameters: { tox: "py311", python: "3.11", os: "macos" }
+    parameters: { tox: "py314", python: "3.14", os: "macos" }
   #
   - template: azure-template-publish-job.yml
-    parameters: { tox: "py311", python: "3.11", os: "macos" }
+    parameters: { tox: "py314", python: "3.14", os: "macos" }
   - template: azure-template-publish-job.yml
-    parameters: { tox: "py311", python: "3.11", os: "linux" }
+    parameters: { tox: "py314", python: "3.14", os: "linux" }
