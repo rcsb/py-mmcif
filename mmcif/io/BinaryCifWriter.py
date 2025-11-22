@@ -113,14 +113,16 @@ class BinaryCifWriter(object):
         colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
         enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
         #
-        maskEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
+        maskEncoderList = ["RunLength", "ByteArray"]
         typeEncoderD = {"string": "StringArrayMasked", "integer": "IntArrayMasked", "float": "FloatArrayMasked"}
         colMaskList = enc.getMask(colDataList)
         dataEncType = typeEncoderD[dataType]
         colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colDataList, colMaskList, dataEncType)
         if colMaskList:
-            maskEncoded, maskEncodingDictL = enc.encode(colMaskList, maskEncoderList, "integer")
-            colMaskDict = {self.__toBytes("data"): maskEncoded, self.__toBytes("encoding"): maskEncodingDictL}
+            # Mol* indicates that masks should be encoded as if uint_8
+            colMaskListTyped = TypedArray(colMaskList, "unsigned_integer_8")
+            maskEncoded, maskEncodingDictL = enc.encode(colMaskListTyped, maskEncoderList, "integer")
+            colMaskDict = {self.__toBytes("data"): maskEncoded.data, self.__toBytes("encoding"): maskEncodingDictL}
         return colMaskDict, colDataEncoded, colDataEncodingDictL
 
     def __toBytes(self, strVal):
@@ -409,8 +411,13 @@ class BinaryCifEncoders(object):
         if len(colTypedDataList.data) <= minLen:
             return colTypedDataList, None
 
+        if colTypedDataList.dtype:
+            srcType = colTypedDataList.dtype
+        else:
+            srcType = "integer_32"
+
         byteArrayType = "integer_32"
-        encodingD = {self.__toBytes("kind"): self.__toBytes("RunLength"), self.__toBytes("srcType"): self.__bCifTypeCodeD[byteArrayType],
+        encodingD = {self.__toBytes("kind"): self.__toBytes("RunLength"), self.__toBytes("srcType"): self.__bCifTypeCodeD[srcType],
                      self.__toBytes("srcSize"): len(colTypedDataList.data)}
         encodedColDataList = []
         val = None
@@ -486,7 +493,9 @@ class BinaryCifEncoders(object):
         integerEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
 
         if colMaskList:
-            maskedColDataList = [-1 if m else d for m, d in zip(colMaskList, colDataList)]
+            # Mol* and BinaryCif specification https://github.com/molstar/BinaryCIF/blob/master/encoding.md
+            # indcates that masked (missing) data are encoded as 0
+            maskedColDataList = [0 if m else d for m, d in zip(colMaskList, colDataList)]
         else:
             maskedColDataList = colDataList
         encodedColDataList, encodingDictL = self.encode(maskedColDataList, integerEncoderList, "integer")
