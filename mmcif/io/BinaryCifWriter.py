@@ -411,12 +411,8 @@ class BinaryCifEncoders(object):
         if len(colTypedDataList.data) <= minLen:
             return colTypedDataList, None
 
-        if colTypedDataList.dtype:
-            srcType = colTypedDataList.dtype
-        else:
-            srcType = "integer_32"
+        srcType = self.__getDataType(colTypedDataList)
 
-        byteArrayType = "integer_32"
         encodingD = {self.__toBytes("kind"): self.__toBytes("RunLength"), self.__toBytes("srcType"): self.__bCifTypeCodeD[srcType],
                      self.__toBytes("srcSize"): len(colTypedDataList.data)}
         encodedColDataList = []
@@ -435,7 +431,7 @@ class BinaryCifEncoders(object):
         if len(encodedColDataList) > len(colTypedDataList.data):
             return colTypedDataList, None
         else:
-            encodedTypedColDataList = TypedArray(encodedColDataList, byteArrayType)
+            encodedTypedColDataList = TypedArray(encodedColDataList, "integer_32")
             return encodedTypedColDataList, encodingD
 
     def stringArrayMaskedEncoder(self, colDataList, colMaskList):
