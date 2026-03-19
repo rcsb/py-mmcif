@@ -56,7 +56,6 @@ class BinaryCifReaderTests(unittest.TestCase):
         self.__pathIhmBcifGzip = os.path.join(HERE, "data", "PDBDEV_00000001_IHM.bcif.gz")
         self.__pathIhmBcifTranslated = os.path.join(self.__pathOutputDir, "PDBDEV_00000001_IHM-translated.cif")
         #
-        self.__msgPathTest27Path = os.path.join(self.__pathOutputDir, "msgpack-test-py27.dat")
         self.__startTime = time.time()
         logger.debug("Running tests on version %s", __version__)
         logger.debug("Starting %s at %s", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()))

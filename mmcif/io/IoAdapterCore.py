@@ -11,7 +11,7 @@
 #  6-Dec-2015 jdw add additional filters for category write order -
 # 28-Jul-2016 rps readFile(), __readData() methods updated to accept optional "logtag" parameter
 # 15-Feb-2017 ep  Correct variable name in exception in __readDataSelect()
-#  8-Jan-2018 jdw adapt to new pybind11 bindings -  change logging framework -- handle py2->3
+#  8-Jan-2018 jdw adapt to new pybind11 bindings -  change logging framework
 # 10-Jan-2018 jdw complete rewrite for new mmciflib framework.
 #  6-Aug-2018 jdw set default container properties (locator and load_date)
 # 25-Aug-2018 jdw use the input locator rather than uncompressed locator name
@@ -242,7 +242,7 @@ class IoAdapterCore(IoAdapterBase):
                     rowList = []
                     for iRow in range(0, numRows):
                         row = table.GetRow(iRow)
-                        # row = table.GetRow(iRow).decode('unicode_escape').encode('utf-8')
+                        # row = table.GetRow(iRow).decode('unicode_escape')
                         # row = [p.encode('ascii', 'xmlcharrefreplace') for p in table.GetRow(iRow)]
                         rowList.append(list(row))
                     aCategory = DataCategory(tableName, attributeNameList, rowList, copyInputData=False, raiseExceptions=self._raiseExceptions)

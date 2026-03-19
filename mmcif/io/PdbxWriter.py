@@ -24,7 +24,6 @@ __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
 import logging
-import sys
 
 from mmcif.api.DataCategoryFormatted import DataCategoryFormatted
 from mmcif.io.PdbxExceptions import PdbxError
@@ -36,7 +35,7 @@ class PdbxWriter(object):
 
     """Write mmCIF data files or dictionaries using the input container or container list."""
 
-    def __init__(self, ofh=sys.stdout):
+    def __init__(self, ofh=None):
         self.__ofh = ofh
         self.__containerList = []
         self.__maximumLineLength = 2048
@@ -53,11 +52,7 @@ class PdbxWriter(object):
         self.__cnvCharRefs = False
         #
         self.__enforceAscii = False
-        self.__isPy3 = sys.version_info[0] == 3
-        # if self.__isPy3:
-        #     self.__string_types = str
-        # else:
-        #    self.__string_types = basestring
+        # Python 2 support removed; always Python 3
 
     def setSetEnforceAscii(self, boolVal):
         self.__enforceAscii = boolVal
@@ -142,12 +137,6 @@ class PdbxWriter(object):
         try:
             if self.__cnvCharRefs:
                 self.__ofh.write(st.encode("ascii", "xmlcharrefreplace").decode("ascii"))
-            elif not self.__isPy3:
-                if self.__enforceAscii:
-                    self.__ofh.write(st.decode("ascii"))
-                else:
-                    self.__ofh.write(st)
-                    # self.__ofh.write(st.encode('utf-8').decode('utf-8'))
             else:
                 self.__ofh.write(st)
         except Exception as e:

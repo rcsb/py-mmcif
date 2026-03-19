@@ -7,7 +7,7 @@
 # Updates:
 #   13-Jan-2018 jdw move _getCategoryNameList() PdbxContainerBase class
 #    6-Aug-2018 jdw add _setContainerProperties() to assign default container properties
-#   10-Aug-2018 jdw add _uncompress() method (suppress xz as lzma is not support in py27)
+#   10-Aug-2018 jdw add _uncompress() method
 #   11-Nov-2018 jdw add method to _chooseTemporaryPath()
 ##
 """
@@ -20,7 +20,6 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
-import sys
 import bz2
 import datetime
 import gzip
@@ -101,10 +100,7 @@ class IoAdapterBase(object):
             return False
 
     def _getTimeStamp(self):
-        if sys.version_info[0] > 2:
-            utcnow = datetime.datetime.now(datetime.timezone.utc)
-        else:
-            utcnow = datetime.datetime.utcnow()
+        utcnow = datetime.datetime.now(datetime.timezone.utc)
         ts = utcnow.strftime("%Y-%m-%d:%H:%M:%S")
         return ts
 

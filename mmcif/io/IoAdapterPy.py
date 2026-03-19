@@ -25,7 +25,6 @@ Python implementation of IoAdapterBase class providing read and write
 import gzip
 import io
 import logging
-import sys
 import uuid
 from contextlib import closing
 
@@ -107,83 +106,41 @@ class IoAdapterPy(IoAdapterBase):
         else:
             encoding = "utf-8"
         try:
-            #
             lPath = logFilePath
             if not lPath:
                 lPath = self._getDefaultFileName(filePath, fileType="cif-parser-log", outDirPath=oPath)
-            #
             self._setLogFilePath(lPath)
-            # ---
             if self.__isLocal(filePath) and not self._fileExists(filePath):
                 return []
-            #
             fmt = fmt.lower()
-            #
-            if sys.version_info[0] > 2:  # Check if using Python version higher than 2
-                if fmt == "mmcif":
-                    if self.__isLocal(filePath):
-                        filePath = self._uncompress(filePath, oPath)
-                        with open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
-                            pRd = PdbxReader(ifh)
+            if fmt == "mmcif":
+                if self.__isLocal(filePath):
+                    filePath = self._uncompress(filePath, oPath)
+                    with open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
+                        pRd = PdbxReader(ifh)
+                        pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+                else:
+                    if filePath.endswith(".gz"):
+                        customHeader = {"Accept-Encoding": "gzip"}
+                        with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
+                            if self._raiseExceptions:
+                                ifh.raise_for_status()
+                            gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
+                            it = (line.decode(encoding, "ignore") for line in gzit)
+                            pRd = PdbxReader(it)
                             pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                    else:  # handle files from the internet...
-                        if filePath.endswith(".gz"):
-                            customHeader = {"Accept-Encoding": "gzip"}
-                            with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
-                                if self._raiseExceptions:
-                                    ifh.raise_for_status()
-                                gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
-                                it = (line.decode(encoding, "ignore") for line in gzit)
-                                pRd = PdbxReader(it)
-                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                        else:
-                            with closing(requests.get(filePath, timeout=timeout)) as ifh:
-                                if self._raiseExceptions:
-                                    ifh.raise_for_status()
-                                it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
-                                pRd = PdbxReader(it)
-                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                elif fmt == "bcif":
-                    # local vs. remote and gzip business is already done in BinaryCifReader
-                    bcifRd = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes, defaultStringEncoding=defaultStringEncoding)
-                    containerList = bcifRd.deserialize(filePath)
-                else:
-                    logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
-            else:
-                logger.warning("Support for Python 2 will be deprecated soon. Please use Python 3.")
-                if fmt == "bcif":
-                    logger.error("Support for BCIF reading only available in Python 3.")
-                elif fmt == "mmcif":
-                    if self.__isLocal(filePath):
-                        filePath = self._uncompress(filePath, oPath)
-                        if enforceAscii:
-                            with io.open(filePath, "r", encoding=encoding, errors=self._readEncodingErrors) as ifh:
-                                pRd = PdbxReader(ifh)
-                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                        else:
-                            with open(filePath, "r") as ifh:
-                                pRd = PdbxReader(ifh)
-                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
                     else:
-                        if filePath.endswith(".gz"):
-                            customHeader = {"Accept-Encoding": "gzip"}
-                            with closing(requests.get(filePath, headers=customHeader, timeout=timeout)) as ifh:
-                                if self._raiseExceptions:
-                                    ifh.raise_for_status()
-                                gzit = gzip.GzipFile(fileobj=io.BytesIO(ifh.content))
-                                it = (line.decode(encoding, "ignore") for line in gzit)
-                                pRd = PdbxReader(it)
-                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                        else:
-                            with closing(requests.get(filePath, timeout=timeout)) as ifh:
-                                if self._raiseExceptions:
-                                    ifh.raise_for_status()
-                                it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
-                                pRd = PdbxReader(it)
-                                pRd.read(containerList, selectList, excludeFlag=excludeFlag)
-                else:
-                    logger.error("Unsupported fmt %r for Python2 installation of mmcif.io.IoAdapterPy. Currently only 'mmcif' is supported. Upgrade to Python3 for 'bcif' support", fmt)
-
+                        with closing(requests.get(filePath, timeout=timeout)) as ifh:
+                            if self._raiseExceptions:
+                                ifh.raise_for_status()
+                            it = (line.decode(encoding, "ignore") + "\n" for line in ifh.iter_lines())
+                            pRd = PdbxReader(it)
+                            pRd.read(containerList, selectList, excludeFlag=excludeFlag)
+            elif fmt == "bcif":
+                bcifRd = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes, defaultStringEncoding=defaultStringEncoding)
+                containerList = bcifRd.deserialize(filePath)
+            else:
+                logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
             if cleanUp:
                 self._cleanupFile(lPath, lPath)
                 self._cleanupFile(filePath != str(inputFilePath), filePath)
@@ -270,76 +227,36 @@ class IoAdapterPy(IoAdapterBase):
                 encoding = "ascii"
             else:
                 encoding = "utf-8"
-            #
             fmt = fmt.lower()
-            #
-            if sys.version_info[0] > 2:  # Check if using Python version higher than 2
-                if fmt == "mmcif":
-                    with open(outputFilePath, "w", encoding=encoding) as ofh:
-                        self.__writeFile(
-                            ofh,
-                            containerList,
-                            maxLineLength=maxLineLength,
-                            columnAlignFlag=columnAlignFlag,
-                            lastInOrder=lastInOrder,
-                            selectOrder=selectOrder,
-                            useStopTokens=useStopTokens,
-                            formattingStep=formattingStep,
-                            enforceAscii=enforceAscii,
-                            cnvCharRefs=self._useCharRefs,
-                        )
-                elif fmt == "bcif":
-                    bcifW = BinaryCifWriter(
-                        dictionaryApi=dictionaryApi,
-                        storeStringsAsBytes=storeStringsAsBytes,
-                        defaultStringEncoding=defaultStringEncoding,
-                        applyTypes=applyTypes,
-                        useStringTypes=useStringTypes,
-                        useFloat64=useFloat64,
-                        copyInputData=copyInputData,
-                        ignoreCastErrors=ignoreCastErrors,
+            if fmt == "mmcif":
+                with open(outputFilePath, "w", encoding=encoding) as ofh:
+                    self.__writeFile(
+                        ofh,
+                        containerList,
+                        maxLineLength=maxLineLength,
+                        columnAlignFlag=columnAlignFlag,
+                        lastInOrder=lastInOrder,
+                        selectOrder=selectOrder,
+                        useStopTokens=useStopTokens,
+                        formattingStep=formattingStep,
+                        enforceAscii=enforceAscii,
+                        cnvCharRefs=self._useCharRefs,
                     )
-                    bcifW.serialize(outputFilePath, containerList)
-                else:
-                    logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
-                    return False
+            elif fmt == "bcif":
+                bcifW = BinaryCifWriter(
+                    dictionaryApi=dictionaryApi,
+                    storeStringsAsBytes=storeStringsAsBytes,
+                    defaultStringEncoding=defaultStringEncoding,
+                    applyTypes=applyTypes,
+                    useStringTypes=useStringTypes,
+                    useFloat64=useFloat64,
+                    copyInputData=copyInputData,
+                    ignoreCastErrors=ignoreCastErrors,
+                )
+                bcifW.serialize(outputFilePath, containerList)
             else:
-                logger.warning("Support for Python 2 will be deprecated soon. Please use Python 3.")
-                if fmt == "bcif":
-                    logger.error("Support for BCIF writing only available in Python 3.")
-                    return False
-                elif fmt == "mmcif":
-                    if enforceAscii:
-                        with io.open(outputFilePath, "w", encoding=encoding) as ofh:
-                            self.__writeFile(
-                                ofh,
-                                containerList,
-                                maxLineLength=maxLineLength,
-                                columnAlignFlag=columnAlignFlag,
-                                lastInOrder=lastInOrder,
-                                selectOrder=selectOrder,
-                                useStopTokens=useStopTokens,
-                                formattingStep=formattingStep,
-                                enforceAscii=enforceAscii,
-                                cnvCharRefs=self._useCharRefs,
-                            )
-                    else:
-                        with open(outputFilePath, "wb") as ofh:
-                            self.__writeFile(
-                                ofh,
-                                containerList,
-                                maxLineLength=maxLineLength,
-                                columnAlignFlag=columnAlignFlag,
-                                lastInOrder=lastInOrder,
-                                selectOrder=selectOrder,
-                                useStopTokens=useStopTokens,
-                                formattingStep=formattingStep,
-                                enforceAscii=enforceAscii,
-                                cnvCharRefs=self._useCharRefs,
-                            )
-                else:
-                    logger.error("Unsupported fmt %r for Python2 installation of mmcif.io.IoAdapterPy. Currently only 'mmcif' is supported. Upgrade to Python3 for 'bcif' support", fmt)
-                    return False
+                logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
+                return False
             return True
         except Exception as ex:
             if self._raiseExceptions:
@@ -347,7 +264,6 @@ class IoAdapterPy(IoAdapterBase):
             else:
                 logger.exception("Failing write for %s with %s", outputFilePath, str(ex))
                 logger.error("Failing write for %s with %s", outputFilePath, str(ex))
-
         return False
 
     def __writeFile(

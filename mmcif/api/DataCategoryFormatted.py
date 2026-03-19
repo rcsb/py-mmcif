@@ -85,12 +85,7 @@ class DataCategoryFormatted(DataCategory):
             "FT_MULTI_LINE_STRING",
         ]
         #
-        # try:
-        #    basestring
-        # except NameError:
-        #    basestring = str
-        #
-        # self.__string_types = basestring
+        # Python 2 support removed; always Python 3
 
     def __formatPdbx(self, inp):
         """Format input data following PDBx quoting rules -"""
