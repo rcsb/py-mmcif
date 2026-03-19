@@ -9,6 +9,7 @@
 #    6-Aug-2018 jdw add _setContainerProperties() to assign default container properties
 #   10-Aug-2018 jdw add _uncompress() method (suppress xz as lzma is not support in py27)
 #   11-Nov-2018 jdw add method to _chooseTemporaryPath()
+#   19-Mar-2026 dwp remove python 2.7 references
 ##
 """
 Base class presenting essential PDBx/mmCIF IO methods.
@@ -101,10 +102,7 @@ class IoAdapterBase(object):
             return False
 
     def _getTimeStamp(self):
-        if sys.version_info[0] > 2:
-            utcnow = datetime.datetime.now(datetime.timezone.utc)
-        else:
-            utcnow = datetime.datetime.utcnow()
+        utcnow = datetime.datetime.now(datetime.timezone.utc)
         ts = utcnow.strftime("%Y-%m-%d:%H:%M:%S")
         return ts
 

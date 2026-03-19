@@ -100,8 +100,8 @@
 16-Oct-2025    V1.0.0  - Remove support for python 2.X, retain support for
                          python 3.6 and newer.  Switch to using pyproject.toml for
                          metadata. Build wheels for python 3.8->3.14
-
 24-Nov-2026    V1.1.0  - BinaryCIF encoder corrections: Masked interer encodings
                          should default to 0 in array.  Masks should be encoded as
                          as uint_8.  RunLength encoding should specify the incoming
                          data type.
+19-Mar-2026    V1.1.1  - Remove python 2 references
