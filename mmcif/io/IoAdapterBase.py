@@ -21,7 +21,6 @@ __author__ = "John Westbrook"
 __email__ = "john.westbrook@rcsb.org"
 __license__ = "Apache 2.0"
 
-import sys
 import bz2
 import datetime
 import gzip

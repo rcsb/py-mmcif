@@ -26,7 +26,6 @@ Python implementation of IoAdapterBase class providing read and write
 import gzip
 import io
 import logging
-import sys
 import uuid
 from contextlib import closing
 
