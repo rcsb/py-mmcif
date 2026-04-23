@@ -26,11 +26,7 @@ message(STATUS "Python include path set to " ${PYTHON_INCLUDE_DIRS})
 #  -- Build a wrapper library  --
 #
 message(STATUS "Python version is " ${PYTHON_VERSION_STRING})
-if(${PYTHON_VERSION_STRING} VERSION_LESS "3.8")
-  add_subdirectory("modules/pybind11_2_12_1")
-else()
-  add_subdirectory("modules/pybind11")  
-endif()
+add_subdirectory("modules/pybind11")  
 #
 #
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
