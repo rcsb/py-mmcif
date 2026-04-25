@@ -12,6 +12,7 @@
 #   13-Jan-2018 jdw  add selection attributes lastInOrder=None, selectOrder=None
 #    8-Mar-2018 jdw  make step calc integer division
 #    2-Feb-2019 jdw  adjust formatting removing spurious comments and newlines
+#   19-Mar-2026 dwp  remove python 2.7 references
 ###
 """
 Utilities for writing mmCIF format data and dictionary containers.
@@ -53,11 +54,6 @@ class PdbxWriter(object):
         self.__cnvCharRefs = False
         #
         self.__enforceAscii = False
-        self.__isPy3 = sys.version_info[0] == 3
-        # if self.__isPy3:
-        #     self.__string_types = str
-        # else:
-        #    self.__string_types = basestring
 
     def setSetEnforceAscii(self, boolVal):
         self.__enforceAscii = boolVal
@@ -142,12 +138,6 @@ class PdbxWriter(object):
         try:
             if self.__cnvCharRefs:
                 self.__ofh.write(st.encode("ascii", "xmlcharrefreplace").decode("ascii"))
-            elif not self.__isPy3:
-                if self.__enforceAscii:
-                    self.__ofh.write(st.decode("ascii"))
-                else:
-                    self.__ofh.write(st)
-                    # self.__ofh.write(st.encode('utf-8').decode('utf-8'))
             else:
                 self.__ofh.write(st)
         except Exception as e:
