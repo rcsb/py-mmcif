@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "mmcif"
 description="mmCIF Core Access Library"
 readme = "README.md"
-requires-python = ">= 3.6"
+requires-python = ">= 3.8"
 license = {text = "Apache-2.0"}
 authors = [
  { name = "John Westbrook", email = "john.westbrook@rcsb.org" }	
