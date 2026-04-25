@@ -1482,11 +1482,6 @@ mmcif.io.PdbxWriter.PdbxWriter        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">__cnvCharRefs</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__enforceAscii</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__isPy3</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
-        <span class="c1"># if self.__isPy3:</span>
-        <span class="c1">#     self.__string_types = str</span>
-        <span class="c1"># else:</span>
-        <span class="c1">#    self.__string_types = basestring</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">setSetEnforceAscii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolVal</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__enforceAscii</span> <span class="o">=</span> <span class="n">boolVal</span>
@@ -1571,12 +1566,6 @@ mmcif.io.PdbxWriter.PdbxWriter        </code>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cnvCharRefs</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__ofh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="s2">&quot;xmlcharrefreplace&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isPy3</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enforceAscii</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__ofh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__ofh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
-                    <span class="c1"># self.__ofh.write(st.encode(&#39;utf-8&#39;).decode(&#39;utf-8&#39;))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__ofh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1757,7 +1746,7 @@ mmcif.io.PdbxWriter.PdbxWriter        </code>
 
 
 <h4 id="mmcif.io.PdbxWriter.PdbxWriter.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ofh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x108a47eb0</span><span class="o">&gt;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ofh</span><span class="o">=&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7faa4ac0edd0</span><span class="o">&gt;</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1787,11 +1776,6 @@ mmcif.io.PdbxWriter.PdbxWriter        </code>
     <span class="bp">self</span><span class="o">.</span><span class="n">__cnvCharRefs</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="c1">#</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__enforceAscii</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__isPy3</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
-    <span class="c1"># if self.__isPy3:</span>
-    <span class="c1">#     self.__string_types = str</span>
-    <span class="c1"># else:</span>
-    <span class="c1">#    self.__string_types = basestring</span>
 </code></pre></div>
         </details>
     </div>
