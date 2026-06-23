@@ -191,6 +191,7 @@ class IoAdapterPy(IoAdapterBase):
         defaultStringEncoding="utf-8",
         applyTypes=True,
         dictionaryApi=None,
+        useAutoDetect=True,
         useStringTypes=False,
         useFloat64=False,
         copyInputData=False,
@@ -214,8 +215,13 @@ class IoAdapterPy(IoAdapterBase):
             # BCIF-specific args:
             storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.
             defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".
-            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.
-            dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.
+            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too,
+                unless useAutoDetect is True). Defaults to True.
+            dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files when useAutoDetect is False and applyTypes
+                is True). Ignored (forced to None) when useAutoDetect is True. Defaults to None.
+            useAutoDetect (bool, optional): use the automatic data-type detection system instead of the dictionaryApi-driven column typing
+                (for BCIF files only). When True (the default), dictionaryApi is ignored/forced to None and BinaryCifWriter with auto-detection is
+                used. When False, the dictionary-based BinaryCifWriter is used and dictionaryApi should be supplied. Defaults to True.
             useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.
             useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.
             copyInputData (bool, optional): make a new copy input data (for BCIF files only). Defaults to False.
@@ -253,8 +259,12 @@ class IoAdapterPy(IoAdapterBase):
                         cnvCharRefs=self._useCharRefs,
                     )
             elif fmt == "bcif":
+                # Auto-detection path: column types are inferred directly from the data, so the
+                # dictionaryApi dependency is dropped entirely (forced to None) regardless of what
+                # was passed in.
                 bcifW = BinaryCifWriter(
-                    dictionaryApi=dictionaryApi,
+                    dictionaryApi=None if useAutoDetect else dictionaryApi,
+                    useAutoDetect=useAutoDetect,
                     storeStringsAsBytes=storeStringsAsBytes,
                     defaultStringEncoding=defaultStringEncoding,
                     applyTypes=applyTypes,
