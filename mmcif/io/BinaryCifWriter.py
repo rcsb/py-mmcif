@@ -1,10 +1,20 @@
 ##
-# File: BinaryCifWrite.py
+# File: BinaryCifWriter.py
 # Date: 15-May-2021  jdw
 #
 #  Write methods and encoders for binary CIF serialization.
 #
 #  Updates:
+#   - dictionaryApi type resolution replaced with auto-detection via
+#     bcif_type_detector.classify_column().
+#   - dictionaryApi parameter is now optional (defaults to None).
+#     If None, auto-detection is used for all columns.
+#     If supplied, it is used only as a fallback for all-sentinel/empty columns.
+#   - DataCategoryTyped pre-casting is skipped when dictionaryApi is None.
+#   - __encodeColumnData() casts raw string values to int/float before encoding.
+#   - __getAttributeType() uses classify_column() as primary type resolver.
+#   - _FORCE_STRING_ATTRS overrides auto-detection for char-typed attributes
+#     that look numeric (e.g. _audit_conform.dict_version = "5.281").
 #
 ##
 
@@ -17,6 +27,8 @@ from mmcif.api.DataCategoryTyped import DataCategoryTyped, DataCategoryHints
 from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
 
+from mmcif.io.bcif_type_detector import classify_column
+
 logger = logging.getLogger(__name__)
 
 
@@ -25,7 +37,8 @@ class BinaryCifWriter(object):
 
     def __init__(
         self,
-        dictionaryApi,
+        dictionaryApi=None,
+        useAutoDetect=True,
         storeStringsAsBytes=False,
         defaultStringEncoding="utf-8",
         applyTypes=True,
@@ -38,10 +51,18 @@ class BinaryCifWriter(object):
         """Create an instance of the binary CIF writer class.
 
         Args:
-            dictionaryApi (object): DictionaryApi object instance
+            dictionaryApi (object, optional): DictionaryApi object instance.
+                Required for dictionary-driven typing. In auto-detect mode it is
+                optional and, when supplied, is used only as a fallback for
+                empty/all-sentinel columns. Defaults to None.
+            useAutoDetect (bool, optional): Infer column types from values instead
+                of resolving every type through dictionaryApi. Defaults to False
+                to preserve the original BinaryCifWriter behavior.
             storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.
             defaultStringEncoding (str, optional): default encoding for string data. Defaults to "utf-8".
-            applyTypes (bool, optional): apply explicit data typing before encoding. Defaults to True.
+            applyTypes (bool, optional): apply explicit data typing before encoding.
+                Only has effect when dictionaryApi is also supplied (pre-casting
+                requires the dictionary). Defaults to True.
             useStringTypes (bool, optional): assume all types are string. Defaults to False.
             useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
@@ -55,10 +76,14 @@ class BinaryCifWriter(object):
         self.__useStringTypes = useStringTypes
         self.__useFloat64 = useFloat64
         self.__dApi = dictionaryApi
+        self.__useAutoDetect = useAutoDetect
         self.__copyInputData = copyInputData
         self.__ignoreCastErrors = ignoreCastErrors
         self.__applyMolStarTypes = kwargs.get("applyMolStarTypes", True)
         self.__dch = DataCategoryHints()
+
+        if not self.__useAutoDetect and self.__dApi is None:
+            raise ValueError("dictionaryApi is required when useAutoDetect is False")
 
     def serialize(self, filePath, containerList):
         """Serialize the input container list in binary CIF and store these data in the input file path.
@@ -67,6 +92,7 @@ class BinaryCifWriter(object):
             filePath (str): output file path
             containerList (list): list of DataContainer objects
         """
+
         dataTypeList = []
         dataTypeList.append("New Run\n")
 
@@ -79,7 +105,10 @@ class BinaryCifWriter(object):
                 blocks.append(block)
                 for catName in container.getObjNameList():
                     cObj = container.getObj(catName)
-                    if self.__applyTypes:
+                    # DataCategoryTyped pre-casting is only applied when a
+                    # dictionaryApi is available — auto-detection works on raw
+                    # string values and does not require pre-casting.
+                    if self.__applyTypes and not self.__useAutoDetect:
                         cObj = DataCategoryTyped(cObj, dictionaryApi=self.__dApi, copyInputData=self.__copyInputData,
                                                  ignoreCastErrors=self.__ignoreCastErrors, applyMolStarTypes=self.__applyMolStarTypes)
                     #
@@ -88,7 +117,7 @@ class BinaryCifWriter(object):
                     cols = []
                     for ii, atName in enumerate(cObj.getAttributeList()):
                         colDataList = cObj.getColumn(ii)
-                        dataType = self.__getAttributeType(cObj, atName) if not self.__useStringTypes else "string"
+                        dataType = self.__getAttributeType(cObj, atName, colDataList) if not self.__useStringTypes else "string"
 
                         fullAttrName = "_%s.%s" % (catName, atName)
                         dataTypeList.append(fullAttrName + ": " + dataType)
@@ -112,7 +141,7 @@ class BinaryCifWriter(object):
             with open(filePath, "wb") as ofh:
                 msgpack.pack(data, ofh)
             
-            with open("dataType_dict.txt", "a") as f:
+            with open("dataType.txt" if self.__useAutoDetect else "dataType_dict.txt", "a") as f:
                 for item in dataTypeList:
                     f.write(item + "\n")
             
@@ -128,6 +157,28 @@ class BinaryCifWriter(object):
         maskEncoderList = ["RunLength", "ByteArray"]
         typeEncoderD = {"string": "StringArrayMasked", "integer": "IntArrayMasked", "float": "FloatArrayMasked"}
         colMaskList = enc.getMask(colDataList)
+
+        # When no DataCategoryTyped pre-casting was applied (dApi is None),
+        # column values arrive as raw strings. The integer and float encoders
+        # call struct.pack which requires actual int/float Python objects.
+        # Cast here using the dataType already determined by __getAttributeType.
+        # Sentinel values (".", "?", None) are left untouched so getMask()
+        # results remain valid.
+        _SENTINELS = {".", "?"}
+        if self.__useAutoDetect and dataType == "integer":
+            colDataList = [
+                v if (v is None or v in _SENTINELS)
+                else (v if isinstance(v, int) else int(v))
+                for v in colDataList
+            ]
+        elif self.__useAutoDetect and dataType == "float":
+            colDataList = [
+                v if (v is None or v in _SENTINELS)
+                else (v if isinstance(v, float) else float(v))
+                for v in colDataList
+            ]
+        # dataType == "string" needs no casting — encoder handles str directly
+
         dataEncType = typeEncoderD[dataType]
         colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colDataList, colMaskList, dataEncType)
         if colMaskList:
@@ -152,26 +203,115 @@ class BinaryCifWriter(object):
             logger.exception("Bad type for %r", strVal)
         return strVal
 
-    def __getAttributeType(self, dObj, atName):
-        """Get attribute data type (string, integer, or float) and optionality
+    # Attributes whose values look numeric but must always be encoded as strings.
+    # These are declared as primitive type "char" in the PDBx/mmCIF dictionary.
+    # Auto-detection would wrongly classify them as int or float without this
+    # override (e.g. _audit_conform.dict_version = "5.281" looks like a float).
+    # Key format: "category.attribute"  (category name without leading underscore,
+    # both lowercased for case-insensitive matching).
+    _FORCE_STRING_ATTRS = frozenset({
+        "audit_conform.dict_version",
+        "audit_conform.dict_location",
+        "audit_conform.dict_name",
+        "atom_site.group_pdb",
+        "atom_site.type_symbol",
+        "atom_site.label_atom_id",
+        "atom_site.label_comp_id",
+        "atom_site.label_asym_id",
+        "atom_site.auth_comp_id",
+        "atom_site.auth_asym_id",
+        "atom_site.auth_atom_id"
+    })
 
-        Args:
-            atName (str): attribute name
-
-        Returns:
-            (string): data type (string, integer or float)
+    _FORCE_INTEGER_ATTRS = frozenset({
+        "atom_site.id",
+        "atom_site.auth_seq_id",
+        "atom_site_anisotrop.id",
+        "pdbx_struct_mod_residue.auth_seq_id",
+        "struct_conf.beg_auth_seq_id",
+        "struct_conf.end_auth_seq_id",
+        "struct_conn.ptnr1_auth_seq_id",
+        "struct_conn.ptnr2_auth_seq_id",
+        "struct_sheet_range.beg_auth_seq_id",
+        "struct_sheet_range.end_auth_seq_id",
+        "atom_site.label_seq_id",
+        "atom_site.pdbx_pdb_model_num"
+        })
+    
+    _FORCE_FLOAT_ATTRS = frozenset({
+        "atom_site.cartn_x",
+        "atom_site.cartn_y",
+        "atom_site.cartn_z",
+        "atom_site.occupancy",
+        "atom_site.b_iso_or_equiv"
+    })
+    
+    def __getForcedAttributeType(self, dObj, atName):
         """
-        cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
-        # cifPrimitiveType = self.__dApi.getTypePrimitive(dObj.getName(), atName)
-        if cifDataType is None:
-            dataType = "string"
-            if not self.__ignoreCastErrors:
-                logger.warning("Undefined type for category %s attribute %s - Will treat as string", dObj.getName(), atName)
-        else:
-            dataType = self.__dch.getPdbxItemType(cifDataType)
-            # dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"
+        Return forced data type for known attributes.
 
-        # Only if applying types, do we allow Mol* hints
+        This avoids scanning the full column with classify_column()
+        when the attribute type is already known.
+        """
+        atKey = "%s.%s" % (dObj.getName().lower(), atName.lower())
+
+        if atKey in self._FORCE_STRING_ATTRS:
+            return "string"
+
+        if atKey in self._FORCE_INTEGER_ATTRS:
+            return "integer"
+
+        if atKey in self._FORCE_FLOAT_ATTRS:
+            return "float"
+
+        return None
+
+    def __getAttributeType(self, dObj, atName, colDataList):
+        """Resolve a column type without changing either legacy path.
+
+        Dictionary mode reproduces the original BinaryCifWriter behavior.
+        Auto-detect mode applies forced types first, then scans the values, and
+        optionally uses dictionaryApi only for empty/all-sentinel columns.
+        """
+        if not self.__useAutoDetect:
+            cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
+            if cifDataType is None:
+                dataType = "string"
+                if not self.__ignoreCastErrors:
+                    logger.warning(
+                        "Undefined type for category %s attribute %s - Will treat as string",
+                        dObj.getName(),
+                        atName,
+                    )
+            else:
+                dataType = self.__dch.getPdbxItemType(cifDataType)
+        else:
+            forcedType = self.__getForcedAttributeType(dObj, atName)
+            if forcedType is not None:
+                logger.debug(
+                    "Forced type override applied for %s.%s -> %s",
+                    dObj.getName(),
+                    atName,
+                    forcedType,
+                )
+                dataType = forcedType
+            else:
+                profile = classify_column(colDataList)
+                typeMap = {"int": "integer", "float": "float", "str": "string"}
+                dataType = typeMap[profile.col_type]
+
+                if profile.value_count == 0 and self.__dApi is not None:
+                    cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
+                    if cifDataType is not None:
+                        dataType = self.__dch.getPdbxItemType(cifDataType)
+                        logger.debug(
+                            "Empty/all-sentinel column %s.%s - using dictionary type %r",
+                            dObj.getName(),
+                            atName,
+                            dataType,
+                        )
+
+        # Preserve the original Mol* hint behavior in both modes.
         if self.__applyTypes and self.__applyMolStarTypes:
             nm = CifName().itemName(dObj.getName(), atName)
             if self.__dch.inMolStarIntHints(nm):

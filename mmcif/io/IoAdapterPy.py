@@ -37,7 +37,6 @@ from mmcif.io.PdbxReader import PdbxReader
 from mmcif.io.PdbxWriter import PdbxWriter
 from mmcif.io.BinaryCifReader import BinaryCifReader
 from mmcif.io.BinaryCifWriter import BinaryCifWriter
-from mmcif.io.BinaryCifWriter_autoDetect import BinaryCifWriter_autoDetect
 
 try:
     from urllib.parse import urlsplit
@@ -221,7 +220,7 @@ class IoAdapterPy(IoAdapterBase):
             dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files when useAutoDetect is False and applyTypes
                 is True). Ignored (forced to None) when useAutoDetect is True. Defaults to None.
             useAutoDetect (bool, optional): use the automatic data-type detection system instead of the dictionaryApi-driven column typing
-                (for BCIF files only). When True (the default), dictionaryApi is ignored/forced to None and BinaryCifWriter_autoDetect is
+                (for BCIF files only). When True (the default), dictionaryApi is ignored/forced to None and BinaryCifWriter with auto-detection is
                 used. When False, the dictionary-based BinaryCifWriter is used and dictionaryApi should be supplied. Defaults to True.
             useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.
             useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.
@@ -260,32 +259,20 @@ class IoAdapterPy(IoAdapterBase):
                         cnvCharRefs=self._useCharRefs,
                     )
             elif fmt == "bcif":
-                if useAutoDetect:
-                    # Auto-detection path: column types are inferred directly from the data, so the
-                    # dictionaryApi dependency is dropped entirely (forced to None) regardless of what
-                    # was passed in.
-                    bcifW = BinaryCifWriter_autoDetect(
-                        dictionaryApi=None,
-                        storeStringsAsBytes=storeStringsAsBytes,
-                        defaultStringEncoding=defaultStringEncoding,
-                        applyTypes=applyTypes,
-                        useStringTypes=useStringTypes,
-                        useFloat64=useFloat64,
-                        copyInputData=copyInputData,
-                        ignoreCastErrors=ignoreCastErrors,
-                    )
-                else:
-                    # Legacy path: column types are resolved via the PDBx/mmCIF dictionaryApi.
-                    bcifW = BinaryCifWriter(
-                        dictionaryApi=dictionaryApi,
-                        storeStringsAsBytes=storeStringsAsBytes,
-                        defaultStringEncoding=defaultStringEncoding,
-                        applyTypes=applyTypes,
-                        useStringTypes=useStringTypes,
-                        useFloat64=useFloat64,
-                        copyInputData=copyInputData,
-                        ignoreCastErrors=ignoreCastErrors,
-                    )
+                # Auto-detection path: column types are inferred directly from the data, so the
+                # dictionaryApi dependency is dropped entirely (forced to None) regardless of what
+                # was passed in.
+                bcifW = BinaryCifWriter(
+                    dictionaryApi=None if useAutoDetect else dictionaryApi,
+                    useAutoDetect=useAutoDetect,
+                    storeStringsAsBytes=storeStringsAsBytes,
+                    defaultStringEncoding=defaultStringEncoding,
+                    applyTypes=applyTypes,
+                    useStringTypes=useStringTypes,
+                    useFloat64=useFloat64,
+                    copyInputData=copyInputData,
+                    ignoreCastErrors=ignoreCastErrors,
+                )
                 bcifW.serialize(outputFilePath, containerList)
             else:
                 logger.error("Unsupported fmt %r. Currently only supports 'mmcif' or 'bcif'.", fmt)
