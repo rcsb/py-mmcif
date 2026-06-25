@@ -77,6 +77,9 @@ class IoAdapterTests(unittest.TestCase):
         self.__pathOutputRcsbBcifTranslated = os.path.join(HERE, "test-output", "1bna-translated-from-bcif.cif")
         self.__pathOutputPdbxBcif = os.path.join(HERE, "test-output", "1kip-generated.bcif")
         self.__pathOutputPdbxBcifTyped = os.path.join(HERE, "test-output", "1kip-generated-typed.bcif")
+        # Auto-detect (dictionary-free) BCIF output - kept distinct from the dictionary-typed
+        # output above so the two scenarios never clobber each other's files.
+        self.__pathOutputPdbxBcifAutoDetect = os.path.join(HERE, "test-output", "1kip-generated-autodetect.bcif")
         #
         self.__pathGzipUrl = "https://files.rcsb.org/download/1KIP.cif.gz"
         self.__pathTextUrl = "https://files.rcsb.org/download/1KIP.cif"
@@ -240,7 +243,7 @@ class IoAdapterTests(unittest.TestCase):
 
     def testBcifReaderWriter(self):
         self.__testBcifToCif(self.__pathRcsbBcifGzip, self.__pathOutputRcsbBcifTranslated)
-        self.__testCifToBcif(self.__pathPdbxDataFile, self.__pathOutputPdbxBcif, self.__pathOutputPdbxBcifTyped)
+        self.__testCifToBcif(self.__pathPdbxDataFile, self.__pathOutputPdbxBcif, self.__pathOutputPdbxBcifTyped, self.__pathOutputPdbxBcifAutoDetect)
 
     def __testBcifToCif(self, ifp, ofp):
         """Test case -  read binary (BCIF) PDBx file."""
@@ -263,7 +266,7 @@ class IoAdapterTests(unittest.TestCase):
             logger.exception("Failing input %s and output %s with %s", ifp, ofp, str(e))
             self.fail()
 
-    def __testCifToBcif(self, ifp, ofp, ofpTyped):
+    def __testCifToBcif(self, ifp, ofp, ofpTyped, ofpAutoDetect):
         """Test case -  write binary (BCIF) PDBx file."""
         try:
             io = IoAdapter(raiseExceptions=True)
@@ -279,7 +282,7 @@ class IoAdapterTests(unittest.TestCase):
             ok = len(dApiContainerList) > 0
             self.assertTrue(ok)
             dApi = DictionaryApi(containerList=dApiContainerList, consolidate=True)
-            ok = io.writeFile(ofpTyped, containerList=containerList, fmt="bcif", applyTypes=True, dictionaryApi=dApi, useFloat64=True, copyInputData=False)
+            ok = io.writeFile(ofpTyped, containerList=containerList, fmt="bcif", applyTypes=True, dictionaryApi=dApi, useAutoDetect=False, useFloat64=True, copyInputData=False)
             logger.info("Wrote %d data blocks to typed BCIF file (%r) %r", ok, len(containerList), ofpTyped)
             self.assertTrue(ok)
             #
@@ -288,6 +291,10 @@ class IoAdapterTests(unittest.TestCase):
             logger.info("Wrote %d data blocks to untyped BCIF file (%r) %r", ok, len(containerList), ofp)
             self.assertTrue(ok)
             #
+            # Test writing to file using dictionary-free auto-detection (no dictionaryApi at all)
+            ok = io.writeFile(ofpAutoDetect, containerList=containerList, fmt="bcif", applyTypes=False, useAutoDetect=True, useFloat64=True, copyInputData=False)
+            logger.info("Wrote %d data blocks to auto-detected BCIF file (%r) %r", ok, len(containerList), ofpAutoDetect)
+            self.assertTrue(ok)
             # Test reading in the translated (typed) BCIF file and comparing its data with the original mmCIF
             containerListBcif = io.readFile(ofpTyped, fmt="bcif", outDirPath=self.__pathOutputDir)
             # containerListBcif = io.readFile(ofp, fmt="bcif", outDirPath=self.__pathOutputDir)
@@ -321,6 +328,38 @@ class IoAdapterTests(unittest.TestCase):
                     matchOk = cCifAttrTypedL == cBcifAttrTypedL
                     if not matchOk:
                         logger.error("Category and attribute translation mismatch %r %r: %r (cif) vs. %r (bcif)", cat, attr, cCifAttrTypedL, cBcifAttrTypedL)
+                        ok = False
+            self.assertTrue(ok)
+            #
+            # Test reading in the auto-detected BCIF file and comparing its data with the original mmCIF
+            containerListBcifAutoDetect = io.readFile(ofpAutoDetect, fmt="bcif", outDirPath=self.__pathOutputDir)
+            logger.info("Read %d data blocks from auto-detected BCIF file %r", len(containerListBcifAutoDetect), ofpAutoDetect)
+            ok = len(containerListBcifAutoDetect) > 0
+            self.assertTrue(ok)
+            ok = len(containerListBcifAutoDetect) == len(containerList)
+            self.assertTrue(ok)
+            cBcifAutoDetect = containerListBcifAutoDetect[0]
+            ok = True
+            for cat in cCif.getObjNameList():
+                for attr in cCif.getObj(cat).getAttributeList():
+                    cCifAttrL = cCif.getObj(cat).getAttributeValueList(attr)
+                    cBcifAttrL = cBcifAutoDetect.getObj(cat).getAttributeValueList(attr)
+                    cCifAttrTypedL = []
+                    cBcifAttrTypedL = []
+                    if len(cBcifAttrL) > 0:
+                        for i, _ in enumerate(cBcifAttrL):
+                            if isinstance(cBcifAttrL[i], float):
+                                cCifAttrTypedL.append(float(cCifAttrL[i]))
+                                cBcifAttrTypedL.append(float(cBcifAttrL[i]))
+                            elif isinstance(cBcifAttrL[i], int):
+                                cCifAttrTypedL.append(int(cCifAttrL[i]))
+                                cBcifAttrTypedL.append(int(cBcifAttrL[i]))
+                            else:
+                                cCifAttrTypedL.append(str(cCifAttrL[i]).replace(".", "?"))  # These may be swapped between mmCIF and BCIF
+                                cBcifAttrTypedL.append(str(cBcifAttrL[i]).replace(".", "?"))
+                    matchOk = cCifAttrTypedL == cBcifAttrTypedL
+                    if not matchOk:
+                        logger.error("Category and attribute translation mismatch %r %r: %r (cif) vs. %r (bcif, auto-detect)", cat, attr, cCifAttrTypedL, cBcifAttrTypedL)
                         ok = False
             self.assertTrue(ok)
         except Exception as e:

@@ -93,9 +93,6 @@ class BinaryCifWriter(object):
             containerList (list): list of DataContainer objects
         """
 
-        dataTypeList = []
-        dataTypeList.append("New Run\n")
-
         try:
             blocks = []
             for container in containerList:
@@ -119,9 +116,6 @@ class BinaryCifWriter(object):
                         colDataList = cObj.getColumn(ii)
                         dataType = self.__getAttributeType(cObj, atName, colDataList) if not self.__useStringTypes else "string"
 
-                        fullAttrName = "_%s.%s" % (catName, atName)
-                        dataTypeList.append(fullAttrName + ": " + dataType)
-
                         logger.debug("catName %r atName %r dataType %r", catName, atName, dataType)
                         colMaskDict, encodedColDataList, encodingDictL = self.__encodeColumnData(colDataList, dataType)
                         cols.append(
@@ -140,10 +134,6 @@ class BinaryCifWriter(object):
             }
             with open(filePath, "wb") as ofh:
                 msgpack.pack(data, ofh)
-            
-            with open("dataType.txt" if self.__useAutoDetect else "dataType_dict.txt", "a") as f:
-                for item in dataTypeList:
-                    f.write(item + "\n")
             
             return True
         except Exception as e:
@@ -243,7 +233,71 @@ class BinaryCifWriter(object):
         "atom_site.cartn_y",
         "atom_site.cartn_z",
         "atom_site.occupancy",
-        "atom_site.b_iso_or_equiv"
+        "atom_site.b_iso_or_equiv",
+ 
+        # PDBx/mmCIF chemical component Cartesian coordinates
+        "chem_comp_atom.model_cartn_x",
+        "chem_comp_atom.model_cartn_y",
+        "chem_comp_atom.model_cartn_z",
+        "chem_comp_atom.pdbx_model_cartn_x_ideal",
+        "chem_comp_atom.pdbx_model_cartn_y_ideal",
+        "chem_comp_atom.pdbx_model_cartn_z_ideal",
+ 
+        # PDBx/mmCIF phasing-site Cartesian coordinates
+        "phasing_mir_der_site.cartn_x",
+        "phasing_mir_der_site.cartn_y",
+        "phasing_mir_der_site.cartn_z",
+        "pdbx_phasing_mad_set_site.cartn_x",
+        "pdbx_phasing_mad_set_site.cartn_y",
+        "pdbx_phasing_mad_set_site.cartn_z",
+ 
+        # PDBx/mmCIF solvent atom-site mapping coordinates
+        "pdbx_solvent_atom_site_mapping.cartn_x",
+        "pdbx_solvent_atom_site_mapping.cartn_y",
+        "pdbx_solvent_atom_site_mapping.cartn_z",
+        "pdbx_solvent_atom_site_mapping.pre_cartn_x",
+        "pdbx_solvent_atom_site_mapping.pre_cartn_y",
+        "pdbx_solvent_atom_site_mapping.pre_cartn_z",
+ 
+        # CSM / ModelCIF template Cartesian coordinates
+        "ma_template_coord.cartn_x",
+        "ma_template_coord.cartn_y",
+        "ma_template_coord.cartn_z",
+ 
+        # IHM starting-model atomic Cartesian coordinates
+        "ihm_starting_model_coord.cartn_x",
+        "ihm_starting_model_coord.cartn_y",
+        "ihm_starting_model_coord.cartn_z",
+ 
+        # IHM coarse sphere Cartesian coordinates
+        "ihm_sphere_obj_site.cartn_x",
+        "ihm_sphere_obj_site.cartn_y",
+        "ihm_sphere_obj_site.cartn_z",
+ 
+        # IHM Gaussian-object mean Cartesian coordinates
+        "ihm_gaussian_obj_site.mean_cartn_x",
+        "ihm_gaussian_obj_site.mean_cartn_y",
+        "ihm_gaussian_obj_site.mean_cartn_z",
+ 
+        # IHM Gaussian-ensemble mean Cartesian coordinates
+        "ihm_gaussian_obj_ensemble.mean_cartn_x",
+        "ihm_gaussian_obj_ensemble.mean_cartn_y",
+        "ihm_gaussian_obj_ensemble.mean_cartn_z",
+ 
+        # IHM pseudo-site Cartesian coordinates
+        "ihm_pseudo_site.cartn_x",
+        "ihm_pseudo_site.cartn_y",
+        "ihm_pseudo_site.cartn_z",
+ 
+        # FLR/FPS mean probe position coordinates
+        "flr_fps_mean_probe_position.mpp_xcoord",
+        "flr_fps_mean_probe_position.mpp_ycoord",
+        "flr_fps_mean_probe_position.mpp_zcoord",
+ 
+        # FLR/FPS MPP atom position coordinates
+        "flr_fps_mpp_atom_position.xcoord",
+        "flr_fps_mpp_atom_position.ycoord",
+        "flr_fps_mpp_atom_position.zcoord",
     })
     
     def __getForcedAttributeType(self, dObj, atName):
