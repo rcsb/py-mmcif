@@ -259,7 +259,7 @@ class BinaryCifEncoders(object):
     STRING_FALLBACK_MIN_DECIMAL_PLACES = 5
     FIXED_POINT_TOLERANCE = 1.0e-6
 
-    COORDINATE_ITEMS = {
+    COORDINATE_ITEMS = frozenset({
         # PDB / standard model coordinates
         "_atom_site.Cartn_x",
         "_atom_site.Cartn_y",
@@ -318,23 +318,23 @@ class BinaryCifEncoders(object):
         "_flr_FPS_MPP_atom_position.xcoord",
         "_flr_FPS_MPP_atom_position.ycoord",
         "_flr_FPS_MPP_atom_position.zcoord",
-    }
+    })
 
-    ANISOTROP_U_ITEMS = {
+    ANISOTROP_U_ITEMS = frozenset({
         "_atom_site_anisotrop.U[1][1]",
         "_atom_site_anisotrop.U[1][2]",
         "_atom_site_anisotrop.U[1][3]",
         "_atom_site_anisotrop.U[2][2]",
         "_atom_site_anisotrop.U[2][3]",
         "_atom_site_anisotrop.U[3][3]",
-    }
+    })
 
-    RUN_LENGTH_FLOAT_ITEMS = {
+    RUN_LENGTH_FLOAT_ITEMS = frozenset({
         "_atom_site.occupancy",
         "_atom_site.B_iso_or_equiv",
         "_ihm_sphere_obj_site.rmsf",
         "_ihm_starting_model_coord.B_iso_or_equiv",
-    }
+    })
 
     OBJECT_RADIUS_ITEM = "_ihm_sphere_obj_site.object_radius"
 
