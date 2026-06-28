@@ -8,7 +8,7 @@
 # - FixedPoint support with IntegerPacking, RunLength, and Delta chains.
 # - Column-specific chains for known high-volume float attributes.
 # - Automatic selection of the smallest general FixedPoint chain.
-# - StringArray fallback for high-precision floats that cannot use FixedPoint.
+# - Optional StringArray fallback for high-precision floats (disabled by default).
 ##
 
 import logging
@@ -220,8 +220,8 @@ class BinaryCifEncoders(object):
 
     # True: known coordinate columns use factor 1000 followed by
     #       Delta -> IntegerPacking -> ByteArray.
-    # False: coordinates skip this hard-coded chain and use the general automatic
-    #        factor detection and four-chain comparison instead.
+    # False: coordinates keep factor 1000 but use the general four-chain
+    #        comparison (Delta/RunLength variants) instead.
     USE_COORDINATE_CHAIN = True
 
 
@@ -640,7 +640,6 @@ class BinaryCifEncoders(object):
         """
         return all(-2147483648 <= int(v) <= 2147483647 for v in data)
 
-    # Check whether the current column is one of the Cartesian coordinate columns
     # Check whether the current column is one of the known Cartesian coordinate columns
     def __isCoordinateItem(self, catName, atName):
         """Return True for a coordinate item that uses the factor-1000 hint."""
@@ -693,7 +692,7 @@ class BinaryCifEncoders(object):
         return self.stringArrayMaskedEncoder(stringColDataList, colMaskList)
 
 
-    # scan the column for needed precision (for other than harcoded columns)
+    # scan the column for needed precision (fallback for -coded columns)
     def __getFloatFixedPointFactor(self, colDataList, catName=None, atName=None):
         """Return the smallest exact-enough FixedPoint factor for a float column."""
         if self.__isCoordinateItem(catName, atName):
