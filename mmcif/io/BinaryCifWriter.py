@@ -56,8 +56,8 @@ class BinaryCifWriter(object):
                 optional and, when supplied, is used only as a fallback for
                 empty/all-sentinel columns. Defaults to None.
             useAutoDetect (bool, optional): Infer column types from values instead
-                of resolving every type through dictionaryApi. Defaults to False
-                to preserve the original BinaryCifWriter behavior.
+                of resolving every type through dictionaryApi. Defaults to True.
+                Set False to preserve the original dictionary-driven behavior.
             storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.
             defaultStringEncoding (str, optional): default encoding for string data. Defaults to "utf-8".
             applyTypes (bool, optional): apply explicit data typing before encoding.
