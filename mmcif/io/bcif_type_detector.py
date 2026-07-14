@@ -36,7 +36,7 @@ _SENTINELS = {".", "?"}
 # If True (default), a column that would otherwise classify as "float" is forced to
 # "str" when it has fewer than _MIN_FLOAT_ROWS present (non-sentinel) values.
 FORCE_SMALL_FLOAT_AS_STRING = True
-_MIN_FLOAT_ROWS = 3
+MIN_ROWS_TO_CLASSIFY_AS_FLOAT = 3
 
 
 # ---------------------------------------------------------------------------
@@ -259,7 +259,7 @@ def classify_column(values: list, force_small_float_as_string: bool = None) -> C
     elif all_float:
         # Assigns str data type to float columns with less than a set number of rows.
         force_small = FORCE_SMALL_FLOAT_AS_STRING if force_small_float_as_string is None else force_small_float_as_string
-        if force_small and total < _MIN_FLOAT_ROWS:
+        if force_small and total < MIN_ROWS_TO_CLASSIFY_AS_FLOAT:
             p.col_type = "str"
         else:
             p.col_type   = "float"

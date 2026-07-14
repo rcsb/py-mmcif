@@ -181,9 +181,9 @@ class BinaryCifWriterTests(unittest.TestCase):
                     ok = ioPy.writeFile(self.__testBcifAutoTranslated, cL)
                     self.assertTrue(ok)
                     
-                    #Note: Not using the __same() here because the auto-detect method does not make use of the DataCategoryTyped class.
-                    #I works on raw sting values of the attrbites and then assigns a data type to the column based on the values.
-                    #The __same() method is comparing the attributes of the DataCategoryTyped class which is not used in this test.
+                    # Note: Not using the __same() here because the auto-detect method does not make use of the DataCategoryTyped class.
+                    # It works on raw sting values of the attrbites and then assigns a data type to the column based on the values.
+                    # The __same() method is comparing the attributes of the DataCategoryTyped class which is not used in this test.
                      
         except Exception as e:
             logger.exception("Failing with %s", str(e))
