@@ -5,6 +5,7 @@
 #  Write methods and encoders for binary CIF serialization.
 #
 #  Updates:
+#   10-Jul-2026 ha
 #   - dictionaryApi type resolution replaced with auto-detection via
 #     bcif_type_detector.classify_column().
 #   - dictionaryApi parameter is now optional (defaults to None).
@@ -105,7 +106,7 @@ class BinaryCifWriter(object):
                     # DataCategoryTyped pre-casting is only applied when a
                     # dictionaryApi is available — auto-detection works on raw
                     # string values and does not require pre-casting.
-                    if self.__applyTypes and not self.__useAutoDetect:
+                    if not self.__useAutoDetect and self.__applyTypes:
                         cObj = DataCategoryTyped(cObj, dictionaryApi=self.__dApi, copyInputData=self.__copyInputData,
                                                  ignoreCastErrors=self.__ignoreCastErrors, applyMolStarTypes=self.__applyMolStarTypes)
                     #
@@ -114,7 +115,7 @@ class BinaryCifWriter(object):
                     cols = []
                     for ii, atName in enumerate(cObj.getAttributeList()):
                         colDataList = cObj.getColumn(ii)
-                        dataType = self.__getAttributeType(cObj, atName, colDataList) if not self.__useStringTypes else "string"
+                        dataType = self.__getAttributeType(catName, atName, colDataList) if not self.__useStringTypes else "string"
 
                         logger.debug("catName %r atName %r dataType %r", catName, atName, dataType)
                         colMaskDict, encodedColDataList, encodingDictL = self.__encodeColumnData(colDataList, dataType)
@@ -167,7 +168,7 @@ class BinaryCifWriter(object):
                 else (v if isinstance(v, float) else float(v))
                 for v in colDataList
             ]
-        # dataType == "string" needs no casting — encoder handles str directly
+        
 
         dataEncType = typeEncoderD[dataType]
         colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colDataList, colMaskList, dataEncType)
@@ -197,117 +198,117 @@ class BinaryCifWriter(object):
     # These are declared as primitive type "char" in the PDBx/mmCIF dictionary.
     # Auto-detection would wrongly classify them as int or float without this
     # override (e.g. _audit_conform.dict_version = "5.281" looks like a float).
-    # Key format: "category.attribute"  (category name without leading underscore,
-    # both lowercased for case-insensitive matching).
+    # Key format: "_category.attribute"  (category name with leading underscore,
+    # case-sensitive).
     _FORCE_STRING_ATTRS = frozenset({
-        "audit_conform.dict_version",
-        "audit_conform.dict_location",
-        "audit_conform.dict_name",
-        "atom_site.group_pdb",
-        "atom_site.type_symbol",
-        "atom_site.label_atom_id",
-        "atom_site.label_comp_id",
-        "atom_site.label_asym_id",
-        "atom_site.auth_comp_id",
-        "atom_site.auth_asym_id",
-        "atom_site.auth_atom_id"
+        "_audit_conform.dict_version",
+        "_audit_conform.dict_location",
+        "_audit_conform.dict_name",
+        "_atom_site.group_PDB",
+        "_atom_site.type_symbol",
+        "_atom_site.label_atom_id",
+        "_atom_site.label_comp_id",
+        "_atom_site.label_asym_id",
+        "_atom_site.auth_comp_id",
+        "_atom_site.auth_asym_id",
+        "_atom_site.auth_atom_id"
     })
 
     _FORCE_INTEGER_ATTRS = frozenset({
-        "atom_site.id",
-        "atom_site.auth_seq_id",
-        "atom_site_anisotrop.id",
-        "pdbx_struct_mod_residue.auth_seq_id",
-        "struct_conf.beg_auth_seq_id",
-        "struct_conf.end_auth_seq_id",
-        "struct_conn.ptnr1_auth_seq_id",
-        "struct_conn.ptnr2_auth_seq_id",
-        "struct_sheet_range.beg_auth_seq_id",
-        "struct_sheet_range.end_auth_seq_id",
-        "atom_site.label_seq_id",
-        "atom_site.pdbx_pdb_model_num"
+        "_atom_site.id",
+        "_atom_site.auth_seq_id",
+        "_atom_site_anisotrop.id",
+        "_atom_site.label_seq_id",
+        "_atom_site.pdbx_PDB_model_num",
+        "_pdbx_struct_mod_residue.auth_seq_id",
+        "_struct_conf.beg_auth_seq_id",
+        "_struct_conf.end_auth_seq_id",
+        "_struct_conn.ptnr1_auth_seq_id",
+        "_struct_conn.ptnr2_auth_seq_id",
+        "_struct_sheet_range.beg_auth_seq_id",
+        "_struct_sheet_range.end_auth_seq_id",
         })
     
     _FORCE_FLOAT_ATTRS = frozenset({
-        "atom_site.cartn_x",
-        "atom_site.cartn_y",
-        "atom_site.cartn_z",
-        "atom_site.occupancy",
-        "atom_site.b_iso_or_equiv",
+        "_atom_site.Cartn_x",
+        "_atom_site.Cartn_y",
+        "_atom_site.Cartn_z",
+        "_atom_site.occupancy",
+        "_atom_site.B_iso_or_equiv",
  
         # PDBx/mmCIF chemical component Cartesian coordinates
-        "chem_comp_atom.model_cartn_x",
-        "chem_comp_atom.model_cartn_y",
-        "chem_comp_atom.model_cartn_z",
-        "chem_comp_atom.pdbx_model_cartn_x_ideal",
-        "chem_comp_atom.pdbx_model_cartn_y_ideal",
-        "chem_comp_atom.pdbx_model_cartn_z_ideal",
- 
+        "_chem_comp_atom.model_Cartn_x",
+        "_chem_comp_atom.model_Cartn_y",
+        "_chem_comp_atom.model_Cartn_z",
+        "_chem_comp_atom.pdbx_model_Cartn_x_ideal",
+        "_chem_comp_atom.pdbx_model_Cartn_y_ideal",
+        "_chem_comp_atom.pdbx_model_Cartn_z_ideal",
+
         # PDBx/mmCIF phasing-site Cartesian coordinates
-        "phasing_mir_der_site.cartn_x",
-        "phasing_mir_der_site.cartn_y",
-        "phasing_mir_der_site.cartn_z",
-        "pdbx_phasing_mad_set_site.cartn_x",
-        "pdbx_phasing_mad_set_site.cartn_y",
-        "pdbx_phasing_mad_set_site.cartn_z",
- 
+        "_phasing_MIR_der_site.Cartn_x",
+        "_phasing_MIR_der_site.Cartn_y",
+        "_phasing_MIR_der_site.Cartn_z",
+        "_pdbx_phasing_MAD_set_site.Cartn_x",
+        "_pdbx_phasing_MAD_set_site.Cartn_y",
+        "_pdbx_phasing_MAD_set_site.Cartn_z",
+
         # PDBx/mmCIF solvent atom-site mapping coordinates
-        "pdbx_solvent_atom_site_mapping.cartn_x",
-        "pdbx_solvent_atom_site_mapping.cartn_y",
-        "pdbx_solvent_atom_site_mapping.cartn_z",
-        "pdbx_solvent_atom_site_mapping.pre_cartn_x",
-        "pdbx_solvent_atom_site_mapping.pre_cartn_y",
-        "pdbx_solvent_atom_site_mapping.pre_cartn_z",
- 
+        "_pdbx_solvent_atom_site_mapping.Cartn_x",
+        "_pdbx_solvent_atom_site_mapping.Cartn_y",
+        "_pdbx_solvent_atom_site_mapping.Cartn_z",
+        "_pdbx_solvent_atom_site_mapping.pre_Cartn_x",
+        "_pdbx_solvent_atom_site_mapping.pre_Cartn_y",
+        "_pdbx_solvent_atom_site_mapping.pre_Cartn_z",
+
         # CSM / ModelCIF template Cartesian coordinates
-        "ma_template_coord.cartn_x",
-        "ma_template_coord.cartn_y",
-        "ma_template_coord.cartn_z",
- 
+        "_ma_template_coord.Cartn_x",
+        "_ma_template_coord.Cartn_y",
+        "_ma_template_coord.Cartn_z",
+
         # IHM starting-model atomic Cartesian coordinates
-        "ihm_starting_model_coord.cartn_x",
-        "ihm_starting_model_coord.cartn_y",
-        "ihm_starting_model_coord.cartn_z",
- 
+        "_ihm_starting_model_coord.Cartn_x",
+        "_ihm_starting_model_coord.Cartn_y",
+        "_ihm_starting_model_coord.Cartn_z",
+
         # IHM coarse sphere Cartesian coordinates
-        "ihm_sphere_obj_site.cartn_x",
-        "ihm_sphere_obj_site.cartn_y",
-        "ihm_sphere_obj_site.cartn_z",
- 
+        "_ihm_sphere_obj_site.Cartn_x",
+        "_ihm_sphere_obj_site.Cartn_y",
+        "_ihm_sphere_obj_site.Cartn_z",
+
         # IHM Gaussian-object mean Cartesian coordinates
-        "ihm_gaussian_obj_site.mean_cartn_x",
-        "ihm_gaussian_obj_site.mean_cartn_y",
-        "ihm_gaussian_obj_site.mean_cartn_z",
- 
+        "_ihm_gaussian_obj_site.mean_Cartn_x",
+        "_ihm_gaussian_obj_site.mean_Cartn_y",
+        "_ihm_gaussian_obj_site.mean_Cartn_z",
+
         # IHM Gaussian-ensemble mean Cartesian coordinates
-        "ihm_gaussian_obj_ensemble.mean_cartn_x",
-        "ihm_gaussian_obj_ensemble.mean_cartn_y",
-        "ihm_gaussian_obj_ensemble.mean_cartn_z",
- 
+        "_ihm_gaussian_obj_ensemble.mean_Cartn_x",
+        "_ihm_gaussian_obj_ensemble.mean_Cartn_y",
+        "_ihm_gaussian_obj_ensemble.mean_Cartn_z",
+
         # IHM pseudo-site Cartesian coordinates
-        "ihm_pseudo_site.cartn_x",
-        "ihm_pseudo_site.cartn_y",
-        "ihm_pseudo_site.cartn_z",
- 
+        "_ihm_pseudo_site.Cartn_x",
+        "_ihm_pseudo_site.Cartn_y",
+        "_ihm_pseudo_site.Cartn_z",
+
         # FLR/FPS mean probe position coordinates
-        "flr_fps_mean_probe_position.mpp_xcoord",
-        "flr_fps_mean_probe_position.mpp_ycoord",
-        "flr_fps_mean_probe_position.mpp_zcoord",
- 
+        "_flr_FPS_mean_probe_position.mpp_xcoord",
+        "_flr_FPS_mean_probe_position.mpp_ycoord",
+        "_flr_FPS_mean_probe_position.mpp_zcoord",
+
         # FLR/FPS MPP atom position coordinates
-        "flr_fps_mpp_atom_position.xcoord",
-        "flr_fps_mpp_atom_position.ycoord",
-        "flr_fps_mpp_atom_position.zcoord",
+        "_flr_FPS_MPP_atom_position.xcoord",
+        "_flr_FPS_MPP_atom_position.ycoord",
+        "_flr_FPS_MPP_atom_position.zcoord",
     })
     
-    def __getForcedAttributeType(self, dObj, atName):
+    def __getForcedAttributeType(self, catName, atName):
         """
         Return forced data type for known attributes.
 
         This avoids scanning the full column with classify_column()
         when the attribute type is already known.
         """
-        atKey = "%s.%s" % (dObj.getName().lower(), atName.lower())
+        atKey = "_%s.%s" % (catName, atName)
 
         if atKey in self._FORCE_STRING_ATTRS:
             return "string"
@@ -320,7 +321,7 @@ class BinaryCifWriter(object):
 
         return None
 
-    def __getAttributeType(self, dObj, atName, colDataList):
+    def __getAttributeType(self, catName, atName, colDataList):
         """Resolve a column type without changing either legacy path.
 
         Dictionary mode reproduces the original BinaryCifWriter behavior.
@@ -328,23 +329,33 @@ class BinaryCifWriter(object):
         optionally uses dictionaryApi only for empty/all-sentinel columns.
         """
         if not self.__useAutoDetect:
-            cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
+            cifDataType = self.__dApi.getTypeCode(catName, atName)
             if cifDataType is None:
                 dataType = "string"
                 if not self.__ignoreCastErrors:
                     logger.warning(
                         "Undefined type for category %s attribute %s - Will treat as string",
-                        dObj.getName(),
+                        catName,
                         atName,
                     )
             else:
                 dataType = self.__dch.getPdbxItemType(cifDataType)
+            
+            # Mol* integer hints only apply to the dictionary-driven path.
+            # In auto-detect mode, every attribute inMolStarIntHints() covers
+            # is already present in _FORCE_INTEGER_ATTRS, so this is a no-op
+            # there — confirmed by diffing the two sets.
+            if self.__applyTypes and self.__applyMolStarTypes:
+                nm = CifName().itemName(catName, atName)
+                if self.__dch.inMolStarIntHints(nm):
+                    dataType = "integer"
+
         else:
-            forcedType = self.__getForcedAttributeType(dObj, atName)
+            forcedType = self.__getForcedAttributeType(catName, atName)
             if forcedType is not None:
                 logger.debug(
                     "Forced type override applied for %s.%s -> %s",
-                    dObj.getName(),
+                    catName,
                     atName,
                     forcedType,
                 )
@@ -353,23 +364,6 @@ class BinaryCifWriter(object):
                 profile = classify_column(colDataList)
                 typeMap = {"int": "integer", "float": "float", "str": "string"}
                 dataType = typeMap[profile.col_type]
-
-                if profile.value_count == 0 and self.__dApi is not None:
-                    cifDataType = self.__dApi.getTypeCode(dObj.getName(), atName)
-                    if cifDataType is not None:
-                        dataType = self.__dch.getPdbxItemType(cifDataType)
-                        logger.debug(
-                            "Empty/all-sentinel column %s.%s - using dictionary type %r",
-                            dObj.getName(),
-                            atName,
-                            dataType,
-                        )
-
-        # Preserve the original Mol* hint behavior in both modes.
-        if self.__applyTypes and self.__applyMolStarTypes:
-            nm = CifName().itemName(dObj.getName(), atName)
-            if self.__dch.inMolStarIntHints(nm):
-                dataType = "integer"
 
         return dataType
 

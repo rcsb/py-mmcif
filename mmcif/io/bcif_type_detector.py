@@ -13,7 +13,7 @@ or any mmcif library.  It can be imported and used independently.
 
 The three-way col_type result ("int" | "float" | "str") is a direct
 replacement for the dictionaryApi.getTypeCode() → getPdbxItemType() chain
-used in BinaryCifWrite.py.  The additional profile fields (int_width,
+used in BinaryCifWriter.py.  The additional profile fields (int_width,
 max_decimals, is_sequential, has_long_runs, unique_ratio) are available
 to the writer for more precise encoding pipeline selection, but can be
 ignored if only the basic type is needed.
@@ -33,6 +33,11 @@ _FLOAT = re.compile(r"^-?\d+\.\d*$|^-?\d*\.\d+$")
 # BinaryCIF sentinel values — these represent missing/unknown data, not values
 _SENTINELS = {".", "?"}
 
+# If True (default), a column that would otherwise classify as "float" is forced to
+# "str" when it has fewer than _MIN_FLOAT_ROWS present (non-sentinel) values.
+FORCE_SMALL_FLOAT_AS_STRING = True
+_MIN_FLOAT_ROWS = 3
+
 
 # ---------------------------------------------------------------------------
 # ColumnProfile dataclass
@@ -43,7 +48,7 @@ class ColumnProfile:
     """
     All classification results for a single column.
 
-    Fields used directly by BinaryCifWrite.py
+    Fields used directly by BinaryCifWriter.py
     ------------------------------------------
     col_type       : "int" | "float" | "str"  — replaces dictionaryApi type lookup
 
@@ -77,20 +82,20 @@ class ColumnProfile:
 # classify_column — the single public entry point
 # ---------------------------------------------------------------------------
 
-def classify_column(values: list) -> ColumnProfile:
+def classify_column(values: list, force_small_float_as_string: bool = None) -> ColumnProfile:
     """
     Scan a column once and return a fully populated ColumnProfile.
 
     Design
     ------
-    Two-phase loop:
+    Single pass per column, two things tracked concurrently:
 
-      Phase A — type probe
+      Type Probe
         Runs until the type is conclusively decided.
         Short-circuits (sets type_decided=True) as soon as a non-numeric value
         is encountered, but does NOT break — the loop continues for Phase B.
 
-      Phase B — statistics
+      Statistics
         Always completes the full loop regardless of Phase A outcome.
         Maintains: unique value set, adjacent run-length tracking.
         These are needed for encoding decisions even on pure string columns.
@@ -103,6 +108,13 @@ def classify_column(values: list) -> ColumnProfile:
     values : list
         Raw column values as returned by DataCategory.getColumn().
         May contain strings, ints, floats, None, ".", "?".
+
+    force_small_float_as_string : bool, optional
+        Overrides the module-level FORCE_SMALL_FLOAT_AS_STRING flag for this
+        call only. If None (default), the module-level flag is used.
+        When effectively True, a column that would classify as "float" but
+        has fewer than 3 present (non-sentinel) values is forced to "str"
+        instead.
 
     Returns
     -------
@@ -142,7 +154,7 @@ def classify_column(values: list) -> ColumnProfile:
         s = str(v).strip()
         unique.add(s)
 
-        # --- Phase B: run-length tracking (always runs) ---
+        # --- run-length tracking (always runs) ---
         if s == run_val:
             run_len += 1
             if run_len >= 4:
@@ -151,11 +163,12 @@ def classify_column(values: list) -> ColumnProfile:
             run_val = s
             run_len = 1
 
-        # --- Phase A: type detection (skip once type is decided) ---
+        # --- Type Probe: type detection (skip once type is decided) ---
         if type_decided:
             continue
 
         # bool must be checked before int — bool is a subclass of int in Python
+        # Defensive check; If a CIF file contains "True" or "False" as values, treat it as string instead of bool.
         if isinstance(v, bool):
             all_int = all_float = False
             type_decided = True
@@ -196,7 +209,7 @@ def classify_column(values: list) -> ColumnProfile:
                 prev = None
                 continue
             else:
-                # non-numeric: type decided, but loop continues for Phase B
+                # non-numeric: type decided, but loop continues for Statistics
                 all_int = all_float = False
                 type_decided = True
                 continue
@@ -244,8 +257,13 @@ def classify_column(values: list) -> ColumnProfile:
         else:                            p.int_width = "int32"
 
     elif all_float:
-        p.col_type   = "float"
-        p.float_prec = "f32" if max_dec <= 6 else "f64"
+        # Assigns str data type to float columns with less than a set number of rows.
+        force_small = FORCE_SMALL_FLOAT_AS_STRING if force_small_float_as_string is None else force_small_float_as_string
+        if force_small and total < _MIN_FLOAT_ROWS:
+            p.col_type = "str"
+        else:
+            p.col_type   = "float"
+            p.float_prec = "f32" if max_dec <= 6 else "f64"
 
     else:
         p.col_type = "str"

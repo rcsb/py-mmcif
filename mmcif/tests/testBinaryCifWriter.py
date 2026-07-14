@@ -140,10 +140,6 @@ class BinaryCifWriterTests(unittest.TestCase):
             logger.exception("Failing with %s", str(e))
             self.fail()
 
-    
-    
-    
-     
     def testSerializeAutoDetect(self):
         """Dictionary-free counterpart to testSerialize().
  
@@ -184,21 +180,14 @@ class BinaryCifWriterTests(unittest.TestCase):
                     ioPy = IoAdapter()
                     ok = ioPy.writeFile(self.__testBcifAutoTranslated, cL)
                     self.assertTrue(ok)
-
-                    '''
-                    Note: Not using the __same() here because the auto-detect method does not make use of the DataCategoryTyped class.
-                    I works on raw sting values of the attrbites and then assigns a data type to the column based on the values.
-                    The __same() method is comparing the attributes of the DataCategoryTyped class which is not used in this test.
-                    '''
- 
-                    #castedContainerList = self.__castForAutoDetect(containerList)
-                    #self.assertTrue(self.__same(containerList[0], cL[0]))
+                    
+                    #Note: Not using the __same() here because the auto-detect method does not make use of the DataCategoryTyped class.
+                    #I works on raw sting values of the attrbites and then assigns a data type to the column based on the values.
+                    #The __same() method is comparing the attributes of the DataCategoryTyped class which is not used in this test.
+                     
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()
-    
-    
-    
     
     def __verifyEncoding(self, fname, storeStringsAsBytes):
         """Verifies encoding"""
