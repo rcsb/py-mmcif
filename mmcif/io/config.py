@@ -179,6 +179,8 @@ class BinaryCifEncodingConfig:
         "_ihm_sphere_obj_site.object_radius": FloatEncodingConfig(1000, ["FixedPoint", "IntegerPacking", "ByteArray"]),
 
         # ---- High-volume float items: factor auto-detected from data, RunLength chain ----
+        # NOTE: Setting factor=None means the caller is expected to auto-detect a safe factor from the column's data,
+        #       and prepend the "FixedPoint" step to the encoder list with that factor.
         "_atom_site.occupancy": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
         "_atom_site.B_iso_or_equiv": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
         "_ihm_sphere_obj_site.rmsf": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),

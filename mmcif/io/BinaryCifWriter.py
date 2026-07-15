@@ -951,12 +951,13 @@ class BinaryCifEncoders(object):
 
         # General floats: auto-detect a safe FixedPoint factor.
         factor = self.__getFloatFixedPointFactor(maskedColDataList)
-        if factor is None:
+        if factor is None:  # no suitable FixedPoint factor was found; use a fallback encoding (string or bytearray)
             if (
                 BCIF_CONFIG.USE_STRING_FLOAT_FALLBACK
                 and self.__shouldUseStringFallbackForFloat(maskedColDataList)
             ):
                 return self.__encodeFloatStringFallback(colDataList, colMaskList)
+            # encode as byte array
             return self.encode(maskedColDataList, fallbackEncoderList, "float")
 
         if BCIF_CONFIG.COMPARE_ALL_FIXED_POINT_CHAINS:
