@@ -17,11 +17,14 @@
 #   - _FORCE_STRING_ATTRS overrides auto-detection for char-typed attributes
 #     that look numeric (e.g. _audit_conform.dict_version = "5.281").
 #
-# Float encoding updates:
-# - FixedPoint support with IntegerPacking, RunLength, and Delta chains.
-# - Column-specific chains for known high-volume float attributes.
-# - Automatic selection of the smallest general FixedPoint chain.
-# - Optional StringArray fallback for high-precision floats (disabled by default).
+#   15-Jul-2026 ym
+#   - Added FixedPoint float encoding with IntegerPacking, RunLength, and Delta
+#     chains.
+#   - Added configurable item-specific float encoding and automatic selection
+#     of the smallest general FixedPoint chain.
+#   - Moved BinaryCIF float-encoding configuration to mmcif.io.config.
+#   - Added optional StringArray fallback for high-precision floats, disabled
+#     by default.
 ##
 
 import logging
@@ -33,6 +36,7 @@ import warnings
 from mmcif.api.DataCategoryTyped import DataCategoryTyped, DataCategoryHints
 from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
+from mmcif.io.config import BCIF_CONFIG
 
 from mmcif.io.bcif_type_detector import classify_column
 
@@ -142,7 +146,7 @@ class BinaryCifWriter(object):
             }
             with open(filePath, "wb") as ofh:
                 msgpack.pack(data, ofh)
-            
+
             return True
         except Exception as e:
             logger.exception("Failing with %s", str(e))
@@ -176,7 +180,6 @@ class BinaryCifWriter(object):
                 else (v if isinstance(v, float) else float(v))
                 for v in colDataList
             ]
-        
 
         dataEncType = typeEncoderD[dataType]
         # Forward category/item names to the masked encoder
@@ -236,15 +239,15 @@ class BinaryCifWriter(object):
         "_struct_conn.ptnr2_auth_seq_id",
         "_struct_sheet_range.beg_auth_seq_id",
         "_struct_sheet_range.end_auth_seq_id",
-        })
-    
+    })
+
     _FORCE_FLOAT_ATTRS = frozenset({
         "_atom_site.Cartn_x",
         "_atom_site.Cartn_y",
         "_atom_site.Cartn_z",
         "_atom_site.occupancy",
         "_atom_site.B_iso_or_equiv",
- 
+
         # PDBx/mmCIF chemical component Cartesian coordinates
         "_chem_comp_atom.model_Cartn_x",
         "_chem_comp_atom.model_Cartn_y",
@@ -309,7 +312,7 @@ class BinaryCifWriter(object):
         "_flr_FPS_MPP_atom_position.ycoord",
         "_flr_FPS_MPP_atom_position.zcoord",
     })
-    
+
     def __getForcedAttributeType(self, catName, atName):
         """
         Return forced data type for known attributes.
@@ -349,7 +352,7 @@ class BinaryCifWriter(object):
                     )
             else:
                 dataType = self.__dch.getPdbxItemType(cifDataType)
-            
+
             # Mol* integer hints only apply to the dictionary-driven path.
             # In auto-detect mode, every attribute inMolStarIntHints() covers
             # is already present in _FORCE_INTEGER_ATTRS, so this is a no-op
@@ -406,140 +409,6 @@ class BinaryCifEncoders(object):
 
     """
 
-
-    # Float encoding feature switches
-    #
-    # The five individual switches below only apply when the switch is
-    # True. Disabling an individual hard-code does not force ByteArray; it sends
-    # that column through the general automatic FixedPoint chain selection.
-
-
-    # True: enable the new FixedPoint-based float encoding logic and all enabled
-    #       specialized paths below.
-    # False: bypass every float optimization below and encode all floats directly
-    #        with the original float ByteArray behavior.
-    USE_FIXED_POINT_FLOAT_ENCODING = True
-
-    # True: known coordinate columns use factor 1000 followed by
-    #       Delta -> IntegerPacking -> ByteArray.
-    # False: coordinates keep factor 1000 but use the general four-chain
-    #        comparison (Delta/RunLength variants) instead.
-    USE_COORDINATE_CHAIN = True
-
-
-    # True: the six _atom_site_anisotrop U columns use factor 10000 followed by
-    #       Delta -> IntegerPacking -> ByteArray.
-    # False: those columns skip this hard-code and use the general float path.
-    USE_ANISOTROP_U_CHAIN = True
-
-
-    # True: _ihm_sphere_obj_site.object_radius uses factor 1000 followed by
-    #       IntegerPacking -> ByteArray, without Delta or RunLength.
-    # False: object_radius skips this hard-code and uses the general float path.
-    USE_OBJECT_RADIUS_CHAIN = True
-
-
-    # True: occupancy, B_iso_or_equiv, rmsf, and starting-model B_iso_or_equiv
-    #       use an automatically detected factor followed by
-    #       RunLength -> IntegerPacking -> ByteArray.
-    # False: those four attributes skip the RunLength hint and use the general
-    #        automatic factor detection and four-chain comparison.
-    USE_RUN_LENGTH_FLOAT_HINTS = True
-
-
-    # True: when no safe FixedPoint factor is found and a column contains values
-    #       with 5 or more decimal places, encode it as StringArrayMasked.
-    # False: those high-precision fallback columns use float ByteArray instead.
-    USE_STRING_FLOAT_FALLBACK = False
-
-    COORDINATE_FIXED_POINT_FACTOR = 1000
-
-
-    ANISOTROP_U_FIXED_POINT_FACTOR = 10000
-    OBJECT_RADIUS_FIXED_POINT_FACTOR = 1000
-    MAX_FIXED_POINT_DECIMAL_PLACES = 4
-    STRING_FALLBACK_MIN_DECIMAL_PLACES = 5
-    FIXED_POINT_TOLERANCE = 1.0e-6
-
-    COORDINATE_ITEMS = frozenset({
-        # PDB / standard model coordinates
-        "_atom_site.Cartn_x",
-        "_atom_site.Cartn_y",
-        "_atom_site.Cartn_z",
-
-        # PDBx/mmCIF chemical component coordinates
-        "_chem_comp_atom.model_Cartn_x",
-        "_chem_comp_atom.model_Cartn_y",
-        "_chem_comp_atom.model_Cartn_z",
-        "_chem_comp_atom.pdbx_model_Cartn_x_ideal",
-        "_chem_comp_atom.pdbx_model_Cartn_y_ideal",
-        "_chem_comp_atom.pdbx_model_Cartn_z_ideal",
-
-        # PDBx/mmCIF phasing-site coordinates
-        "_phasing_MIR_der_site.Cartn_x",
-        "_phasing_MIR_der_site.Cartn_y",
-        "_phasing_MIR_der_site.Cartn_z",
-        "_pdbx_phasing_MAD_set_site.Cartn_x",
-        "_pdbx_phasing_MAD_set_site.Cartn_y",
-        "_pdbx_phasing_MAD_set_site.Cartn_z",
-
-        # PDBx/mmCIF solvent atom-site mapping coordinates
-        "_pdbx_solvent_atom_site_mapping.Cartn_x",
-        "_pdbx_solvent_atom_site_mapping.Cartn_y",
-        "_pdbx_solvent_atom_site_mapping.Cartn_z",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_x",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_y",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_z",
-
-        # ModelCIF / CSM template coordinates
-        "_ma_template_coord.Cartn_x",
-        "_ma_template_coord.Cartn_y",
-        "_ma_template_coord.Cartn_z",
-
-        # IHM coordinates
-        "_ihm_starting_model_coord.Cartn_x",
-        "_ihm_starting_model_coord.Cartn_y",
-        "_ihm_starting_model_coord.Cartn_z",
-        "_ihm_sphere_obj_site.Cartn_x",
-        "_ihm_sphere_obj_site.Cartn_y",
-        "_ihm_sphere_obj_site.Cartn_z",
-        "_ihm_gaussian_obj_site.mean_Cartn_x",
-        "_ihm_gaussian_obj_site.mean_Cartn_y",
-        "_ihm_gaussian_obj_site.mean_Cartn_z",
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_x",
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_y",
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_z",
-        "_ihm_pseudo_site.Cartn_x",
-        "_ihm_pseudo_site.Cartn_y",
-        "_ihm_pseudo_site.Cartn_z",
-
-        # FLR / FPS coordinates
-        "_flr_FPS_mean_probe_position.mpp_xcoord",
-        "_flr_FPS_mean_probe_position.mpp_ycoord",
-        "_flr_FPS_mean_probe_position.mpp_zcoord",
-        "_flr_FPS_MPP_atom_position.xcoord",
-        "_flr_FPS_MPP_atom_position.ycoord",
-        "_flr_FPS_MPP_atom_position.zcoord",
-    })
-
-    ANISOTROP_U_ITEMS = frozenset({
-        "_atom_site_anisotrop.U[1][1]",
-        "_atom_site_anisotrop.U[1][2]",
-        "_atom_site_anisotrop.U[1][3]",
-        "_atom_site_anisotrop.U[2][2]",
-        "_atom_site_anisotrop.U[2][3]",
-        "_atom_site_anisotrop.U[3][3]",
-    })
-
-    RUN_LENGTH_FLOAT_ITEMS = frozenset({
-        "_atom_site.occupancy",
-        "_atom_site.B_iso_or_equiv",
-        "_ihm_sphere_obj_site.rmsf",
-        "_ihm_starting_model_coord.B_iso_or_equiv",
-    })
-
-    OBJECT_RADIUS_ITEM = "_ihm_sphere_obj_site.object_radius"
-
     def __init__(self, defaultStringEncoding="utf-8", storeStringsAsBytes=True, useFloat64=False):
         """Instantiate the binary CIF encoder class.
 
@@ -580,7 +449,9 @@ class BinaryCifEncoders(object):
             legacy = True
 
         encDict = None
-        # Track data type changes as chained encoders transform the array
+        # Chained encoders can change the array's data type. FixedPoint converts
+        # float values to integer_32 values, so a later ByteArray step must encode
+        # the current integer type rather than the original float input type.
         currentDataType = dataType
         for encType in encodingTypeList:
             encArg = None
@@ -613,9 +484,14 @@ class BinaryCifEncoders(object):
         """Encode the data using the input mask and encoding type returning encoded data and encoding instructions.
 
         Args:
-            colDataList (string): input data column
+            colDataList (list): input data column
             colMaskList (list): incompleteness mask for the input data column
-            encodingType (string): encoding type to apply (StringArrayMask, IntArrayMasked, FloatArrayMasked)
+            encodingType (string): encoding type to apply
+                (StringArrayMasked, IntArrayMasked, FloatArrayMasked)
+            catName (str, optional): category name used for float-column
+                encoding decisions. Defaults to None.
+            atName (str, optional): attribute name used for float-column
+                encoding decisions. Defaults to None.
 
         Returns:
             (list, list ): encoded data column, list of encoding instructions
@@ -801,6 +677,10 @@ class BinaryCifEncoders(object):
         Returns:
             TypedArray: fixed-point encoded integer list (integer_32)
             dict: binary CIF FixedPoint encoding instructions
+
+        Raises:
+            TypeError: if the input is not a float array or the scaled
+                FixedPoint values cannot be represented as signed integer_32.
         """
         if colTypedDataList.dtype and colTypedDataList.dtype not in ["float_32", "float_64"]:
             raise TypeError("Only float arrays can be encoded with FixedPoint: %s" % colTypedDataList.dtype)
@@ -842,25 +722,16 @@ class BinaryCifEncoders(object):
         """
         return all(-2147483648 <= int(v) <= 2147483647 for v in data)
 
-    # Check whether the current column is one of the known Cartesian coordinate columns
-    def __isCoordinateItem(self, catName, atName):
-        """Return True for a coordinate item that uses the factor-1000 hint."""
-        return self.__getItemName(catName, atName) in self.COORDINATE_ITEMS
-
     def __getItemName(self, catName, atName):
         """Return normalized _category.attribute item name."""
         if catName is None or atName is None:
             return ""
 
-        cat = str(catName)
+        cat = catName
         if cat.startswith("_"):
             cat = cat[1:]
 
         return "_%s.%s" % (cat, atName)
-
-    def __isAnisotropUItem(self, catName, atName):
-        """Return True for an anisotropic displacement U matrix item."""
-        return self.__getItemName(catName, atName) in self.ANISOTROP_U_ITEMS
 
     def __shouldUseStringFallbackForFloat(self, colDataList):
         """Return True when the column requires high-precision float fallback."""
@@ -879,7 +750,7 @@ class BinaryCifEncoders(object):
             else:
                 decimalPlaces = 0
 
-            if decimalPlaces >= self.STRING_FALLBACK_MIN_DECIMAL_PLACES:
+            if decimalPlaces >= BCIF_CONFIG.STRING_FALLBACK_MIN_DECIMAL_PLACES:
                 return True
 
         return False
@@ -893,12 +764,9 @@ class BinaryCifEncoders(object):
 
         return self.stringArrayMaskedEncoder(stringColDataList, colMaskList)
 
-
-    # scan the column for needed precision (fallback for -coded columns)
-    def __getFloatFixedPointFactor(self, colDataList, catName=None, atName=None):
+    # Scan the column for the precision needed by general float items.
+    def __getFloatFixedPointFactor(self, colDataList):
         """Return the smallest exact-enough FixedPoint factor for a float column."""
-        if self.__isCoordinateItem(catName, atName):
-            return self.COORDINATE_FIXED_POINT_FACTOR
 
         mantissaDigits = 0
         for val in colDataList:
@@ -908,9 +776,9 @@ class BinaryCifEncoders(object):
 
             foundDigits = None
             factor = 1
-            for digits in range(self.MAX_FIXED_POINT_DECIMAL_PLACES + 1):
+            for digits in range(BCIF_CONFIG.MAX_FIXED_POINT_DECIMAL_PLACES + 1):
                 scaledValue = factor * value
-                if abs(round(scaledValue) - scaledValue) <= self.FIXED_POINT_TOLERANCE:
+                if abs(round(scaledValue) - scaledValue) <= BCIF_CONFIG.FIXED_POINT_TOLERANCE:
                     foundDigits = digits
                     break
                 factor *= 10
@@ -932,26 +800,26 @@ class BinaryCifEncoders(object):
             [("FixedPoint", factor), "Delta", "RunLength", "IntegerPacking", "ByteArray"],
         ]
 
-        best = None
+        bestSize = None
+        bestEncodedColDataList = None
+        bestEncodingDictL = None
         for encoderList in candidateEncoderLists:
             try:
                 encodedColDataList, encodingDictL = self.encode(list(colDataList), encoderList, "float")
                 encodedData = encodedColDataList.data if isinstance(encodedColDataList, TypedArray) else encodedColDataList
                 size = len(encodedData)
 
-                if best is None or size < best[0]:
-                    best = (size, encodedColDataList, encodingDictL)
+                if bestSize is None or size < bestSize:
+                    bestSize = size
+                    bestEncodedColDataList = encodedColDataList
+                    bestEncodingDictL = encodingDictL
             except Exception as e:
                 logger.debug("Skipping float encoder chain %r: %s", encoderList, str(e))
 
-        if best is None:
+        if bestSize is None:
             return None, None
 
-        return best[1], best[2]
-
-
-
-
+        return bestEncodedColDataList, bestEncodingDictL
 
     def stringArrayMaskedEncoder(self, colDataList, colMaskList):
         """Encode the input data column (string) along with the incompleteness mask.
@@ -1018,7 +886,7 @@ class BinaryCifEncoders(object):
 
     # Encode float columns with FixedPoint chains instead of ByteArray-only when safe
     def __encodeFixedPointChainOrFallback(self, colDataList, factor, encoderList, itemName):
-        """Run one FixedPoint chain, falling back to float ByteArray when unsafe."""
+        """Run one FixedPoint chain, falling back to float ByteArray when FixedPoint is unsafe or the chain raises."""
         try:
             numericValues = [float(v) for v in colDataList]
 
@@ -1045,57 +913,80 @@ class BinaryCifEncoders(object):
             maskedColDataList = colDataList
 
         fallbackEncoderList = ["ByteArray"]
-        if not self.USE_FIXED_POINT_FLOAT_ENCODING:
-            return self.encode(maskedColDataList, fallbackEncoderList, "float")
-
         itemName = self.__getItemName(catName, atName)
+        itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
-        # Known coordinate columns: factor 1000 + Delta.
-        if self.USE_COORDINATE_CHAIN and self.__isCoordinateItem(catName, atName):
-            factor = self.COORDINATE_FIXED_POINT_FACTOR
-            encoderList = [("FixedPoint", factor), "Delta", "IntegerPacking", "ByteArray"]
-            return self.__encodeFixedPointChainOrFallback(maskedColDataList, factor, encoderList, itemName)
+        # Forced float items with a fixed factor always use their configured
+        # factor and encoder chain.
+        if itemConfig is not None and itemConfig.factor is not None:
+            factor = itemConfig.factor
+            encoderList = BCIF_CONFIG.get_float_encoder_list(itemName)
+            return self.__encodeFixedPointChainOrFallback(
+                maskedColDataList,
+                factor,
+                encoderList,
+                itemName,
+            )
 
-        # Anisotropic U columns: factor 10000 + Delta.
-        if self.USE_ANISOTROP_U_CHAIN and self.__isAnisotropUItem(catName, atName):
-            factor = self.ANISOTROP_U_FIXED_POINT_FACTOR
-            encoderList = [("FixedPoint", factor), "Delta", "IntegerPacking", "ByteArray"]
-            return self.__encodeFixedPointChainOrFallback(maskedColDataList, factor, encoderList, itemName)
-
-        # IHM sphere radius: factor 1000 without Delta or RunLength.
-        if self.USE_OBJECT_RADIUS_CHAIN and itemName == self.OBJECT_RADIUS_ITEM:
-            factor = self.OBJECT_RADIUS_FIXED_POINT_FACTOR
-            encoderList = [("FixedPoint", factor), "IntegerPacking", "ByteArray"]
-            return self.__encodeFixedPointChainOrFallback(maskedColDataList, factor, encoderList, itemName)
-
-        # Repeated high-volume float items: automatic factor + RunLength.
-        if self.USE_RUN_LENGTH_FLOAT_HINTS and itemName in self.RUN_LENGTH_FLOAT_ITEMS:
-            factor = self.__getFloatFixedPointFactor(maskedColDataList, catName=catName, atName=atName)
+        # Selected high-volume float items may use their configured
+        # auto-detected factor and RunLength chain.
+        if (
+            itemConfig is not None
+            and itemConfig.factor is None
+            and BCIF_CONFIG.USE_RUN_LENGTH_FLOAT_HINTS
+        ):
+            factor = self.__getFloatFixedPointFactor(maskedColDataList)
             if factor is None:
-                if self.USE_STRING_FLOAT_FALLBACK and self.__shouldUseStringFallbackForFloat(maskedColDataList):
+                if (
+                    BCIF_CONFIG.USE_STRING_FLOAT_FALLBACK
+                    and self.__shouldUseStringFallbackForFloat(maskedColDataList)
+                ):
                     return self.__encodeFloatStringFallback(colDataList, colMaskList)
                 return self.encode(maskedColDataList, fallbackEncoderList, "float")
 
-            encoderList = [("FixedPoint", factor), "RunLength", "IntegerPacking", "ByteArray"]
-            return self.__encodeFixedPointChainOrFallback(maskedColDataList, factor, encoderList, itemName)
+            encoderList = [
+                ("FixedPoint", factor),
+                *itemConfig.encoderList,
+            ]
+            return self.__encodeFixedPointChainOrFallback(
+                maskedColDataList,
+                factor,
+                encoderList,
+                itemName,
+            )
 
-        # General floats: detect a factor and choose the smallest of four chains.
-        factor = self.__getFloatFixedPointFactor(maskedColDataList, catName=catName, atName=atName)
+        # General floats: auto-detect a safe FixedPoint factor.
+        factor = self.__getFloatFixedPointFactor(maskedColDataList)
         if factor is None:
-            if self.USE_STRING_FLOAT_FALLBACK and self.__shouldUseStringFallbackForFloat(maskedColDataList):
+            if (
+                BCIF_CONFIG.USE_STRING_FLOAT_FALLBACK
+                and self.__shouldUseStringFallbackForFloat(maskedColDataList)
+            ):
                 return self.__encodeFloatStringFallback(colDataList, colMaskList)
             return self.encode(maskedColDataList, fallbackEncoderList, "float")
 
-        fixedPointValues = [self.__roundLikeMolStar(float(v) * factor) for v in maskedColDataList]
-        if not self.__fitsInt32(fixedPointValues):
-            return self.encode(maskedColDataList, fallbackEncoderList, "float")
+        if BCIF_CONFIG.COMPARE_ALL_FIXED_POINT_CHAINS:
+            encodedColDataList, encodingDictL = self.__encodeBestFixedPointChain(
+                maskedColDataList,
+                factor,
+            )
+            if encodedColDataList is None:
+                return self.encode(maskedColDataList, fallbackEncoderList, "float")
+            return encodedColDataList, encodingDictL
 
-        encodedColDataList, encodingDictL = self.__encodeBestFixedPointChain(maskedColDataList, factor)
-        if encodedColDataList is None:
-            return self.encode(maskedColDataList, fallbackEncoderList, "float")
-
-        return encodedColDataList, encodingDictL
-
+        encoderList = [
+            ("FixedPoint", factor),
+            "Delta",
+            "RunLength",
+            "IntegerPacking",
+            "ByteArray",
+        ]
+        return self.__encodeFixedPointChainOrFallback(
+            maskedColDataList,
+            factor,
+            encoderList,
+            itemName,
+        )
 
     def getMask(self, colDataList):
         """Create an incompleteness mask list identifying missing/omitted values in the input data column.
