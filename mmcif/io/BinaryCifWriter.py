@@ -727,11 +727,10 @@ class BinaryCifEncoders(object):
         if catName is None or atName is None:
             return ""
 
-        cat = catName
-        if cat.startswith("_"):
-            cat = cat[1:]
-
-        return "_%s.%s" % (cat, atName)
+        if catName.startswith("_"):
+            return "%s.%s" % (catName, atName)
+        else:
+            return "_%s.%s" % (catName, atName)
 
     def __shouldUseStringFallbackForFloat(self, colDataList):
         """Return True when the column requires high-precision float fallback."""
@@ -928,13 +927,8 @@ class BinaryCifEncoders(object):
                 itemName,
             )
 
-        # Selected high-volume float items may use their configured
-        # auto-detected factor and RunLength chain.
-        if (
-            itemConfig is not None
-            and itemConfig.factor is None
-            and BCIF_CONFIG.USE_RUN_LENGTH_FLOAT_HINTS
-        ):
+        # Configured auto-factor float items use their configured encoder chain.
+        if itemConfig is not None and itemConfig.factor is None:
             factor = self.__getFloatFixedPointFactor(maskedColDataList)
             if factor is None:
                 if (

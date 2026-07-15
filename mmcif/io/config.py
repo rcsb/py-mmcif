@@ -76,12 +76,6 @@ class BinaryCifEncodingConfig:
     # Global float-encoding switches
     # -----------------------------------------------------------------------
 
-    # True:  use the configured RunLength encoding chains for selected
-    #        high-volume float items.
-    # False: treat those items as general floats and use automatic factor
-    #        detection and general FixedPoint chain selection.
-    USE_RUN_LENGTH_FLOAT_HINTS = True
-
     # True:  when no safe FixedPoint factor is found (general/undetected
     #        items only) and a column contains values with 5 or more decimal
     #        places, encode it as StringArrayMasked.
