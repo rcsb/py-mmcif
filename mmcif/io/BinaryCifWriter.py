@@ -36,7 +36,17 @@ import warnings
 from mmcif.api.DataCategoryTyped import DataCategoryTyped, DataCategoryHints
 from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
-from mmcif.io.config import BCIF_CONFIG, canonical_item_name, get_forced_type
+from mmcif.io.config import (
+    BCIF_CONFIG,
+    DEFAULT_FIXED_POINT_INTEGER_CHAIN,
+    DEFAULT_INTEGER_CHAIN,
+    FIXED_POINT_CANDIDATE_INTEGER_CHAINS,
+    FLOAT_BYTE_ARRAY_FALLBACK_CHAIN,
+    MASK_ENCODING_CHAIN,
+    MISSING_VALUE_TOKENS,
+    canonical_item_name,
+    get_forced_type,
+)
 
 from mmcif.io.bcif_type_detector import classify_column
 
@@ -159,7 +169,6 @@ class BinaryCifWriter(object):
         colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
         enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
         #
-        maskEncoderList = ["RunLength", "ByteArray"]
         typeEncoderD = {"string": "StringArrayMasked", "integer": "IntArrayMasked", "float": "FloatArrayMasked"}
         colMaskList = enc.getMask(colDataList)
 
@@ -169,16 +178,15 @@ class BinaryCifWriter(object):
         # Cast here using the dataType already determined by __getAttributeType.
         # Sentinel values (".", "?", None) are left untouched so getMask()
         # results remain valid.
-        _SENTINELS = {".", "?"}
         if self.__useAutoDetect and dataType == "integer":
             colDataList = [
-                v if (v is None or v in _SENTINELS)
+                v if (v is None or v in MISSING_VALUE_TOKENS)
                 else (v if isinstance(v, int) else int(v))
                 for v in colDataList
             ]
         elif self.__useAutoDetect and dataType == "float":
             colDataList = [
-                v if (v is None or v in _SENTINELS)
+                v if (v is None or v in MISSING_VALUE_TOKENS)
                 else (v if isinstance(v, float) else float(v))
                 for v in colDataList
             ]
@@ -189,7 +197,7 @@ class BinaryCifWriter(object):
         if colMaskList:
             # Mol* indicates that masks should be encoded as if uint_8
             colMaskListTyped = TypedArray(colMaskList, "unsigned_integer_8")
-            maskEncoded, maskEncodingDictL = enc.encode(colMaskListTyped, maskEncoderList, "integer")
+            maskEncoded, maskEncodingDictL = enc.encode(colMaskListTyped, MASK_ENCODING_CHAIN, "integer")
             colMaskDict = {self.__toBytes("data"): maskEncoded.data, self.__toBytes("encoding"): maskEncodingDictL}
         return colMaskDict, colDataEncoded, colDataEncodingDictL
 
@@ -292,7 +300,6 @@ class BinaryCifEncoders(object):
             storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.
             useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.
         """
-        self.__unknown = [".", "?"]
         self.__defaultStringEncoding = defaultStringEncoding
         self.__storeStringsAsBytes = storeStringsAsBytes
         self.__useFloat64 = useFloat64
@@ -605,7 +612,7 @@ class BinaryCifEncoders(object):
                 continue
 
             valueString = str(val).strip()
-            if valueString in self.__unknown:
+            if valueString in MISSING_VALUE_TOKENS:
                 continue
 
             if "e" in valueString.lower():
@@ -659,10 +666,8 @@ class BinaryCifEncoders(object):
     def __encodeBestFixedPointChain(self, colDataList, factor):
         """Try the four FixedPoint integer chains and return the smallest output."""
         candidateEncoderLists = [
-            [("FixedPoint", factor), "IntegerPacking", "ByteArray"],
-            [("FixedPoint", factor), "RunLength", "IntegerPacking", "ByteArray"],
-            [("FixedPoint", factor), "Delta", "IntegerPacking", "ByteArray"],
-            [("FixedPoint", factor), "Delta", "RunLength", "IntegerPacking", "ByteArray"],
+            (("FixedPoint", factor),) + integerChain
+            for integerChain in FIXED_POINT_CANDIDATE_INTEGER_CHAINS
         ]
 
         bestSize = None
@@ -696,7 +701,7 @@ class BinaryCifEncoders(object):
         Returns:
             (list, list): encoded data column, list of encoding instructions
         """
-        integerEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
+        integerEncoderList = DEFAULT_INTEGER_CHAIN
         uniqStringIndex = {}  # keys are substrings, values indices
         uniqStringList = []
         indexList = []
@@ -738,7 +743,7 @@ class BinaryCifEncoders(object):
         Returns:
             (list, list): encoded data column, list of encoding instructions
         """
-        integerEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
+        integerEncoderList = DEFAULT_INTEGER_CHAIN
 
         if colMaskList:
             # Mol* and BinaryCif specification https://github.com/molstar/BinaryCIF/blob/master/encoding.md
@@ -756,19 +761,19 @@ class BinaryCifEncoders(object):
             numericValues = [float(v) for v in colDataList]
 
             if not all(math.isfinite(v) for v in numericValues):
-                return self.encode(colDataList, ["ByteArray"], "float")
+                return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
 
             fixedPointValues = [
                 self.__roundLikeMolStar(v * factor)
                 for v in numericValues
             ]
             if not self.__fitsInt32(fixedPointValues):
-                return self.encode(colDataList, ["ByteArray"], "float")
+                return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
 
             return self.encode(colDataList, encoderList, "float")
         except Exception as e:
             logger.debug("Falling back from the fixed float chain for %s: %s", itemName, str(e))
-            return self.encode(colDataList, ["ByteArray"], "float")
+            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
 
     def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None, itemName=None):
         """Encode a float column, preserving its incompleteness mask."""
@@ -777,7 +782,7 @@ class BinaryCifEncoders(object):
         else:
             maskedColDataList = colDataList
 
-        fallbackEncoderList = ["ByteArray"]
+        fallbackEncoderList = FLOAT_BYTE_ARRAY_FALLBACK_CHAIN
         if itemName is None:
             itemName = canonical_item_name(catName, atName)
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
@@ -786,7 +791,7 @@ class BinaryCifEncoders(object):
         # factor and encoder chain.
         if itemConfig is not None and itemConfig.factor is not None:
             factor = itemConfig.factor
-            encoderList = BCIF_CONFIG.get_float_encoder_list(itemName)
+            encoderList = (("FixedPoint", factor),) + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
                 factor,
@@ -805,10 +810,7 @@ class BinaryCifEncoders(object):
                     return self.__encodeFloatStringFallback(colDataList, colMaskList)
                 return self.encode(maskedColDataList, fallbackEncoderList, "float")
 
-            encoderList = [
-                ("FixedPoint", factor),
-                *itemConfig.encoderList,
-            ]
+            encoderList = (("FixedPoint", factor),) + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
                 factor,
@@ -836,13 +838,7 @@ class BinaryCifEncoders(object):
                 return self.encode(maskedColDataList, fallbackEncoderList, "float")
             return encodedColDataList, encodingDictL
 
-        encoderList = [
-            ("FixedPoint", factor),
-            "Delta",
-            "RunLength",
-            "IntegerPacking",
-            "ByteArray",
-        ]
+        encoderList = (("FixedPoint", factor),) + DEFAULT_FIXED_POINT_INTEGER_CHAIN
         return self.__encodeFixedPointChainOrFallback(
             maskedColDataList,
             factor,
@@ -862,7 +858,7 @@ class BinaryCifEncoders(object):
         """
         mask = None
         for ii, colVal in enumerate(colDataList):
-            if colVal is not None and colVal not in self.__unknown:
+            if colVal is not None and colVal not in MISSING_VALUE_TOKENS:
                 continue
             if not mask:
                 mask = [0] * len(colDataList)
