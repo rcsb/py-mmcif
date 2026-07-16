@@ -214,7 +214,7 @@ class BinaryCifEncodingConfig:
 
     @classmethod
     def get_float_item_config(cls, itemName):
-        """Return the FloatEncodingConfig for itemName, or None if it isn't a forced type.
+        """Return the FloatEncodingConfig for itemName, or None if it is not configured.
 
         Args:
             itemName (str): full item name, e.g. "_atom_site.Cartn_x"

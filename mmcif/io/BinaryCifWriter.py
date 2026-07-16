@@ -13,9 +13,8 @@
 #     If supplied, it is used only as a fallback for all-sentinel/empty columns.
 #   - DataCategoryTyped pre-casting is skipped when dictionaryApi is None.
 #   - __encodeColumnData() casts raw string values to int/float before encoding.
-#   - __getAttributeType() uses classify_column() as primary type resolver.
-#   - _FORCE_STRING_ATTRS overrides auto-detection for char-typed attributes
-#     that look numeric (e.g. _audit_conform.dict_version = "5.281").
+#   - __getAttributeType() uses centralized item policy before
+#     bcif_type_detector.classify_column().
 #
 #   15-Jul-2026 ym
 #   - Added FixedPoint float encoding with IntegerPacking, RunLength, and Delta
@@ -221,8 +220,8 @@ class BinaryCifWriter(object):
         """Resolve a column type without changing either legacy path.
 
         Dictionary mode reproduces the original BinaryCifWriter behavior.
-        Auto-detect mode applies forced types first, then scans the values, and
-        optionally uses dictionaryApi only for empty/all-sentinel columns.
+        Auto-detect mode applies configured item types first, then scans the
+        values when no item policy exists.
         """
         if not self.__useAutoDetect:
             cifDataType = self.__dApi.getTypeCode(catName, atName)
@@ -787,8 +786,8 @@ class BinaryCifEncoders(object):
             itemName = canonical_item_name(catName, atName)
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
-        # Forced float items with a fixed factor always use their configured
-        # factor and encoder chain.
+        # Configured float items with a fixed factor use their configured
+        # factor and post-FixedPoint integer chain.
         if itemConfig is not None and itemConfig.factor is not None:
             factor = itemConfig.factor
             encoderList = (("FixedPoint", factor),) + itemConfig.integer_chain

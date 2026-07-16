@@ -147,7 +147,7 @@ class BinaryCifWriterTests(unittest.TestCase):
         dictionaryApi=None) end to end: raw (untyped) containers in -> BCIF out ->
         BcifPrint structural verification -> BinaryCifReader round trip -> value-level
         comparison against the same raw input cast the way the auto-detect classifier
-        (bcif_type_detector.classify_column / the writer's _FORCE_* override tables)
+        (centralized item policy / bcif_type_detector.classify_column)
         is expected to cast it.
  
         Note this intentionally does NOT route the input through DataCategoryTyped/

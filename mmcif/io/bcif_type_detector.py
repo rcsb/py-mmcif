@@ -14,22 +14,21 @@ independently.
 
 The three-way col_type result ("int" | "float" | "str") is a direct
 replacement for the dictionaryApi.getTypeCode() → getPdbxItemType() chain
-used in BinaryCifWriter.py.  The additional profile fields (int_width,
-max_decimals, is_sequential, has_long_runs, unique_ratio) are available
-to the writer for more precise encoding pipeline selection, but can be
-ignored if only the basic type is needed.
+used in BinaryCifWriter.py. The writer currently consumes only col_type;
+the additional profile fields are retained for callers and future encoding
+pipeline selection.
 """
 
 import re
 from dataclasses import dataclass
-from mmcif.io.config import MISSING_VALUE_TOKENS, TYPE_DETECTION_CONFIG
-from typing import Any
+from typing import Any, Optional
+
+from mmcif.io.config import MISSING_VALUE_TOKENS, TYPE_DETECTION_CONFIG, TypeDetectionConfig
 
 # ---------------------------------------------------------------------------
 # Module-level compiled regex — built once, shared across all calls
 # ---------------------------------------------------------------------------
 
-_INT   = re.compile(r"^-?\d+$")
 _FLOAT = re.compile(r"^-?\d+\.\d*$|^-?\d*\.\d+$")
 
 
@@ -79,8 +78,8 @@ class ColumnProfile:
 
 def classify_column(
     values: list,
-    force_small_float_as_string: bool = None,
-    type_detection_config=None,
+    force_small_float_as_string: Optional[bool] = None,
+    type_detection_config: Optional[TypeDetectionConfig] = None,
 ) -> ColumnProfile:
     """
     Scan a column once and return a fully populated ColumnProfile.
