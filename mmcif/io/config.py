@@ -2,71 +2,111 @@
 # File: config.py
 # Date: 06-Jul-2026
 #
-# Configuration settings, primarily for BinaryCifWriter.py encoding behavior.
+# BinaryCIF domain policy and reusable encoding configuration.
 #
 ##
 
-_UNSET = object()
+from dataclasses import dataclass
+from types import MappingProxyType
+from typing import Optional, Tuple
 
 
-def _set_float_item_names(itemConfigs):
-    """Populate each FloatEncodingConfig.name from its dictionary key."""
-    for itemName, itemConfig in itemConfigs.items():
-        itemConfig.name = itemName
-    return itemConfigs
+MISSING_VALUE_TOKENS = frozenset({".", "?"})
+
+FORCED_STRING_ITEMS = frozenset({
+    "_audit_conform.dict_version",
+    "_audit_conform.dict_location",
+    "_audit_conform.dict_name",
+    "_atom_site.group_PDB",
+    "_atom_site.type_symbol",
+    "_atom_site.label_atom_id",
+    "_atom_site.label_comp_id",
+    "_atom_site.label_asym_id",
+    "_atom_site.auth_comp_id",
+    "_atom_site.auth_asym_id",
+    "_atom_site.auth_atom_id",
+})
+
+FORCED_INTEGER_ITEMS = frozenset({
+    "_atom_site.id",
+    "_atom_site.auth_seq_id",
+    "_atom_site_anisotrop.id",
+    "_atom_site.label_seq_id",
+    "_atom_site.pdbx_PDB_model_num",
+    "_pdbx_struct_mod_residue.auth_seq_id",
+    "_struct_conf.beg_auth_seq_id",
+    "_struct_conf.end_auth_seq_id",
+    "_struct_conn.ptnr1_auth_seq_id",
+    "_struct_conn.ptnr2_auth_seq_id",
+    "_struct_sheet_range.beg_auth_seq_id",
+    "_struct_sheet_range.end_auth_seq_id",
+})
+
+SUPPORTED_ENCODERS = frozenset({"FixedPoint", "Delta", "RunLength", "IntegerPacking", "ByteArray"})
+DEFAULT_INTEGER_CHAIN = ("Delta", "RunLength", "IntegerPacking", "ByteArray")
+MASK_ENCODING_CHAIN = ("RunLength", "ByteArray")
+FLOAT_BYTE_ARRAY_FALLBACK_CHAIN = ("ByteArray",)
+DEFAULT_FIXED_POINT_INTEGER_CHAIN = ("Delta", "RunLength", "IntegerPacking", "ByteArray")
+FIXED_POINT_CANDIDATE_INTEGER_CHAINS = (
+    ("IntegerPacking", "ByteArray"),
+    ("RunLength", "IntegerPacking", "ByteArray"),
+    ("Delta", "IntegerPacking", "ByteArray"),
+    ("Delta", "RunLength", "IntegerPacking", "ByteArray"),
+)
 
 
+@dataclass(frozen=True)
+class TypeDetectionConfig:
+    """Immutable schema-less type-detection policy."""
+
+    force_small_float_as_string: bool = True
+    min_rows_to_classify_as_float: int = 3
+
+    def __post_init__(self):
+        if not isinstance(self.min_rows_to_classify_as_float, int) or isinstance(self.min_rows_to_classify_as_float, bool):
+            raise TypeError("min_rows_to_classify_as_float must be an integer")
+        if self.min_rows_to_classify_as_float < 1:
+            raise ValueError("min_rows_to_classify_as_float must be positive")
+
+
+# If True, a column that would otherwise classify as "float" is forced to
+# "str" when it has fewer than MIN_ROWS_TO_CLASSIFY_AS_FLOAT present
+# non-sentinel values.
+#
+# Keep enabled temporarily while policy is moved without changing behavior.
+FORCE_SMALL_FLOAT_AS_STRING = True
+MIN_ROWS_TO_CLASSIFY_AS_FLOAT = 3
+TYPE_DETECTION_CONFIG = TypeDetectionConfig(
+    force_small_float_as_string=FORCE_SMALL_FLOAT_AS_STRING,
+    min_rows_to_classify_as_float=MIN_ROWS_TO_CLASSIFY_AS_FLOAT,
+)
+
+
+@dataclass(frozen=True, init=False)
 class FloatEncodingConfig:
-    """Describes how a single float data item should be encoded.
+    """FixedPoint factor and immutable post-FixedPoint integer chain."""
 
-    All items tracked via FloatEncodingConfig are assumed to be floats.
+    factor: Optional[int]
+    integer_chain: Tuple[str, ...]
 
-    Attributes:
-        name (str): full item name, e.g. "_atom_site.Cartn_x"
-        factor (int or None): FixedPoint scaling factor.
-            - Not provided (default) -> 1000. (This is what _UNSET is for.)
-            - Provided as None -> no fixed factor; the caller is expected to
-              auto-detect a safe factor from the column's data (used below
-              for a handful of high-volume items that need this today).
-            - Provided as an int -> always use that fixed factor.
-        encoderList (list or None): the encoder chain for this item, e.g.
-            ["FixedPoint", "Delta", "IntegerPacking", "ByteArray"]. Include
-            the literal string "FixedPoint" wherever the FixedPoint step
-            belongs in the chain; get_float_encoder_list() will substitute in
-            the actual factor. Defaults to None (no pre-determined chain).
-    """
+    def __init__(self, factor=1000, encoderList=None, integer_chain=None):
+        chain = integer_chain if integer_chain is not None else encoderList
+        chain = tuple(chain or ())
+        if chain and chain[0] == "FixedPoint":
+            chain = chain[1:]
+        object.__setattr__(self, "factor", factor)
+        object.__setattr__(self, "integer_chain", chain)
 
-    def __init__(self, factor=_UNSET, encoderList=None, name=None):
-        self.name = name
-        self.factor = 1000 if factor is _UNSET else factor
-        self.encoderList = encoderList
+    @property
+    def encoderList(self):
+        """Compatibility alias for the immutable post-FixedPoint chain."""
+        return self.integer_chain
 
     def get_float_encoder_list(self):
-        """Return this item's encoder list, with any "FixedPoint" entry
-        replaced by the tuple ("FixedPoint", self.factor).
-
-        Returns:
-            list or None: the resolved encoder list, or None if this item
-            has no pre-determined encoderList.
-        """
-        if self.encoderList is None:
+        """Return the full fixed-factor chain used by the current writer."""
+        if self.factor is None:
             return None
-        procEncoderList = []
-        for enc in self.encoderList:
-            if enc == "FixedPoint":
-                if self.factor is None:
-                    raise ValueError(f"Forced float data item {self.name} with encoder list {self.encoderList} must have a factor defined for 'FixedPoint' encoding ({self.factor})")
-                procEncoderList.append(("FixedPoint", self.factor))
-            else:
-                procEncoderList.append(enc)
-        return procEncoderList
-
-    def __repr__(self):
-        return "FloatEncodingConfig(name=%r, factor=%r, encoderList=%r)" % (
-            self.name,
-            self.factor,
-            self.encoderList,
-        )
+        return (("FixedPoint", self.factor),) + self.integer_chain
 
 
 class BinaryCifEncodingConfig:
@@ -105,7 +145,7 @@ class BinaryCifEncodingConfig:
     # Keys are full mmCIF item names, i.e. "_category.attribute".
     # Values are FloatEncodingConfig(factor, encoderList) instances. Every item
     # here is assumed to be a float.
-    FORCED_FLOAT_ITEMS = _set_float_item_names({
+    FLOAT_ITEM_CONFIGS = MappingProxyType({
 
         # ---- Cartesian coordinates: factor 1000, FixedPoint -> Delta -> IntegerPacking -> ByteArray ----
         # PDB / standard model coordinates
@@ -182,8 +222,10 @@ class BinaryCifEncodingConfig:
         # NOTE: Setting factor=None means the caller is expected to auto-detect a safe factor from the column's data,
         #       and prepend the "FixedPoint" step to the encoder list with that factor.
         "_atom_site.occupancy": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
+
         "_atom_site.B_iso_or_equiv": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
         "_ihm_sphere_obj_site.rmsf": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
+
         "_ihm_starting_model_coord.B_iso_or_equiv": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
     })
 
@@ -201,7 +243,7 @@ class BinaryCifEncodingConfig:
         Returns:
             FloatEncodingConfig or None
         """
-        return cls.FORCED_FLOAT_ITEMS.get(itemName)
+        return cls.FLOAT_ITEM_CONFIGS.get(itemName)
 
     @classmethod
     def get_float_encoder_list(cls, itemName):
@@ -224,4 +266,66 @@ class BinaryCifEncodingConfig:
         return itemConfig.get_float_encoder_list()
 
 
+FLOAT_ITEM_CONFIGS = BinaryCifEncodingConfig.FLOAT_ITEM_CONFIGS
+
+
+def canonical_item_name(category_name, attribute_name):
+    """Return the canonical, case-sensitive _category.attribute name."""
+    if category_name is None or attribute_name is None:
+        return ""
+    if category_name.startswith("_"):
+        return "%s.%s" % (category_name, attribute_name)
+    return "_%s.%s" % (category_name, attribute_name)
+
+
+def get_forced_type(item_name):
+    """Return a configured writer type for a canonical item name, if any."""
+    if item_name in FORCED_STRING_ITEMS:
+        return "string"
+    if item_name in FORCED_INTEGER_ITEMS:
+        return "integer"
+    if item_name in FLOAT_ITEM_CONFIGS:
+        return "float"
+    return None
+
+
+def validate_binary_cif_config():
+    """Raise ValueError for contradictory or unsupported BinaryCIF policy."""
+    errors = []
+    if FORCED_STRING_ITEMS & FORCED_INTEGER_ITEMS:
+        errors.append("items cannot be both forced string and forced integer")
+    if FORCED_STRING_ITEMS & set(FLOAT_ITEM_CONFIGS):
+        errors.append("forced string items cannot have float configurations")
+    if FORCED_INTEGER_ITEMS & set(FLOAT_ITEM_CONFIGS):
+        errors.append("forced integer items cannot have float configurations")
+
+    reusable_chains = FIXED_POINT_CANDIDATE_INTEGER_CHAINS + (
+        DEFAULT_FIXED_POINT_INTEGER_CHAIN,
+        DEFAULT_INTEGER_CHAIN,
+        FLOAT_BYTE_ARRAY_FALLBACK_CHAIN,
+        MASK_ENCODING_CHAIN,
+    )
+    for chain in reusable_chains:
+        unsupported = set(chain) - SUPPORTED_ENCODERS
+        if unsupported:
+            errors.append("unsupported encoders: %s" % sorted(unsupported))
+
+    for item_name, item_config in FLOAT_ITEM_CONFIGS.items():
+        if item_config.factor is not None and (
+            not isinstance(item_config.factor, int)
+            or isinstance(item_config.factor, bool)
+            or item_config.factor <= 0
+        ):
+            errors.append("%s has an invalid FixedPoint factor" % item_name)
+        unsupported = set(item_config.integer_chain) - SUPPORTED_ENCODERS
+        if unsupported:
+            errors.append("%s has unsupported encoders: %s" % (item_name, sorted(unsupported)))
+
+    if errors:
+        raise ValueError("; ".join(errors))
+    return True
+
+
 BCIF_CONFIG = BinaryCifEncodingConfig()
+
+validate_binary_cif_config()
