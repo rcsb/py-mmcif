@@ -36,7 +36,7 @@ import warnings
 from mmcif.api.DataCategoryTyped import DataCategoryTyped, DataCategoryHints
 from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
-from mmcif.io.config import BCIF_CONFIG
+from mmcif.io.config import BCIF_CONFIG, canonical_item_name, get_forced_type
 
 from mmcif.io.bcif_type_detector import classify_column
 
@@ -125,11 +125,13 @@ class BinaryCifWriter(object):
                     cols = []
                     for ii, atName in enumerate(cObj.getAttributeList()):
                         colDataList = cObj.getColumn(ii)
-                        dataType = self.__getAttributeType(catName, atName, colDataList) if not self.__useStringTypes else "string"
+                        itemName = canonical_item_name(catName, atName)
+                        dataType = self.__getAttributeType(catName, atName, itemName, colDataList) if not self.__useStringTypes else "string"
 
-                        logger.debug("catName %r atName %r dataType %r", catName, atName, dataType)
-                        # Pass category/item names so float columns can use coordinate-specific hints
-                        colMaskDict, encodedColDataList, encodingDictL = self.__encodeColumnData(colDataList, dataType, catName, atName)
+                        logger.debug("itemName %r dataType %r", itemName, dataType)
+                        colMaskDict, encodedColDataList, encodingDictL = self.__encodeColumnData(
+                            colDataList, dataType, itemName
+                        )
                         cols.append(
                             {
                                 self.__toBytes("name"): self.__toBytes(atName),
@@ -152,8 +154,8 @@ class BinaryCifWriter(object):
             logger.exception("Failing with %s", str(e))
         return False
 
-    # Accept category/item names so encoder selection can use column-specific hints
-    def __encodeColumnData(self, colDataList, dataType, catName=None, atName=None):
+    # Accept the canonical item name so encoding policy is resolved only once.
+    def __encodeColumnData(self, colDataList, dataType, itemName=""):
         colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
         enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
         #
@@ -183,7 +185,7 @@ class BinaryCifWriter(object):
 
         dataEncType = typeEncoderD[dataType]
         # Forward category/item names to the masked encoder
-        colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colDataList, colMaskList, dataEncType, catName=catName, atName=atName)
+        colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colDataList, colMaskList, dataEncType, itemName=itemName)
         if colMaskList:
             # Mol* indicates that masks should be encoded as if uint_8
             colMaskListTyped = TypedArray(colMaskList, "unsigned_integer_8")
@@ -206,134 +208,8 @@ class BinaryCifWriter(object):
             logger.exception("Bad type for %r", strVal)
         return strVal
 
-    # Attributes whose values look numeric but must always be encoded as strings.
-    # These are declared as primitive type "char" in the PDBx/mmCIF dictionary.
-    # Auto-detection would wrongly classify them as int or float without this
-    # override (e.g. _audit_conform.dict_version = "5.281" looks like a float).
-    # Key format: "_category.attribute"  (category name with leading underscore,
-    # case-sensitive).
-    _FORCE_STRING_ATTRS = frozenset({
-        "_audit_conform.dict_version",
-        "_audit_conform.dict_location",
-        "_audit_conform.dict_name",
-        "_atom_site.group_PDB",
-        "_atom_site.type_symbol",
-        "_atom_site.label_atom_id",
-        "_atom_site.label_comp_id",
-        "_atom_site.label_asym_id",
-        "_atom_site.auth_comp_id",
-        "_atom_site.auth_asym_id",
-        "_atom_site.auth_atom_id"
-    })
 
-    _FORCE_INTEGER_ATTRS = frozenset({
-        "_atom_site.id",
-        "_atom_site.auth_seq_id",
-        "_atom_site_anisotrop.id",
-        "_atom_site.label_seq_id",
-        "_atom_site.pdbx_PDB_model_num",
-        "_pdbx_struct_mod_residue.auth_seq_id",
-        "_struct_conf.beg_auth_seq_id",
-        "_struct_conf.end_auth_seq_id",
-        "_struct_conn.ptnr1_auth_seq_id",
-        "_struct_conn.ptnr2_auth_seq_id",
-        "_struct_sheet_range.beg_auth_seq_id",
-        "_struct_sheet_range.end_auth_seq_id",
-    })
-
-    _FORCE_FLOAT_ATTRS = frozenset({
-        "_atom_site.Cartn_x",
-        "_atom_site.Cartn_y",
-        "_atom_site.Cartn_z",
-        "_atom_site.occupancy",
-        "_atom_site.B_iso_or_equiv",
-
-        # PDBx/mmCIF chemical component Cartesian coordinates
-        "_chem_comp_atom.model_Cartn_x",
-        "_chem_comp_atom.model_Cartn_y",
-        "_chem_comp_atom.model_Cartn_z",
-        "_chem_comp_atom.pdbx_model_Cartn_x_ideal",
-        "_chem_comp_atom.pdbx_model_Cartn_y_ideal",
-        "_chem_comp_atom.pdbx_model_Cartn_z_ideal",
-
-        # PDBx/mmCIF phasing-site Cartesian coordinates
-        "_phasing_MIR_der_site.Cartn_x",
-        "_phasing_MIR_der_site.Cartn_y",
-        "_phasing_MIR_der_site.Cartn_z",
-        "_pdbx_phasing_MAD_set_site.Cartn_x",
-        "_pdbx_phasing_MAD_set_site.Cartn_y",
-        "_pdbx_phasing_MAD_set_site.Cartn_z",
-
-        # PDBx/mmCIF solvent atom-site mapping coordinates
-        "_pdbx_solvent_atom_site_mapping.Cartn_x",
-        "_pdbx_solvent_atom_site_mapping.Cartn_y",
-        "_pdbx_solvent_atom_site_mapping.Cartn_z",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_x",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_y",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_z",
-
-        # CSM / ModelCIF template Cartesian coordinates
-        "_ma_template_coord.Cartn_x",
-        "_ma_template_coord.Cartn_y",
-        "_ma_template_coord.Cartn_z",
-
-        # IHM starting-model atomic Cartesian coordinates
-        "_ihm_starting_model_coord.Cartn_x",
-        "_ihm_starting_model_coord.Cartn_y",
-        "_ihm_starting_model_coord.Cartn_z",
-
-        # IHM coarse sphere Cartesian coordinates
-        "_ihm_sphere_obj_site.Cartn_x",
-        "_ihm_sphere_obj_site.Cartn_y",
-        "_ihm_sphere_obj_site.Cartn_z",
-
-        # IHM Gaussian-object mean Cartesian coordinates
-        "_ihm_gaussian_obj_site.mean_Cartn_x",
-        "_ihm_gaussian_obj_site.mean_Cartn_y",
-        "_ihm_gaussian_obj_site.mean_Cartn_z",
-
-        # IHM Gaussian-ensemble mean Cartesian coordinates
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_x",
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_y",
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_z",
-
-        # IHM pseudo-site Cartesian coordinates
-        "_ihm_pseudo_site.Cartn_x",
-        "_ihm_pseudo_site.Cartn_y",
-        "_ihm_pseudo_site.Cartn_z",
-
-        # FLR/FPS mean probe position coordinates
-        "_flr_FPS_mean_probe_position.mpp_xcoord",
-        "_flr_FPS_mean_probe_position.mpp_ycoord",
-        "_flr_FPS_mean_probe_position.mpp_zcoord",
-
-        # FLR/FPS MPP atom position coordinates
-        "_flr_FPS_MPP_atom_position.xcoord",
-        "_flr_FPS_MPP_atom_position.ycoord",
-        "_flr_FPS_MPP_atom_position.zcoord",
-    })
-
-    def __getForcedAttributeType(self, catName, atName):
-        """
-        Return forced data type for known attributes.
-
-        This avoids scanning the full column with classify_column()
-        when the attribute type is already known.
-        """
-        atKey = "_%s.%s" % (catName, atName)
-
-        if atKey in self._FORCE_STRING_ATTRS:
-            return "string"
-
-        if atKey in self._FORCE_INTEGER_ATTRS:
-            return "integer"
-
-        if atKey in self._FORCE_FLOAT_ATTRS:
-            return "float"
-
-        return None
-
-    def __getAttributeType(self, catName, atName, colDataList):
+    def __getAttributeType(self, catName, atName, itemName, colDataList):
         """Resolve a column type without changing either legacy path.
 
         Dictionary mode reproduces the original BinaryCifWriter behavior.
@@ -353,17 +229,16 @@ class BinaryCifWriter(object):
             else:
                 dataType = self.__dch.getPdbxItemType(cifDataType)
 
-            # Mol* integer hints only apply to the dictionary-driven path.
-            # In auto-detect mode, every attribute inMolStarIntHints() covers
-            # is already present in _FORCE_INTEGER_ATTRS, so this is a no-op
-            # there — confirmed by diffing the two sets.
+            # Mol* integer hints apply only to the dictionary-driven path.
+            # Auto-detect mode resolves configured integer policy before
+            # falling back to schema-less classification.
             if self.__applyTypes and self.__applyMolStarTypes:
                 nm = CifName().itemName(catName, atName)
                 if self.__dch.inMolStarIntHints(nm):
                     dataType = "integer"
 
         else:
-            forcedType = self.__getForcedAttributeType(catName, atName)
+            forcedType = get_forced_type(itemName)
             if forcedType is not None:
                 logger.debug(
                     "Forced type override applied for %s.%s -> %s",
@@ -479,8 +354,8 @@ class BinaryCifEncoders(object):
             return colDataList.data, encodingDictL
         return colDataList, encodingDictL
 
-    # Accept category/item names for float-column encoding decisions
-    def encodeWithMask(self, colDataList, colMaskList, encodingType, catName=None, atName=None):
+    # Accept a canonical item name while retaining category/item compatibility.
+    def encodeWithMask(self, colDataList, colMaskList, encodingType, catName=None, atName=None, itemName=None):
         """Encode the data using the input mask and encoding type returning encoded data and encoding instructions.
 
         Args:
@@ -488,10 +363,10 @@ class BinaryCifEncoders(object):
             colMaskList (list): incompleteness mask for the input data column
             encodingType (string): encoding type to apply
                 (StringArrayMasked, IntArrayMasked, FloatArrayMasked)
-            catName (str, optional): category name used for float-column
-                encoding decisions. Defaults to None.
-            atName (str, optional): attribute name used for float-column
-                encoding decisions. Defaults to None.
+            catName (str, optional): category name retained for compatibility.
+            atName (str, optional): attribute name retained for compatibility.
+            itemName (str, optional): canonical item name used for configured
+                float encoding decisions.
 
         Returns:
             (list, list ): encoded data column, list of encoding instructions
@@ -502,9 +377,10 @@ class BinaryCifEncoders(object):
             encodedColDataList, encodingDictL = self.stringArrayMaskedEncoder(colDataList, colMaskList)
         elif encodingType == "IntArrayMasked":
             encodedColDataList, encodingDictL = self.intArrayMaskedEncoder(colDataList, colMaskList)
-        # Pass category/item names only to the float encoder
         elif encodingType == "FloatArrayMasked":
-            encodedColDataList, encodingDictL = self.floatArrayMaskedEncoder(colDataList, colMaskList, catName=catName, atName=atName)
+            if itemName is None:
+                itemName = canonical_item_name(catName, atName)
+            encodedColDataList, encodingDictL = self.floatArrayMaskedEncoder(colDataList, colMaskList, itemName=itemName)
         else:
             logger.info("unsupported masked encoding %r", encodingType)
         return encodedColDataList, encodingDictL
@@ -722,16 +598,6 @@ class BinaryCifEncoders(object):
         """
         return all(-2147483648 <= int(v) <= 2147483647 for v in data)
 
-    def __getItemName(self, catName, atName):
-        """Return normalized _category.attribute item name."""
-        if catName is None or atName is None:
-            return ""
-
-        if catName.startswith("_"):
-            return "%s.%s" % (catName, atName)
-        else:
-            return "_%s.%s" % (catName, atName)
-
     def __shouldUseStringFallbackForFloat(self, colDataList):
         """Return True when the column requires high-precision float fallback."""
         for val in colDataList:
@@ -904,7 +770,7 @@ class BinaryCifEncoders(object):
             logger.debug("Falling back from the fixed float chain for %s: %s", itemName, str(e))
             return self.encode(colDataList, ["ByteArray"], "float")
 
-    def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None):
+    def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None, itemName=None):
         """Encode a float column, preserving its incompleteness mask."""
         if colMaskList:
             maskedColDataList = [0.0 if m else d for m, d in zip(colMaskList, colDataList)]
@@ -912,7 +778,8 @@ class BinaryCifEncoders(object):
             maskedColDataList = colDataList
 
         fallbackEncoderList = ["ByteArray"]
-        itemName = self.__getItemName(catName, atName)
+        if itemName is None:
+            itemName = canonical_item_name(catName, atName)
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
         # Forced float items with a fixed factor always use their configured
