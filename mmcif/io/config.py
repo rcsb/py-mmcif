@@ -59,7 +59,7 @@ FIXED_POINT_CANDIDATE_INTEGER_CHAINS = (
 class TypeDetectionConfig:
     """Immutable schema-less type-detection policy."""
 
-    force_small_float_as_string: bool = True
+    force_small_float_as_string: bool = False
     min_rows_to_classify_as_float: int = 3
 
     def __post_init__(self):
@@ -73,8 +73,9 @@ class TypeDetectionConfig:
 # "str" when it has fewer than MIN_ROWS_TO_CLASSIFY_AS_FLOAT present
 # non-sentinel values.
 #
-# Keep enabled temporarily while policy is moved without changing behavior.
-FORCE_SMALL_FLOAT_AS_STRING = True
+# Keep disabled by default. Enabling this may increase BCIF file size by
+# up to 7%.
+FORCE_SMALL_FLOAT_AS_STRING = False
 MIN_ROWS_TO_CLASSIFY_AS_FLOAT = 3
 TYPE_DETECTION_CONFIG = TypeDetectionConfig(
     force_small_float_as_string=FORCE_SMALL_FLOAT_AS_STRING,
