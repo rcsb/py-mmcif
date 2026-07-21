@@ -11,7 +11,7 @@ from mmcif.io.config import (
     DEFAULT_INTEGER_CHAIN,
     FIXED_POINT_CANDIDATE_INTEGER_CHAINS,
     FLOAT_BYTE_ARRAY_FALLBACK_CHAIN,
-    FLOAT_ITEM_CONFIGS,
+    FORCED_FLOAT_ITEMS,
     FORCED_INTEGER_ITEMS,
     FORCED_STRING_ITEMS,
     MASK_ENCODING_CHAIN,
@@ -27,11 +27,11 @@ from mmcif.io.config import (
 class BinaryCifConfigTests(unittest.TestCase):
     def testItemPoliciesDoNotConflict(self):
         self.assertFalse(FORCED_STRING_ITEMS & FORCED_INTEGER_ITEMS)
-        self.assertFalse(FORCED_STRING_ITEMS & set(FLOAT_ITEM_CONFIGS))
-        self.assertFalse(FORCED_INTEGER_ITEMS & set(FLOAT_ITEM_CONFIGS))
+        self.assertFalse(FORCED_STRING_ITEMS & set(FORCED_FLOAT_ITEMS))
+        self.assertFalse(FORCED_INTEGER_ITEMS & set(FORCED_FLOAT_ITEMS))
 
     def testEveryFloatConfigForcesFloatType(self):
-        for item_name in FLOAT_ITEM_CONFIGS:
+        for item_name in FORCED_FLOAT_ITEMS:
             with self.subTest(item_name=item_name):
                 self.assertEqual(get_forced_type(item_name), "float")
 
@@ -46,7 +46,7 @@ class BinaryCifConfigTests(unittest.TestCase):
             self.assertIsInstance(chain, tuple)
             self.assertTrue(set(chain) <= SUPPORTED_ENCODERS)
 
-        for item_name, item_config in FLOAT_ITEM_CONFIGS.items():
+        for item_name, item_config in FORCED_FLOAT_ITEMS.items():
             with self.subTest(item_name=item_name):
                 self.assertIsInstance(item_config.integer_chain, tuple)
                 self.assertTrue(set(item_config.integer_chain) <= SUPPORTED_ENCODERS)
@@ -60,7 +60,7 @@ class BinaryCifConfigTests(unittest.TestCase):
         self.assertIsInstance(FORCED_INTEGER_ITEMS, frozenset)
         self.assertIsInstance(FIXED_POINT_CANDIDATE_INTEGER_CHAINS, tuple)
         with self.assertRaises(TypeError):
-            FLOAT_ITEM_CONFIGS["_test.value"] = object()
+            FORCED_FLOAT_ITEMS["_test.value"] = object()
 
     def testCanonicalItemNamesAndForcedLookup(self):
         self.assertEqual(canonical_item_name("atom_site", "Cartn_x"), "_atom_site.Cartn_x")

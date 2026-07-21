@@ -225,7 +225,7 @@ class BinaryCifEncodingConfig:
         return cls.FLOAT_ITEM_CONFIGS.get(itemName)
 
 
-FLOAT_ITEM_CONFIGS = BinaryCifEncodingConfig.FLOAT_ITEM_CONFIGS
+FORCED_FLOAT_ITEMS = BinaryCifEncodingConfig.FLOAT_ITEM_CONFIGS
 
 
 def canonical_item_name(category_name, attribute_name):
@@ -243,7 +243,7 @@ def get_forced_type(item_name):
         return "string"
     if item_name in FORCED_INTEGER_ITEMS:
         return "integer"
-    if item_name in FLOAT_ITEM_CONFIGS:
+    if item_name in FORCED_FLOAT_ITEMS:
         return "float"
     return None
 
@@ -253,9 +253,9 @@ def validate_binary_cif_config():
     errors = []
     if FORCED_STRING_ITEMS & FORCED_INTEGER_ITEMS:
         errors.append("items cannot be both forced string and forced integer")
-    if FORCED_STRING_ITEMS & set(FLOAT_ITEM_CONFIGS):
+    if FORCED_STRING_ITEMS & set(FORCED_FLOAT_ITEMS):
         errors.append("forced string items cannot have float configurations")
-    if FORCED_INTEGER_ITEMS & set(FLOAT_ITEM_CONFIGS):
+    if FORCED_INTEGER_ITEMS & set(FORCED_FLOAT_ITEMS):
         errors.append("forced integer items cannot have float configurations")
 
     reusable_chains = FIXED_POINT_CANDIDATE_INTEGER_CHAINS + (
@@ -269,7 +269,7 @@ def validate_binary_cif_config():
         if unsupported:
             errors.append("unsupported encoders: %s" % sorted(unsupported))
 
-    for item_name, item_config in FLOAT_ITEM_CONFIGS.items():
+    for item_name, item_config in FORCED_FLOAT_ITEMS.items():
         if item_config.factor is not None and (
             not isinstance(item_config.factor, int)
             or isinstance(item_config.factor, bool)
