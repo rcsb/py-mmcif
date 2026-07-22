@@ -122,8 +122,12 @@ class BinaryCifEncodingConfig:
     # Float item configuration
     # -----------------------------------------------------------------------
     # Keys are canonical mmCIF item names. Membership implies forced float
-    # typing. Values contain the FixedPoint factor (or None for automatic
-    # resolution) and the immutable integer chain that follows FixedPoint.
+    # typing. Each configuration contains a FixedPoint factor and the immutable
+    # integer encoding chain applied after FixedPoint.
+    #
+    # BinaryCifWriter always prepends ("FixedPoint", factor) to the configured
+    # integer chain. If factor is an integer, that value is used. If factor=None,
+    # the writer first detects a safe factor from the column data.
     FLOAT_ITEM_CONFIGS = MappingProxyType({
 
         # ---- Cartesian coordinates: factor 1000, FixedPoint -> Delta -> IntegerPacking -> ByteArray ----
@@ -198,8 +202,6 @@ class BinaryCifEncodingConfig:
         "_ihm_sphere_obj_site.object_radius": FloatEncodingConfig(1000, ("IntegerPacking", "ByteArray")),
 
         # ---- High-volume float items: factor auto-detected from data, RunLength chain ----
-        # NOTE: Setting factor=None means the caller is expected to auto-detect a safe factor from the column's data,
-        #       and prepend the "FixedPoint" step to the encoder list with that factor.
         "_atom_site.occupancy": FloatEncodingConfig(None, ("RunLength", "IntegerPacking", "ByteArray")),
 
         "_atom_site.B_iso_or_equiv": FloatEncodingConfig(None, ("RunLength", "IntegerPacking", "ByteArray")),
