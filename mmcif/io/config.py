@@ -10,8 +10,7 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Optional, Tuple
 
-
-MISSING_VALUE_TOKENS = frozenset({".", "?"})
+MISSING_VALUE_TOKENS = frozenset({".", "?"})  # List of sentinels 
 
 FORCED_STRING_ITEMS = frozenset({
     "_audit_conform.dict_version",
