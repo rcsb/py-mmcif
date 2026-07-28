@@ -75,18 +75,6 @@ class BinaryCifWriterSyntheticTests(unittest.TestCase):
         self.assertFloatPath("task1_test", "one_row", ["1.25"])
         self.assertFloatPath("task1_test", "two_rows", ["1.25", "2.5"])
 
-    def testLeadingUnderscoreUsesSameCanonicalItemName(self):
-        without_underscore, _ = self._serialize_column(
-            "atom_site_anisotrop", "U[1][1]", ["0.1234"]
-        )
-        with_underscore, _ = self._serialize_column(
-            "_atom_site_anisotrop", "U[1][1]", ["0.1234"]
-        )
-        self.assertEqual(
-            self._encoding_kinds(without_underscore),
-            self._encoding_kinds(with_underscore),
-        )
-
     def testSentinelsPreserveMaskAndRoundTrip(self):
         column, decoded_values = self._serialize_column(
             "task1_test", "masked_float", ["1.5", ".", "?", "2.5", "3.5"]

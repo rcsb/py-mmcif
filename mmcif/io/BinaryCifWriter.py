@@ -43,7 +43,6 @@ from mmcif.io.config import (
     FLOAT_BYTE_ARRAY_FALLBACK_CHAIN,
     MASK_ENCODING_CHAIN,
     MISSING_VALUE_TOKENS,
-    canonical_item_name,
     get_forced_type,
 )
 
@@ -134,12 +133,12 @@ class BinaryCifWriter(object):
                     cols = []
                     for ii, atName in enumerate(cObj.getAttributeList()):
                         colDataList = cObj.getColumn(ii)
-                        itemName = canonical_item_name(catName, atName)
-                        dataType = self.__getAttributeType(catName, atName, itemName, colDataList) if not self.__useStringTypes else "string"
+                        dataType = self.__getAttributeType(catName, atName, colDataList) if not self.__useStringTypes else "string"
 
-                        logger.debug("itemName %r dataType %r", itemName, dataType)
+                        logger.debug("catName %r atName %r dataType %r", catName, atName, dataType)
+                        # Pass category/item names so float columns can use coordinate-specific hints
                         colMaskDict, encodedColDataList, encodingDictL = self.__encodeColumnData(
-                            colDataList, dataType, itemName
+                            colDataList, dataType, catName, atName
                         )
                         cols.append(
                             {
@@ -163,8 +162,8 @@ class BinaryCifWriter(object):
             logger.exception("Failing with %s", str(e))
         return False
 
-    # Accept the canonical item name so encoding policy is resolved only once.
-    def __encodeColumnData(self, colDataList, dataType, itemName=""):
+    # Accept category/item names so encoder selection can use column-specific hints
+    def __encodeColumnData(self, colDataList, dataType, catName=None, atName=None):
         colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
         enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
         #
@@ -192,7 +191,7 @@ class BinaryCifWriter(object):
 
         dataEncType = typeEncoderD[dataType]
         # Forward category/item names to the masked encoder
-        colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colDataList, colMaskList, dataEncType, itemName=itemName)
+        colDataEncoded, colDataEncodingDictL = enc.encodeWithMask(colDataList, colMaskList, dataEncType, catName=catName, atName=atName)
         if colMaskList:
             # Mol* indicates that masks should be encoded as if uint_8
             colMaskListTyped = TypedArray(colMaskList, "unsigned_integer_8")
@@ -216,12 +215,12 @@ class BinaryCifWriter(object):
         return strVal
 
 
-    def __getAttributeType(self, catName, atName, itemName, colDataList):
+    def __getAttributeType(self, catName, atName, colDataList):
         """Resolve a column type without changing either legacy path.
 
         Dictionary mode reproduces the original BinaryCifWriter behavior.
-        Auto-detect mode applies configured item types first, then scans the
-        values when no item policy exists.
+        Auto-detect mode applies forced types first, then scans the values, and
+        optionally uses dictionaryApi only for empty/all-sentinel columns.
         """
         if not self.__useAutoDetect:
             cifDataType = self.__dApi.getTypeCode(catName, atName)
@@ -245,7 +244,7 @@ class BinaryCifWriter(object):
                     dataType = "integer"
 
         else:
-            forcedType = get_forced_type(itemName)
+            forcedType = get_forced_type(CifName().itemName(catName, atName))
             if forcedType is not None:
                 logger.debug(
                     "Forced type override applied for %s.%s -> %s",
@@ -360,8 +359,8 @@ class BinaryCifEncoders(object):
             return colDataList.data, encodingDictL
         return colDataList, encodingDictL
 
-    # Accept a canonical item name while retaining category/item compatibility.
-    def encodeWithMask(self, colDataList, colMaskList, encodingType, catName=None, atName=None, itemName=None):
+    # Accept category/item names for float-column encoding decisions
+    def encodeWithMask(self, colDataList, colMaskList, encodingType, catName=None, atName=None):
         """Encode the data using the input mask and encoding type returning encoded data and encoding instructions.
 
         Args:
@@ -369,10 +368,10 @@ class BinaryCifEncoders(object):
             colMaskList (list): incompleteness mask for the input data column
             encodingType (string): encoding type to apply
                 (StringArrayMasked, IntArrayMasked, FloatArrayMasked)
-            catName (str, optional): category name retained for compatibility.
-            atName (str, optional): attribute name retained for compatibility.
-            itemName (str, optional): canonical item name used for configured
-                float encoding decisions.
+            catName (str, optional): category name used for float-column
+                encoding decisions. Defaults to None.
+            atName (str, optional): attribute name used for float-column
+                encoding decisions. Defaults to None.
 
         Returns:
             (list, list ): encoded data column, list of encoding instructions
@@ -383,10 +382,14 @@ class BinaryCifEncoders(object):
             encodedColDataList, encodingDictL = self.stringArrayMaskedEncoder(colDataList, colMaskList)
         elif encodingType == "IntArrayMasked":
             encodedColDataList, encodingDictL = self.intArrayMaskedEncoder(colDataList, colMaskList)
+        # Pass category/item names only to the float encoder
         elif encodingType == "FloatArrayMasked":
-            if itemName is None:
-                itemName = canonical_item_name(catName, atName)
-            encodedColDataList, encodingDictL = self.floatArrayMaskedEncoder(colDataList, colMaskList, itemName=itemName)
+            encodedColDataList, encodingDictL = self.floatArrayMaskedEncoder(
+                colDataList,
+                colMaskList,
+                catName=catName,
+                atName=atName,
+            )
         else:
             logger.info("unsupported masked encoding %r", encodingType)
         return encodedColDataList, encodingDictL
@@ -604,6 +607,16 @@ class BinaryCifEncoders(object):
         """
         return all(-2147483648 <= int(v) <= 2147483647 for v in data)
 
+    def __getItemName(self, catName, atName):
+        """Return normalized _category.attribute item name."""
+        if catName is None or atName is None:
+            return ""
+
+        if catName.startswith("_"):
+            return "%s.%s" % (catName, atName)
+        else:
+            return "_%s.%s" % (catName, atName)
+
     def __shouldUseStringFallbackForFloat(self, colDataList):
         """Return True when the column requires high-precision float fallback."""
         for val in colDataList:
@@ -774,7 +787,7 @@ class BinaryCifEncoders(object):
             logger.debug("Falling back from the fixed float chain for %s: %s", itemName, str(e))
             return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
 
-    def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None, itemName=None):
+    def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None):
         """Encode a float column, preserving its incompleteness mask."""
         if colMaskList:
             maskedColDataList = [0.0 if m else d for m, d in zip(colMaskList, colDataList)]
@@ -782,8 +795,7 @@ class BinaryCifEncoders(object):
             maskedColDataList = colDataList
 
         fallbackEncoderList = FLOAT_BYTE_ARRAY_FALLBACK_CHAIN
-        if itemName is None:
-            itemName = canonical_item_name(catName, atName)
+        itemName = self.__getItemName(catName, atName)
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
         # Configured float items with a fixed factor use their configured

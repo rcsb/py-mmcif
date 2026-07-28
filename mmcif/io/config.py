@@ -2,7 +2,7 @@
 # File: config.py
 # Date: 06-Jul-2026
 #
-# BinaryCIF domain policy and reusable encoding configuration.
+# Configuration settings, primarily for BinaryCifWriter.py encoding behavior.
 #
 ##
 
@@ -10,7 +10,8 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Optional, Tuple
 
-MISSING_VALUE_TOKENS = frozenset({".", "?"})  # List of sentinels 
+
+MISSING_VALUE_TOKENS = frozenset({".", "?"})  # List of sentinels
 
 FORCED_STRING_ITEMS = frozenset({
     "_audit_conform.dict_version",
@@ -227,15 +228,6 @@ class BinaryCifEncodingConfig:
 
 
 FORCED_FLOAT_ITEMS = BinaryCifEncodingConfig.FLOAT_ITEM_CONFIGS
-
-
-def canonical_item_name(category_name, attribute_name):
-    """Return the canonical, case-sensitive _category.attribute name."""
-    if category_name is None or attribute_name is None:
-        return ""
-    if category_name.startswith("_"):
-        return "%s.%s" % (category_name, attribute_name)
-    return "_%s.%s" % (category_name, attribute_name)
 
 
 def get_forced_type(item_name):

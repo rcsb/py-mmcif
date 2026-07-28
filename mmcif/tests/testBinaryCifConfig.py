@@ -18,7 +18,6 @@ from mmcif.io.config import (
     MISSING_VALUE_TOKENS,
     SUPPORTED_ENCODERS,
     TYPE_DETECTION_CONFIG,
-    canonical_item_name,
     get_forced_type,
     validate_binary_cif_config,
 )
@@ -62,9 +61,7 @@ class BinaryCifConfigTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             FORCED_FLOAT_ITEMS["_test.value"] = object()
 
-    def testCanonicalItemNamesAndForcedLookup(self):
-        self.assertEqual(canonical_item_name("atom_site", "Cartn_x"), "_atom_site.Cartn_x")
-        self.assertEqual(canonical_item_name("_atom_site", "Cartn_x"), "_atom_site.Cartn_x")
+    def testForcedTypeLookup(self):
         self.assertEqual(get_forced_type("_audit_conform.dict_version"), "string")
         self.assertEqual(get_forced_type("_atom_site.id"), "integer")
         self.assertIsNone(get_forced_type("_task1_test.unconfigured"))
