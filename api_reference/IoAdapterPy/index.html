@@ -1290,7 +1290,7 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
         <details class="quote">
           <summary>Source code in <code>mmcif/io/IoAdapterPy.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">IoAdapterPy</span><span class="p">(</span><span class="n">IoAdapterBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF and BCIF data files -&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Python implementation of IoAdapterBase class providing essential read and write methods for mmCIF and BCIF data files -"""</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">readFile</span><span class="p">(</span>
@@ -1302,51 +1302,51 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
         <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cleanUp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mmcif&quot;</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="o">=</span><span class="s2">"mmcif"</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+        <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the data blocks in the input mmCIF or BCIF format data file into list of data or definition containers. The data category</span>
+<span class="w">        </span><span class="sd">"""Parse the data blocks in the input mmCIF or BCIF format data file into list of data or definition containers. The data category</span>
 <span class="sd">           content within each data block is stored a collection of DataCategory objects within each container.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            inputFilePath (string): Input file path</span>
-<span class="sd">            enforceAscii (bool, optional): Flag to require ASCII encoding when reading in &#39;mmcif&#39; file. See encoding error options. Defaults to False.</span>
+<span class="sd">            enforceAscii (bool, optional): Flag to require ASCII encoding when reading in 'mmcif' file. See encoding error options. Defaults to False.</span>
 <span class="sd">            selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)</span>
 <span class="sd">            excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list</span>
 <span class="sd">            logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)</span>
 <span class="sd">            outDirPath (string, optional): Path for translated/re-encoded files and default logfiles.</span>
 <span class="sd">            cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.</span>
-<span class="sd">            fmt (string, optional): Format of input file (either &quot;mmcif&quot; or &quot;bcif&quot;). Defaults to &quot;mmcif&quot;.</span>
+<span class="sd">            fmt (string, optional): Format of input file (either "mmcif" or "bcif"). Defaults to "mmcif".</span>
 <span class="sd">            timeout (float, optional): Timeout in seconds for fetching data from remote urls</span>
 
 <span class="sd">            # BCIF-specific args:</span>
 <span class="sd">            storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.</span>
-<span class="sd">            defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">            defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".</span>
 
 <span class="sd">            **kwargs: Placeholder for missing keyword arguments.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List of DataContainers: Contents of input file parsed into a list of DataContainer objects.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">filePath</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">)</span>
-        <span class="c1"># oPath = outDirPath if outDirPath else &#39;.&#39;</span>
+        <span class="c1"># oPath = outDirPath if outDirPath else '.'</span>
         <span class="n">oPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chooseTemporaryPath</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">outDirPath</span><span class="p">)</span>
         <span class="n">containerList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">enforceAscii</span><span class="p">:</span>
-            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;ascii&quot;</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"ascii"</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"utf-8"</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1">#</span>
             <span class="n">lPath</span> <span class="o">=</span> <span class="n">logFilePath</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">lPath</span><span class="p">:</span>
-                <span class="n">lPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDefaultFileName</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s2">&quot;cif-parser-log&quot;</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">oPath</span><span class="p">)</span>
+                <span class="n">lPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDefaultFileName</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s2">"cif-parser-log"</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">oPath</span><span class="p">)</span>
             <span class="c1">#</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_setLogFilePath</span><span class="p">(</span><span class="n">lPath</span><span class="p">)</span>
             <span class="c1"># ---</span>
@@ -1355,60 +1355,60 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
             <span class="c1">#</span>
             <span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="c1">#</span>
-            <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;mmcif&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"mmcif"</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isLocal</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
                     <span class="n">filePath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncompress</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">oPath</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_readEncodingErrors</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_readEncodingErrors</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
                         <span class="n">pRd</span> <span class="o">=</span> <span class="n">PdbxReader</span><span class="p">(</span><span class="n">ifh</span><span class="p">)</span>
                         <span class="n">pRd</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="n">excludeFlag</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>  <span class="c1"># handle files from the internet...</span>
-                    <span class="k">if</span> <span class="n">filePath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
-                        <span class="n">customHeader</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">}</span>
+                    <span class="k">if</span> <span class="n">filePath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".gz"</span><span class="p">):</span>
+                        <span class="n">customHeader</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Accept-Encoding"</span><span class="p">:</span> <span class="s2">"gzip"</span><span class="p">}</span>
                         <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">customHeader</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                                 <span class="n">ifh</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                             <span class="n">gzit</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">ifh</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
-                            <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">gzit</span><span class="p">)</span>
+                            <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">"ignore"</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">gzit</span><span class="p">)</span>
                             <span class="n">pRd</span> <span class="o">=</span> <span class="n">PdbxReader</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
                             <span class="n">pRd</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="n">excludeFlag</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                                 <span class="n">ifh</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-                            <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ifh</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">())</span>
+                            <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">"ignore"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ifh</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">())</span>
                             <span class="n">pRd</span> <span class="o">=</span> <span class="n">PdbxReader</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
                             <span class="n">pRd</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="n">excludeFlag</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;bcif&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"bcif"</span><span class="p">:</span>
                 <span class="c1"># local vs. remote and gzip business is already done in BinaryCifReader</span>
                 <span class="n">bcifRd</span> <span class="o">=</span> <span class="n">BinaryCifReader</span><span class="p">(</span><span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="n">storeStringsAsBytes</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="n">defaultStringEncoding</span><span class="p">)</span>
                 <span class="n">containerList</span> <span class="o">=</span> <span class="n">bcifRd</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports &#39;mmcif&#39; or &#39;bcif&#39;.&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports 'mmcif' or 'bcif'."</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">cleanUp</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">lPath</span><span class="p">,</span> <span class="n">lPath</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">filePath</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">),</span> <span class="n">filePath</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_setContainerProperties</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">),</span> <span class="n">load_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_getTimeStamp</span><span class="p">(),</span> <span class="n">uid</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="n">PdbxError</span><span class="p">,</span> <span class="n">PdbxSyntaxError</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">lPath</span> <span class="ow">and</span> <span class="n">cleanUp</span><span class="p">,</span> <span class="n">lPath</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ex</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">lPath</span> <span class="ow">and</span> <span class="n">cleanUp</span><span class="p">,</span> <span class="n">lPath</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">e</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failing read for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Failing read for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">containerList</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">getReadDiags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return diagnostics from last readFile operation. This will NOT be an exhaustive list but</span>
+<span class="w">        </span><span class="sd">"""Return diagnostics from last readFile operation. This will NOT be an exhaustive list but</span>
 <span class="sd">        rather the particular failure that raised a parsing exception.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readLogRecords</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">writeFile</span><span class="p">(</span>
@@ -1422,9 +1422,9 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
         <span class="n">columnAlignFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">useStopTokens</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">formattingStep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mmcif&quot;</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="o">=</span><span class="s2">"mmcif"</span><span class="p">,</span>
         <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+        <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
         <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1433,23 +1433,23 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
         <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write input list of data containers to the specified output file path in mmCIF or BCIF format.</span>
+<span class="w">        </span><span class="sd">"""Write input list of data containers to the specified output file path in mmCIF or BCIF format.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            outputFilePath (string): output file path</span>
 <span class="sd">            containerList (list DataContainer objects, optional)</span>
 <span class="sd">            maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)</span>
-<span class="sd">            enforceAscii (bool, optional): Enforce ASCII encoding when writing out &#39;mmcif&#39; file. Defaults to True.</span>
+<span class="sd">            enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to True.</span>
 <span class="sd">            lastInOrder (list of category names, optional): Move data categories in this list to end of each data block</span>
 <span class="sd">            selectOrder (list of category names, optional): Write only data categories on this list.</span>
 <span class="sd">            columnAlignFlag (bool, optional): Format the output in aligned columns (default=True) (Native Python Only)</span>
-<span class="sd">            useStopTokens (bool, optional): Include terminating &#39;stop_&#39; tokens at the end of mmCIF categories (loop_&#39;s) (Native Python only)</span>
+<span class="sd">            useStopTokens (bool, optional): Include terminating 'stop_' tokens at the end of mmCIF categories (loop_'s) (Native Python only)</span>
 <span class="sd">            formattingStep (int, optional): The number row samples within each category used to estimate maximum column width for data alignment (Native Python only)</span>
-<span class="sd">            fmt (string, optional): Format of output file (either &quot;mmcif&quot; or &quot;bcif&quot;). Defaults to &quot;mmcif&quot;.</span>
+<span class="sd">            fmt (string, optional): Format of output file (either "mmcif" or "bcif"). Defaults to "mmcif".</span>
 
 <span class="sd">            # BCIF-specific args:</span>
 <span class="sd">            storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.</span>
-<span class="sd">            defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">            defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".</span>
 <span class="sd">            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.</span>
 <span class="sd">            dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.</span>
 <span class="sd">            useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.</span>
@@ -1462,20 +1462,20 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Completion status</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">lastInOrder</span> <span class="o">=</span> <span class="n">lastInOrder</span> <span class="k">if</span> <span class="n">lastInOrder</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;pdbx_nonpoly_scheme&quot;</span><span class="p">,</span> <span class="s2">&quot;pdbx_poly_seq_scheme&quot;</span><span class="p">,</span> <span class="s2">&quot;atom_site&quot;</span><span class="p">,</span> <span class="s2">&quot;atom_site_anisotrop&quot;</span><span class="p">]</span>
+<span class="sd">        """</span>
+        <span class="n">lastInOrder</span> <span class="o">=</span> <span class="n">lastInOrder</span> <span class="k">if</span> <span class="n">lastInOrder</span> <span class="k">else</span> <span class="p">[</span><span class="s2">"pdbx_nonpoly_scheme"</span><span class="p">,</span> <span class="s2">"pdbx_poly_seq_scheme"</span><span class="p">,</span> <span class="s2">"atom_site"</span><span class="p">,</span> <span class="s2">"atom_site_anisotrop"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">enforceAscii</span><span class="p">:</span>
-                <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;ascii&quot;</span>
+                <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"ascii"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+                <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"utf-8"</span>
             <span class="c1">#</span>
             <span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="c1">#</span>
-            <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;mmcif&quot;</span><span class="p">:</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"mmcif"</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__writeFile</span><span class="p">(</span>
                         <span class="n">ofh</span><span class="p">,</span>
                         <span class="n">containerList</span><span class="p">,</span>
@@ -1488,7 +1488,7 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
                         <span class="n">enforceAscii</span><span class="o">=</span><span class="n">enforceAscii</span><span class="p">,</span>
                         <span class="n">cnvCharRefs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_useCharRefs</span><span class="p">,</span>
                     <span class="p">)</span>
-            <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;bcif&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"bcif"</span><span class="p">:</span>
                 <span class="n">bcifW</span> <span class="o">=</span> <span class="n">BinaryCifWriter</span><span class="p">(</span>
                     <span class="n">dictionaryApi</span><span class="o">=</span><span class="n">dictionaryApi</span><span class="p">,</span>
                     <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="n">storeStringsAsBytes</span><span class="p">,</span>
@@ -1501,15 +1501,15 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
                 <span class="p">)</span>
                 <span class="n">bcifW</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports &#39;mmcif&#39; or &#39;bcif&#39;.&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports 'mmcif' or 'bcif'."</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ex</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -1526,7 +1526,7 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
         <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">cnvCharRefs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method mapping arguments to PDBxWriter API.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Internal method mapping arguments to PDBxWriter API."""</span>
         <span class="c1">#</span>
         <span class="n">pdbxW</span> <span class="o">=</span> <span class="n">PdbxWriter</span><span class="p">(</span><span class="n">ofh</span><span class="p">)</span>
         <span class="n">pdbxW</span><span class="o">.</span><span class="n">setUseStopTokens</span><span class="p">(</span><span class="n">flag</span><span class="o">=</span><span class="n">useStopTokens</span><span class="p">)</span>
@@ -1540,9 +1540,9 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
     <span class="k">def</span><span class="w"> </span><span class="nf">__isLocal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">locSp</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">locSp</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">locSp</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"file"</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;For locator </span><span class="si">%r</span><span class="s2"> failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"For locator </span><span class="si">%r</span><span class="s2"> failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div>
         </details>
@@ -1577,9 +1577,9 @@ rather the particular failure that raised a parsing exception.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/IoAdapterPy.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getReadDiags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return diagnostics from last readFile operation. This will NOT be an exhaustive list but</span>
+<span class="w">    </span><span class="sd">"""Return diagnostics from last readFile operation. This will NOT be an exhaustive list but</span>
 <span class="sd">    rather the particular failure that raised a parsing exception.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readLogRecords</span><span class="p">()</span>
 </code></pre></div>
         </details>
@@ -1594,7 +1594,7 @@ rather the particular failure that raised a parsing exception.</p>
 
 
 <h4 id="mmcif.io.IoAdapterPy.IoAdapterPy.readFile" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;mmcif&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFilePath</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">selectList</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cleanUp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'mmcif'</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 </h4>
@@ -1721,51 +1721,51 @@ rather the particular failure that raised a parsing exception.</p>
     <span class="n">logFilePath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">outDirPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">cleanUp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mmcif&quot;</span><span class="p">,</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">"mmcif"</span><span class="p">,</span>
     <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+    <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the data blocks in the input mmCIF or BCIF format data file into list of data or definition containers. The data category</span>
+<span class="w">    </span><span class="sd">"""Parse the data blocks in the input mmCIF or BCIF format data file into list of data or definition containers. The data category</span>
 <span class="sd">       content within each data block is stored a collection of DataCategory objects within each container.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        inputFilePath (string): Input file path</span>
-<span class="sd">        enforceAscii (bool, optional): Flag to require ASCII encoding when reading in &#39;mmcif&#39; file. See encoding error options. Defaults to False.</span>
+<span class="sd">        enforceAscii (bool, optional): Flag to require ASCII encoding when reading in 'mmcif' file. See encoding error options. Defaults to False.</span>
 <span class="sd">        selectList (List, optional):  List of data category names to be extracted or excluded from the input file (default: select/extract)</span>
 <span class="sd">        excludeFlag (bool, optional): Flag to indicate selectList should be treated as an exclusion list</span>
 <span class="sd">        logFilePath (string, optional): Log file path (if not provided this will be derived from the input file.)</span>
 <span class="sd">        outDirPath (string, optional): Path for translated/re-encoded files and default logfiles.</span>
 <span class="sd">        cleanUp (bool, optional): Flag to automatically remove logs and temporary files on exit.</span>
-<span class="sd">        fmt (string, optional): Format of input file (either &quot;mmcif&quot; or &quot;bcif&quot;). Defaults to &quot;mmcif&quot;.</span>
+<span class="sd">        fmt (string, optional): Format of input file (either "mmcif" or "bcif"). Defaults to "mmcif".</span>
 <span class="sd">        timeout (float, optional): Timeout in seconds for fetching data from remote urls</span>
 
 <span class="sd">        # BCIF-specific args:</span>
 <span class="sd">        storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.</span>
-<span class="sd">        defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">        defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".</span>
 
 <span class="sd">        **kwargs: Placeholder for missing keyword arguments.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of DataContainers: Contents of input file parsed into a list of DataContainer objects.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">filePath</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">)</span>
-    <span class="c1"># oPath = outDirPath if outDirPath else &#39;.&#39;</span>
+    <span class="c1"># oPath = outDirPath if outDirPath else '.'</span>
     <span class="n">oPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chooseTemporaryPath</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">outDirPath</span><span class="p">)</span>
     <span class="n">containerList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">enforceAscii</span><span class="p">:</span>
-        <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;ascii&quot;</span>
+        <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"ascii"</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+        <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"utf-8"</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1">#</span>
         <span class="n">lPath</span> <span class="o">=</span> <span class="n">logFilePath</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">lPath</span><span class="p">:</span>
-            <span class="n">lPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDefaultFileName</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s2">&quot;cif-parser-log&quot;</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">oPath</span><span class="p">)</span>
+            <span class="n">lPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDefaultFileName</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">fileType</span><span class="o">=</span><span class="s2">"cif-parser-log"</span><span class="p">,</span> <span class="n">outDirPath</span><span class="o">=</span><span class="n">oPath</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setLogFilePath</span><span class="p">(</span><span class="n">lPath</span><span class="p">)</span>
         <span class="c1"># ---</span>
@@ -1774,54 +1774,54 @@ rather the particular failure that raised a parsing exception.</p>
         <span class="c1">#</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="c1">#</span>
-        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;mmcif&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"mmcif"</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isLocal</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
                 <span class="n">filePath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncompress</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">oPath</span><span class="p">)</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_readEncodingErrors</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_readEncodingErrors</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
                     <span class="n">pRd</span> <span class="o">=</span> <span class="n">PdbxReader</span><span class="p">(</span><span class="n">ifh</span><span class="p">)</span>
                     <span class="n">pRd</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="n">excludeFlag</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>  <span class="c1"># handle files from the internet...</span>
-                <span class="k">if</span> <span class="n">filePath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
-                    <span class="n">customHeader</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">}</span>
+                <span class="k">if</span> <span class="n">filePath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".gz"</span><span class="p">):</span>
+                    <span class="n">customHeader</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Accept-Encoding"</span><span class="p">:</span> <span class="s2">"gzip"</span><span class="p">}</span>
                     <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">customHeader</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                             <span class="n">ifh</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                         <span class="n">gzit</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">ifh</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
-                        <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">gzit</span><span class="p">)</span>
+                        <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">"ignore"</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">gzit</span><span class="p">)</span>
                         <span class="n">pRd</span> <span class="o">=</span> <span class="n">PdbxReader</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
                         <span class="n">pRd</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="n">excludeFlag</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span> <span class="k">as</span> <span class="n">ifh</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                             <span class="n">ifh</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-                        <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ifh</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">())</span>
+                        <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s2">"ignore"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ifh</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">())</span>
                         <span class="n">pRd</span> <span class="o">=</span> <span class="n">PdbxReader</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
                         <span class="n">pRd</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">selectList</span><span class="p">,</span> <span class="n">excludeFlag</span><span class="o">=</span><span class="n">excludeFlag</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;bcif&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"bcif"</span><span class="p">:</span>
             <span class="c1"># local vs. remote and gzip business is already done in BinaryCifReader</span>
             <span class="n">bcifRd</span> <span class="o">=</span> <span class="n">BinaryCifReader</span><span class="p">(</span><span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="n">storeStringsAsBytes</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="n">defaultStringEncoding</span><span class="p">)</span>
             <span class="n">containerList</span> <span class="o">=</span> <span class="n">bcifRd</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports &#39;mmcif&#39; or &#39;bcif&#39;.&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports 'mmcif' or 'bcif'."</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">cleanUp</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">lPath</span><span class="p">,</span> <span class="n">lPath</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">filePath</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">),</span> <span class="n">filePath</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setContainerProperties</span><span class="p">(</span><span class="n">containerList</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">inputFilePath</span><span class="p">),</span> <span class="n">load_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_getTimeStamp</span><span class="p">(),</span> <span class="n">uid</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">PdbxError</span><span class="p">,</span> <span class="n">PdbxSyntaxError</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">lPath</span> <span class="ow">and</span> <span class="n">cleanUp</span><span class="p">,</span> <span class="n">lPath</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ex</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"File </span><span class="si">%r</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_appendToLog</span><span class="p">([</span><span class="n">msg</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cleanupFile</span><span class="p">(</span><span class="n">lPath</span> <span class="ow">and</span> <span class="n">cleanUp</span><span class="p">,</span> <span class="n">lPath</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failing read for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Failing read for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">containerList</span>
 </code></pre></div>
         </details>
@@ -1836,7 +1836,7 @@ rather the particular failure that raised a parsing exception.</p>
 
 
 <h4 id="mmcif.io.IoAdapterPy.IoAdapterPy.writeFile" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columnAlignFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStopTokens</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">formattingStep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;mmcif&#39;</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columnAlignFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStopTokens</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">formattingStep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'mmcif'</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 </h4>
@@ -2000,9 +2000,9 @@ rather the particular failure that raised a parsing exception.</p>
     <span class="n">columnAlignFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">useStopTokens</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">formattingStep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mmcif&quot;</span><span class="p">,</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">"mmcif"</span><span class="p">,</span>
     <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+    <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
     <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -2011,23 +2011,23 @@ rather the particular failure that raised a parsing exception.</p>
     <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write input list of data containers to the specified output file path in mmCIF or BCIF format.</span>
+<span class="w">    </span><span class="sd">"""Write input list of data containers to the specified output file path in mmCIF or BCIF format.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        outputFilePath (string): output file path</span>
 <span class="sd">        containerList (list DataContainer objects, optional)</span>
 <span class="sd">        maxLineLength (int, optional): Maximum length of output line (content is wrapped beyond this length)</span>
-<span class="sd">        enforceAscii (bool, optional): Enforce ASCII encoding when writing out &#39;mmcif&#39; file. Defaults to True.</span>
+<span class="sd">        enforceAscii (bool, optional): Enforce ASCII encoding when writing out 'mmcif' file. Defaults to True.</span>
 <span class="sd">        lastInOrder (list of category names, optional): Move data categories in this list to end of each data block</span>
 <span class="sd">        selectOrder (list of category names, optional): Write only data categories on this list.</span>
 <span class="sd">        columnAlignFlag (bool, optional): Format the output in aligned columns (default=True) (Native Python Only)</span>
-<span class="sd">        useStopTokens (bool, optional): Include terminating &#39;stop_&#39; tokens at the end of mmCIF categories (loop_&#39;s) (Native Python only)</span>
+<span class="sd">        useStopTokens (bool, optional): Include terminating 'stop_' tokens at the end of mmCIF categories (loop_'s) (Native Python only)</span>
 <span class="sd">        formattingStep (int, optional): The number row samples within each category used to estimate maximum column width for data alignment (Native Python only)</span>
-<span class="sd">        fmt (string, optional): Format of output file (either &quot;mmcif&quot; or &quot;bcif&quot;). Defaults to &quot;mmcif&quot;.</span>
+<span class="sd">        fmt (string, optional): Format of output file (either "mmcif" or "bcif"). Defaults to "mmcif".</span>
 
 <span class="sd">        # BCIF-specific args:</span>
 <span class="sd">        storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.</span>
-<span class="sd">        defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to &quot;utf-8&quot;.</span>
+<span class="sd">        defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".</span>
 <span class="sd">        applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.</span>
 <span class="sd">        dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.</span>
 <span class="sd">        useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.</span>
@@ -2040,20 +2040,20 @@ rather the particular failure that raised a parsing exception.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Completion status</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">lastInOrder</span> <span class="o">=</span> <span class="n">lastInOrder</span> <span class="k">if</span> <span class="n">lastInOrder</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;pdbx_nonpoly_scheme&quot;</span><span class="p">,</span> <span class="s2">&quot;pdbx_poly_seq_scheme&quot;</span><span class="p">,</span> <span class="s2">&quot;atom_site&quot;</span><span class="p">,</span> <span class="s2">&quot;atom_site_anisotrop&quot;</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">lastInOrder</span> <span class="o">=</span> <span class="n">lastInOrder</span> <span class="k">if</span> <span class="n">lastInOrder</span> <span class="k">else</span> <span class="p">[</span><span class="s2">"pdbx_nonpoly_scheme"</span><span class="p">,</span> <span class="s2">"pdbx_poly_seq_scheme"</span><span class="p">,</span> <span class="s2">"atom_site"</span><span class="p">,</span> <span class="s2">"atom_site_anisotrop"</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Unsupported keyword arguments </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">enforceAscii</span><span class="p">:</span>
-            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;ascii&quot;</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"ascii"</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"utf-8"</span>
         <span class="c1">#</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="c1">#</span>
-        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;mmcif&quot;</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"mmcif"</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__writeFile</span><span class="p">(</span>
                     <span class="n">ofh</span><span class="p">,</span>
                     <span class="n">containerList</span><span class="p">,</span>
@@ -2066,7 +2066,7 @@ rather the particular failure that raised a parsing exception.</p>
                     <span class="n">enforceAscii</span><span class="o">=</span><span class="n">enforceAscii</span><span class="p">,</span>
                     <span class="n">cnvCharRefs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_useCharRefs</span><span class="p">,</span>
                 <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;bcif&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"bcif"</span><span class="p">:</span>
             <span class="n">bcifW</span> <span class="o">=</span> <span class="n">BinaryCifWriter</span><span class="p">(</span>
                 <span class="n">dictionaryApi</span><span class="o">=</span><span class="n">dictionaryApi</span><span class="p">,</span>
                 <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="n">storeStringsAsBytes</span><span class="p">,</span>
@@ -2079,15 +2079,15 @@ rather the particular failure that raised a parsing exception.</p>
             <span class="p">)</span>
             <span class="n">bcifW</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports &#39;mmcif&#39; or &#39;bcif&#39;.&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Unsupported fmt </span><span class="si">%r</span><span class="s2">. Currently only supports 'mmcif' or 'bcif'."</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ex</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Failing write for </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>

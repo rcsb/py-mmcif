@@ -1335,7 +1335,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DataCategoryTyped</span><span class="p">(</span><span class="n">DataCategory</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A subclass of DataCategory with methods to apply explicit data typing."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1350,7 +1350,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.</span>
+<span class="w">        </span><span class="sd">"""A subclass of DataCategory with methods to apply explicit data typing.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dataCategoryObj (object): DataCategory object instance</span>
@@ -1358,12 +1358,12 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
 <span class="sd">            raiseExceptions (bool, optional): raise exceptions. Defaults to True.</span>
 <span class="sd">            copyInputData (bool, optional): make a new copy input data. Defaults to True.</span>
 <span class="sd">            ignoreCastErrors (bool, optional): ignore data processing cast errors. Defaults to False.</span>
-<span class="sd">            useCifUnknowns (bool, optional): use CIF style missing values (&#39;.&#39; and &#39;?&#39;). Defaults to True.</span>
+<span class="sd">            useCifUnknowns (bool, optional): use CIF style missing values ('.' and '?'). Defaults to True.</span>
 <span class="sd">            missingValueString (str, optional): missing string value . Defaults to None.</span>
 <span class="sd">            missingValueInteger (integer, optional): missing integer value. Defaults to None.</span>
 <span class="sd">            missingValueFloat (float, optional): missing float value. Defaults to None.</span>
 <span class="sd">            applyMolStarTypes (bool, optional): use Mol* forced integer types.  Defaults to True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span> <span class="o">=</span> <span class="n">dataCategoryObj</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DataCategoryTyped</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span>
@@ -1375,8 +1375,8 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applyMolStarTypes&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"integer"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s2">"string"</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"applyMolStarTypes"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__typesSet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">applyTypes</span><span class="p">(</span>
@@ -1388,15 +1388,15 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">applyTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
-<span class="sd">        Missing values (&#39;.&#39; or &#39;?&#39;) are set to None.</span>
+<span class="w">        </span><span class="sd">"""Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
+<span class="sd">        Missing values ('.' or '?') are set to None.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            e: any exception</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True for success or False otherwise</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
@@ -1404,36 +1404,36 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
                 <span class="n">dataType</span><span class="p">,</span> <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">dataType</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">ignoreCastErrors</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-                    <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>  <span class="c1"># Treat undefined attributes as strings</span>
-                <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValueInteger</span> <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;integer&quot;</span> <span class="k">else</span> <span class="n">missingValueFloat</span> <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValueString</span>
-                <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValue</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">useCifUnknowns</span> <span class="k">else</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+                    <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"string"</span>  <span class="c1"># Treat undefined attributes as strings</span>
+                <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValueInteger</span> <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">"integer"</span> <span class="k">else</span> <span class="n">missingValueFloat</span> <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"integer"</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValueString</span>
+                <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValue</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">useCifUnknowns</span> <span class="k">else</span> <span class="s2">"."</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">"?"</span>
                 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValue</span>
+                        <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"?"</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValue</span>
                     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">ignoreCastErrors</span><span class="p">:</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cast error </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Cast error </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
                         <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">missingValue</span>
                 <span class="c1">#</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">])</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataType</span>
                 <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">e</span>
         <span class="k">return</span> <span class="n">ok</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+<span class="w">        </span><span class="sd">"""Get attribute data type (string, integer, or float) and optionality</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atName (str): attribute name</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">             (string, bool): data type (string, integer or float) and mandatory code</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">dataType</span><span class="p">,</span> <span class="n">mandatoryCode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">mandatoryCode</span>
@@ -1441,7 +1441,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">applyStringTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cast data types to strings in the current object.  Missing values are set to &#39;?&#39; and &#39;.&#39; for</span>
+<span class="w">        </span><span class="sd">"""Cast data types to strings in the current object.  Missing values are set to '?' and '.' for</span>
 <span class="sd">        optional and mandatory attributes, respectively.</span>
 
 <span class="sd">        Raises:</span>
@@ -1449,28 +1449,28 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True for success or False otherwise</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
                 <span class="n">_</span><span class="p">,</span> <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"string"</span>
                 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]:</span>
-                        <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span>
+                    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"?"</span><span class="p">]:</span>
+                        <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"."</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">"?"</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
                 <span class="c1">#</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataType</span>
                 <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">e</span>
         <span class="k">return</span> <span class="n">ok</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare the values by attribute for current typed data category (dca) and input data category.</span>
+<span class="w">        </span><span class="sd">"""Compare the values by attribute for current typed data category (dca) and input data category.</span>
 <span class="sd">        The comparison is performed for values of the attributes common to both objects. Length differences</span>
 <span class="sd">        are treated inequality out of hand.</span>
 
@@ -1486,10 +1486,10 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
 <span class="sd">        Returns:</span>
 <span class="sd">            list: [(attributeName, values equal/close flag (bool)), (attributeName, values equal/close flag (bool), ...]</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">floatRelTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floatRelTolerance&quot;</span><span class="p">,</span> <span class="mf">1.0e-05</span><span class="p">)</span>
-        <span class="n">floatAbsTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floatAbsTolerance&quot;</span><span class="p">,</span> <span class="mf">1.0e-04</span><span class="p">)</span>
+        <span class="n">floatRelTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"floatRelTolerance"</span><span class="p">,</span> <span class="mf">1.0e-05</span><span class="p">)</span>
+        <span class="n">floatAbsTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"floatAbsTolerance"</span><span class="p">,</span> <span class="mf">1.0e-04</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">sa</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">())</span>
             <span class="n">sb</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">())</span>
@@ -1503,12 +1503,12 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
                 <span class="c1"># If dictionary does not include definition, dataType will be</span>
                 <span class="c1"># None</span>
                 <span class="n">dataType</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"string"</span><span class="p">,</span> <span class="s2">"integer"</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
                         <span class="n">same</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">same</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="o">==</span> <span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;float&quot;</span><span class="p">]:</span>
+                <span class="k">elif</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"float"</span><span class="p">]:</span>
                     <span class="n">aVL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
                     <span class="n">bVL</span> <span class="o">=</span> <span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
@@ -1520,7 +1520,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
                         <span class="k">for</span> <span class="n">aV</span><span class="p">,</span> <span class="n">bV</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">aVL</span><span class="p">,</span> <span class="n">bVL</span><span class="p">):</span>
                             <span class="n">same</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isClose</span><span class="p">(</span><span class="n">aV</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="n">floatAbsTolerance</span><span class="p">)</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">same</span><span class="p">:</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (rel=</span><span class="si">%r</span><span class="s2">) (abs=</span><span class="si">%r</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%r</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">aV</span> <span class="o">*</span> <span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">floatAbsTolerance</span><span class="p">,</span> <span class="n">aV</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">aV</span> <span class="o">-</span> <span class="n">bV</span><span class="p">))</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (rel=</span><span class="si">%r</span><span class="s2">) (abs=</span><span class="si">%r</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%r</span><span class="s2">)"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">aV</span> <span class="o">*</span> <span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">floatAbsTolerance</span><span class="p">,</span> <span class="n">aV</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">aV</span> <span class="o">-</span> <span class="n">bV</span><span class="p">))</span>
                                 <span class="k">break</span>
                 <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">atName</span><span class="p">,</span> <span class="n">same</span><span class="p">))</span>
             <span class="c1">#</span>
@@ -1531,29 +1531,29 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <span class="k">return</span> <span class="n">rL</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+<span class="w">        </span><span class="sd">"""Get attribute data type (string, integer, or float) and optionality</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atName (str): attribute name</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (string, bool): data type (string, integer or float) and mandatory code</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Working on cat </span><span class="si">%r</span><span class="s2">, atName </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Working on cat </span><span class="si">%r</span><span class="s2">, atName </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
         <span class="n">cifDataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
         <span class="c1"># cifPrimitiveType = self.__dApi.getTypePrimitive(self.getName(), atName)</span>
-        <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getMandatoryCode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;implicit&quot;</span><span class="p">,</span> <span class="s2">&quot;implicit-ordinal&quot;</span><span class="p">]</span>
+        <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getMandatoryCode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"yes"</span><span class="p">,</span> <span class="s2">"implicit"</span><span class="p">,</span> <span class="s2">"implicit-ordinal"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">cifDataType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dataType</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">getPdbxItemType</span><span class="p">(</span><span class="n">cifDataType</span><span class="p">)</span>
-            <span class="c1"># dataType = &quot;integer&quot; if &quot;int&quot; in cifDataType else &quot;float&quot; if cifPrimitiveType == &quot;numb&quot; else &quot;string&quot;</span>
+            <span class="c1"># dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"</span>
 
         <span class="c1"># Allow for forced Mol* integer types</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
             <span class="n">nm</span> <span class="o">=</span> <span class="n">CifName</span><span class="p">()</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">inMolStarIntHints</span><span class="p">(</span><span class="n">nm</span><span class="p">):</span>
-                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"integer"</span>
 
         <span class="k">return</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">isMandatory</span>
 
@@ -1686,7 +1686,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
     <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory with methods to apply explicit data typing.</span>
+<span class="w">    </span><span class="sd">"""A subclass of DataCategory with methods to apply explicit data typing.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dataCategoryObj (object): DataCategory object instance</span>
@@ -1694,12 +1694,12 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
 <span class="sd">        raiseExceptions (bool, optional): raise exceptions. Defaults to True.</span>
 <span class="sd">        copyInputData (bool, optional): make a new copy input data. Defaults to True.</span>
 <span class="sd">        ignoreCastErrors (bool, optional): ignore data processing cast errors. Defaults to False.</span>
-<span class="sd">        useCifUnknowns (bool, optional): use CIF style missing values (&#39;.&#39; and &#39;?&#39;). Defaults to True.</span>
+<span class="sd">        useCifUnknowns (bool, optional): use CIF style missing values ('.' and '?'). Defaults to True.</span>
 <span class="sd">        missingValueString (str, optional): missing string value . Defaults to None.</span>
 <span class="sd">        missingValueInteger (integer, optional): missing integer value. Defaults to None.</span>
 <span class="sd">        missingValueFloat (float, optional): missing float value. Defaults to None.</span>
 <span class="sd">        applyMolStarTypes (bool, optional): use Mol* forced integer types.  Defaults to True.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span> <span class="o">=</span> <span class="n">dataCategoryObj</span>
     <span class="nb">super</span><span class="p">(</span><span class="n">DataCategoryTyped</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span>
@@ -1711,8 +1711,8 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
     <span class="c1">#</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;applyMolStarTypes&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"integer"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s2">"string"</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"applyMolStarTypes"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">__typesSet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">applyTypes</span><span class="p">(</span>
@@ -1778,7 +1778,7 @@ optional and mandatory attributes, respectively.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">applyStringTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cast data types to strings in the current object.  Missing values are set to &#39;?&#39; and &#39;.&#39; for</span>
+<span class="w">    </span><span class="sd">"""Cast data types to strings in the current object.  Missing values are set to '?' and '.' for</span>
 <span class="sd">    optional and mandatory attributes, respectively.</span>
 
 <span class="sd">    Raises:</span>
@@ -1786,22 +1786,22 @@ optional and mandatory attributes, respectively.</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True for success or False otherwise</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-            <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
+            <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"string"</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]:</span>
-                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"?"</span><span class="p">]:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"."</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">"?"</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
             <span class="c1">#</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataType</span>
             <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>
     <span class="k">return</span> <span class="n">ok</span>
@@ -1861,15 +1861,15 @@ Missing values ('.' or '?') are set to None.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">applyTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useCifUnknowns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missingValueString</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueInteger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missingValueFloat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
-<span class="sd">    Missing values (&#39;.&#39; or &#39;?&#39;) are set to None.</span>
+<span class="w">    </span><span class="sd">"""Cast data types (string, integer, float) in the current object based on dictionary type details.</span>
+<span class="sd">    Missing values ('.' or '?') are set to None.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        e: any exception</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True for success or False otherwise</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
@@ -1877,23 +1877,23 @@ Missing values ('.' or '?') are set to None.</p>
             <span class="n">dataType</span><span class="p">,</span> <span class="n">isMandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dataType</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">ignoreCastErrors</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>  <span class="c1"># Treat undefined attributes as strings</span>
-            <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValueInteger</span> <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">&quot;integer&quot;</span> <span class="k">else</span> <span class="n">missingValueFloat</span> <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValueString</span>
-            <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValue</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">useCifUnknowns</span> <span class="k">else</span> <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"string"</span>  <span class="c1"># Treat undefined attributes as strings</span>
+            <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValueInteger</span> <span class="k">if</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">"integer"</span> <span class="k">else</span> <span class="n">missingValueFloat</span> <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"integer"</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValueString</span>
+            <span class="n">missingValue</span> <span class="o">=</span> <span class="n">missingValue</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">useCifUnknowns</span> <span class="k">else</span> <span class="s2">"."</span> <span class="k">if</span> <span class="n">isMandatory</span> <span class="k">else</span> <span class="s2">"?"</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValue</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__castD</span><span class="p">[</span><span class="n">dataType</span><span class="p">](</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"?"</span><span class="p">]</span> <span class="k">else</span> <span class="n">missingValue</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">ignoreCastErrors</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cast error </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Cast error </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
                     <span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">missingValue</span>
             <span class="c1">#</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__attributeTypeD</span><span class="p">[</span><span class="n">atName</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataType</span>
             <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raiseExceptions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>
     <span class="k">return</span> <span class="n">ok</span>
@@ -1991,7 +1991,7 @@ are treated inequality out of hand.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cmpAttributeValues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcObj</span><span class="p">,</span> <span class="n">ignoreOrder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the values by attribute for current typed data category (dca) and input data category.</span>
+<span class="w">    </span><span class="sd">"""Compare the values by attribute for current typed data category (dca) and input data category.</span>
 <span class="sd">    The comparison is performed for values of the attributes common to both objects. Length differences</span>
 <span class="sd">    are treated inequality out of hand.</span>
 
@@ -2007,10 +2007,10 @@ are treated inequality out of hand.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        list: [(attributeName, values equal/close flag (bool)), (attributeName, values equal/close flag (bool), ...]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">rL</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">floatRelTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floatRelTolerance&quot;</span><span class="p">,</span> <span class="mf">1.0e-05</span><span class="p">)</span>
-    <span class="n">floatAbsTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floatAbsTolerance&quot;</span><span class="p">,</span> <span class="mf">1.0e-04</span><span class="p">)</span>
+    <span class="n">floatRelTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"floatRelTolerance"</span><span class="p">,</span> <span class="mf">1.0e-05</span><span class="p">)</span>
+    <span class="n">floatAbsTolerance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"floatAbsTolerance"</span><span class="p">,</span> <span class="mf">1.0e-04</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">sa</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">())</span>
         <span class="n">sb</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">())</span>
@@ -2024,12 +2024,12 @@ are treated inequality out of hand.</p>
             <span class="c1"># If dictionary does not include definition, dataType will be</span>
             <span class="c1"># None</span>
             <span class="n">dataType</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"string"</span><span class="p">,</span> <span class="s2">"integer"</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
                     <span class="n">same</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">same</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span> <span class="o">==</span> <span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;float&quot;</span><span class="p">]:</span>
+            <span class="k">elif</span> <span class="n">dataType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"float"</span><span class="p">]:</span>
                 <span class="n">aVL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
                 <span class="n">bVL</span> <span class="o">=</span> <span class="n">dcObj</span><span class="o">.</span><span class="n">getAttributeValueList</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">ignoreOrder</span><span class="p">:</span>
@@ -2041,7 +2041,7 @@ are treated inequality out of hand.</p>
                     <span class="k">for</span> <span class="n">aV</span><span class="p">,</span> <span class="n">bV</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">aVL</span><span class="p">,</span> <span class="n">bVL</span><span class="p">):</span>
                         <span class="n">same</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isClose</span><span class="p">(</span><span class="n">aV</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">relTol</span><span class="o">=</span><span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">absTol</span><span class="o">=</span><span class="n">floatAbsTolerance</span><span class="p">)</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">same</span><span class="p">:</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (rel=</span><span class="si">%r</span><span class="s2">) (abs=</span><span class="si">%r</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%r</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">aV</span> <span class="o">*</span> <span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">floatAbsTolerance</span><span class="p">,</span> <span class="n">aV</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">aV</span> <span class="o">-</span> <span class="n">bV</span><span class="p">))</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> (rel=</span><span class="si">%r</span><span class="s2">) (abs=</span><span class="si">%r</span><span class="s2">) </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%r</span><span class="s2">)"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">,</span> <span class="n">aV</span> <span class="o">*</span> <span class="n">floatRelTolerance</span><span class="p">,</span> <span class="n">floatAbsTolerance</span><span class="p">,</span> <span class="n">aV</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">aV</span> <span class="o">-</span> <span class="n">bV</span><span class="p">))</span>
                             <span class="k">break</span>
             <span class="n">rL</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">atName</span><span class="p">,</span> <span class="n">same</span><span class="p">))</span>
         <span class="c1">#</span>
@@ -2109,14 +2109,14 @@ are treated inequality out of hand.</p>
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryTyped.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getAttributeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get attribute data type (string, integer, or float) and optionality</span>
+<span class="w">    </span><span class="sd">"""Get attribute data type (string, integer, or float) and optionality</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        atName (str): attribute name</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">         (string, bool): data type (string, integer or float) and mandatory code</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">dataType</span><span class="p">,</span> <span class="n">mandatoryCode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeInfo</span><span class="p">(</span><span class="n">atName</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">mandatoryCode</span>

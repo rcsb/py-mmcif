@@ -1301,7 +1301,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <details class="quote">
           <summary>Source code in <code>mmcif/api/DataCategoryFormatted.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DataCategoryFormatted</span><span class="p">(</span><span class="n">DataCategory</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass of DataCategory including additional formatting methods.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A subclass of DataCategory including additional formatting methods."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataCategoryObj</span><span class="p">,</span> <span class="n">preferDoubleQuotes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dcObj</span> <span class="o">=</span> <span class="n">dataCategoryObj</span>
@@ -1315,43 +1315,43 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <span class="c1">#</span>
         <span class="c1"># --------------------------------------------------------------------</span>
         <span class="c1"># any whitespace</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__wsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s&quot;</span><span class="p">)</span>
-        <span class="c1"># self.__wsAndQuotesRe=re.compile(r&quot;[\s&#39;\&quot;]&quot;)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__wsAndQuotesRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\s&#39;</span><span class="se">\&quot;</span><span class="s2">#]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\s"</span><span class="p">)</span>
+        <span class="c1"># self.__wsAndQuotesRe=re.compile(r"[\s'\"]")</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wsAndQuotesRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[\s'</span><span class="se">\"</span><span class="s2">#]"</span><span class="p">)</span>
         <span class="c1"># any newline or carriage control</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__nlRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\n\r]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__nlRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[\n\r]"</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># single quote</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[&#39;]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[']"</span><span class="p">)</span>
         <span class="c1">#</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__sqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(&#39;\s)|(\s&#39;)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"('\s)|(\s')"</span><span class="p">)</span>
 
         <span class="c1"># double quote</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[&quot;]&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;\s)|(\s&quot;)&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">'["]'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">'("\s)|(\s")'</span><span class="p">)</span>
         <span class="c1">#</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__intRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[0-9]+$&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__floatRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^-?(([0-9]+)[.]?|([0-9]*[.][0-9]+))([(][0-9]+[)])?([eE][+-]?[0-9]+)?$&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__intRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^[0-9]+$"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__floatRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^-?(([0-9]+)[.]?|([0-9]*[.][0-9]+))([(][0-9]+[)])?([eE][+-]?[0-9]+)?$"</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;DT_NULL_VALUE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;DT_INTEGER&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;DT_FLOAT&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;DT_UNQUOTED_STRING&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;DT_ITEM_NAME&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span><span class="p">,</span>
+            <span class="s2">"DT_NULL_VALUE"</span><span class="p">,</span>
+            <span class="s2">"DT_INTEGER"</span><span class="p">,</span>
+            <span class="s2">"DT_FLOAT"</span><span class="p">,</span>
+            <span class="s2">"DT_UNQUOTED_STRING"</span><span class="p">,</span>
+            <span class="s2">"DT_ITEM_NAME"</span><span class="p">,</span>
+            <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">,</span>
+            <span class="s2">"DT_SINGLE_QUOTED_STRING"</span><span class="p">,</span>
+            <span class="s2">"DT_MULTI_LINE_STRING"</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__formatTypeList</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;FT_NULL_VALUE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;FT_NUMBER&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;FT_NUMBER&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;FT_UNQUOTED_STRING&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;FT_QUOTED_STRING&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;FT_QUOTED_STRING&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;FT_QUOTED_STRING&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;FT_MULTI_LINE_STRING&quot;</span><span class="p">,</span>
+            <span class="s2">"FT_NULL_VALUE"</span><span class="p">,</span>
+            <span class="s2">"FT_NUMBER"</span><span class="p">,</span>
+            <span class="s2">"FT_NUMBER"</span><span class="p">,</span>
+            <span class="s2">"FT_UNQUOTED_STRING"</span><span class="p">,</span>
+            <span class="s2">"FT_QUOTED_STRING"</span><span class="p">,</span>
+            <span class="s2">"FT_QUOTED_STRING"</span><span class="p">,</span>
+            <span class="s2">"FT_QUOTED_STRING"</span><span class="p">,</span>
+            <span class="s2">"FT_MULTI_LINE_STRING"</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="c1">#</span>
         <span class="c1"># try:</span>
@@ -1362,164 +1362,164 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <span class="c1"># self.__string_types = basestring</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format input data following PDBx quoting rules -&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Format input data following PDBx quoting rules -"""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">inp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="s2">"?"</span><span class="p">,</span> <span class="s2">"DT_NULL_VALUE"</span><span class="p">)</span>
 
             <span class="c1"># pure numerical values are returned as unquoted strings</span>
             <span class="c1"># if (isinstance(inp, int) or self.__intRe.search(str(inp))):</span>
             <span class="c1">#</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)],</span> <span class="s2">&quot;DT_INTEGER&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)],</span> <span class="s2">"DT_INTEGER"</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">pass</span>
 
             <span class="c1"># if (isinstance(inp, float) or self.__floatRe.search(str(inp))):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__floatRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)],</span> <span class="s2">&quot;DT_FLOAT&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)],</span> <span class="s2">"DT_FLOAT"</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">pass</span>
 
             <span class="c1"># null value handling -</span>
 
-            <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span> <span class="ow">or</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">&quot;?&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">([</span><span class="n">inp</span><span class="p">],</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">"."</span> <span class="ow">or</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">"?"</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">([</span><span class="n">inp</span><span class="p">],</span> <span class="s2">"DT_NULL_VALUE"</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">([</span><span class="s2">&quot;.&quot;</span><span class="p">],</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">([</span><span class="s2">"."</span><span class="p">],</span> <span class="s2">"DT_NULL_VALUE"</span><span class="p">)</span>
 
             <span class="c1"># Contains white space or quotes ?</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__wsAndQuotesRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                <span class="c1"># if inp.startswith(&quot;_&quot;):</span>
-                <span class="k">if</span> <span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="p">]:</span>
-                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_ITEM_NAME&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;;&quot;</span><span class="p">]:</span>
-                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">inp</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;data_&quot;</span><span class="p">,</span> <span class="s2">&quot;loop_&quot;</span><span class="p">,</span> <span class="s2">&quot;save_&quot;</span><span class="p">,</span> <span class="s2">&quot;stop_&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">inp</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;global_&quot;</span><span class="p">]:</span>
-                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                <span class="c1"># if inp.startswith("_"):</span>
+                <span class="k">if</span> <span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"_"</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_ITEM_NAME"</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"["</span><span class="p">,</span> <span class="s2">"]"</span><span class="p">,</span> <span class="s2">"$"</span><span class="p">,</span> <span class="s2">"#"</span><span class="p">,</span> <span class="s2">";"</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">inp</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"data_"</span><span class="p">,</span> <span class="s2">"loop_"</span><span class="p">,</span> <span class="s2">"save_"</span><span class="p">,</span> <span class="s2">"stop_"</span><span class="p">]</span> <span class="ow">or</span> <span class="n">inp</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"global_"</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)],</span> <span class="s2">&quot;DT_UNQUOTED_STRING&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)],</span> <span class="s2">"DT_UNQUOTED_STRING"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nlRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_MULTI_LINE_STRING"</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__preferDoubleQuotes</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__avoidEmbeddedQuoting</span><span class="p">:</span>
                             <span class="c1"># change priority to choose double quoting where possible.</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqWsRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqWsRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_SINGLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_MULTI_LINE_STRING"</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="c1"># change priority to choose double quoting where possible.</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_SINGLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_MULTI_LINE_STRING"</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__avoidEmbeddedQuoting</span><span class="p">:</span>
                             <span class="c1"># change priority to choose double quoting where possible.</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqWsRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_SINGLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqWsRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_MULTI_LINE_STRING"</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="c1"># change priority to choose double quoting where possible.</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__singleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_SINGLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__doubleQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__semiColonQuotedList</span><span class="p">(</span><span class="n">inp</span><span class="p">),</span> <span class="s2">"DT_MULTI_LINE_STRING"</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2"> on input </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">inp</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">inp</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2"> on input </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">inp</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">inp</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">"?"</span><span class="p">,</span> <span class="s2">"DT_NULL_VALUE"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__dataTypePdbx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect the PDBx data type -&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Detect the PDBx data type -"""</span>
         <span class="k">if</span> <span class="n">inp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span>
+            <span class="k">return</span> <span class="s2">"DT_NULL_VALUE"</span>
 
         <span class="c1"># pure numerical values are returned as unquoted strings</span>
         <span class="c1"># if isinstance(inp, int) or self.__intRe.search(str(inp)):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="s2">&quot;DT_INTEGER&quot;</span>
+            <span class="k">return</span> <span class="s2">"DT_INTEGER"</span>
 
         <span class="c1"># if isinstance(inp, float) or self.__floatRe.search(str(inp)):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__floatRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="s2">&quot;DT_FLOAT&quot;</span>
+            <span class="k">return</span> <span class="s2">"DT_FLOAT"</span>
 
         <span class="c1"># null value handling -</span>
 
-        <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span> <span class="ow">or</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">&quot;?&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span>
+        <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">"."</span> <span class="ow">or</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">"?"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"DT_NULL_VALUE"</span>
 
-        <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;DT_NULL_VALUE&quot;</span>
+        <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"DT_NULL_VALUE"</span>
 
         <span class="c1"># Contains white space or quotes ?</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__wsAndQuotesRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="s2">&quot;DT_ITEM_NAME&quot;</span>
+            <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">"DT_ITEM_NAME"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s2">&quot;DT_UNQUOTED_STRING&quot;</span>
+                <span class="k">return</span> <span class="s2">"DT_UNQUOTED_STRING"</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nlRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                <span class="k">return</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span>
+                <span class="k">return</span> <span class="s2">"DT_MULTI_LINE_STRING"</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__avoidEmbeddedQuoting</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqWsRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span>
+                        <span class="k">return</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span>
                     <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqWsRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span>
+                        <span class="k">return</span> <span class="s2">"DT_SINGLE_QUOTED_STRING"</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span>
+                        <span class="k">return</span> <span class="s2">"DT_MULTI_LINE_STRING"</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span>
+                        <span class="k">return</span> <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span>
                     <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span>
+                        <span class="k">return</span> <span class="s2">"DT_SINGLE_QUOTED_STRING"</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span>
+                        <span class="k">return</span> <span class="s2">"DT_MULTI_LINE_STRING"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__singleQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
         <span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ll</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__doubleQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
         <span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'"'</span><span class="p">)</span>
         <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'"'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ll</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__semiColonQuotedList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
         <span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">inp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
-            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+        <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">inp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">:</span>
+            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
             <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
-            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
+            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
             <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
-            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
+            <span class="n">ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">ll</span>
 
@@ -1537,26 +1537,26 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rowI</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">fList</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attribute</span><span class="p">)])</span>
-                <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
+                <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;attributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"attributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot; Failing with </span><span class="si">%s</span><span class="s2"> - AttributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">" Failing with </span><span class="si">%s</span><span class="s2"> - AttributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot; Type error - AttributeName </span><span class="si">%r</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot; Type error - string types </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">" Type error - AttributeName </span><span class="si">%r</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">" Type error - string types </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">getValueFormattedByIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fList</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
             <span class="k">raise</span> <span class="ne">IndexError</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">  - attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">  - attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
             <span class="k">raise</span> <span class="n">e</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">getAttributeValueMaxLengthList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -1575,14 +1575,14 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
     <span class="k">def</span><span class="w"> </span><span class="nf">getFormatTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">curFormatTypeList</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">curDataTypeList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DT_NULL_VALUE&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))]</span>
+            <span class="n">curDataTypeList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"DT_NULL_VALUE"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))]</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[::</span><span class="n">steps</span><span class="p">]:</span>
                 <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)):</span>
                     <span class="n">val</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
-                    <span class="c1"># print &quot;index &quot;,indx,&quot; val &quot;,val</span>
+                    <span class="c1"># print "index ",indx," val ",val</span>
                     <span class="n">dType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypePdbx</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
                     <span class="n">dIndx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dType</span><span class="p">)</span>
-                    <span class="c1"># print &quot;d type&quot;, dType, &quot; d type index &quot;,dIndx</span>
+                    <span class="c1"># print "d type", dType, " d type index ",dIndx</span>
 
                     <span class="n">cType</span> <span class="o">=</span> <span class="n">curDataTypeList</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
                     <span class="n">cIndx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cType</span><span class="p">)</span>
@@ -1595,7 +1595,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
                 <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
                 <span class="n">curFormatTypeList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__formatTypeList</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">curFormatTypeList</span><span class="p">,</span> <span class="n">curDataTypeList</span>
 </code></pre></div>
@@ -1643,43 +1643,43 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
     <span class="c1">#</span>
     <span class="c1"># --------------------------------------------------------------------</span>
     <span class="c1"># any whitespace</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__wsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s&quot;</span><span class="p">)</span>
-    <span class="c1"># self.__wsAndQuotesRe=re.compile(r&quot;[\s&#39;\&quot;]&quot;)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__wsAndQuotesRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\s&#39;</span><span class="se">\&quot;</span><span class="s2">#]&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__wsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\s"</span><span class="p">)</span>
+    <span class="c1"># self.__wsAndQuotesRe=re.compile(r"[\s'\"]")</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__wsAndQuotesRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[\s'</span><span class="se">\"</span><span class="s2">#]"</span><span class="p">)</span>
     <span class="c1"># any newline or carriage control</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__nlRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\n\r]&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__nlRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[\n\r]"</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="c1"># single quote</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[&#39;]&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__sqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[']"</span><span class="p">)</span>
     <span class="c1">#</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__sqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(&#39;\s)|(\s&#39;)&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__sqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"('\s)|(\s')"</span><span class="p">)</span>
 
     <span class="c1"># double quote</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[&quot;]&#39;</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__dqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;\s)|(\s&quot;)&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__dqRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">'["]'</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__dqWsRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">'("\s)|(\s")'</span><span class="p">)</span>
     <span class="c1">#</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__intRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[0-9]+$&quot;</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__floatRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^-?(([0-9]+)[.]?|([0-9]*[.][0-9]+))([(][0-9]+[)])?([eE][+-]?[0-9]+)?$&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__intRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^[0-9]+$"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__floatRe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^-?(([0-9]+)[.]?|([0-9]*[.][0-9]+))([(][0-9]+[)])?([eE][+-]?[0-9]+)?$"</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;DT_NULL_VALUE&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DT_INTEGER&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DT_FLOAT&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DT_UNQUOTED_STRING&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DT_ITEM_NAME&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DT_DOUBLE_QUOTED_STRING&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DT_SINGLE_QUOTED_STRING&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DT_MULTI_LINE_STRING&quot;</span><span class="p">,</span>
+        <span class="s2">"DT_NULL_VALUE"</span><span class="p">,</span>
+        <span class="s2">"DT_INTEGER"</span><span class="p">,</span>
+        <span class="s2">"DT_FLOAT"</span><span class="p">,</span>
+        <span class="s2">"DT_UNQUOTED_STRING"</span><span class="p">,</span>
+        <span class="s2">"DT_ITEM_NAME"</span><span class="p">,</span>
+        <span class="s2">"DT_DOUBLE_QUOTED_STRING"</span><span class="p">,</span>
+        <span class="s2">"DT_SINGLE_QUOTED_STRING"</span><span class="p">,</span>
+        <span class="s2">"DT_MULTI_LINE_STRING"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__formatTypeList</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;FT_NULL_VALUE&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FT_NUMBER&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FT_NUMBER&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FT_UNQUOTED_STRING&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FT_QUOTED_STRING&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FT_QUOTED_STRING&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FT_QUOTED_STRING&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FT_MULTI_LINE_STRING&quot;</span><span class="p">,</span>
+        <span class="s2">"FT_NULL_VALUE"</span><span class="p">,</span>
+        <span class="s2">"FT_NUMBER"</span><span class="p">,</span>
+        <span class="s2">"FT_NUMBER"</span><span class="p">,</span>
+        <span class="s2">"FT_UNQUOTED_STRING"</span><span class="p">,</span>
+        <span class="s2">"FT_QUOTED_STRING"</span><span class="p">,</span>
+        <span class="s2">"FT_QUOTED_STRING"</span><span class="p">,</span>
+        <span class="s2">"FT_QUOTED_STRING"</span><span class="p">,</span>
+        <span class="s2">"FT_MULTI_LINE_STRING"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="c1">#</span>
     <span class="c1"># try:</span>
@@ -1749,14 +1749,14 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getFormatTypeList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">curFormatTypeList</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">curDataTypeList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DT_NULL_VALUE&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))]</span>
+        <span class="n">curDataTypeList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"DT_NULL_VALUE"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">))]</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[::</span><span class="n">steps</span><span class="p">]:</span>
             <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="p">)):</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
-                <span class="c1"># print &quot;index &quot;,indx,&quot; val &quot;,val</span>
+                <span class="c1"># print "index ",indx," val ",val</span>
                 <span class="n">dType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypePdbx</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
                 <span class="n">dIndx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dType</span><span class="p">)</span>
-                <span class="c1"># print &quot;d type&quot;, dType, &quot; d type index &quot;,dIndx</span>
+                <span class="c1"># print "d type", dType, " d type index ",dIndx</span>
 
                 <span class="n">cType</span> <span class="o">=</span> <span class="n">curDataTypeList</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
                 <span class="n">cIndx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cType</span><span class="p">)</span>
@@ -1769,7 +1769,7 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
             <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataTypeList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
             <span class="n">curFormatTypeList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__formatTypeList</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">curFormatTypeList</span><span class="p">,</span> <span class="n">curDataTypeList</span>
 </code></pre></div>
@@ -1809,15 +1809,15 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rowI</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fList</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_attributeNameList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">attribute</span><span class="p">)])</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;attributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"attributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
             <span class="k">raise</span> <span class="ne">IndexError</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot; Failing with </span><span class="si">%s</span><span class="s2"> - AttributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">" Failing with </span><span class="si">%s</span><span class="s2"> - AttributeName </span><span class="si">%s</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot; Type error - AttributeName </span><span class="si">%r</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot; Type error - string types </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">" Type error - AttributeName </span><span class="si">%r</span><span class="s2"> rowI </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">attributeName</span><span class="p">,</span> <span class="n">rowI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowI</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">" Type error - string types </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringTypes</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -1845,12 +1845,12 @@ mmcif.api.DataCategory.DataCategory            (DataCategoryBase)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getValueFormattedByIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">fList</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formatPdbx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fList</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
         <span class="k">raise</span> <span class="ne">IndexError</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failing with </span><span class="si">%s</span><span class="s2">  - attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">  - attributeIndex </span><span class="si">%r</span><span class="s2"> rowIndex </span><span class="si">%r</span><span class="s2"> rowdata </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">attributeIndex</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">][</span><span class="n">attributeIndex</span><span class="p">])</span>
         <span class="k">raise</span> <span class="n">e</span>
 </code></pre></div>
         </details>
