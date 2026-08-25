@@ -42,12 +42,12 @@ class BinaryCifConfigTests(unittest.TestCase):
             MASK_ENCODING_CHAIN,
         ]
         for chain in chains:
-            self.assertIsInstance(chain, tuple)
+            self.assertIsInstance(chain, list)
             self.assertTrue(set(chain) <= SUPPORTED_ENCODERS)
 
         for item_name, item_config in FORCED_FLOAT_ITEMS.items():
             with self.subTest(item_name=item_name):
-                self.assertIsInstance(item_config.integer_chain, tuple)
+                self.assertIsInstance(item_config.integer_chain, list)
                 self.assertTrue(set(item_config.integer_chain) <= SUPPORTED_ENCODERS)
                 if item_config.factor is not None:
                     self.assertIsInstance(item_config.factor, int)

@@ -8,7 +8,7 @@
 
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Optional, Tuple, List
+from typing import Optional, List
 
 
 MISSING_VALUE_TOKENS = frozenset({".", "?"})  # List of sentinels

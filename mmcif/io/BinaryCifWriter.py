@@ -802,7 +802,7 @@ class BinaryCifEncoders(object):
         # factor and post-FixedPoint integer chain.
         if itemConfig is not None and itemConfig.factor is not None:
             factor = itemConfig.factor
-            encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain  # TODO Change "integer_chain" name
+            encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
                 factor,
