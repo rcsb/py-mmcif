@@ -678,7 +678,7 @@ class BinaryCifEncoders(object):
     def __encodeBestFixedPointChain(self, colDataList, factor):
         """Try the four FixedPoint integer chains and return the smallest output."""
         candidateEncoderLists = [
-            (("FixedPoint", factor),) + integerChain
+            [("FixedPoint", factor)] + integerChain
             for integerChain in FIXED_POINT_CANDIDATE_INTEGER_CHAINS
         ]
 
@@ -802,7 +802,7 @@ class BinaryCifEncoders(object):
         # factor and post-FixedPoint integer chain.
         if itemConfig is not None and itemConfig.factor is not None:
             factor = itemConfig.factor
-            encoderList = (("FixedPoint", factor),) + itemConfig.integer_chain
+            encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain  # TODO Change "integer_chain" name
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
                 factor,
@@ -821,7 +821,7 @@ class BinaryCifEncoders(object):
                     return self.__encodeFloatStringFallback(colDataList, colMaskList)
                 return self.encode(maskedColDataList, fallbackEncoderList, "float")
 
-            encoderList = (("FixedPoint", factor),) + itemConfig.integer_chain
+            encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
                 factor,
@@ -849,7 +849,7 @@ class BinaryCifEncoders(object):
                 return self.encode(maskedColDataList, fallbackEncoderList, "float")
             return encodedColDataList, encodingDictL
 
-        encoderList = (("FixedPoint", factor),) + DEFAULT_FIXED_POINT_INTEGER_CHAIN
+        encoderList = [("FixedPoint", factor)] + DEFAULT_FIXED_POINT_INTEGER_CHAIN
         return self.__encodeFixedPointChainOrFallback(
             maskedColDataList,
             factor,

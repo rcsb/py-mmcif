@@ -57,7 +57,7 @@ class BinaryCifConfigTests(unittest.TestCase):
         self.assertIsInstance(MISSING_VALUE_TOKENS, frozenset)
         self.assertIsInstance(FORCED_STRING_ITEMS, frozenset)
         self.assertIsInstance(FORCED_INTEGER_ITEMS, frozenset)
-        self.assertIsInstance(FIXED_POINT_CANDIDATE_INTEGER_CHAINS, tuple)
+        self.assertIsInstance(FIXED_POINT_CANDIDATE_INTEGER_CHAINS, list)
         with self.assertRaises(TypeError):
             FORCED_FLOAT_ITEMS["_test.value"] = object()
 

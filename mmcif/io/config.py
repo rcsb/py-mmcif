@@ -8,7 +8,7 @@
 
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 
 
 MISSING_VALUE_TOKENS = frozenset({".", "?"})  # List of sentinels
@@ -43,16 +43,16 @@ FORCED_INTEGER_ITEMS = frozenset({
 })
 
 SUPPORTED_ENCODERS = frozenset({"FixedPoint", "Delta", "RunLength", "IntegerPacking", "ByteArray"})
-DEFAULT_INTEGER_CHAIN = ("Delta", "RunLength", "IntegerPacking", "ByteArray")
-MASK_ENCODING_CHAIN = ("RunLength", "ByteArray")
-FLOAT_BYTE_ARRAY_FALLBACK_CHAIN = ("ByteArray",)
-DEFAULT_FIXED_POINT_INTEGER_CHAIN = ("Delta", "RunLength", "IntegerPacking", "ByteArray")
-FIXED_POINT_CANDIDATE_INTEGER_CHAINS = (
-    ("IntegerPacking", "ByteArray"),
-    ("RunLength", "IntegerPacking", "ByteArray"),
-    ("Delta", "IntegerPacking", "ByteArray"),
-    ("Delta", "RunLength", "IntegerPacking", "ByteArray"),
-)
+DEFAULT_INTEGER_CHAIN = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
+MASK_ENCODING_CHAIN = ["RunLength", "ByteArray"]
+FLOAT_BYTE_ARRAY_FALLBACK_CHAIN = ["ByteArray"]
+DEFAULT_FIXED_POINT_INTEGER_CHAIN = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
+FIXED_POINT_CANDIDATE_INTEGER_CHAINS = [
+    ["IntegerPacking", "ByteArray"],
+    ["RunLength", "IntegerPacking", "ByteArray"],
+    ["Delta", "IntegerPacking", "ByteArray"],
+    ["Delta", "RunLength", "IntegerPacking", "ByteArray"],
+]
 
 
 @dataclass(frozen=True)
@@ -85,10 +85,21 @@ TYPE_DETECTION_CONFIG = TypeDetectionConfig(
 
 @dataclass(frozen=True)
 class FloatEncodingConfig:
-    """FixedPoint factor and immutable post-FixedPoint integer chain."""
+    """FixedPoint factor and immutable post-FixedPoint integer chain.
+
+    Attributes:
+        factor (int or None): FixedPoint scaling factor.
+            - Provided as None -> no fixed factor; the caller is expected to
+              auto-detect a safe factor from the column's data (used below
+              for a handful of high-volume items that need this).
+            - Provided as an int -> always use that fixed factor.
+        integer_chain (list or None): the integer encoder chain for this item,
+            following FixedPoint conversion, e.g. ["Delta", "IntegerPacking", "ByteArray"].
+            Note that ("FixedPoint", factor) is preprended by BinaryCifWriter.
+    """
 
     factor: Optional[int]
-    integer_chain: Tuple[str, ...]
+    integer_chain: List[str, ...]
 
 
 class BinaryCifEncodingConfig:
@@ -132,82 +143,84 @@ class BinaryCifEncodingConfig:
 
         # ---- Cartesian coordinates: factor 1000, FixedPoint -> Delta -> IntegerPacking -> ByteArray ----
         # PDB / standard model coordinates
-        "_atom_site.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_atom_site.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_atom_site.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_atom_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_atom_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_atom_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # PDBx/mmCIF chemical component coordinates
-        "_chem_comp_atom.model_Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_chem_comp_atom.model_Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_chem_comp_atom.model_Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_chem_comp_atom.pdbx_model_Cartn_x_ideal": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_chem_comp_atom.pdbx_model_Cartn_y_ideal": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_chem_comp_atom.pdbx_model_Cartn_z_ideal": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_chem_comp_atom.model_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_chem_comp_atom.model_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_chem_comp_atom.model_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_chem_comp_atom.pdbx_model_Cartn_x_ideal": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_chem_comp_atom.pdbx_model_Cartn_y_ideal": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_chem_comp_atom.pdbx_model_Cartn_z_ideal": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # PDBx/mmCIF phasing-site coordinates
-        "_phasing_MIR_der_site.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_phasing_MIR_der_site.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_phasing_MIR_der_site.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_phasing_MAD_set_site.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_phasing_MAD_set_site.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_phasing_MAD_set_site.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_phasing_MIR_der_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_phasing_MIR_der_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_phasing_MIR_der_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_phasing_MAD_set_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_phasing_MAD_set_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_phasing_MAD_set_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # PDBx/mmCIF solvent atom-site mapping coordinates
-        "_pdbx_solvent_atom_site_mapping.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_solvent_atom_site_mapping.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_solvent_atom_site_mapping.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_pdbx_solvent_atom_site_mapping.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_solvent_atom_site_mapping.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_solvent_atom_site_mapping.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_solvent_atom_site_mapping.pre_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_solvent_atom_site_mapping.pre_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_pdbx_solvent_atom_site_mapping.pre_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # ModelCIF / CSM template coordinates
-        "_ma_template_coord.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ma_template_coord.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ma_template_coord.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_ma_template_coord.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ma_template_coord.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ma_template_coord.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # IHM coordinates
-        "_ihm_starting_model_coord.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_starting_model_coord.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_starting_model_coord.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_sphere_obj_site.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_sphere_obj_site.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_sphere_obj_site.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_gaussian_obj_site.mean_Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_gaussian_obj_site.mean_Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_gaussian_obj_site.mean_Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_pseudo_site.Cartn_x": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_pseudo_site.Cartn_y": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_ihm_pseudo_site.Cartn_z": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_ihm_starting_model_coord.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_starting_model_coord.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_starting_model_coord.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_sphere_obj_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_sphere_obj_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_sphere_obj_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_gaussian_obj_site.mean_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_gaussian_obj_site.mean_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_gaussian_obj_site.mean_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_gaussian_obj_ensemble.mean_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_gaussian_obj_ensemble.mean_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_gaussian_obj_ensemble.mean_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_pseudo_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_pseudo_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_ihm_pseudo_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # FLR / FPS coordinates
-        "_flr_FPS_mean_probe_position.mpp_xcoord": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_flr_FPS_mean_probe_position.mpp_ycoord": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_flr_FPS_mean_probe_position.mpp_zcoord": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_flr_FPS_MPP_atom_position.xcoord": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_flr_FPS_MPP_atom_position.ycoord": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_flr_FPS_MPP_atom_position.zcoord": FloatEncodingConfig(1000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_flr_FPS_mean_probe_position.mpp_xcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_flr_FPS_mean_probe_position.mpp_ycoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_flr_FPS_mean_probe_position.mpp_zcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_flr_FPS_MPP_atom_position.xcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_flr_FPS_MPP_atom_position.ycoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_flr_FPS_MPP_atom_position.zcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # ---- Anisotropic displacement U matrix: factor 10000, FixedPoint -> Delta -> IntegerPacking -> ByteArray ----
-        "_atom_site_anisotrop.U[1][1]": FloatEncodingConfig(10000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_atom_site_anisotrop.U[1][2]": FloatEncodingConfig(10000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_atom_site_anisotrop.U[1][3]": FloatEncodingConfig(10000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_atom_site_anisotrop.U[2][2]": FloatEncodingConfig(10000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_atom_site_anisotrop.U[2][3]": FloatEncodingConfig(10000, ("Delta", "IntegerPacking", "ByteArray")),
-        "_atom_site_anisotrop.U[3][3]": FloatEncodingConfig(10000, ("Delta", "IntegerPacking", "ByteArray")),
+        "_atom_site_anisotrop.U[1][1]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_atom_site_anisotrop.U[1][2]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_atom_site_anisotrop.U[1][3]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_atom_site_anisotrop.U[2][2]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_atom_site_anisotrop.U[2][3]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
+        "_atom_site_anisotrop.U[3][3]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
 
         # ---- IHM sphere object radius: factor 1000, no Delta/RunLength ----
-        "_ihm_sphere_obj_site.object_radius": FloatEncodingConfig(1000, ("IntegerPacking", "ByteArray")),
+        "_ihm_sphere_obj_site.object_radius": FloatEncodingConfig(1000, ["IntegerPacking", "ByteArray"]),
 
         # ---- High-volume float items: factor auto-detected from data, RunLength chain ----
-        "_atom_site.occupancy": FloatEncodingConfig(None, ("RunLength", "IntegerPacking", "ByteArray")),
+        # NOTE: Setting factor=None means the caller is expected to auto-detect a safe factor from the column's data,
+        #       and prepend the "FixedPoint" step to the encoder list with that factor.
+        "_atom_site.occupancy": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
 
-        "_atom_site.B_iso_or_equiv": FloatEncodingConfig(None, ("RunLength", "IntegerPacking", "ByteArray")),
-        "_ihm_sphere_obj_site.rmsf": FloatEncodingConfig(None, ("RunLength", "IntegerPacking", "ByteArray")),
+        "_atom_site.B_iso_or_equiv": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
+        "_ihm_sphere_obj_site.rmsf": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
 
-        "_ihm_starting_model_coord.B_iso_or_equiv": FloatEncodingConfig(None, ("RunLength", "IntegerPacking", "ByteArray")),
+        "_ihm_starting_model_coord.B_iso_or_equiv": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
     })
 
     # -----------------------------------------------------------------------
@@ -251,12 +264,12 @@ def validate_binary_cif_config():
     if FORCED_INTEGER_ITEMS & set(FORCED_FLOAT_ITEMS):
         errors.append("forced integer items cannot have float configurations")
 
-    reusable_chains = FIXED_POINT_CANDIDATE_INTEGER_CHAINS + (
+    reusable_chains = FIXED_POINT_CANDIDATE_INTEGER_CHAINS + [
         DEFAULT_FIXED_POINT_INTEGER_CHAIN,
         DEFAULT_INTEGER_CHAIN,
         FLOAT_BYTE_ARRAY_FALLBACK_CHAIN,
         MASK_ENCODING_CHAIN,
-    )
+    ]
     for chain in reusable_chains:
         unsupported = set(chain) - SUPPORTED_ENCODERS
         if unsupported:
