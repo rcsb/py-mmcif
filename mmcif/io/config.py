@@ -99,7 +99,7 @@ class FloatEncodingConfig:
     """
 
     factor: Optional[int]
-    integer_chain: List[str, ...]
+    integer_chain: List[str]
 
 
 class BinaryCifEncodingConfig:
