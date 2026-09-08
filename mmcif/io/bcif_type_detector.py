@@ -8,35 +8,29 @@ Exports
 ColumnProfile   : dataclass holding all classification results for one column
 classify_column : scan a column list once and return a populated ColumnProfile
 
-This module has no dependency on the BinaryCIF writer, the dictionaryApi,
-or any mmcif library.  It can be imported and used independently.
+This module has no dependency on the BinaryCIF writer or dictionaryApi.
+It consumes immutable policy from mmcif.io.config and can otherwise be used
+independently.
 
 The three-way col_type result ("int" | "float" | "str") is a direct
 replacement for the dictionaryApi.getTypeCode() → getPdbxItemType() chain
-used in BinaryCifWriter.py.  The additional profile fields (int_width,
-max_decimals, is_sequential, has_long_runs, unique_ratio) are available
-to the writer for more precise encoding pipeline selection, but can be
-ignored if only the basic type is needed.
+used in BinaryCifWriter.py. The writer currently consumes only col_type;
+the additional profile fields are retained for callers and future encoding
+pipeline selection.
 """
 
 import re
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Optional
+
+from mmcif.io.config import MISSING_VALUE_TOKENS, TYPE_DETECTION_CONFIG, TypeDetectionConfig
 
 # ---------------------------------------------------------------------------
 # Module-level compiled regex — built once, shared across all calls
 # ---------------------------------------------------------------------------
 
-_INT   = re.compile(r"^-?\d+$")
 _FLOAT = re.compile(r"^-?\d+\.\d*$|^-?\d*\.\d+$")
 
-# BinaryCIF sentinel values — these represent missing/unknown data, not values
-_SENTINELS = {".", "?"}
-
-# If True (default), a column that would otherwise classify as "float" is forced to
-# "str" when it has fewer than _MIN_FLOAT_ROWS present (non-sentinel) values.
-FORCE_SMALL_FLOAT_AS_STRING = True
-MIN_ROWS_TO_CLASSIFY_AS_FLOAT = 3
 
 
 # ---------------------------------------------------------------------------
@@ -82,7 +76,11 @@ class ColumnProfile:
 # classify_column — the single public entry point
 # ---------------------------------------------------------------------------
 
-def classify_column(values: list, force_small_float_as_string: bool = None) -> ColumnProfile:
+def classify_column(
+    values: list,
+    force_small_float_as_string: Optional[bool] = None,
+    type_detection_config: Optional[TypeDetectionConfig] = None,
+) -> ColumnProfile:
     """
     Scan a column once and return a fully populated ColumnProfile.
 
@@ -110,17 +108,24 @@ def classify_column(values: list, force_small_float_as_string: bool = None) -> C
         May contain strings, ints, floats, None, ".", "?".
 
     force_small_float_as_string : bool, optional
-        Overrides the module-level FORCE_SMALL_FLOAT_AS_STRING flag for this
-        call only. If None (default), the module-level flag is used.
-        When effectively True, a column that would classify as "float" but
-        has fewer than 3 present (non-sentinel) values is forced to "str"
-        instead.
+        Compatibility override for the configured small-float switch.
+    type_detection_config : TypeDetectionConfig, optional
+        Immutable policy for this call. Defaults to TYPE_DETECTION_CONFIG.
+        When the effective switch is True, a column that would classify as
+        "float" but has fewer than the configured number of present
+        non-sentinel values is forced to "str".
 
     Returns
     -------
     ColumnProfile
         Fully populated.  col_type is always set to "int", "float", or "str".
     """
+    type_detection_config = type_detection_config or TYPE_DETECTION_CONFIG
+    force_small = (
+        type_detection_config.force_small_float_as_string
+        if force_small_float_as_string is None
+        else force_small_float_as_string
+    )
     p = ColumnProfile()
 
     # type-probe state
@@ -146,7 +151,7 @@ def classify_column(values: list, force_small_float_as_string: bool = None) -> C
     for v in values:
 
         # --- sentinel gate (cheapest check) ---
-        if v is None or v in _SENTINELS:
+        if v is None or v in MISSING_VALUE_TOKENS:
             sentinels += 1
             continue
 
@@ -257,9 +262,8 @@ def classify_column(values: list, force_small_float_as_string: bool = None) -> C
         else:                            p.int_width = "int32"
 
     elif all_float:
-        # Assigns str data type to float columns with less than a set number of rows.
-        force_small = FORCE_SMALL_FLOAT_AS_STRING if force_small_float_as_string is None else force_small_float_as_string
-        if force_small and total < MIN_ROWS_TO_CLASSIFY_AS_FLOAT:
+        # Apply the configurable small-float override only when enabled.
+        if force_small and total < type_detection_config.min_rows_to_classify_as_float:
             p.col_type = "str"
         else:
             p.col_type   = "float"

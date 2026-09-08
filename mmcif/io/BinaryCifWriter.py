@@ -13,9 +13,8 @@
 #     If supplied, it is used only as a fallback for all-sentinel/empty columns.
 #   - DataCategoryTyped pre-casting is skipped when dictionaryApi is None.
 #   - __encodeColumnData() casts raw string values to int/float before encoding.
-#   - __getAttributeType() uses classify_column() as primary type resolver.
-#   - _FORCE_STRING_ATTRS overrides auto-detection for char-typed attributes
-#     that look numeric (e.g. _audit_conform.dict_version = "5.281").
+#   - __getAttributeType() uses centralized item policy before
+#     bcif_type_detector.classify_column().
 #
 #   15-Jul-2026 ym
 #   - Added FixedPoint float encoding with IntegerPacking, RunLength, and Delta
@@ -36,7 +35,16 @@ import warnings
 from mmcif.api.DataCategoryTyped import DataCategoryTyped, DataCategoryHints
 from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
-from mmcif.io.config import BCIF_CONFIG
+from mmcif.io.config import (
+    BCIF_CONFIG,
+    DEFAULT_FIXED_POINT_INTEGER_CHAIN,
+    DEFAULT_INTEGER_CHAIN,
+    FIXED_POINT_CANDIDATE_INTEGER_CHAINS,
+    FLOAT_BYTE_ARRAY_FALLBACK_CHAIN,
+    MASK_ENCODING_CHAIN,
+    MISSING_VALUE_TOKENS,
+    get_forced_type,
+)
 
 from mmcif.io.bcif_type_detector import classify_column
 
@@ -129,7 +137,9 @@ class BinaryCifWriter(object):
 
                         logger.debug("catName %r atName %r dataType %r", catName, atName, dataType)
                         # Pass category/item names so float columns can use coordinate-specific hints
-                        colMaskDict, encodedColDataList, encodingDictL = self.__encodeColumnData(colDataList, dataType, catName, atName)
+                        colMaskDict, encodedColDataList, encodingDictL = self.__encodeColumnData(
+                            colDataList, dataType, catName, atName
+                        )
                         cols.append(
                             {
                                 self.__toBytes("name"): self.__toBytes(atName),
@@ -157,7 +167,6 @@ class BinaryCifWriter(object):
         colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
         enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
         #
-        maskEncoderList = ["RunLength", "ByteArray"]
         typeEncoderD = {"string": "StringArrayMasked", "integer": "IntArrayMasked", "float": "FloatArrayMasked"}
         colMaskList = enc.getMask(colDataList)
 
@@ -167,16 +176,15 @@ class BinaryCifWriter(object):
         # Cast here using the dataType already determined by __getAttributeType.
         # Sentinel values (".", "?", None) are left untouched so getMask()
         # results remain valid.
-        _SENTINELS = {".", "?"}
         if self.__useAutoDetect and dataType == "integer":
             colDataList = [
-                v if (v is None or v in _SENTINELS)
+                v if (v is None or v in MISSING_VALUE_TOKENS)
                 else (v if isinstance(v, int) else int(v))
                 for v in colDataList
             ]
         elif self.__useAutoDetect and dataType == "float":
             colDataList = [
-                v if (v is None or v in _SENTINELS)
+                v if (v is None or v in MISSING_VALUE_TOKENS)
                 else (v if isinstance(v, float) else float(v))
                 for v in colDataList
             ]
@@ -187,7 +195,7 @@ class BinaryCifWriter(object):
         if colMaskList:
             # Mol* indicates that masks should be encoded as if uint_8
             colMaskListTyped = TypedArray(colMaskList, "unsigned_integer_8")
-            maskEncoded, maskEncodingDictL = enc.encode(colMaskListTyped, maskEncoderList, "integer")
+            maskEncoded, maskEncodingDictL = enc.encode(colMaskListTyped, MASK_ENCODING_CHAIN, "integer")
             colMaskDict = {self.__toBytes("data"): maskEncoded.data, self.__toBytes("encoding"): maskEncodingDictL}
         return colMaskDict, colDataEncoded, colDataEncodingDictL
 
@@ -206,132 +214,6 @@ class BinaryCifWriter(object):
             logger.exception("Bad type for %r", strVal)
         return strVal
 
-    # Attributes whose values look numeric but must always be encoded as strings.
-    # These are declared as primitive type "char" in the PDBx/mmCIF dictionary.
-    # Auto-detection would wrongly classify them as int or float without this
-    # override (e.g. _audit_conform.dict_version = "5.281" looks like a float).
-    # Key format: "_category.attribute"  (category name with leading underscore,
-    # case-sensitive).
-    _FORCE_STRING_ATTRS = frozenset({
-        "_audit_conform.dict_version",
-        "_audit_conform.dict_location",
-        "_audit_conform.dict_name",
-        "_atom_site.group_PDB",
-        "_atom_site.type_symbol",
-        "_atom_site.label_atom_id",
-        "_atom_site.label_comp_id",
-        "_atom_site.label_asym_id",
-        "_atom_site.auth_comp_id",
-        "_atom_site.auth_asym_id",
-        "_atom_site.auth_atom_id"
-    })
-
-    _FORCE_INTEGER_ATTRS = frozenset({
-        "_atom_site.id",
-        "_atom_site.auth_seq_id",
-        "_atom_site_anisotrop.id",
-        "_atom_site.label_seq_id",
-        "_atom_site.pdbx_PDB_model_num",
-        "_pdbx_struct_mod_residue.auth_seq_id",
-        "_struct_conf.beg_auth_seq_id",
-        "_struct_conf.end_auth_seq_id",
-        "_struct_conn.ptnr1_auth_seq_id",
-        "_struct_conn.ptnr2_auth_seq_id",
-        "_struct_sheet_range.beg_auth_seq_id",
-        "_struct_sheet_range.end_auth_seq_id",
-    })
-
-    _FORCE_FLOAT_ATTRS = frozenset({
-        "_atom_site.Cartn_x",
-        "_atom_site.Cartn_y",
-        "_atom_site.Cartn_z",
-        "_atom_site.occupancy",
-        "_atom_site.B_iso_or_equiv",
-
-        # PDBx/mmCIF chemical component Cartesian coordinates
-        "_chem_comp_atom.model_Cartn_x",
-        "_chem_comp_atom.model_Cartn_y",
-        "_chem_comp_atom.model_Cartn_z",
-        "_chem_comp_atom.pdbx_model_Cartn_x_ideal",
-        "_chem_comp_atom.pdbx_model_Cartn_y_ideal",
-        "_chem_comp_atom.pdbx_model_Cartn_z_ideal",
-
-        # PDBx/mmCIF phasing-site Cartesian coordinates
-        "_phasing_MIR_der_site.Cartn_x",
-        "_phasing_MIR_der_site.Cartn_y",
-        "_phasing_MIR_der_site.Cartn_z",
-        "_pdbx_phasing_MAD_set_site.Cartn_x",
-        "_pdbx_phasing_MAD_set_site.Cartn_y",
-        "_pdbx_phasing_MAD_set_site.Cartn_z",
-
-        # PDBx/mmCIF solvent atom-site mapping coordinates
-        "_pdbx_solvent_atom_site_mapping.Cartn_x",
-        "_pdbx_solvent_atom_site_mapping.Cartn_y",
-        "_pdbx_solvent_atom_site_mapping.Cartn_z",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_x",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_y",
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_z",
-
-        # CSM / ModelCIF template Cartesian coordinates
-        "_ma_template_coord.Cartn_x",
-        "_ma_template_coord.Cartn_y",
-        "_ma_template_coord.Cartn_z",
-
-        # IHM starting-model atomic Cartesian coordinates
-        "_ihm_starting_model_coord.Cartn_x",
-        "_ihm_starting_model_coord.Cartn_y",
-        "_ihm_starting_model_coord.Cartn_z",
-
-        # IHM coarse sphere Cartesian coordinates
-        "_ihm_sphere_obj_site.Cartn_x",
-        "_ihm_sphere_obj_site.Cartn_y",
-        "_ihm_sphere_obj_site.Cartn_z",
-
-        # IHM Gaussian-object mean Cartesian coordinates
-        "_ihm_gaussian_obj_site.mean_Cartn_x",
-        "_ihm_gaussian_obj_site.mean_Cartn_y",
-        "_ihm_gaussian_obj_site.mean_Cartn_z",
-
-        # IHM Gaussian-ensemble mean Cartesian coordinates
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_x",
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_y",
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_z",
-
-        # IHM pseudo-site Cartesian coordinates
-        "_ihm_pseudo_site.Cartn_x",
-        "_ihm_pseudo_site.Cartn_y",
-        "_ihm_pseudo_site.Cartn_z",
-
-        # FLR/FPS mean probe position coordinates
-        "_flr_FPS_mean_probe_position.mpp_xcoord",
-        "_flr_FPS_mean_probe_position.mpp_ycoord",
-        "_flr_FPS_mean_probe_position.mpp_zcoord",
-
-        # FLR/FPS MPP atom position coordinates
-        "_flr_FPS_MPP_atom_position.xcoord",
-        "_flr_FPS_MPP_atom_position.ycoord",
-        "_flr_FPS_MPP_atom_position.zcoord",
-    })
-
-    def __getForcedAttributeType(self, catName, atName):
-        """
-        Return forced data type for known attributes.
-
-        This avoids scanning the full column with classify_column()
-        when the attribute type is already known.
-        """
-        atKey = "_%s.%s" % (catName, atName)
-
-        if atKey in self._FORCE_STRING_ATTRS:
-            return "string"
-
-        if atKey in self._FORCE_INTEGER_ATTRS:
-            return "integer"
-
-        if atKey in self._FORCE_FLOAT_ATTRS:
-            return "float"
-
-        return None
 
     def __getAttributeType(self, catName, atName, colDataList):
         """Resolve a column type without changing either legacy path.
@@ -353,17 +235,16 @@ class BinaryCifWriter(object):
             else:
                 dataType = self.__dch.getPdbxItemType(cifDataType)
 
-            # Mol* integer hints only apply to the dictionary-driven path.
-            # In auto-detect mode, every attribute inMolStarIntHints() covers
-            # is already present in _FORCE_INTEGER_ATTRS, so this is a no-op
-            # there — confirmed by diffing the two sets.
+            # Mol* integer hints apply only to the dictionary-driven path.
+            # Auto-detect mode resolves configured integer policy before
+            # falling back to schema-less classification.
             if self.__applyTypes and self.__applyMolStarTypes:
                 nm = CifName().itemName(catName, atName)
                 if self.__dch.inMolStarIntHints(nm):
                     dataType = "integer"
 
         else:
-            forcedType = self.__getForcedAttributeType(catName, atName)
+            forcedType = get_forced_type(CifName().itemName(catName, atName))
             if forcedType is not None:
                 logger.debug(
                     "Forced type override applied for %s.%s -> %s",
@@ -417,7 +298,6 @@ class BinaryCifEncoders(object):
             storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.
             useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.
         """
-        self.__unknown = [".", "?"]
         self.__defaultStringEncoding = defaultStringEncoding
         self.__storeStringsAsBytes = storeStringsAsBytes
         self.__useFloat64 = useFloat64
@@ -504,7 +384,12 @@ class BinaryCifEncoders(object):
             encodedColDataList, encodingDictL = self.intArrayMaskedEncoder(colDataList, colMaskList)
         # Pass category/item names only to the float encoder
         elif encodingType == "FloatArrayMasked":
-            encodedColDataList, encodingDictL = self.floatArrayMaskedEncoder(colDataList, colMaskList, catName=catName, atName=atName)
+            encodedColDataList, encodingDictL = self.floatArrayMaskedEncoder(
+                colDataList,
+                colMaskList,
+                catName=catName,
+                atName=atName,
+            )
         else:
             logger.info("unsupported masked encoding %r", encodingType)
         return encodedColDataList, encodingDictL
@@ -739,7 +624,7 @@ class BinaryCifEncoders(object):
                 continue
 
             valueString = str(val).strip()
-            if valueString in self.__unknown:
+            if valueString in MISSING_VALUE_TOKENS:
                 continue
 
             if "e" in valueString.lower():
@@ -793,10 +678,8 @@ class BinaryCifEncoders(object):
     def __encodeBestFixedPointChain(self, colDataList, factor):
         """Try the four FixedPoint integer chains and return the smallest output."""
         candidateEncoderLists = [
-            [("FixedPoint", factor), "IntegerPacking", "ByteArray"],
-            [("FixedPoint", factor), "RunLength", "IntegerPacking", "ByteArray"],
-            [("FixedPoint", factor), "Delta", "IntegerPacking", "ByteArray"],
-            [("FixedPoint", factor), "Delta", "RunLength", "IntegerPacking", "ByteArray"],
+            [("FixedPoint", factor)] + integerChain
+            for integerChain in FIXED_POINT_CANDIDATE_INTEGER_CHAINS
         ]
 
         bestSize = None
@@ -830,7 +713,7 @@ class BinaryCifEncoders(object):
         Returns:
             (list, list): encoded data column, list of encoding instructions
         """
-        integerEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
+        integerEncoderList = DEFAULT_INTEGER_CHAIN
         uniqStringIndex = {}  # keys are substrings, values indices
         uniqStringList = []
         indexList = []
@@ -872,7 +755,7 @@ class BinaryCifEncoders(object):
         Returns:
             (list, list): encoded data column, list of encoding instructions
         """
-        integerEncoderList = ["Delta", "RunLength", "IntegerPacking", "ByteArray"]
+        integerEncoderList = DEFAULT_INTEGER_CHAIN
 
         if colMaskList:
             # Mol* and BinaryCif specification https://github.com/molstar/BinaryCIF/blob/master/encoding.md
@@ -890,19 +773,19 @@ class BinaryCifEncoders(object):
             numericValues = [float(v) for v in colDataList]
 
             if not all(math.isfinite(v) for v in numericValues):
-                return self.encode(colDataList, ["ByteArray"], "float")
+                return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
 
             fixedPointValues = [
                 self.__roundLikeMolStar(v * factor)
                 for v in numericValues
             ]
             if not self.__fitsInt32(fixedPointValues):
-                return self.encode(colDataList, ["ByteArray"], "float")
+                return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
 
             return self.encode(colDataList, encoderList, "float")
         except Exception as e:
             logger.debug("Falling back from the fixed float chain for %s: %s", itemName, str(e))
-            return self.encode(colDataList, ["ByteArray"], "float")
+            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
 
     def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None):
         """Encode a float column, preserving its incompleteness mask."""
@@ -911,15 +794,15 @@ class BinaryCifEncoders(object):
         else:
             maskedColDataList = colDataList
 
-        fallbackEncoderList = ["ByteArray"]
+        fallbackEncoderList = FLOAT_BYTE_ARRAY_FALLBACK_CHAIN
         itemName = self.__getItemName(catName, atName)
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
-        # Forced float items with a fixed factor always use their configured
-        # factor and encoder chain.
+        # Configured float items with a fixed factor use their configured
+        # factor and post-FixedPoint integer chain.
         if itemConfig is not None and itemConfig.factor is not None:
             factor = itemConfig.factor
-            encoderList = BCIF_CONFIG.get_float_encoder_list(itemName)
+            encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
                 factor,
@@ -938,10 +821,7 @@ class BinaryCifEncoders(object):
                     return self.__encodeFloatStringFallback(colDataList, colMaskList)
                 return self.encode(maskedColDataList, fallbackEncoderList, "float")
 
-            encoderList = [
-                ("FixedPoint", factor),
-                *itemConfig.encoderList,
-            ]
+            encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
                 factor,
@@ -969,13 +849,7 @@ class BinaryCifEncoders(object):
                 return self.encode(maskedColDataList, fallbackEncoderList, "float")
             return encodedColDataList, encodingDictL
 
-        encoderList = [
-            ("FixedPoint", factor),
-            "Delta",
-            "RunLength",
-            "IntegerPacking",
-            "ByteArray",
-        ]
+        encoderList = [("FixedPoint", factor)] + DEFAULT_FIXED_POINT_INTEGER_CHAIN
         return self.__encodeFixedPointChainOrFallback(
             maskedColDataList,
             factor,
@@ -995,7 +869,7 @@ class BinaryCifEncoders(object):
         """
         mask = None
         for ii, colVal in enumerate(colDataList):
-            if colVal is not None and colVal not in self.__unknown:
+            if colVal is not None and colVal not in MISSING_VALUE_TOKENS:
                 continue
             if not mask:
                 mask = [0] * len(colDataList)
