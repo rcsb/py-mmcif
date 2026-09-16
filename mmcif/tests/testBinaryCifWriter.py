@@ -80,7 +80,7 @@ class BinaryCifWriterTests(unittest.TestCase):
         # 8CCS caused failure to decode
         self.__testCifList = ["1BNA", "1A2C", "1ACJ", "1J59", "1D3I",
                               "1ONX", "1PGA", "4CXL", "5ZMZ", "200L",
-                              "4HHB", #"7NO1", "1OCD", "8CCS"
+                              "4HHB",  # "7NO1", "1OCD", "8CCS"
                               ]
         self.__testBcifOutput = os.path.join(self.__pathOutputDir, "1bna-generated.bcif")
         self.__testBcifTranslated = os.path.join(self.__pathOutputDir, "1bna-generated-translated.bcif")
@@ -142,14 +142,14 @@ class BinaryCifWriterTests(unittest.TestCase):
 
     def testSerializeAutoDetect(self):
         """Dictionary-free counterpart to testSerialize().
- 
+
         Exercises BinaryCifWriter's auto-detection path (useAutoDetect=True,
         dictionaryApi=None) end to end: raw (untyped) containers in -> BCIF out ->
         BcifPrint structural verification -> BinaryCifReader round trip -> value-level
         comparison against the same raw input cast the way the auto-detect classifier
         (centralized item policy / bcif_type_detector.classify_column)
         is expected to cast it.
- 
+
         Note this intentionally does NOT route the input through DataCategoryTyped/
         dictionaryApi at all - auto-detect mode is meant to work directly on the raw
         string values coming out of the CIF parser, which is the whole point of the
@@ -172,7 +172,7 @@ class BinaryCifWriterTests(unittest.TestCase):
                     )
                     ok = bcw.serialize(self.__testBcifAutoOutput, containerList)
                     self.assertTrue(ok)
- 
+
                     self.__verifyEncoding(self.__testBcifAutoOutput, storeStringsAsBytes)
                     bcr = BinaryCifReader(storeStringsAsBytes=storeStringsAsBytes)
                     cL = bcr.deserialize(self.__testBcifAutoOutput)
@@ -180,15 +180,15 @@ class BinaryCifWriterTests(unittest.TestCase):
                     ioPy = IoAdapter()
                     ok = ioPy.writeFile(self.__testBcifAutoTranslated, cL)
                     self.assertTrue(ok)
-                    
+
                     # Note: Not using the __same() here because the auto-detect method does not make use of the DataCategoryTyped class.
                     # It works on raw sting values of the attrbites and then assigns a data type to the column based on the values.
                     # The __same() method is comparing the attributes of the DataCategoryTyped class which is not used in this test.
-                     
+
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()
-    
+
     def __verifyEncoding(self, fname, storeStringsAsBytes):
         """Verifies encoding"""
         with open(fname, "rb") as fin:

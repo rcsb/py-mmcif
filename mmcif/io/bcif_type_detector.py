@@ -32,10 +32,10 @@ from mmcif.io.config import MISSING_VALUE_TOKENS, TYPE_DETECTION_CONFIG, TypeDet
 _FLOAT = re.compile(r"^-?\d+\.\d*$|^-?\d*\.\d+$")
 
 
-
 # ---------------------------------------------------------------------------
 # ColumnProfile dataclass
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class ColumnProfile:
@@ -59,17 +59,17 @@ class ColumnProfile:
     value_count    : number of non-sentinel values
     sentinel_count : number of sentinel ("." or "?") values
     """
-    col_type:       str   = "str"
-    int_width:      str   = "int32"
-    float_prec:     str   = "f32"
-    col_min:        Any   = None
-    col_max:        Any   = None
-    max_decimals:   int   = 0
-    is_sequential:  bool  = False
-    has_long_runs:  bool  = False
-    unique_ratio:   float = 1.0
-    value_count:    int   = 0
-    sentinel_count: int   = 0
+    col_type: str = "str"
+    int_width: str = "int32"
+    float_prec: str = "f32"
+    col_min: Any = None
+    col_max: Any = None
+    max_decimals: int = 0
+    is_sequential: bool = False
+    has_long_runs: bool = False
+    unique_ratio: float = 1.0
+    value_count: int = 0
+    sentinel_count: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -129,24 +129,24 @@ def classify_column(
     p = ColumnProfile()
 
     # type-probe state
-    all_int      = True
-    all_float    = True
+    all_int = True
+    all_float = True
     type_decided = False     # flips to True once we know the column is str
 
     # numeric accumulation
     is_sequential = True
-    col_min       = None
-    col_max       = None
-    max_dec       = 0
-    prev          = None     # previous integer value for sequential check
+    col_min = None
+    col_max = None
+    max_dec = 0
+    prev = None     # previous integer value for sequential check
 
     # statistics (always accumulated)
-    unique        = set()
-    run_val       = None
-    run_len       = 1
+    unique = set()
+    run_val = None
+    run_len = 1
     long_run_seen = False
-    total         = 0
-    sentinels     = 0
+    total = 0
+    sentinels = 0
 
     for v in values:
 
@@ -196,12 +196,12 @@ def classify_column(
             # char-level fast path before paying for regex
             candidate = s[1:] if s and s[0] == "-" else s
             if candidate.isdigit():
-                if len(candidate)>1 and candidate[0] == "0":
+                if len(candidate) > 1 and candidate[0] == "0":
                     # leading zero disqualifies integer type — treat as string
                     all_int = all_float = False
                     type_decided = True
                     continue
-                #--------------------------------------
+                # --------------------------------------
                 n = int(s)
                 all_float = False
             elif _FLOAT.match(s):
@@ -235,14 +235,14 @@ def classify_column(
     # Finalise profile
     # ---------------------------------------------------------------------------
 
-    p.value_count    = total
+    p.value_count = total
     p.sentinel_count = sentinels
-    p.col_min        = col_min
-    p.col_max        = col_max
-    p.max_decimals   = max_dec
-    p.is_sequential  = is_sequential and total > 1
-    p.has_long_runs  = long_run_seen
-    p.unique_ratio   = len(unique) / total if total else 1.0
+    p.col_min = col_min
+    p.col_max = col_max
+    p.max_decimals = max_dec
+    p.is_sequential = is_sequential and total > 1
+    p.has_long_runs = long_run_seen
+    p.unique_ratio = len(unique) / total if total else 1.0
 
     if total == 0:
         # Every value was a sentinel (e.g. pdbx_formal_charge all "?").
@@ -255,18 +255,23 @@ def classify_column(
     elif all_int:
         p.col_type = "int"
         lo, hi = col_min, col_max
-        if   lo >= 0    and hi <= 255:   p.int_width = "uint8"
-        elif lo >= -128 and hi <= 127:   p.int_width = "int8"
-        elif lo >= 0    and hi <= 65535: p.int_width = "uint16"
-        elif lo >= -32768 and hi <= 32767: p.int_width = "int16"
-        else:                            p.int_width = "int32"
+        if lo >= 0 and hi <= 255:
+            p.int_width = "uint8"
+        elif lo >= -128 and hi <= 127:
+            p.int_width = "int8"
+        elif lo >= 0 and hi <= 65535:
+            p.int_width = "uint16"
+        elif lo >= -32768 and hi <= 32767:
+            p.int_width = "int16"
+        else:
+            p.int_width = "int32"
 
     elif all_float:
         # Apply the configurable small-float override only when enabled.
         if force_small and total < type_detection_config.min_rows_to_classify_as_float:
             p.col_type = "str"
         else:
-            p.col_type   = "float"
+            p.col_type = "float"
             p.float_prec = "f32" if max_dec <= 6 else "f64"
 
     else:

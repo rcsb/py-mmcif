@@ -394,7 +394,6 @@ class PdbxReadWriteTests(unittest.TestCase):
 
             logger.debug("print raw     %r", dc)
             logger.debug("print string  %s", dc)
-            self.assertEqual(1, 1)
         except Exception as e:
             logger.exception("Failing with %s", str(e))
             self.fail()

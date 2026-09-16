@@ -214,7 +214,6 @@ class BinaryCifWriter(object):
             logger.exception("Bad type for %r", strVal)
         return strVal
 
-
     def __getAttributeType(self, catName, atName, colDataList):
         """Resolve a column type without changing either legacy path.
 

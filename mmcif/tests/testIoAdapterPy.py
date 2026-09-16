@@ -331,7 +331,14 @@ class IoAdapterTests(unittest.TestCase):
                                 cBcifAttrTypedL.append(str(cBcifAttrL[i]).replace(".", "?"))
                     matchOk = cCifAttrTypedL == cBcifAttrTypedL
                     if not matchOk:
-                        logger.error("Category and attribute translation mismatch %r %r: %r (cif) vs. %r (bcif, useAutoDetect=%r)", cat, attr, cCifAttrTypedL, cBcifAttrTypedL, useAutoDetect)
+                        logger.error(
+                            "Category and attribute translation mismatch %r %r: %r (cif) vs. %r (bcif, useAutoDetect=%r)", 
+                            cat, 
+                            attr, 
+                            cCifAttrTypedL, 
+                            cBcifAttrTypedL, 
+                            useAutoDetect
+                        )
                         ok = False
             self.assertTrue(ok)
         except Exception as e:
