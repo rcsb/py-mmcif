@@ -332,11 +332,11 @@ class IoAdapterTests(unittest.TestCase):
                     matchOk = cCifAttrTypedL == cBcifAttrTypedL
                     if not matchOk:
                         logger.error(
-                            "Category and attribute translation mismatch %r %r: %r (cif) vs. %r (bcif, useAutoDetect=%r)", 
-                            cat, 
-                            attr, 
-                            cCifAttrTypedL, 
-                            cBcifAttrTypedL, 
+                            "Category and attribute translation mismatch %r %r: %r (cif) vs. %r (bcif, useAutoDetect=%r)",
+                            cat,
+                            attr,
+                            cCifAttrTypedL,
+                            cBcifAttrTypedL,
                             useAutoDetect
                         )
                         ok = False
