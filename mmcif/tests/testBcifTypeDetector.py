@@ -30,14 +30,35 @@ class BcifTypeDetectorTests(unittest.TestCase):
             ("int", [".", "1", "?", "2"]),
             ("float", [".", "1.5", "?", "2.5", "3.5"]),
             ("str", [".", "alpha", "?", "beta"]),
-            ("str", ["1", "2.5", "3"]),
             ("int", []),
             ("int", [" 1 ", " 2 ", " 3 "]),
             ("float", [" 1.5 ", " 2.5 ", " 3.5 "]),
+            # A lone "0" is still an integer; only multi-digit values with a leading zero are strings
+            ("int", ["0", "1", "2", "3"]),
+            ("float", [0.5, 1.0, 2.5, 3.5]),
+            ("float", ["0.5", "1.0", "2.5", "3.5"]),
+            ("float", ["0.0", "1.0", "2.5", "3.5"]),
+            ("float", [0.0]),
         ]
         for expected, values in cases:
             with self.subTest(values=values):
                 self.assertColumnType(expected, values)
+
+    def testMixedTypesClassifyAsString(self):
+        """A column mixing value types is classified as "str".
+
+        Mixed int and float values are not promoted to float; any combination
+        of int, float and non-numeric values falls back to "str".
+        """
+        cases = [
+            [0.5, 1, 2.5, 3.5],  # mix of native float and int
+            ["1", "2.5", "3"],  # mix of int and float strings
+            ["A", "B", "1.0"],  # mix of non-numeric and float strings
+            ["1", "2", "B"],  # mix of int and non-numeric strings
+        ]
+        for values in cases:
+            with self.subTest(values=values):
+                self.assertColumnType("str", values)
 
     def testSmallFloatOverrideDisabled(self):
         config = TypeDetectionConfig(

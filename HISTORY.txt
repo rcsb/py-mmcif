@@ -105,3 +105,8 @@
                          as uint_8.  RunLength encoding should specify the incoming
                          data type.
 19-Mar-2026    V1.1.1  - Remove python 2 references and support for python 3.6/7
+30-Sep-2026    V1.2.0  - BinaryCIF encoder improvements: add fixed-point encoding
+                         for float columns and automatic column type detection
+                         (no dictionary required by default; explicit dictionary
+                         typing is still supported).  Mixed-type columns are
+                         encoded as strings.
