@@ -1427,6 +1427,7 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
         <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
         <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">useAutoDetect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1450,8 +1451,13 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
 <span class="sd">            # BCIF-specific args:</span>
 <span class="sd">            storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.</span>
 <span class="sd">            defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".</span>
-<span class="sd">            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.</span>
-<span class="sd">            dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.</span>
+<span class="sd">            applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too,</span>
+<span class="sd">                unless useAutoDetect is True). Defaults to True.</span>
+<span class="sd">            dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files when useAutoDetect is False and applyTypes</span>
+<span class="sd">                is True). Ignored (forced to None) when useAutoDetect is True. Defaults to None.</span>
+<span class="sd">            useAutoDetect (bool, optional): use the automatic data-type detection system instead of the dictionaryApi-driven column typing</span>
+<span class="sd">                (for BCIF files only). When True (the default), dictionaryApi is ignored/forced to None and BinaryCifWriter with auto-detection is</span>
+<span class="sd">                used. When False, the dictionary-based BinaryCifWriter is used and dictionaryApi should be supplied. Defaults to True.</span>
 <span class="sd">            useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.</span>
 <span class="sd">            useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.</span>
 <span class="sd">            copyInputData (bool, optional): make a new copy input data (for BCIF files only). Defaults to False.</span>
@@ -1489,8 +1495,12 @@ mmcif.io.IoAdapterBase.IoAdapterBase        " href="../IoAdapterBase/#mmcif.io.I
                         <span class="n">cnvCharRefs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_useCharRefs</span><span class="p">,</span>
                     <span class="p">)</span>
             <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"bcif"</span><span class="p">:</span>
+                <span class="c1"># Auto-detection path: column types are inferred directly from the data, so the</span>
+                <span class="c1"># dictionaryApi dependency is dropped entirely (forced to None) regardless of what</span>
+                <span class="c1"># was passed in.</span>
                 <span class="n">bcifW</span> <span class="o">=</span> <span class="n">BinaryCifWriter</span><span class="p">(</span>
-                    <span class="n">dictionaryApi</span><span class="o">=</span><span class="n">dictionaryApi</span><span class="p">,</span>
+                    <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">useAutoDetect</span> <span class="k">else</span> <span class="n">dictionaryApi</span><span class="p">,</span>
+                    <span class="n">useAutoDetect</span><span class="o">=</span><span class="n">useAutoDetect</span><span class="p">,</span>
                     <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="n">storeStringsAsBytes</span><span class="p">,</span>
                     <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="n">defaultStringEncoding</span><span class="p">,</span>
                     <span class="n">applyTypes</span><span class="o">=</span><span class="n">applyTypes</span><span class="p">,</span>
@@ -1836,7 +1846,7 @@ rather the particular failure that raised a parsing exception.</p>
 
 
 <h4 id="mmcif.io.IoAdapterPy.IoAdapterPy.writeFile" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columnAlignFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStopTokens</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">formattingStep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'mmcif'</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">writeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">,</span> <span class="n">maxLineLength</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">enforceAscii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lastInOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selectOrder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columnAlignFlag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStopTokens</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">formattingStep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'mmcif'</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">useAutoDetect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 </h4>
@@ -1931,14 +1941,24 @@ rather the particular failure that raised a parsing exception.</p>
       <tr>
         <td><code>applyTypes</code></td>
         <td><code>bool</code></td>
-        <td><p>apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.</p></td>
+        <td><p>apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too,
+unless useAutoDetect is True). Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>dictionaryApi</code></td>
         <td><code>object</code></td>
-        <td><p>DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.</p></td>
+        <td><p>DictionaryApi object instance (needed for BCIF files when useAutoDetect is False and applyTypes
+is True). Ignored (forced to None) when useAutoDetect is True. Defaults to None.</p></td>
         <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>useAutoDetect</code></td>
+        <td><code>bool</code></td>
+        <td><p>use the automatic data-type detection system instead of the dictionaryApi-driven column typing
+(for BCIF files only). When True (the default), dictionaryApi is ignored/forced to None and BinaryCifWriter with auto-detection is
+used. When False, the dictionary-based BinaryCifWriter is used and dictionaryApi should be supplied. Defaults to True.</p></td>
+        <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>useStringTypes</code></td>
@@ -2005,6 +2025,7 @@ rather the particular failure that raised a parsing exception.</p>
     <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
     <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">useAutoDetect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -2028,8 +2049,13 @@ rather the particular failure that raised a parsing exception.</p>
 <span class="sd">        # BCIF-specific args:</span>
 <span class="sd">        storeStringsAsBytes (bool, optional): Strings are stored as lists of bytes (for BCIF files only). Defaults to False.</span>
 <span class="sd">        defaultStringEncoding (str, optional): Default encoding for string data (for BCIF files only). Defaults to "utf-8".</span>
-<span class="sd">        applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too). Defaults to True.</span>
-<span class="sd">        dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files, only when applyTypes is True). Defaults to None.</span>
+<span class="sd">        applyTypes (bool, optional): apply explicit data typing before encoding (for BCIF files only; requires dictionaryApi to be passed too,</span>
+<span class="sd">            unless useAutoDetect is True). Defaults to True.</span>
+<span class="sd">        dictionaryApi (object, optional): DictionaryApi object instance (needed for BCIF files when useAutoDetect is False and applyTypes</span>
+<span class="sd">            is True). Ignored (forced to None) when useAutoDetect is True. Defaults to None.</span>
+<span class="sd">        useAutoDetect (bool, optional): use the automatic data-type detection system instead of the dictionaryApi-driven column typing</span>
+<span class="sd">            (for BCIF files only). When True (the default), dictionaryApi is ignored/forced to None and BinaryCifWriter with auto-detection is</span>
+<span class="sd">            used. When False, the dictionary-based BinaryCifWriter is used and dictionaryApi should be supplied. Defaults to True.</span>
 <span class="sd">        useStringTypes (bool, optional): assume all types are string (for BCIF files only). Defaults to False.</span>
 <span class="sd">        useFloat64 (bool, optional): store floats with 64 bit precision (for BCIF files only). Defaults to False.</span>
 <span class="sd">        copyInputData (bool, optional): make a new copy input data (for BCIF files only). Defaults to False.</span>
@@ -2067,8 +2093,12 @@ rather the particular failure that raised a parsing exception.</p>
                     <span class="n">cnvCharRefs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_useCharRefs</span><span class="p">,</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"bcif"</span><span class="p">:</span>
+            <span class="c1"># Auto-detection path: column types are inferred directly from the data, so the</span>
+            <span class="c1"># dictionaryApi dependency is dropped entirely (forced to None) regardless of what</span>
+            <span class="c1"># was passed in.</span>
             <span class="n">bcifW</span> <span class="o">=</span> <span class="n">BinaryCifWriter</span><span class="p">(</span>
-                <span class="n">dictionaryApi</span><span class="o">=</span><span class="n">dictionaryApi</span><span class="p">,</span>
+                <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">useAutoDetect</span> <span class="k">else</span> <span class="n">dictionaryApi</span><span class="p">,</span>
+                <span class="n">useAutoDetect</span><span class="o">=</span><span class="n">useAutoDetect</span><span class="p">,</span>
                 <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="n">storeStringsAsBytes</span><span class="p">,</span>
                 <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="n">defaultStringEncoding</span><span class="p">,</span>
                 <span class="n">applyTypes</span><span class="o">=</span><span class="n">applyTypes</span><span class="p">,</span>

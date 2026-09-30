@@ -1027,6 +1027,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.fixedPointEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fixedPointEncoderTyped()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.floatArrayMaskedEncoder" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1526,6 +1537,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.fixedPointEncoderTyped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fixedPointEncoderTyped()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mmcif.io.BinaryCifWriter.BinaryCifEncoders.floatArrayMaskedEncoder" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1668,7 +1690,8 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">dictionaryApi</span><span class="p">,</span>
+        <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">useAutoDetect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
         <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1681,10 +1704,18 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
 <span class="w">        </span><span class="sd">"""Create an instance of the binary CIF writer class.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            dictionaryApi (object): DictionaryApi object instance</span>
+<span class="sd">            dictionaryApi (object, optional): DictionaryApi object instance.</span>
+<span class="sd">                Required for dictionary-driven typing. In auto-detect mode it is</span>
+<span class="sd">                optional and, when supplied, is used only as a fallback for</span>
+<span class="sd">                empty/all-sentinel columns. Defaults to None.</span>
+<span class="sd">            useAutoDetect (bool, optional): Infer column types from values instead</span>
+<span class="sd">                of resolving every type through dictionaryApi. Defaults to True.</span>
+<span class="sd">                Set False to preserve the original dictionary-driven behavior.</span>
 <span class="sd">            storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.</span>
 <span class="sd">            defaultStringEncoding (str, optional): default encoding for string data. Defaults to "utf-8".</span>
-<span class="sd">            applyTypes (bool, optional): apply explicit data typing before encoding. Defaults to True.</span>
+<span class="sd">            applyTypes (bool, optional): apply explicit data typing before encoding.</span>
+<span class="sd">                Only has effect when dictionaryApi is also supplied (pre-casting</span>
+<span class="sd">                requires the dictionary). Defaults to True.</span>
 <span class="sd">            useStringTypes (bool, optional): assume all types are string. Defaults to False.</span>
 <span class="sd">            useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.</span>
 <span class="sd">            copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
@@ -1698,10 +1729,14 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="o">=</span> <span class="n">useStringTypes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="o">=</span> <span class="n">useAutoDetect</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"applyMolStarTypes"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"dictionaryApi is required when useAutoDetect is False"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">containerList</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Serialize the input container list in binary CIF and store these data in the input file path.</span>
@@ -1710,6 +1745,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
 <span class="sd">            filePath (str): output file path</span>
 <span class="sd">            containerList (list): list of DataContainer objects</span>
 <span class="sd">        """</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
@@ -1719,7 +1755,10 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
                 <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
                     <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
+                    <span class="c1"># DataCategoryTyped pre-casting is only applied when a</span>
+                    <span class="c1"># dictionaryApi is available — auto-detection works on raw</span>
+                    <span class="c1"># string values and does not require pre-casting.</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
                         <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span>
                                                  <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">,</span> <span class="n">applyMolStarTypes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">)</span>
                     <span class="c1">#</span>
@@ -1728,9 +1767,13 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
                     <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
                         <span class="n">colDataList</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getColumn</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
-                        <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeType</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="k">else</span> <span class="s2">"string"</span>
+                        <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeType</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="k">else</span> <span class="s2">"string"</span>
+
                         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"catName </span><span class="si">%r</span><span class="s2"> atName </span><span class="si">%r</span><span class="s2"> dataType </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
-                        <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeColumnData</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+                        <span class="c1"># Pass category/item names so float columns can use coordinate-specific hints</span>
+                        <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeColumnData</span><span class="p">(</span>
+                            <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span>
+                        <span class="p">)</span>
                         <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                             <span class="p">{</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"name"</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="n">atName</span><span class="p">),</span>
@@ -1747,24 +1790,46 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
             <span class="p">}</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
                 <span class="n">msgpack</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ofh</span><span class="p">)</span>
+
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__encodeColumnData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">):</span>
+    <span class="c1"># Accept category/item names so encoder selection can use column-specific hints</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__encodeColumnData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">colMaskDict</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Use None when no mask and not {} - per Mol* implementation</span>
         <span class="n">enc</span> <span class="o">=</span> <span class="n">BinaryCifEncoders</span><span class="p">(</span><span class="n">defaultStringEncoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span><span class="p">)</span>
         <span class="c1">#</span>
-        <span class="n">maskEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"RunLength"</span><span class="p">,</span> <span class="s2">"ByteArray"</span><span class="p">]</span>
         <span class="n">typeEncoderD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"string"</span><span class="p">:</span> <span class="s2">"StringArrayMasked"</span><span class="p">,</span> <span class="s2">"integer"</span><span class="p">:</span> <span class="s2">"IntArrayMasked"</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">:</span> <span class="s2">"FloatArrayMasked"</span><span class="p">}</span>
         <span class="n">colMaskList</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">getMask</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+
+        <span class="c1"># When no DataCategoryTyped pre-casting was applied (dApi is None),</span>
+        <span class="c1"># column values arrive as raw strings. The integer and float encoders</span>
+        <span class="c1"># call struct.pack which requires actual int/float Python objects.</span>
+        <span class="c1"># Cast here using the dataType already determined by __getAttributeType.</span>
+        <span class="c1"># Sentinel values (".", "?", None) are left untouched so getMask()</span>
+        <span class="c1"># results remain valid.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="ow">and</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">"integer"</span><span class="p">:</span>
+            <span class="n">colDataList</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">v</span> <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">MISSING_VALUE_TOKENS</span><span class="p">)</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">v</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">colDataList</span>
+            <span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="ow">and</span> <span class="n">dataType</span> <span class="o">==</span> <span class="s2">"float"</span><span class="p">:</span>
+            <span class="n">colDataList</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">v</span> <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">MISSING_VALUE_TOKENS</span><span class="p">)</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">v</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">colDataList</span>
+            <span class="p">]</span>
+
         <span class="n">dataEncType</span> <span class="o">=</span> <span class="n">typeEncoderD</span><span class="p">[</span><span class="n">dataType</span><span class="p">]</span>
-        <span class="n">colDataEncoded</span><span class="p">,</span> <span class="n">colDataEncodingDictL</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">encodeWithMask</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">dataEncType</span><span class="p">)</span>
+        <span class="c1"># Forward category/item names to the masked encoder</span>
+        <span class="n">colDataEncoded</span><span class="p">,</span> <span class="n">colDataEncodingDictL</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">encodeWithMask</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">dataEncType</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="n">atName</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
             <span class="c1"># Mol* indicates that masks should be encoded as if uint_8</span>
             <span class="n">colMaskListTyped</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="s2">"unsigned_integer_8"</span><span class="p">)</span>
-            <span class="n">maskEncoded</span><span class="p">,</span> <span class="n">maskEncodingDictL</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">colMaskListTyped</span><span class="p">,</span> <span class="n">maskEncoderList</span><span class="p">,</span> <span class="s2">"integer"</span><span class="p">)</span>
+            <span class="n">maskEncoded</span><span class="p">,</span> <span class="n">maskEncodingDictL</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">colMaskListTyped</span><span class="p">,</span> <span class="n">MASK_ENCODING_CHAIN</span><span class="p">,</span> <span class="s2">"integer"</span><span class="p">)</span>
             <span class="n">colMaskDict</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"data"</span><span class="p">):</span> <span class="n">maskEncoded</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"encoding"</span><span class="p">):</span> <span class="n">maskEncodingDictL</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">colDataEncoded</span><span class="p">,</span> <span class="n">colDataEncodingDictL</span>
 
@@ -1783,30 +1848,48 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Bad type for </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">strVal</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">strVal</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__getAttributeType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dObj</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Get attribute data type (string, integer, or float) and optionality</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getAttributeType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Resolve a column type without changing either legacy path.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            atName (str): attribute name</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            (string): data type (string, integer or float)</span>
+<span class="sd">        Dictionary mode reproduces the original BinaryCifWriter behavior.</span>
+<span class="sd">        Auto-detect mode applies forced types first, then scans the values, and</span>
+<span class="sd">        optionally uses dictionaryApi only for empty/all-sentinel columns.</span>
 <span class="sd">        """</span>
-        <span class="n">cifDataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-        <span class="c1"># cifPrimitiveType = self.__dApi.getTypePrimitive(dObj.getName(), atName)</span>
-        <span class="k">if</span> <span class="n">cifDataType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"string"</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string"</span><span class="p">,</span> <span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">getPdbxItemType</span><span class="p">(</span><span class="n">cifDataType</span><span class="p">)</span>
-            <span class="c1"># dataType = "integer" if "int" in cifDataType else "float" if cifPrimitiveType == "numb" else "string"</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span><span class="p">:</span>
+            <span class="n">cifDataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="o">.</span><span class="n">getTypeCode</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cifDataType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"string"</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">"Undefined type for category </span><span class="si">%s</span><span class="s2"> attribute </span><span class="si">%s</span><span class="s2"> - Will treat as string"</span><span class="p">,</span>
+                        <span class="n">catName</span><span class="p">,</span>
+                        <span class="n">atName</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">getPdbxItemType</span><span class="p">(</span><span class="n">cifDataType</span><span class="p">)</span>
 
-        <span class="c1"># Only if applying types, do we allow Mol* hints</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
-            <span class="n">nm</span> <span class="o">=</span> <span class="n">CifName</span><span class="p">()</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">dObj</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="n">atName</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">inMolStarIntHints</span><span class="p">(</span><span class="n">nm</span><span class="p">):</span>
-                <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"integer"</span>
+            <span class="c1"># Mol* integer hints apply only to the dictionary-driven path.</span>
+            <span class="c1"># Auto-detect mode resolves configured integer policy before</span>
+            <span class="c1"># falling back to schema-less classification.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">:</span>
+                <span class="n">nm</span> <span class="o">=</span> <span class="n">CifName</span><span class="p">()</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span><span class="o">.</span><span class="n">inMolStarIntHints</span><span class="p">(</span><span class="n">nm</span><span class="p">):</span>
+                    <span class="n">dataType</span> <span class="o">=</span> <span class="s2">"integer"</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">forcedType</span> <span class="o">=</span> <span class="n">get_forced_type</span><span class="p">(</span><span class="n">CifName</span><span class="p">()</span><span class="o">.</span><span class="n">itemName</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">forcedType</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">"Forced type override applied for </span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="n">catName</span><span class="p">,</span>
+                    <span class="n">atName</span><span class="p">,</span>
+                    <span class="n">forcedType</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="n">forcedType</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">profile</span> <span class="o">=</span> <span class="n">classify_column</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
+                <span class="n">typeMap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"int"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">:</span> <span class="s2">"float"</span><span class="p">,</span> <span class="s2">"str"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">}</span>
+                <span class="n">dataType</span> <span class="o">=</span> <span class="n">typeMap</span><span class="p">[</span><span class="n">profile</span><span class="o">.</span><span class="n">col_type</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">dataType</span>
 </code></pre></div>
@@ -1829,7 +1912,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
 
 
 <h4 id="mmcif.io.BinaryCifWriter.BinaryCifWriter.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">useAutoDetect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useStringTypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">useFloat64</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1855,8 +1938,19 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
       <tr>
         <td><code>dictionaryApi</code></td>
         <td><code>object</code></td>
-        <td><p>DictionaryApi object instance</p></td>
-        <td><em>required</em></td>
+        <td><p>DictionaryApi object instance.
+Required for dictionary-driven typing. In auto-detect mode it is
+optional and, when supplied, is used only as a fallback for
+empty/all-sentinel columns. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>useAutoDetect</code></td>
+        <td><code>bool</code></td>
+        <td><p>Infer column types from values instead
+of resolving every type through dictionaryApi. Defaults to True.
+Set False to preserve the original dictionary-driven behavior.</p></td>
+        <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>storeStringsAsBytes</code></td>
@@ -1873,7 +1967,9 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
       <tr>
         <td><code>applyTypes</code></td>
         <td><code>bool</code></td>
-        <td><p>apply explicit data typing before encoding. Defaults to True.</p></td>
+        <td><p>apply explicit data typing before encoding.
+Only has effect when dictionaryApi is also supplied (pre-casting
+requires the dictionary). Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
@@ -1912,7 +2008,8 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">dictionaryApi</span><span class="p">,</span>
+    <span class="n">dictionaryApi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">useAutoDetect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">storeStringsAsBytes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">defaultStringEncoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
     <span class="n">applyTypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1925,10 +2022,18 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
 <span class="w">    </span><span class="sd">"""Create an instance of the binary CIF writer class.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        dictionaryApi (object): DictionaryApi object instance</span>
+<span class="sd">        dictionaryApi (object, optional): DictionaryApi object instance.</span>
+<span class="sd">            Required for dictionary-driven typing. In auto-detect mode it is</span>
+<span class="sd">            optional and, when supplied, is used only as a fallback for</span>
+<span class="sd">            empty/all-sentinel columns. Defaults to None.</span>
+<span class="sd">        useAutoDetect (bool, optional): Infer column types from values instead</span>
+<span class="sd">            of resolving every type through dictionaryApi. Defaults to True.</span>
+<span class="sd">            Set False to preserve the original dictionary-driven behavior.</span>
 <span class="sd">        storeStringsAsBytes (bool, optional): strings are stored as lists of bytes. Defaults to False.</span>
 <span class="sd">        defaultStringEncoding (str, optional): default encoding for string data. Defaults to "utf-8".</span>
-<span class="sd">        applyTypes (bool, optional): apply explicit data typing before encoding. Defaults to True.</span>
+<span class="sd">        applyTypes (bool, optional): apply explicit data typing before encoding.</span>
+<span class="sd">            Only has effect when dictionaryApi is also supplied (pre-casting</span>
+<span class="sd">            requires the dictionary). Defaults to True.</span>
 <span class="sd">        useStringTypes (bool, optional): assume all types are string. Defaults to False.</span>
 <span class="sd">        useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.</span>
 <span class="sd">        copyInputData (bool, optional): make a new copy input data. Defaults to False.</span>
@@ -1942,10 +2047,14 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
     <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="o">=</span> <span class="n">useStringTypes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="o">=</span> <span class="n">dictionaryApi</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="o">=</span> <span class="n">useAutoDetect</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span> <span class="o">=</span> <span class="n">copyInputData</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span> <span class="o">=</span> <span class="n">ignoreCastErrors</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"applyMolStarTypes"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__dch</span> <span class="o">=</span> <span class="n">DataCategoryHints</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"dictionaryApi is required when useAutoDetect is False"</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2002,6 +2111,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
 <span class="sd">        filePath (str): output file path</span>
 <span class="sd">        containerList (list): list of DataContainer objects</span>
 <span class="sd">    """</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containerList</span><span class="p">:</span>
@@ -2011,7 +2121,10 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
             <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">catName</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">getObjNameList</span><span class="p">():</span>
                 <span class="n">cObj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getObj</span><span class="p">(</span><span class="n">catName</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
+                <span class="c1"># DataCategoryTyped pre-casting is only applied when a</span>
+                <span class="c1"># dictionaryApi is available — auto-detection works on raw</span>
+                <span class="c1"># string values and does not require pre-casting.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useAutoDetect</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__applyTypes</span><span class="p">:</span>
                     <span class="n">cObj</span> <span class="o">=</span> <span class="n">DataCategoryTyped</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">dictionaryApi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dApi</span><span class="p">,</span> <span class="n">copyInputData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyInputData</span><span class="p">,</span>
                                              <span class="n">ignoreCastErrors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ignoreCastErrors</span><span class="p">,</span> <span class="n">applyMolStarTypes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__applyMolStarTypes</span><span class="p">)</span>
                 <span class="c1">#</span>
@@ -2020,9 +2133,13 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
                 <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">atName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cObj</span><span class="o">.</span><span class="n">getAttributeList</span><span class="p">()):</span>
                     <span class="n">colDataList</span> <span class="o">=</span> <span class="n">cObj</span><span class="o">.</span><span class="n">getColumn</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
-                    <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeType</span><span class="p">(</span><span class="n">cObj</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="k">else</span> <span class="s2">"string"</span>
+                    <span class="n">dataType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getAttributeType</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useStringTypes</span> <span class="k">else</span> <span class="s2">"string"</span>
+
                     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"catName </span><span class="si">%r</span><span class="s2"> atName </span><span class="si">%r</span><span class="s2"> dataType </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
-                    <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeColumnData</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+                    <span class="c1"># Pass category/item names so float columns can use coordinate-specific hints</span>
+                    <span class="n">colMaskDict</span><span class="p">,</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeColumnData</span><span class="p">(</span>
+                        <span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span>
+                    <span class="p">)</span>
                     <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="p">{</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"name"</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="n">atName</span><span class="p">),</span>
@@ -2039,6 +2156,7 @@ mmcif.io.BinaryCifWriter.BinaryCifWriter        </code>
         <span class="p">}</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofh</span><span class="p">:</span>
             <span class="n">msgpack</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ofh</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Failing with </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
@@ -2111,7 +2229,6 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">            storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.</span>
 <span class="sd">            useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__unknown</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"?"</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
@@ -2143,9 +2260,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="n">legacy</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="n">encDict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Chained encoders can change the array's data type. FixedPoint converts</span>
+        <span class="c1"># float values to integer_32 values, so a later ByteArray step must encode</span>
+        <span class="c1"># the current integer type rather than the original float input type.</span>
+        <span class="n">currentDataType</span> <span class="o">=</span> <span class="n">dataType</span>
         <span class="k">for</span> <span class="n">encType</span> <span class="ow">in</span> <span class="n">encodingTypeList</span><span class="p">:</span>
+            <span class="n">encArg</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="c1"># Allow encoders with parameters, e.g. ("FixedPoint", factor)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">encType</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">encType</span><span class="p">,</span> <span class="n">encArg</span> <span class="o">=</span> <span class="n">encType</span>
+
             <span class="k">if</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"ByteArray"</span><span class="p">:</span>
-                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">currentDataType</span><span class="p">)</span>
+            <span class="c1"># FixedPoint converts float values into integer_32 values</span>
+            <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"FixedPoint"</span><span class="p">:</span>
+                <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedPointEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encArg</span><span class="p">)</span>
+                <span class="n">currentDataType</span> <span class="o">=</span> <span class="s2">"integer"</span>
             <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"Delta"</span><span class="p">:</span>
                 <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"RunLength"</span><span class="p">:</span>
@@ -2160,13 +2290,19 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="k">return</span> <span class="n">colDataList</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">encodingDictL</span>
         <span class="k">return</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">):</span>
+    <span class="c1"># Accept category/item names for float-column encoding decisions</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Encode the data using the input mask and encoding type returning encoded data and encoding instructions.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            colDataList (string): input data column</span>
+<span class="sd">            colDataList (list): input data column</span>
 <span class="sd">            colMaskList (list): incompleteness mask for the input data column</span>
-<span class="sd">            encodingType (string): encoding type to apply (StringArrayMask, IntArrayMasked, FloatArrayMasked)</span>
+<span class="sd">            encodingType (string): encoding type to apply</span>
+<span class="sd">                (StringArrayMasked, IntArrayMasked, FloatArrayMasked)</span>
+<span class="sd">            catName (str, optional): category name used for float-column</span>
+<span class="sd">                encoding decisions. Defaults to None.</span>
+<span class="sd">            atName (str, optional): attribute name used for float-column</span>
+<span class="sd">                encoding decisions. Defaults to None.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (list, list ): encoded data column, list of encoding instructions</span>
@@ -2177,8 +2313,14 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stringArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">encodingType</span> <span class="o">==</span> <span class="s2">"IntArrayMasked"</span><span class="p">:</span>
             <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+        <span class="c1"># Pass category/item names only to the float encoder</span>
         <span class="k">elif</span> <span class="n">encodingType</span> <span class="o">==</span> <span class="s2">"FloatArrayMasked"</span><span class="p">:</span>
-            <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floatArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+            <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floatArrayMaskedEncoder</span><span class="p">(</span>
+                <span class="n">colDataList</span><span class="p">,</span>
+                <span class="n">colMaskList</span><span class="p">,</span>
+                <span class="n">catName</span><span class="o">=</span><span class="n">catName</span><span class="p">,</span>
+                <span class="n">atName</span><span class="o">=</span><span class="n">atName</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"unsupported masked encoding </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
@@ -2340,6 +2482,158 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
             <span class="n">encodedTypedColDataList</span> <span class="o">=</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="s2">"integer_32"</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">encodedTypedColDataList</span><span class="p">,</span> <span class="n">encodingD</span>
 
+    <span class="c1"># Convert scaled float values into integer_32 values for later integer encoders</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fixedPointEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Encode a float array as a 32-bit integer array using FixedPoint.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colTypedDataList (TypedArray): list of float data (float_32 or float_64)</span>
+<span class="sd">            factor (int): multiplier used to convert float values to integers</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TypedArray: fixed-point encoded integer list (integer_32)</span>
+<span class="sd">            dict: binary CIF FixedPoint encoding instructions</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: if the input is not a float array or the scaled</span>
+<span class="sd">                FixedPoint values cannot be represented as signed integer_32.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">and</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"float_32"</span><span class="p">,</span> <span class="s2">"float_64"</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Only float arrays can be encoded with FixedPoint: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">srcType</span> <span class="o">=</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">"float_64"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="k">else</span> <span class="s2">"float_32"</span><span class="p">)</span>
+        <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__roundLikeMolStar</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fitsInt32</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"FixedPoint output does not fit in integer_32"</span><span class="p">)</span>
+
+        <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"FixedPoint"</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"factor"</span><span class="p">):</span> <span class="n">factor</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"srcType"</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">srcType</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="s2">"integer_32"</span><span class="p">),</span> <span class="n">encodingD</span>
+
+    <span class="c1"># Match Mol* JavaScript rounding behavior during FixedPoint conversion</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__roundLikeMolStar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Round a float value using JavaScript Math.round-like behavior.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (float): input float value</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: rounded integer value</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span>
+
+    <span class="c1"># Ensure FixedPoint output can safely be stored as integer_32</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__fitsInt32</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check whether all input values fit in a signed 32-bit integer array.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (list): list of integer values</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if all values fit in signed 32-bit integer range, otherwise False</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="o">-</span><span class="mi">2147483648</span> <span class="o">&lt;=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2147483647</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getItemName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return normalized _category.attribute item name."""</span>
+        <span class="k">if</span> <span class="n">catName</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">atName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">""</span>
+
+        <span class="k">if</span> <span class="n">catName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"_</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__shouldUseStringFallbackForFloat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return True when the column requires high-precision float fallback."""</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">valueString</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">valueString</span> <span class="ow">in</span> <span class="n">MISSING_VALUE_TOKENS</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="s2">"e"</span> <span class="ow">in</span> <span class="n">valueString</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">decimalPlaces</span> <span class="o">=</span> <span class="mi">99</span>
+            <span class="k">elif</span> <span class="s2">"."</span> <span class="ow">in</span> <span class="n">valueString</span><span class="p">:</span>
+                <span class="n">decimalPlaces</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valueString</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"0"</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">decimalPlaces</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">if</span> <span class="n">decimalPlaces</span> <span class="o">&gt;=</span> <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">STRING_FALLBACK_MIN_DECIMAL_PLACES</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__encodeFloatStringFallback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Encode a float fallback column as StringArrayMasked."""</span>
+        <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
+            <span class="n">stringColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"0.0"</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stringColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stringArrayMaskedEncoder</span><span class="p">(</span><span class="n">stringColDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+
+    <span class="c1"># Scan the column for the precision needed by general float items.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getFloatFixedPointFactor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return the smallest exact-enough FixedPoint factor for a float column."""</span>
+
+        <span class="n">mantissaDigits</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="n">foundDigits</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">digits</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">MAX_FIXED_POINT_DECIMAL_PLACES</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">scaledValue</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">value</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">scaledValue</span><span class="p">)</span> <span class="o">-</span> <span class="n">scaledValue</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">FIXED_POINT_TOLERANCE</span><span class="p">:</span>
+                    <span class="n">foundDigits</span> <span class="o">=</span> <span class="n">digits</span>
+                    <span class="k">break</span>
+                <span class="n">factor</span> <span class="o">*=</span> <span class="mi">10</span>
+
+            <span class="k">if</span> <span class="n">foundDigits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="n">mantissaDigits</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mantissaDigits</span><span class="p">,</span> <span class="n">foundDigits</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">mantissaDigits</span>
+
+    <span class="c1"># Try each FixedPoint integer chain and keep the smallest byte output</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__encodeBestFixedPointChain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Try the four FixedPoint integer chains and return the smallest output."""</span>
+        <span class="n">candidateEncoderLists</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[(</span><span class="s2">"FixedPoint"</span><span class="p">,</span> <span class="n">factor</span><span class="p">)]</span> <span class="o">+</span> <span class="n">integerChain</span>
+            <span class="k">for</span> <span class="n">integerChain</span> <span class="ow">in</span> <span class="n">FIXED_POINT_CANDIDATE_INTEGER_CHAINS</span>
+        <span class="p">]</span>
+
+        <span class="n">bestSize</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">bestEncodedColDataList</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">bestEncodingDictL</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">encoderList</span> <span class="ow">in</span> <span class="n">candidateEncoderLists</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">colDataList</span><span class="p">),</span> <span class="n">encoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+                <span class="n">encodedData</span> <span class="o">=</span> <span class="n">encodedColDataList</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">TypedArray</span><span class="p">)</span> <span class="k">else</span> <span class="n">encodedColDataList</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodedData</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">bestSize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="n">bestSize</span><span class="p">:</span>
+                    <span class="n">bestSize</span> <span class="o">=</span> <span class="n">size</span>
+                    <span class="n">bestEncodedColDataList</span> <span class="o">=</span> <span class="n">encodedColDataList</span>
+                    <span class="n">bestEncodingDictL</span> <span class="o">=</span> <span class="n">encodingDictL</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Skipping float encoder chain </span><span class="si">%r</span><span class="s2">: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">encoderList</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">bestSize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">bestEncodedColDataList</span><span class="p">,</span> <span class="n">bestEncodingDictL</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">stringArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Encode the input data column (string) along with the incompleteness mask.</span>
 
@@ -2350,7 +2644,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">        """</span>
-        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Delta"</span><span class="p">,</span> <span class="s2">"RunLength"</span><span class="p">,</span> <span class="s2">"IntegerPacking"</span><span class="p">,</span> <span class="s2">"ByteArray"</span><span class="p">]</span>
+        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="n">DEFAULT_INTEGER_CHAIN</span>
         <span class="n">uniqStringIndex</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># keys are substrings, values indices</span>
         <span class="n">uniqStringList</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">indexList</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2392,7 +2686,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">        """</span>
-        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Delta"</span><span class="p">,</span> <span class="s2">"RunLength"</span><span class="p">,</span> <span class="s2">"IntegerPacking"</span><span class="p">,</span> <span class="s2">"ByteArray"</span><span class="p">]</span>
+        <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="n">DEFAULT_INTEGER_CHAIN</span>
 
         <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
             <span class="c1"># Mol* and BinaryCif specification https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
@@ -2403,24 +2697,96 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">integerEncoderList</span><span class="p">,</span> <span class="s2">"integer"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Encode the input data column (float) along with the incompleteness mask.</span>
+    <span class="c1"># Encode float columns with FixedPoint chains instead of ByteArray-only when safe</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__encodeFixedPointChainOrFallback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="n">encoderList</span><span class="p">,</span> <span class="n">itemName</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Run one FixedPoint chain, falling back to float ByteArray when FixedPoint is unsafe or the chain raises."""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">numericValues</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">colDataList</span><span class="p">]</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            colDataList (list): input data column (string)</span>
-<span class="sd">            colMaskList (list): incompleteness mask</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">numericValues</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">FLOAT_BYTE_ARRAY_FALLBACK_CHAIN</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            (list, list): encoded data column, list of encoding instructions</span>
-<span class="sd">        """</span>
-        <span class="n">floatEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ByteArray"</span><span class="p">]</span>
+            <span class="n">fixedPointValues</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__roundLikeMolStar</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">numericValues</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fitsInt32</span><span class="p">(</span><span class="n">fixedPointValues</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">FLOAT_BYTE_ARRAY_FALLBACK_CHAIN</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
 
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Falling back from the fixed float chain for </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">itemName</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">FLOAT_BYTE_ARRAY_FALLBACK_CHAIN</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Encode a float column, preserving its incompleteness mask."""</span>
         <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
             <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="n">colDataList</span>
-        <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">floatEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+        <span class="n">fallbackEncoderList</span> <span class="o">=</span> <span class="n">FLOAT_BYTE_ARRAY_FALLBACK_CHAIN</span>
+        <span class="n">itemName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getItemName</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+        <span class="n">itemConfig</span> <span class="o">=</span> <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">get_float_item_config</span><span class="p">(</span><span class="n">itemName</span><span class="p">)</span>
+
+        <span class="c1"># Configured float items with a fixed factor use their configured</span>
+        <span class="c1"># factor and post-FixedPoint integer chain.</span>
+        <span class="k">if</span> <span class="n">itemConfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">factor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">factor</span>
+            <span class="n">encoderList</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"FixedPoint"</span><span class="p">,</span> <span class="n">factor</span><span class="p">)]</span> <span class="o">+</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">integer_chain</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFixedPointChainOrFallback</span><span class="p">(</span>
+                <span class="n">maskedColDataList</span><span class="p">,</span>
+                <span class="n">factor</span><span class="p">,</span>
+                <span class="n">encoderList</span><span class="p">,</span>
+                <span class="n">itemName</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Configured auto-factor float items use their configured encoder chain.</span>
+        <span class="k">if</span> <span class="n">itemConfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getFloatFixedPointFactor</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">USE_STRING_FLOAT_FALLBACK</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__shouldUseStringFallbackForFloat</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFloatStringFallback</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">fallbackEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+
+            <span class="n">encoderList</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"FixedPoint"</span><span class="p">,</span> <span class="n">factor</span><span class="p">)]</span> <span class="o">+</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">integer_chain</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFixedPointChainOrFallback</span><span class="p">(</span>
+                <span class="n">maskedColDataList</span><span class="p">,</span>
+                <span class="n">factor</span><span class="p">,</span>
+                <span class="n">encoderList</span><span class="p">,</span>
+                <span class="n">itemName</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># General floats: auto-detect a safe FixedPoint factor.</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getFloatFixedPointFactor</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># no suitable FixedPoint factor was found; use a fallback encoding (string or bytearray)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">USE_STRING_FLOAT_FALLBACK</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__shouldUseStringFallbackForFloat</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFloatStringFallback</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+            <span class="c1"># encode as byte array</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">fallbackEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">COMPARE_ALL_FIXED_POINT_CHAINS</span><span class="p">:</span>
+            <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeBestFixedPointChain</span><span class="p">(</span>
+                <span class="n">maskedColDataList</span><span class="p">,</span>
+                <span class="n">factor</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">encodedColDataList</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">fallbackEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+        <span class="n">encoderList</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"FixedPoint"</span><span class="p">,</span> <span class="n">factor</span><span class="p">)]</span> <span class="o">+</span> <span class="n">DEFAULT_FIXED_POINT_INTEGER_CHAIN</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFixedPointChainOrFallback</span><span class="p">(</span>
+            <span class="n">maskedColDataList</span><span class="p">,</span>
+            <span class="n">factor</span><span class="p">,</span>
+            <span class="n">encoderList</span><span class="p">,</span>
+            <span class="n">itemName</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">getMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Create an incompleteness mask list identifying missing/omitted values in the input data column.</span>
@@ -2434,7 +2800,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        """</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">colVal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">colVal</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__unknown</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">colVal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">colVal</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MISSING_VALUE_TOKENS</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="p">:</span>
                 <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
@@ -2652,7 +3018,6 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 <span class="sd">        storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.</span>
 <span class="sd">        useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.</span>
 <span class="sd">    """</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__unknown</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"?"</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__defaultStringEncoding</span> <span class="o">=</span> <span class="n">defaultStringEncoding</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__storeStringsAsBytes</span> <span class="o">=</span> <span class="n">storeStringsAsBytes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="o">=</span> <span class="n">useFloat64</span>
@@ -3077,9 +3442,22 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="n">legacy</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="n">encDict</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Chained encoders can change the array's data type. FixedPoint converts</span>
+    <span class="c1"># float values to integer_32 values, so a later ByteArray step must encode</span>
+    <span class="c1"># the current integer type rather than the original float input type.</span>
+    <span class="n">currentDataType</span> <span class="o">=</span> <span class="n">dataType</span>
     <span class="k">for</span> <span class="n">encType</span> <span class="ow">in</span> <span class="n">encodingTypeList</span><span class="p">:</span>
+        <span class="n">encArg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Allow encoders with parameters, e.g. ("FixedPoint", factor)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">encType</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">encType</span><span class="p">,</span> <span class="n">encArg</span> <span class="o">=</span> <span class="n">encType</span>
+
         <span class="k">if</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"ByteArray"</span><span class="p">:</span>
-            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">dataType</span><span class="p">)</span>
+            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byteArrayEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">currentDataType</span><span class="p">)</span>
+        <span class="c1"># FixedPoint converts float values into integer_32 values</span>
+        <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"FixedPoint"</span><span class="p">:</span>
+            <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedPointEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">encArg</span><span class="p">)</span>
+            <span class="n">currentDataType</span> <span class="o">=</span> <span class="s2">"integer"</span>
         <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"Delta"</span><span class="p">:</span>
             <span class="n">colDataList</span><span class="p">,</span> <span class="n">encDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaEncoderTyped</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">encType</span> <span class="o">==</span> <span class="s2">"RunLength"</span><span class="p">:</span>
@@ -3106,7 +3484,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 
 
 <h4 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.encodeWithMask" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 </h4>
@@ -3128,7 +3506,7 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
   <tbody>
       <tr>
         <td><code>colDataList</code></td>
-        <td><code>string</code></td>
+        <td><code>list</code></td>
         <td><p>input data column</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3141,8 +3519,23 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
       <tr>
         <td><code>encodingType</code></td>
         <td><code>string</code></td>
-        <td><p>encoding type to apply (StringArrayMask, IntArrayMasked, FloatArrayMasked)</p></td>
+        <td><p>encoding type to apply
+(StringArrayMasked, IntArrayMasked, FloatArrayMasked)</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>catName</code></td>
+        <td><code>str</code></td>
+        <td><p>category name used for float-column
+encoding decisions. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>atName</code></td>
+        <td><code>str</code></td>
+        <td><p>attribute name used for float-column
+encoding decisions. Defaults to None.</p></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -3163,13 +3556,18 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">encodeWithMask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Encode the data using the input mask and encoding type returning encoded data and encoding instructions.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        colDataList (string): input data column</span>
+<span class="sd">        colDataList (list): input data column</span>
 <span class="sd">        colMaskList (list): incompleteness mask for the input data column</span>
-<span class="sd">        encodingType (string): encoding type to apply (StringArrayMask, IntArrayMasked, FloatArrayMasked)</span>
+<span class="sd">        encodingType (string): encoding type to apply</span>
+<span class="sd">            (StringArrayMasked, IntArrayMasked, FloatArrayMasked)</span>
+<span class="sd">        catName (str, optional): category name used for float-column</span>
+<span class="sd">            encoding decisions. Defaults to None.</span>
+<span class="sd">        atName (str, optional): attribute name used for float-column</span>
+<span class="sd">            encoding decisions. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (list, list ): encoded data column, list of encoding instructions</span>
@@ -3180,8 +3578,14 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
         <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stringArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">encodingType</span> <span class="o">==</span> <span class="s2">"IntArrayMasked"</span><span class="p">:</span>
         <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+    <span class="c1"># Pass category/item names only to the float encoder</span>
     <span class="k">elif</span> <span class="n">encodingType</span> <span class="o">==</span> <span class="s2">"FloatArrayMasked"</span><span class="p">:</span>
-        <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floatArrayMaskedEncoder</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+        <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floatArrayMaskedEncoder</span><span class="p">(</span>
+            <span class="n">colDataList</span><span class="p">,</span>
+            <span class="n">colMaskList</span><span class="p">,</span>
+            <span class="n">catName</span><span class="o">=</span><span class="n">catName</span><span class="p">,</span>
+            <span class="n">atName</span><span class="o">=</span><span class="n">atName</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"unsupported masked encoding </span><span class="si">%r</span><span class="s2">"</span><span class="p">,</span> <span class="n">encodingType</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
@@ -3197,15 +3601,15 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
 
 
 
-<h4 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.floatArrayMaskedEncoder" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span></code>
+<h4 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.fixedPointEncoderTyped" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fixedPointEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span></code>
 
 
 </h4>
 
     <div class="doc doc-contents ">
 
-      <p>Encode the input data column (float) along with the incompleteness mask.</p>
+      <p>Encode a float array as a 32-bit integer array using FixedPoint.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -3219,15 +3623,15 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
   </thead>
   <tbody>
       <tr>
-        <td><code>colDataList</code></td>
-        <td><code>list</code></td>
-        <td><p>input data column (string)</p></td>
+        <td><code>colTypedDataList</code></td>
+        <td><code>TypedArray</code></td>
+        <td><p>list of float data (float_32 or float_64)</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>colMaskList</code></td>
-        <td><code>list</code></td>
-        <td><p>incompleteness mask</p></td>
+        <td><code>factor</code></td>
+        <td><code>int</code></td>
+        <td><p>multiplier used to convert float values to integers</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -3242,31 +3646,153 @@ doi: 10.1371/journal.pcbi.1008247. PMID: 33075050; PMCID: PMC7595629.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>(list, list)</code></td>
-      <td><p>encoded data column, list of encoding instructions</p></td>
+      <td><code>TypedArray</code></td>
+      <td><p>fixed-point encoded integer list (integer_32)
+dict: binary CIF FixedPoint encoding instructions</p></td>
     </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>TypeError</code></td>
+        <td><p>if the input is not a float array or the scaled
+FixedPoint values cannot be represented as signed integer_32.</p></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Encode the input data column (float) along with the incompleteness mask.</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fixedPointEncoderTyped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colTypedDataList</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Encode a float array as a 32-bit integer array using FixedPoint.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        colDataList (list): input data column (string)</span>
-<span class="sd">        colMaskList (list): incompleteness mask</span>
+<span class="sd">        colTypedDataList (TypedArray): list of float data (float_32 or float_64)</span>
+<span class="sd">        factor (int): multiplier used to convert float values to integers</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        (list, list): encoded data column, list of encoding instructions</span>
-<span class="sd">    """</span>
-    <span class="n">floatEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ByteArray"</span><span class="p">]</span>
+<span class="sd">        TypedArray: fixed-point encoded integer list (integer_32)</span>
+<span class="sd">        dict: binary CIF FixedPoint encoding instructions</span>
 
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: if the input is not a float array or the scaled</span>
+<span class="sd">            FixedPoint values cannot be represented as signed integer_32.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">and</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"float_32"</span><span class="p">,</span> <span class="s2">"float_64"</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Only float arrays can be encoded with FixedPoint: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">srcType</span> <span class="o">=</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">"float_64"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useFloat64</span> <span class="k">else</span> <span class="s2">"float_32"</span><span class="p">)</span>
+    <span class="n">encodedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__roundLikeMolStar</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">colTypedDataList</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fitsInt32</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"FixedPoint output does not fit in integer_32"</span><span class="p">)</span>
+
+    <span class="n">encodingD</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"FixedPoint"</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"factor"</span><span class="p">):</span> <span class="n">factor</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__toBytes</span><span class="p">(</span><span class="s2">"srcType"</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bCifTypeCodeD</span><span class="p">[</span><span class="n">srcType</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">TypedArray</span><span class="p">(</span><span class="n">encodedColDataList</span><span class="p">,</span> <span class="s2">"integer_32"</span><span class="p">),</span> <span class="n">encodingD</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="mmcif.io.BinaryCifWriter.BinaryCifEncoders.floatArrayMaskedEncoder" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Encode a float column, preserving its incompleteness mask.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mmcif/io/BinaryCifWriter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">floatArrayMaskedEncoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">,</span> <span class="n">catName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Encode a float column, preserving its incompleteness mask."""</span>
     <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
         <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colMaskList</span><span class="p">,</span> <span class="n">colDataList</span><span class="p">)]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">maskedColDataList</span> <span class="o">=</span> <span class="n">colDataList</span>
-    <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">floatEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+    <span class="n">fallbackEncoderList</span> <span class="o">=</span> <span class="n">FLOAT_BYTE_ARRAY_FALLBACK_CHAIN</span>
+    <span class="n">itemName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getItemName</span><span class="p">(</span><span class="n">catName</span><span class="p">,</span> <span class="n">atName</span><span class="p">)</span>
+    <span class="n">itemConfig</span> <span class="o">=</span> <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">get_float_item_config</span><span class="p">(</span><span class="n">itemName</span><span class="p">)</span>
+
+    <span class="c1"># Configured float items with a fixed factor use their configured</span>
+    <span class="c1"># factor and post-FixedPoint integer chain.</span>
+    <span class="k">if</span> <span class="n">itemConfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">factor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">factor</span>
+        <span class="n">encoderList</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"FixedPoint"</span><span class="p">,</span> <span class="n">factor</span><span class="p">)]</span> <span class="o">+</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">integer_chain</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFixedPointChainOrFallback</span><span class="p">(</span>
+            <span class="n">maskedColDataList</span><span class="p">,</span>
+            <span class="n">factor</span><span class="p">,</span>
+            <span class="n">encoderList</span><span class="p">,</span>
+            <span class="n">itemName</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Configured auto-factor float items use their configured encoder chain.</span>
+    <span class="k">if</span> <span class="n">itemConfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getFloatFixedPointFactor</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">USE_STRING_FLOAT_FALLBACK</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__shouldUseStringFallbackForFloat</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFloatStringFallback</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">fallbackEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+
+        <span class="n">encoderList</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"FixedPoint"</span><span class="p">,</span> <span class="n">factor</span><span class="p">)]</span> <span class="o">+</span> <span class="n">itemConfig</span><span class="o">.</span><span class="n">integer_chain</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFixedPointChainOrFallback</span><span class="p">(</span>
+            <span class="n">maskedColDataList</span><span class="p">,</span>
+            <span class="n">factor</span><span class="p">,</span>
+            <span class="n">encoderList</span><span class="p">,</span>
+            <span class="n">itemName</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># General floats: auto-detect a safe FixedPoint factor.</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getFloatFixedPointFactor</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># no suitable FixedPoint factor was found; use a fallback encoding (string or bytearray)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">USE_STRING_FLOAT_FALLBACK</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__shouldUseStringFallbackForFloat</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFloatStringFallback</span><span class="p">(</span><span class="n">colDataList</span><span class="p">,</span> <span class="n">colMaskList</span><span class="p">)</span>
+        <span class="c1"># encode as byte array</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">fallbackEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">BCIF_CONFIG</span><span class="o">.</span><span class="n">COMPARE_ALL_FIXED_POINT_CHAINS</span><span class="p">:</span>
+        <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeBestFixedPointChain</span><span class="p">(</span>
+            <span class="n">maskedColDataList</span><span class="p">,</span>
+            <span class="n">factor</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">encodedColDataList</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">maskedColDataList</span><span class="p">,</span> <span class="n">fallbackEncoderList</span><span class="p">,</span> <span class="s2">"float"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">encodedColDataList</span><span class="p">,</span> <span class="n">encodingDictL</span>
+
+    <span class="n">encoderList</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"FixedPoint"</span><span class="p">,</span> <span class="n">factor</span><span class="p">)]</span> <span class="o">+</span> <span class="n">DEFAULT_FIXED_POINT_INTEGER_CHAIN</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encodeFixedPointChainOrFallback</span><span class="p">(</span>
+        <span class="n">maskedColDataList</span><span class="p">,</span>
+        <span class="n">factor</span><span class="p">,</span>
+        <span class="n">encoderList</span><span class="p">,</span>
+        <span class="n">itemName</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -3338,7 +3864,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    """</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">colVal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colDataList</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">colVal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">colVal</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__unknown</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">colVal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">colVal</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MISSING_VALUE_TOKENS</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="p">:</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">colDataList</span><span class="p">)</span>
@@ -3418,7 +3944,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    Returns:</span>
 <span class="sd">        (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">    """</span>
-    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Delta"</span><span class="p">,</span> <span class="s2">"RunLength"</span><span class="p">,</span> <span class="s2">"IntegerPacking"</span><span class="p">,</span> <span class="s2">"ByteArray"</span><span class="p">]</span>
+    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="n">DEFAULT_INTEGER_CHAIN</span>
 
     <span class="k">if</span> <span class="n">colMaskList</span><span class="p">:</span>
         <span class="c1"># Mol* and BinaryCif specification https://github.com/molstar/BinaryCIF/blob/master/encoding.md</span>
@@ -3866,7 +4392,7 @@ The mask is assigned: 0 = Value is present, 1 = '.' (value not specified), and 2
 <span class="sd">    Returns:</span>
 <span class="sd">        (list, list): encoded data column, list of encoding instructions</span>
 <span class="sd">    """</span>
-    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Delta"</span><span class="p">,</span> <span class="s2">"RunLength"</span><span class="p">,</span> <span class="s2">"IntegerPacking"</span><span class="p">,</span> <span class="s2">"ByteArray"</span><span class="p">]</span>
+    <span class="n">integerEncoderList</span> <span class="o">=</span> <span class="n">DEFAULT_INTEGER_CHAIN</span>
     <span class="n">uniqStringIndex</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># keys are substrings, values indices</span>
     <span class="n">uniqStringList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">indexList</span> <span class="o">=</span> <span class="p">[]</span>
