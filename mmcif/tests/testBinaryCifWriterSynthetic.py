@@ -71,6 +71,13 @@ class BinaryCifWriterSyntheticTests(unittest.TestCase):
         self.assertNotIn("StringArray", self._encoding_kinds(integer_column))
         self.assertEqual(integer_values, [7])
 
+    def testIntegersOutsideInt32AreWrittenAsStrings(self):
+        for values in (["4294967296"], ["-2147483649"], ["2147483648"] * 50):
+            with self.subTest(values=values[:1], rows=len(values)):
+                column, decoded_values = self._serialize_column("task1_test", "big_int", values)
+                self.assertEqual(self._encoding_kinds(column), ["StringArray"])
+                self.assertEqual(decoded_values, values)
+
     def testGeneralSmallDecimalColumnsReachFloatPath(self):
         self.assertFloatPath("task1_test", "one_row", ["1.25"])
         self.assertFloatPath("task1_test", "two_rows", ["1.25", "2.5"])
