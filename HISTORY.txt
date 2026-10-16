@@ -110,3 +110,8 @@
                          (no dictionary required by default; explicit dictionary
                          typing is still supported).  Mixed-type columns are
                          encoded as strings.
+16-Oct-2026    V1.2.1  - Fix BinaryCIF auto-detection classifying integer columns
+                         outside the int32 range as integers (failed with "Cannot
+                         determine integer packing type"); such columns are now
+                         encoded as strings.  Require ASCII digits for integer
+                         detection.
