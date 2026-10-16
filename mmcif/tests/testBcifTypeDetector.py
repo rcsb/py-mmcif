@@ -44,6 +44,25 @@ class BcifTypeDetectorTests(unittest.TestCase):
             with self.subTest(values=values):
                 self.assertColumnType(expected, values)
 
+    def testIntegersOutsideInt32ClassifyAsString(self):
+        """Integer columns must fit in int32 to be encoded as BinaryCIF integers."""
+        cases = [
+            ("int", ["-2147483648", "2147483647"]),
+            ("int", [-2147483648, 2147483647]),
+            ("str", ["2147483648"]),
+            ("str", ["4294967296"]),
+            ("str", ["-2147483649"]),
+            ("str", ["1", "2", "12345678901234"]),
+            ("str", [1, 2, 2**40]),
+            ("str", [".", "?", "9876543210"]),
+        ]
+        for expected, values in cases:
+            with self.subTest(values=values):
+                self.assertColumnType(expected, values)
+
+    def testUnicodeDigitsClassifyAsString(self):
+        self.assertColumnType("str", ["1", "\u00b2"])
+
     def testMixedTypesClassifyAsString(self):
         """A column mixing value types is classified as "str".
 

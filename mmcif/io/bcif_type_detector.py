@@ -31,6 +31,11 @@ from mmcif.io.config import MISSING_VALUE_TOKENS, TYPE_DETECTION_CONFIG, TypeDet
 
 _FLOAT = re.compile(r"^-?\d+\.\d*$|^-?\d*\.\d+$")
 
+# BinaryCIF integer columns are decoded as Int32Array (e.g., by Mol*), and the
+# writer's integer encoders cannot pack values outside this range.
+_INT32_MIN = -(2**31)
+_INT32_MAX = 2**31 - 1
+
 
 # ---------------------------------------------------------------------------
 # ColumnProfile dataclass
@@ -195,7 +200,8 @@ def classify_column(
         elif isinstance(v, str):
             # char-level fast path before paying for regex
             candidate = s[1:] if s and s[0] == "-" else s
-            if candidate.isdigit():
+            # isascii() excludes Unicode digits (e.g. "²") that int() rejects
+            if candidate.isascii() and candidate.isdigit():
                 if len(candidate) > 1 and candidate[0] == "0":
                     # leading zero disqualifies integer type — treat as string
                     all_int = all_float = False
@@ -251,6 +257,11 @@ def classify_column(
         # and decode is identical regardless of declared type since every
         # value is masked.
         p.col_type = "int"
+
+    elif all_int and (col_min < _INT32_MIN or col_max > _INT32_MAX):
+        # Integers that do not fit in int32 (e.g., large database identifiers)
+        # cannot be stored in a BinaryCIF integer column; keep them as strings.
+        p.col_type = "str"
 
     elif all_int:
         p.col_type = "int"
