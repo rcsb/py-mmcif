@@ -37,6 +37,7 @@ from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
 from mmcif.io.config import (
     BCIF_CONFIG,
+    COORDINATE_ITEMS,
     DEFAULT_FIXED_POINT_INTEGER_CHAIN,
     DEFAULT_INTEGER_CHAIN,
     FIXED_POINT_CANDIDATE_INTEGER_CHAINS,
@@ -49,6 +50,14 @@ from mmcif.io.config import (
 from mmcif.io.bcif_type_detector import classify_column
 
 logger = logging.getLogger(__name__)
+
+
+def _checkCoordinateDecimalPlaces(coordinateDecimalPlaces):
+    """Raise ValueError unless coordinateDecimalPlaces is None or a non-negative integer."""
+    if coordinateDecimalPlaces is None:
+        return
+    if not isinstance(coordinateDecimalPlaces, int) or isinstance(coordinateDecimalPlaces, bool) or coordinateDecimalPlaces < 0:
+        raise ValueError("coordinateDecimalPlaces must be None or a non-negative integer, got %r" % (coordinateDecimalPlaces,))
 
 
 class BinaryCifWriter(object):
@@ -65,6 +74,7 @@ class BinaryCifWriter(object):
         useFloat64=False,
         copyInputData=False,
         ignoreCastErrors=False,
+        coordinateDecimalPlaces=None,
         **kwargs
     ):
         """Create an instance of the binary CIF writer class.
@@ -86,6 +96,9 @@ class BinaryCifWriter(object):
             useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
             ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
+            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate items
+                (mmcif.io.config.COORDINATE_ITEMS, e.g. _atom_site.Cartn_x); values are rounded to that
+                precision. Defaults to None, the configured precision (config.DEFAULT_COORDINATE_DECIMAL_PLACES, 3).
             applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints. Defaults to True.
         """
         self.__version = "0.3.0"
@@ -100,6 +113,8 @@ class BinaryCifWriter(object):
         self.__ignoreCastErrors = ignoreCastErrors
         self.__applyMolStarTypes = kwargs.get("applyMolStarTypes", True)
         self.__dch = DataCategoryHints()
+        _checkCoordinateDecimalPlaces(coordinateDecimalPlaces)
+        self.__coordinateDecimalPlaces = coordinateDecimalPlaces
 
         if not self.__useAutoDetect and self.__dApi is None:
             raise ValueError("dictionaryApi is required when useAutoDetect is False")
@@ -165,7 +180,12 @@ class BinaryCifWriter(object):
     # Accept category/item names so encoder selection can use column-specific hints
     def __encodeColumnData(self, colDataList, dataType, catName=None, atName=None):
         colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
-        enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
+        enc = BinaryCifEncoders(
+            defaultStringEncoding=self.__defaultStringEncoding,
+            storeStringsAsBytes=self.__storeStringsAsBytes,
+            useFloat64=self.__useFloat64,
+            coordinateDecimalPlaces=self.__coordinateDecimalPlaces,
+        )
         #
         typeEncoderD = {"string": "StringArrayMasked", "integer": "IntArrayMasked", "float": "FloatArrayMasked"}
         colMaskList = enc.getMask(colDataList)
@@ -289,14 +309,18 @@ class BinaryCifEncoders(object):
 
     """
 
-    def __init__(self, defaultStringEncoding="utf-8", storeStringsAsBytes=True, useFloat64=False):
+    def __init__(self, defaultStringEncoding="utf-8", storeStringsAsBytes=True, useFloat64=False, coordinateDecimalPlaces=None):
         """Instantiate the binary CIF encoder class.
 
         Args:
             defaultStringEncoding (str, optional): default encoding for string data . Defaults to "utf-8".
             storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.
             useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.
+            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate items
+                (mmcif.io.config.COORDINATE_ITEMS). Defaults to None, the configured precision.
         """
+        _checkCoordinateDecimalPlaces(coordinateDecimalPlaces)
+        self.__coordinateDecimalPlaces = coordinateDecimalPlaces
         self.__defaultStringEncoding = defaultStringEncoding
         self.__storeStringsAsBytes = storeStringsAsBytes
         self.__useFloat64 = useFloat64
@@ -798,9 +822,12 @@ class BinaryCifEncoders(object):
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
         # Configured float items with a fixed factor use their configured
-        # factor and post-FixedPoint integer chain.
+        # factor and post-FixedPoint integer chain; coordinates use the
+        # requested precision, if any.
         if itemConfig is not None and itemConfig.factor is not None:
             factor = itemConfig.factor
+            if self.__coordinateDecimalPlaces is not None and itemName in COORDINATE_ITEMS:
+                factor = 10**self.__coordinateDecimalPlaces
             encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,
