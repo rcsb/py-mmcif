@@ -643,7 +643,12 @@ class BinaryCifEncoders(object):
 
     # Check whether float_32 keeps the precision implied by a FixedPoint factor
     def __fitsFloat32AtFactor(self, data, factor):
-        """Check whether float_32 values round to the same FixedPoint integers as the input values.
+        """Check whether float_32 can hold the input values at the precision given by a FixedPoint factor.
+
+        Each value is rounded to its FixedPoint integer k; the check is whether the value a
+        reader rebuilds, k / factor, still rounds to k after conversion to float_32. Testing
+        k / factor rather than the raw input avoids false failures on inputs that are exactly
+        halfway at this factor (e.g. 12.355 at factor 100).
 
         Args:
             data (list): list of float values
@@ -652,15 +657,13 @@ class BinaryCifEncoders(object):
         Returns:
             bool: True if every finite value survives a float_32 round trip at this factor, otherwise False
         """
-        values = [float(v) for v in data]
+        fixedPointValues = [self.__roundLikeMolStar(float(v) * factor) for v in data if math.isfinite(float(v))]
+        decodedValues = [k / factor for k in fixedPointValues]
         try:
-            values32 = struct.unpack("<%df" % len(values), struct.pack("<%df" % len(values), *values))
+            decodedValues32 = struct.unpack("<%df" % len(decodedValues), struct.pack("<%df" % len(decodedValues), *decodedValues))
         except OverflowError:  # outside the float_32 range
             return False
-        for value, value32 in zip(values, values32):
-            if math.isfinite(value) and self.__roundLikeMolStar(value32 * factor) != self.__roundLikeMolStar(value * factor):
-                return False
-        return True
+        return all(self.__roundLikeMolStar(v32 * factor) == k for k, v32 in zip(fixedPointValues, decodedValues32))
 
     # Encode floats as a ByteArray, using float_64 if float_32 would lose the precision implied by factor
     def __encodeFloatByteArrayFallback(self, colDataList, factor, itemName):

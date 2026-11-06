@@ -143,6 +143,17 @@ class BinaryCifWriterSyntheticTests(unittest.TestCase):
                 self.assertEqual("FixedPoint" in self._encoding_kinds(column), uses_fixed_point)
                 self.assertEqual(decoded_values, [float(value) for value in values])
 
+    def testLowerCoordinatePrecisionKeepsFloat32AtHalfwayValues(self):
+        # 12.355 is halfway at 2 decimal places: float64 12.355 * 100 rounds up to 1236,
+        # but float32(12.355) = 12.3549995... rounds down to 1235. The decoded value is
+        # 1236 / 100 = 12.36, which float32 holds exactly at 2 decimal places, so float_32 suffices.
+        column, decoded_values = self._serialize_column(
+            "atom_site", "Cartn_x", ["12.355", "-1.2344"], coordinateDecimalPlaces=2
+        )
+        self.assertEqual(self._fixed_point_factor(column), 100)
+        self.assertEqual(self._float_src_type(column), 32)
+        self.assertEqual(decoded_values, [12.36, -1.23])
+
     def testInvalidCoordinateDecimalPlaces(self):
         for value in (-1, 1.5, True, "2"):
             with self.subTest(value=value):
