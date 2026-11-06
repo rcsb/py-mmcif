@@ -468,7 +468,10 @@ class BinaryCifEncoders(object):
             TypedArray: byte encoded packed data
         """
         if dataType == "float":
-            byteArrayType = self.__bCifTypeCodeD["float_64"] if self.__useFloat64 else self.__bCifTypeCodeD["float_32"]
+            if colTypedDataList.dtype in ("float_32", "float_64"):
+                byteArrayType = self.__bCifTypeCodeD[colTypedDataList.dtype]
+            else:
+                byteArrayType = self.__bCifTypeCodeD["float_64"] if self.__useFloat64 else self.__bCifTypeCodeD["float_32"]
         else:
             if colTypedDataList.dtype:
                 byteArrayType = self.__bCifTypeCodeD[colTypedDataList.dtype]
@@ -593,11 +596,19 @@ class BinaryCifEncoders(object):
         if colTypedDataList.dtype and colTypedDataList.dtype not in ["float_32", "float_64"]:
             raise TypeError("Only float arrays can be encoded with FixedPoint: %s" % colTypedDataList.dtype)
 
-        srcType = colTypedDataList.dtype or ("float_64" if self.__useFloat64 else "float_32")
         encodedColDataList = [self.__roundLikeMolStar(float(v) * factor) for v in colTypedDataList.data]
 
         if not self.__fitsInt32(encodedColDataList):
             raise TypeError("FixedPoint output does not fit in integer_32")
+
+        srcType = colTypedDataList.dtype
+        if srcType is None:
+            srcType = "float_64" if self.__useFloat64 else "float_32"
+            # srcType sets the decoded array type (e.g. Float32Array in Mol*):
+            # use float_64 when float_32 cannot hold the values at this factor.
+            if srcType == "float_32" and not self.__fitsFloat32AtFactor(colTypedDataList.data, factor):
+                logger.debug("FixedPoint values at factor %r exceed float_32 precision; using float_64 srcType", factor)
+                srcType = "float_64"
 
         encodingD = {
             self.__toBytes("kind"): self.__toBytes("FixedPoint"),
@@ -629,6 +640,45 @@ class BinaryCifEncoders(object):
             bool: True if all values fit in signed 32-bit integer range, otherwise False
         """
         return all(-2147483648 <= int(v) <= 2147483647 for v in data)
+
+    # Check whether float_32 keeps the precision implied by a FixedPoint factor
+    def __fitsFloat32AtFactor(self, data, factor):
+        """Check whether float_32 values round to the same FixedPoint integers as the input values.
+
+        Args:
+            data (list): list of float values
+            factor (int): FixedPoint factor giving the precision to keep
+
+        Returns:
+            bool: True if every finite value survives a float_32 round trip at this factor, otherwise False
+        """
+        values = [float(v) for v in data]
+        try:
+            values32 = struct.unpack("<%df" % len(values), struct.pack("<%df" % len(values), *values))
+        except OverflowError:  # outside the float_32 range
+            return False
+        for value, value32 in zip(values, values32):
+            if math.isfinite(value) and self.__roundLikeMolStar(value32 * factor) != self.__roundLikeMolStar(value * factor):
+                return False
+        return True
+
+    # Encode floats as a ByteArray, using float_64 if float_32 would lose the precision implied by factor
+    def __encodeFloatByteArrayFallback(self, colDataList, factor, itemName):
+        """Encode a float column as a ByteArray, keeping the precision implied by factor.
+
+        Args:
+            colDataList (list): list of float values
+            factor (int): FixedPoint factor giving the precision to keep
+            itemName (str): item name used in log messages
+
+        Returns:
+            (list, list): encoded data column, list of encoding instructions
+        """
+        if self.__useFloat64 or self.__fitsFloat32AtFactor(colDataList, factor):
+            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+        logger.debug("Float values for %s at factor %r exceed float_32 precision; using float_64 ByteArray", itemName, factor)
+        encodedColData, encodingDictL = self.encode(TypedArray(list(colDataList), "float_64"), FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+        return encodedColData.data, encodingDictL
 
     def __getItemName(self, catName, atName):
         """Return normalized _category.attribute item name."""
@@ -803,12 +853,13 @@ class BinaryCifEncoders(object):
                 for v in numericValues
             ]
             if not self.__fitsInt32(fixedPointValues):
-                return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+                logger.debug("FixedPoint values for %s at factor %r do not fit in integer_32; using float ByteArray", itemName, factor)
+                return self.__encodeFloatByteArrayFallback(colDataList, factor, itemName)
 
             return self.encode(colDataList, encoderList, "float")
         except Exception as e:
             logger.debug("Falling back from the fixed float chain for %s: %s", itemName, str(e))
-            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+            return self.__encodeFloatByteArrayFallback(colDataList, factor, itemName)
 
     def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None):
         """Encode a float column, preserving its incompleteness mask."""

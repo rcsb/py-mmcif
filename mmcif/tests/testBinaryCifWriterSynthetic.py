@@ -118,6 +118,31 @@ class BinaryCifWriterSyntheticTests(unittest.TestCase):
                 self.assertEqual(self._fixed_point_factor(column), factor)
                 self.assertEqual(decoded_values, [float(value) for value in values])
 
+    def _float_src_type(self, column):
+        """Return the float type of a column: FixedPoint srcType or float ByteArray type."""
+        for encoding in column["data"]["encoding"]:
+            if encoding["kind"] == "FixedPoint":
+                return encoding["srcType"]
+        [byte_array] = [encoding for encoding in column["data"]["encoding"] if encoding["kind"] == "ByteArray"]
+        return byte_array["type"]
+
+    def testHighPrecisionCoordinatesUseFloat64(self):
+        # (decimal places, values, expected float type: 32 = float_32, 33 = float_64, FixedPoint used)
+        cases = [
+            (3, ["123.456", "-45.678"], 32, True),  # default precision fits float_32
+            (4, ["850.1234", "-1.2344"], 32, True),  # float_32 still exact at this precision
+            (6, ["0.000158", "123.456789", "-45.678912"], 33, True),  # beyond float_32 precision
+            (7, ["0.000158", "312.4567891"], 33, False),  # int32 overflow -> float_64 ByteArray
+        ]
+        for decimal_places, values, src_type, uses_fixed_point in cases:
+            with self.subTest(decimal_places=decimal_places):
+                column, decoded_values = self._serialize_column(
+                    "ihm_sphere_obj_site", "Cartn_y", values, coordinateDecimalPlaces=decimal_places
+                )
+                self.assertEqual(self._float_src_type(column), src_type)
+                self.assertEqual("FixedPoint" in self._encoding_kinds(column), uses_fixed_point)
+                self.assertEqual(decoded_values, [float(value) for value in values])
+
     def testInvalidCoordinateDecimalPlaces(self):
         for value in (-1, 1.5, True, "2"):
             with self.subTest(value=value):
