@@ -60,7 +60,7 @@ FIXED_POINT_CANDIDATE_INTEGER_CHAINS = [
 # precision with BinaryCifWriter(coordinateDecimalPlaces=n).
 DEFAULT_COORDINATE_DECIMAL_PLACES = 3
 COORDINATE_INTEGER_CHAIN = ("Delta", "IntegerPacking", "ByteArray")
-COORDINATE_ITEMS = frozenset({
+COORDINATE_ITEMS = (
     # PDB / standard model coordinates
     "_atom_site.Cartn_x",
     "_atom_site.Cartn_y",
@@ -113,7 +113,7 @@ COORDINATE_ITEMS = frozenset({
     "_flr_FPS_MPP_atom_position.xcoord",
     "_flr_FPS_MPP_atom_position.ycoord",
     "_flr_FPS_MPP_atom_position.zcoord",
-})
+)
 
 
 @dataclass(frozen=True)
