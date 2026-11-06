@@ -129,6 +129,7 @@ class BinaryCifWriterSyntheticTests(unittest.TestCase):
     def testHighPrecisionCoordinatesUseFloat64(self):
         # (decimal places, values, expected float type: 32 = float_32, 33 = float_64, FixedPoint used)
         cases = [
+            (2, ["123.45", "-45.67"], 32, True),  # lower precision fits float_32
             (3, ["123.456", "-45.678"], 32, True),  # default precision fits float_32
             (4, ["850.1234", "-1.2344"], 32, True),  # float_32 still exact at this precision
             (6, ["0.000158", "123.456789", "-45.678912"], 33, True),  # beyond float_32 precision
