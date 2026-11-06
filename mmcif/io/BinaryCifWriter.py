@@ -51,6 +51,9 @@ from mmcif.io.bcif_type_detector import classify_column
 
 logger = logging.getLogger(__name__)
 
+# FixedPoint integers below this magnitude decode exactly enough in float_32 (24-bit significand)
+FLOAT32_EXACT_FIXED_POINT_LIMIT = 2**23
+
 
 def _checkCoordinateDecimalPlaces(coordinateDecimalPlaces):
     """Raise ValueError unless coordinateDecimalPlaces is None or a non-negative integer."""
@@ -606,7 +609,7 @@ class BinaryCifEncoders(object):
             srcType = "float_64" if self.__useFloat64 else "float_32"
             # srcType sets the decoded array type (e.g. Float32Array in Mol*):
             # use float_64 when float_32 cannot hold the values at this factor.
-            if srcType == "float_32" and not self.__fitsFloat32AtFactor(colTypedDataList.data, factor):
+            if srcType == "float_32" and not self.__fitsFloat32AtFactor(encodedColDataList, factor):
                 logger.debug("FixedPoint values at factor %r exceed float_32 precision; using float_64 srcType", factor)
                 srcType = "float_64"
 
@@ -642,22 +645,24 @@ class BinaryCifEncoders(object):
         return all(-2147483648 <= int(v) <= 2147483647 for v in data)
 
     # Check whether float_32 keeps the precision implied by a FixedPoint factor
-    def __fitsFloat32AtFactor(self, data, factor):
-        """Check whether float_32 can hold the input values at the precision given by a FixedPoint factor.
+    def __fitsFloat32AtFactor(self, fixedPointValues, factor):
+        """Check whether float_32 can hold FixedPoint values at the precision given by their factor.
 
-        Each value is rounded to its FixedPoint integer k; the check is whether the value a
-        reader rebuilds, k / factor, still rounds to k after conversion to float_32. Testing
-        k / factor rather than the raw input avoids false failures on inputs that are exactly
-        halfway at this factor (e.g. 12.355 at factor 100).
+        The check is whether the value a reader rebuilds, k / factor, still rounds to k after
+        conversion to float_32. Testing k / factor rather than the raw input avoids false
+        failures on inputs that are exactly halfway at this factor (e.g. 12.355 at factor 100).
 
         Args:
-            data (list): list of float values
+            fixedPointValues (list): FixedPoint integers k (input values rounded at factor)
             factor (int): FixedPoint factor giving the precision to keep
 
         Returns:
-            bool: True if every finite value survives a float_32 round trip at this factor, otherwise False
+            bool: True if every value survives a float_32 round trip at this factor, otherwise False
         """
-        fixedPointValues = [self.__roundLikeMolStar(float(v) * factor) for v in data if math.isfinite(float(v))]
+        # If |k| < 2**23 the float_32 error in k / factor is below 0.5 / factor, so rounding
+        # cannot change: skip the per-value check (the common case).
+        if all(-FLOAT32_EXACT_FIXED_POINT_LIMIT < k < FLOAT32_EXACT_FIXED_POINT_LIMIT for k in fixedPointValues):
+            return True
         decodedValues = [k / factor for k in fixedPointValues]
         try:
             decodedValues32 = struct.unpack("<%df" % len(decodedValues), struct.pack("<%df" % len(decodedValues), *decodedValues))
@@ -677,7 +682,15 @@ class BinaryCifEncoders(object):
         Returns:
             (list, list): encoded data column, list of encoding instructions
         """
-        if self.__useFloat64 or self.__fitsFloat32AtFactor(colDataList, factor):
+        if self.__useFloat64:
+            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+        try:
+            values = [float(v) for v in colDataList]
+            fixedPointValues = [self.__roundLikeMolStar(v * factor) for v in values if math.isfinite(v)]
+            fitsFloat32 = self.__fitsFloat32AtFactor(fixedPointValues, factor)
+        except OverflowError:  # value * factor overflows float_64
+            fitsFloat32 = False
+        if fitsFloat32:
             return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
         logger.debug("Float values for %s at factor %r exceed float_32 precision; using float_64 ByteArray", itemName, factor)
         encodedColData, encodingDictL = self.encode(TypedArray(list(colDataList), "float_64"), FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
