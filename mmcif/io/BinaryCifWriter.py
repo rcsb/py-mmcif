@@ -102,6 +102,10 @@ class BinaryCifWriter(object):
             coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate items
                 (mmcif.io.config.COORDINATE_ITEMS, e.g. _atom_site.Cartn_x); values are rounded to that
                 precision. Defaults to None, the configured precision (config.DEFAULT_COORDINATE_DECIMAL_PLACES, 3).
+                Note: a value lower than the number of decimal places in the input coordinates makes the
+                encoding lossy (e.g. 12.3456 is stored as 12.35 with 2). This also applies to the default
+                of 3 if the input has more decimal places (e.g. 0.000158 is stored as 0.0).
+                Higher values keep full precision, using float64 when float32 cannot hold it.
             applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints. Defaults to True.
         """
         self.__version = "0.3.0"
