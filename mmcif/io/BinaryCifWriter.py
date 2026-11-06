@@ -37,6 +37,7 @@ from mmcif.api.PdbxContainers import CifName
 from mmcif.io.BinaryCifReader import BinaryCifDecoders
 from mmcif.io.config import (
     BCIF_CONFIG,
+    COORDINATE_ITEMS,
     DEFAULT_FIXED_POINT_INTEGER_CHAIN,
     DEFAULT_INTEGER_CHAIN,
     FIXED_POINT_CANDIDATE_INTEGER_CHAINS,
@@ -49,6 +50,17 @@ from mmcif.io.config import (
 from mmcif.io.bcif_type_detector import classify_column
 
 logger = logging.getLogger(__name__)
+
+# FixedPoint integers below this magnitude decode exactly enough in float_32 (24-bit significand)
+FLOAT32_EXACT_FIXED_POINT_LIMIT = 2**23
+
+
+def _checkCoordinateDecimalPlaces(coordinateDecimalPlaces):
+    """Raise ValueError unless coordinateDecimalPlaces is None or a non-negative integer."""
+    if coordinateDecimalPlaces is None:
+        return
+    if not isinstance(coordinateDecimalPlaces, int) or isinstance(coordinateDecimalPlaces, bool) or coordinateDecimalPlaces < 0:
+        raise ValueError("coordinateDecimalPlaces must be None or a non-negative integer, got %r" % (coordinateDecimalPlaces,))
 
 
 class BinaryCifWriter(object):
@@ -65,6 +77,7 @@ class BinaryCifWriter(object):
         useFloat64=False,
         copyInputData=False,
         ignoreCastErrors=False,
+        coordinateDecimalPlaces=None,
         **kwargs
     ):
         """Create an instance of the binary CIF writer class.
@@ -86,6 +99,13 @@ class BinaryCifWriter(object):
             useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
             ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
+            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate items
+                (mmcif.io.config.COORDINATE_ITEMS, e.g. _atom_site.Cartn_x); values are rounded to that
+                precision. Defaults to None, the configured precision (config.DEFAULT_COORDINATE_DECIMAL_PLACES, 3).
+                Note: a value lower than the number of decimal places in the input coordinates makes the
+                encoding lossy (e.g. 12.3456 is stored as 12.35 with 2). This also applies to the default
+                of 3 if the input has more decimal places (e.g. 0.000158 is stored as 0.0).
+                Higher values keep full precision, using float64 when float32 cannot hold it.
             applyMolStarTypes: (bool, optional): If applyTypes is used, will use specific molstar hints. Defaults to True.
         """
         self.__version = "0.3.0"
@@ -100,6 +120,8 @@ class BinaryCifWriter(object):
         self.__ignoreCastErrors = ignoreCastErrors
         self.__applyMolStarTypes = kwargs.get("applyMolStarTypes", True)
         self.__dch = DataCategoryHints()
+        _checkCoordinateDecimalPlaces(coordinateDecimalPlaces)
+        self.__coordinateDecimalPlaces = coordinateDecimalPlaces
 
         if not self.__useAutoDetect and self.__dApi is None:
             raise ValueError("dictionaryApi is required when useAutoDetect is False")
@@ -165,7 +187,12 @@ class BinaryCifWriter(object):
     # Accept category/item names so encoder selection can use column-specific hints
     def __encodeColumnData(self, colDataList, dataType, catName=None, atName=None):
         colMaskDict = None  # Use None when no mask and not {} - per Mol* implementation
-        enc = BinaryCifEncoders(defaultStringEncoding=self.__defaultStringEncoding, storeStringsAsBytes=self.__storeStringsAsBytes, useFloat64=self.__useFloat64)
+        enc = BinaryCifEncoders(
+            defaultStringEncoding=self.__defaultStringEncoding,
+            storeStringsAsBytes=self.__storeStringsAsBytes,
+            useFloat64=self.__useFloat64,
+            coordinateDecimalPlaces=self.__coordinateDecimalPlaces,
+        )
         #
         typeEncoderD = {"string": "StringArrayMasked", "integer": "IntArrayMasked", "float": "FloatArrayMasked"}
         colMaskList = enc.getMask(colDataList)
@@ -289,14 +316,18 @@ class BinaryCifEncoders(object):
 
     """
 
-    def __init__(self, defaultStringEncoding="utf-8", storeStringsAsBytes=True, useFloat64=False):
+    def __init__(self, defaultStringEncoding="utf-8", storeStringsAsBytes=True, useFloat64=False, coordinateDecimalPlaces=None):
         """Instantiate the binary CIF encoder class.
 
         Args:
             defaultStringEncoding (str, optional): default encoding for string data . Defaults to "utf-8".
             storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.
             useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.
+            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate items
+                (mmcif.io.config.COORDINATE_ITEMS). Defaults to None, the configured precision.
         """
+        _checkCoordinateDecimalPlaces(coordinateDecimalPlaces)
+        self.__coordinateDecimalPlaces = coordinateDecimalPlaces
         self.__defaultStringEncoding = defaultStringEncoding
         self.__storeStringsAsBytes = storeStringsAsBytes
         self.__useFloat64 = useFloat64
@@ -444,7 +475,10 @@ class BinaryCifEncoders(object):
             TypedArray: byte encoded packed data
         """
         if dataType == "float":
-            byteArrayType = self.__bCifTypeCodeD["float_64"] if self.__useFloat64 else self.__bCifTypeCodeD["float_32"]
+            if colTypedDataList.dtype in ("float_32", "float_64"):
+                byteArrayType = self.__bCifTypeCodeD[colTypedDataList.dtype]
+            else:
+                byteArrayType = self.__bCifTypeCodeD["float_64"] if self.__useFloat64 else self.__bCifTypeCodeD["float_32"]
         else:
             if colTypedDataList.dtype:
                 byteArrayType = self.__bCifTypeCodeD[colTypedDataList.dtype]
@@ -569,11 +603,19 @@ class BinaryCifEncoders(object):
         if colTypedDataList.dtype and colTypedDataList.dtype not in ["float_32", "float_64"]:
             raise TypeError("Only float arrays can be encoded with FixedPoint: %s" % colTypedDataList.dtype)
 
-        srcType = colTypedDataList.dtype or ("float_64" if self.__useFloat64 else "float_32")
         encodedColDataList = [self.__roundLikeMolStar(float(v) * factor) for v in colTypedDataList.data]
 
         if not self.__fitsInt32(encodedColDataList):
             raise TypeError("FixedPoint output does not fit in integer_32")
+
+        srcType = colTypedDataList.dtype
+        if srcType is None:
+            srcType = "float_64" if self.__useFloat64 else "float_32"
+            # srcType sets the decoded array type (e.g. Float32Array in Mol*):
+            # use float_64 when float_32 cannot hold the values at this factor.
+            if srcType == "float_32" and not self.__fitsFloat32AtFactor(encodedColDataList, factor):
+                logger.debug("FixedPoint values at factor %r exceed float_32 precision; using float_64 srcType", factor)
+                srcType = "float_64"
 
         encodingD = {
             self.__toBytes("kind"): self.__toBytes("FixedPoint"),
@@ -605,6 +647,58 @@ class BinaryCifEncoders(object):
             bool: True if all values fit in signed 32-bit integer range, otherwise False
         """
         return all(-2147483648 <= int(v) <= 2147483647 for v in data)
+
+    # Check whether float_32 keeps the precision implied by a FixedPoint factor
+    def __fitsFloat32AtFactor(self, fixedPointValues, factor):
+        """Check whether float_32 can hold FixedPoint values at the precision given by their factor.
+
+        The check is whether the value a reader rebuilds, k / factor, still rounds to k after
+        conversion to float_32. Testing k / factor rather than the raw input avoids false
+        failures on inputs that are exactly halfway at this factor (e.g. 12.355 at factor 100).
+
+        Args:
+            fixedPointValues (list): FixedPoint integers k (input values rounded at factor)
+            factor (int): FixedPoint factor giving the precision to keep
+
+        Returns:
+            bool: True if every value survives a float_32 round trip at this factor, otherwise False
+        """
+        # If |k| < 2**23 the float_32 error in k / factor is below 0.5 / factor, so rounding
+        # cannot change: skip the per-value check (the common case).
+        if all(-FLOAT32_EXACT_FIXED_POINT_LIMIT < k < FLOAT32_EXACT_FIXED_POINT_LIMIT for k in fixedPointValues):
+            return True
+        decodedValues = [k / factor for k in fixedPointValues]
+        try:
+            decodedValues32 = struct.unpack("<%df" % len(decodedValues), struct.pack("<%df" % len(decodedValues), *decodedValues))
+        except OverflowError:  # outside the float_32 range
+            return False
+        return all(self.__roundLikeMolStar(v32 * factor) == k for k, v32 in zip(fixedPointValues, decodedValues32))
+
+    # Encode floats as a ByteArray, using float_64 if float_32 would lose the precision implied by factor
+    def __encodeFloatByteArrayFallback(self, colDataList, factor, itemName):
+        """Encode a float column as a ByteArray, keeping the precision implied by factor.
+
+        Args:
+            colDataList (list): list of float values
+            factor (int): FixedPoint factor giving the precision to keep
+            itemName (str): item name used in log messages
+
+        Returns:
+            (list, list): encoded data column, list of encoding instructions
+        """
+        if self.__useFloat64:
+            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+        try:
+            values = [float(v) for v in colDataList]
+            fixedPointValues = [self.__roundLikeMolStar(v * factor) for v in values if math.isfinite(v)]
+            fitsFloat32 = self.__fitsFloat32AtFactor(fixedPointValues, factor)
+        except OverflowError:  # value * factor overflows float_64
+            fitsFloat32 = False
+        if fitsFloat32:
+            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+        logger.debug("Float values for %s at factor %r exceed float_32 precision; using float_64 ByteArray", itemName, factor)
+        encodedColData, encodingDictL = self.encode(TypedArray(list(colDataList), "float_64"), FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+        return encodedColData.data, encodingDictL
 
     def __getItemName(self, catName, atName):
         """Return normalized _category.attribute item name."""
@@ -779,12 +873,13 @@ class BinaryCifEncoders(object):
                 for v in numericValues
             ]
             if not self.__fitsInt32(fixedPointValues):
-                return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+                logger.debug("FixedPoint values for %s at factor %r do not fit in integer_32; using float ByteArray", itemName, factor)
+                return self.__encodeFloatByteArrayFallback(colDataList, factor, itemName)
 
             return self.encode(colDataList, encoderList, "float")
         except Exception as e:
             logger.debug("Falling back from the fixed float chain for %s: %s", itemName, str(e))
-            return self.encode(colDataList, FLOAT_BYTE_ARRAY_FALLBACK_CHAIN, "float")
+            return self.__encodeFloatByteArrayFallback(colDataList, factor, itemName)
 
     def floatArrayMaskedEncoder(self, colDataList, colMaskList, catName=None, atName=None):
         """Encode a float column, preserving its incompleteness mask."""
@@ -798,9 +893,12 @@ class BinaryCifEncoders(object):
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
         # Configured float items with a fixed factor use their configured
-        # factor and post-FixedPoint integer chain.
+        # factor and post-FixedPoint integer chain; coordinates use the
+        # requested precision, if any.
         if itemConfig is not None and itemConfig.factor is not None:
             factor = itemConfig.factor
+            if self.__coordinateDecimalPlaces is not None and itemName in COORDINATE_ITEMS:
+                factor = 10**self.__coordinateDecimalPlaces
             encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,

@@ -115,3 +115,11 @@
                          determine integer packing type"); such columns are now
                          encoded as strings.  Require ASCII digits for integer
                          detection.
+ 6-Nov-2026    V1.3.0  - Add BinaryCifWriter option coordinateDecimalPlaces to set the
+                         precision of Cartesian coordinate items (default 3).  Use
+                         float64 when float32 cannot hold the requested precision
+                         (FixedPoint srcType and float ByteArray fallbacks).  This
+                         applies to all FixedPoint columns, so default output changes
+                         for large values (e.g. _entity.formula_weight in 1ffk now
+                         gets srcType float64; previously decoded as float32 and
+                         rounded, e.g. 946035.562 -> 946035.5625).

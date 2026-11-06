@@ -55,6 +55,67 @@ FIXED_POINT_CANDIDATE_INTEGER_CHAINS = [
 ]
 
 
+# Cartesian coordinate items. They are stored with DEFAULT_COORDINATE_DECIMAL_PLACES
+# decimal places (FixedPoint factor 1000) unless the writer is given another
+# precision with BinaryCifWriter(coordinateDecimalPlaces=n).
+DEFAULT_COORDINATE_DECIMAL_PLACES = 3
+COORDINATE_INTEGER_CHAIN = ("Delta", "IntegerPacking", "ByteArray")
+COORDINATE_ITEMS = (
+    # PDB / standard model coordinates
+    "_atom_site.Cartn_x",
+    "_atom_site.Cartn_y",
+    "_atom_site.Cartn_z",
+    # PDBx/mmCIF chemical component coordinates
+    "_chem_comp_atom.model_Cartn_x",
+    "_chem_comp_atom.model_Cartn_y",
+    "_chem_comp_atom.model_Cartn_z",
+    "_chem_comp_atom.pdbx_model_Cartn_x_ideal",
+    "_chem_comp_atom.pdbx_model_Cartn_y_ideal",
+    "_chem_comp_atom.pdbx_model_Cartn_z_ideal",
+    # PDBx/mmCIF phasing-site coordinates
+    "_phasing_MIR_der_site.Cartn_x",
+    "_phasing_MIR_der_site.Cartn_y",
+    "_phasing_MIR_der_site.Cartn_z",
+    "_pdbx_phasing_MAD_set_site.Cartn_x",
+    "_pdbx_phasing_MAD_set_site.Cartn_y",
+    "_pdbx_phasing_MAD_set_site.Cartn_z",
+    # PDBx/mmCIF solvent atom-site mapping coordinates
+    "_pdbx_solvent_atom_site_mapping.Cartn_x",
+    "_pdbx_solvent_atom_site_mapping.Cartn_y",
+    "_pdbx_solvent_atom_site_mapping.Cartn_z",
+    "_pdbx_solvent_atom_site_mapping.pre_Cartn_x",
+    "_pdbx_solvent_atom_site_mapping.pre_Cartn_y",
+    "_pdbx_solvent_atom_site_mapping.pre_Cartn_z",
+    # ModelCIF / CSM template coordinates
+    "_ma_template_coord.Cartn_x",
+    "_ma_template_coord.Cartn_y",
+    "_ma_template_coord.Cartn_z",
+    # IHM coordinates
+    "_ihm_starting_model_coord.Cartn_x",
+    "_ihm_starting_model_coord.Cartn_y",
+    "_ihm_starting_model_coord.Cartn_z",
+    "_ihm_sphere_obj_site.Cartn_x",
+    "_ihm_sphere_obj_site.Cartn_y",
+    "_ihm_sphere_obj_site.Cartn_z",
+    "_ihm_gaussian_obj_site.mean_Cartn_x",
+    "_ihm_gaussian_obj_site.mean_Cartn_y",
+    "_ihm_gaussian_obj_site.mean_Cartn_z",
+    "_ihm_gaussian_obj_ensemble.mean_Cartn_x",
+    "_ihm_gaussian_obj_ensemble.mean_Cartn_y",
+    "_ihm_gaussian_obj_ensemble.mean_Cartn_z",
+    "_ihm_pseudo_site.Cartn_x",
+    "_ihm_pseudo_site.Cartn_y",
+    "_ihm_pseudo_site.Cartn_z",
+    # FLR / FPS coordinates
+    "_flr_FPS_mean_probe_position.mpp_xcoord",
+    "_flr_FPS_mean_probe_position.mpp_ycoord",
+    "_flr_FPS_mean_probe_position.mpp_zcoord",
+    "_flr_FPS_MPP_atom_position.xcoord",
+    "_flr_FPS_MPP_atom_position.ycoord",
+    "_flr_FPS_MPP_atom_position.zcoord",
+)
+
+
 @dataclass(frozen=True)
 class TypeDetectionConfig:
     """Immutable schema-less type-detection policy."""
@@ -141,65 +202,12 @@ class BinaryCifEncodingConfig:
     # the writer first detects a safe factor from the column data.
     FLOAT_ITEM_CONFIGS = MappingProxyType({
 
-        # ---- Cartesian coordinates: factor 1000, FixedPoint -> Delta -> IntegerPacking -> ByteArray ----
-        # PDB / standard model coordinates
-        "_atom_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_atom_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_atom_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-
-        # PDBx/mmCIF chemical component coordinates
-        "_chem_comp_atom.model_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_chem_comp_atom.model_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_chem_comp_atom.model_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_chem_comp_atom.pdbx_model_Cartn_x_ideal": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_chem_comp_atom.pdbx_model_Cartn_y_ideal": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_chem_comp_atom.pdbx_model_Cartn_z_ideal": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-
-        # PDBx/mmCIF phasing-site coordinates
-        "_phasing_MIR_der_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_phasing_MIR_der_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_phasing_MIR_der_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_phasing_MAD_set_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_phasing_MAD_set_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_phasing_MAD_set_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-
-        # PDBx/mmCIF solvent atom-site mapping coordinates
-        "_pdbx_solvent_atom_site_mapping.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_solvent_atom_site_mapping.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_solvent_atom_site_mapping.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_pdbx_solvent_atom_site_mapping.pre_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-
-        # ModelCIF / CSM template coordinates
-        "_ma_template_coord.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ma_template_coord.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ma_template_coord.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-
-        # IHM coordinates
-        "_ihm_starting_model_coord.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_starting_model_coord.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_starting_model_coord.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_sphere_obj_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_sphere_obj_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_sphere_obj_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_gaussian_obj_site.mean_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_gaussian_obj_site.mean_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_gaussian_obj_site.mean_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_gaussian_obj_ensemble.mean_Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_pseudo_site.Cartn_x": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_pseudo_site.Cartn_y": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_ihm_pseudo_site.Cartn_z": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-
-        # FLR / FPS coordinates
-        "_flr_FPS_mean_probe_position.mpp_xcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_flr_FPS_mean_probe_position.mpp_ycoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_flr_FPS_mean_probe_position.mpp_zcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_flr_FPS_MPP_atom_position.xcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_flr_FPS_MPP_atom_position.ycoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
-        "_flr_FPS_MPP_atom_position.zcoord": FloatEncodingConfig(1000, ["Delta", "IntegerPacking", "ByteArray"]),
+        # ---- Cartesian coordinates (COORDINATE_ITEMS): factor 10**DEFAULT_COORDINATE_DECIMAL_PLACES ----
+        # BinaryCifWriter(coordinateDecimalPlaces=n) uses factor 10**n for these items instead.
+        **{
+            item_name: FloatEncodingConfig(10**DEFAULT_COORDINATE_DECIMAL_PLACES, list(COORDINATE_INTEGER_CHAIN))
+            for item_name in COORDINATE_ITEMS
+        },
 
         # ---- Anisotropic displacement U matrix: factor 10000, FixedPoint -> Delta -> IntegerPacking -> ByteArray ----
         "_atom_site_anisotrop.U[1][1]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
