@@ -5,6 +5,8 @@
 # Updates:
 #  6-Aug-2019  jdw build source and binary wheels by default.
 # 13-Aug-2019  jdw export config support token prior to launching tox runner
+#  2-Nov-2026  dwp skip the build-tools, sdist, wheel, listing and artifact publish steps on PR builds,
+#                  since the publish job only runs for non-PR builds on master
 #
 ##
 parameters:
@@ -175,12 +177,15 @@ jobs:
             displayName: "Running tox task for py27"
       #
       #  Build artifacts if this is a test target (i.e. labeled as py##)
+      #  Skipped on PR builds: the publish job only runs for non-PR builds on master, so PR artifacts are never used
       #
       - ? ${{ if and( startsWith(parameters.tox, 'py'), not(startsWith(parameters.python, '2.7')) ) }}
         : - script: pip install --upgrade pip twine setuptools wheel cibuildwheel==3.2.1
             displayName: "Install build tools"
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           - script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/dist"
             displayName: "Build source distribution"
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           #- script: python setup.py  bdist_wheel --dist-dir "$(System.DefaultWorkingDirectory)/dist"
           #  displayName: "Build wheel"
           #
@@ -189,6 +194,7 @@ jobs:
               export CIBW_ARCHS_MACOS="x86_64 arm64"
               cibuildwheel --output-dir "$(System.DefaultWorkingDirectory)/dist" .
             displayName: "Build binary wheels"
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           #
           #- script: python setup.py  sdist --dist-dir "$(System.DefaultWorkingDirectory)/udist"
           #  displayName: "Build source dist"
@@ -196,9 +202,11 @@ jobs:
           # Check the install artifacts
           - script: ls -lR "$(System.DefaultWorkingDirectory)/dist" "$(System.DefaultWorkingDirectory)/dist"
             displayName: "Listing of installed software"
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           #
           - publish: $(System.DefaultWorkingDirectory)/dist
             artifact: ${{ format('sw_{0}_{1}', parameters.tox, parameters.os) }}
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           #
           #- publish: $(System.DefaultWorkingDirectory)/udist
           #  artifact: ${{ format('sw_u_{0}_{1}', parameters.tox, parameters.os) }}
