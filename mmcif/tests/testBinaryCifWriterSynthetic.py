@@ -107,10 +107,41 @@ class BinaryCifWriterSyntheticTests(unittest.TestCase):
                 self.assertEqual(self._fixed_point_factor(column), factor)
                 self.assertEqual(decoded_values, expected)
 
-    def testCoordinateDecimalPlacesLeaveOtherItemsUnchanged(self):
+    def testAtomicDisplacementItemsDefaultPrecision(self):
         cases = [
             ("atom_site_anisotrop", "U[1][1]", ["0.1234", "0.2345"], 10000),
+            ("atom_site_anisotrop", "U[2][3]", ["-0.0123", "0.0045"], 10000),
+            ("atom_site", "B_iso_or_equiv", ["23.45", "17.5"], 100),  # detected from the data
+            ("atom_site", "B_iso_or_equiv", ["23.4", "17.5"], 10),
+            ("ihm_starting_model_coord", "B_iso_or_equiv", ["23.45", "17.5"], 100),
+        ]
+        for category_name, attribute_name, values, factor in cases:
+            with self.subTest(item="_%s.%s" % (category_name, attribute_name), values=values):
+                column, decoded_values = self._serialize_column(category_name, attribute_name, values)
+                self.assertEqual(self._fixed_point_factor(column), factor)
+                self.assertEqual(decoded_values, [float(value) for value in values])
+
+    def testCoordinateDecimalPlacesApplyToAtomicDisplacementItems(self):
+        cases = [
+            ("atom_site_anisotrop", "U[1][1]", ["0.1234", "0.2345"], 2, 100, [0.12, 0.23]),
+            ("atom_site_anisotrop", "U[3][3]", ["0.1234", "0.2345"], 3, 1000, [0.123, 0.235]),
+            ("atom_site", "B_iso_or_equiv", ["23.43", "17.51"], 1, 10, [23.4, 17.5]),
+            ("atom_site", "B_iso_or_equiv", ["23.45", "17.5"], 3, 1000, [23.45, 17.5]),
+            ("ihm_starting_model_coord", "B_iso_or_equiv", ["23.43", "17.51"], 1, 10, [23.4, 17.5]),
+        ]
+        for category_name, attribute_name, values, decimal_places, factor, expected in cases:
+            with self.subTest(item="_%s.%s" % (category_name, attribute_name), decimal_places=decimal_places):
+                column, decoded_values = self._serialize_column(
+                    category_name, attribute_name, values, coordinateDecimalPlaces=decimal_places
+                )
+                self.assertEqual(self._fixed_point_factor(column), factor)
+                self.assertEqual(decoded_values, expected)
+
+    def testCoordinateDecimalPlacesLeaveOtherItemsUnchanged(self):
+        cases = [
             ("ihm_sphere_obj_site", "object_radius", ["4.125", "3.5"], 1000),
+            ("atom_site", "occupancy", ["0.55", "1.0"], 100),
+            ("ihm_sphere_obj_site", "rmsf", ["1.25", "0.5"], 100),
         ]
         for category_name, attribute_name, values, factor in cases:
             with self.subTest(item="_%s.%s" % (category_name, attribute_name)):

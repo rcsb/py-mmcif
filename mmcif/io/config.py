@@ -60,7 +60,7 @@ FIXED_POINT_CANDIDATE_INTEGER_CHAINS = [
 # precision with BinaryCifWriter(coordinateDecimalPlaces=n).
 DEFAULT_COORDINATE_DECIMAL_PLACES = 3
 COORDINATE_INTEGER_CHAIN = ("Delta", "IntegerPacking", "ByteArray")
-COORDINATE_ITEMS = (
+CARTESIAN_COORDINATE_ITEMS = (
     # PDB / standard model coordinates
     "_atom_site.Cartn_x",
     "_atom_site.Cartn_y",
@@ -114,6 +114,24 @@ COORDINATE_ITEMS = (
     "_flr_FPS_MPP_atom_position.ycoord",
     "_flr_FPS_MPP_atom_position.zcoord",
 )
+
+# Atomic displacement items. Without BinaryCifWriter(coordinateDecimalPlaces=n)
+# they keep their own precision from BinaryCifEncodingConfig.FLOAT_ITEM_CONFIGS
+# (U matrix: 4 decimal places; B_iso_or_equiv items: detected from the data).
+ATOMIC_DISPLACEMENT_ITEMS = (
+    "_atom_site.B_iso_or_equiv",
+    "_atom_site_anisotrop.U[1][1]",
+    "_atom_site_anisotrop.U[1][2]",
+    "_atom_site_anisotrop.U[1][3]",
+    "_atom_site_anisotrop.U[2][2]",
+    "_atom_site_anisotrop.U[2][3]",
+    "_atom_site_anisotrop.U[3][3]",
+    "_ihm_starting_model_coord.B_iso_or_equiv",
+)
+
+# Items whose precision is set by BinaryCifWriter(coordinateDecimalPlaces=n):
+# when n is given, all of these are stored with n decimal places (FixedPoint factor 10**n).
+COORDINATE_ITEMS = CARTESIAN_COORDINATE_ITEMS + ATOMIC_DISPLACEMENT_ITEMS
 
 
 @dataclass(frozen=True)
@@ -202,14 +220,15 @@ class BinaryCifEncodingConfig:
     # the writer first detects a safe factor from the column data.
     FLOAT_ITEM_CONFIGS = MappingProxyType({
 
-        # ---- Cartesian coordinates (COORDINATE_ITEMS): factor 10**DEFAULT_COORDINATE_DECIMAL_PLACES ----
+        # ---- Cartesian coordinates (CARTESIAN_COORDINATE_ITEMS): factor 10**DEFAULT_COORDINATE_DECIMAL_PLACES ----
         # BinaryCifWriter(coordinateDecimalPlaces=n) uses factor 10**n for these items instead.
         **{
             item_name: FloatEncodingConfig(10**DEFAULT_COORDINATE_DECIMAL_PLACES, list(COORDINATE_INTEGER_CHAIN))
-            for item_name in COORDINATE_ITEMS
+            for item_name in CARTESIAN_COORDINATE_ITEMS
         },
 
         # ---- Anisotropic displacement U matrix: factor 10000, FixedPoint -> Delta -> IntegerPacking -> ByteArray ----
+        # In ATOMIC_DISPLACEMENT_ITEMS: BinaryCifWriter(coordinateDecimalPlaces=n) uses factor 10**n instead.
         "_atom_site_anisotrop.U[1][1]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
         "_atom_site_anisotrop.U[1][2]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
         "_atom_site_anisotrop.U[1][3]": FloatEncodingConfig(10000, ["Delta", "IntegerPacking", "ByteArray"]),
@@ -225,9 +244,11 @@ class BinaryCifEncodingConfig:
         #       and prepend the "FixedPoint" step to the encoder list with that factor.
         "_atom_site.occupancy": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
 
+        # In ATOMIC_DISPLACEMENT_ITEMS: BinaryCifWriter(coordinateDecimalPlaces=n) uses factor 10**n instead.
         "_atom_site.B_iso_or_equiv": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
         "_ihm_sphere_obj_site.rmsf": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
 
+        # In ATOMIC_DISPLACEMENT_ITEMS: BinaryCifWriter(coordinateDecimalPlaces=n) uses factor 10**n instead.
         "_ihm_starting_model_coord.B_iso_or_equiv": FloatEncodingConfig(None, ["RunLength", "IntegerPacking", "ByteArray"]),
     })
 
@@ -293,6 +314,10 @@ def validate_binary_cif_config():
         unsupported = set(item_config.integer_chain) - SUPPORTED_ENCODERS
         if unsupported:
             errors.append("%s has unsupported encoders: %s" % (item_name, sorted(unsupported)))
+
+    for item_name in COORDINATE_ITEMS:
+        if item_name not in FORCED_FLOAT_ITEMS:
+            errors.append("%s is in COORDINATE_ITEMS but has no float configuration" % item_name)
 
     if errors:
         raise ValueError("; ".join(errors))

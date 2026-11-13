@@ -99,9 +99,13 @@ class BinaryCifWriter(object):
             useFloat64 (bool, optional): store floats with 64 bit precision. Defaults to False.
             copyInputData (bool, optional): make a new copy input data. Defaults to False.
             ignoreCastErrors (bool, optional): suppress errors when casting attribute types with dictionaryApi. Defaults to False.
-            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate items
-                (mmcif.io.config.COORDINATE_ITEMS, e.g. _atom_site.Cartn_x); values are rounded to that
-                precision. Defaults to None, the configured precision (config.DEFAULT_COORDINATE_DECIMAL_PLACES, 3).
+            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate and
+                atomic displacement items (mmcif.io.config.COORDINATE_ITEMS, e.g. _atom_site.Cartn_x,
+                _atom_site.B_iso_or_equiv, _ihm_starting_model_coord.B_iso_or_equiv,
+                _atom_site_anisotrop.U[1][1]); values are rounded to that
+                precision. Defaults to None, the configured precision of each item: 3 decimal places for
+                Cartesian coordinates (config.DEFAULT_COORDINATE_DECIMAL_PLACES), 4 for the anisotropic
+                U matrix, and detected from the data for the B_iso_or_equiv items.
                 Note: a value lower than the number of decimal places in the input coordinates makes the
                 encoding lossy (e.g. 12.3456 is stored as 12.35 with 2). This also applies to the default
                 of 3 if the input has more decimal places (e.g. 0.000158 is stored as 0.0).
@@ -323,8 +327,9 @@ class BinaryCifEncoders(object):
             defaultStringEncoding (str, optional): default encoding for string data . Defaults to "utf-8".
             storeStringsAsBytes (bool, optional): strings are stored as bytes. Defaults to True.
             useFloat64 (bool, optional): store floats in 64 bit precision. Defaults to True.
-            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate items
-                (mmcif.io.config.COORDINATE_ITEMS). Defaults to None, the configured precision.
+            coordinateDecimalPlaces (int, optional): decimal places stored for Cartesian coordinate and
+                atomic displacement items (mmcif.io.config.COORDINATE_ITEMS). Defaults to None, the
+                configured precision of each item.
         """
         _checkCoordinateDecimalPlaces(coordinateDecimalPlaces)
         self.__coordinateDecimalPlaces = coordinateDecimalPlaces
@@ -893,12 +898,14 @@ class BinaryCifEncoders(object):
         itemConfig = BCIF_CONFIG.get_float_item_config(itemName)
 
         # Configured float items with a fixed factor use their configured
-        # factor and post-FixedPoint integer chain; coordinates use the
-        # requested precision, if any.
-        if itemConfig is not None and itemConfig.factor is not None:
-            factor = itemConfig.factor
-            if self.__coordinateDecimalPlaces is not None and itemName in COORDINATE_ITEMS:
-                factor = 10**self.__coordinateDecimalPlaces
+        # factor and post-FixedPoint integer chain. Items in COORDINATE_ITEMS
+        # use the requested precision, if any, instead of their configured
+        # (fixed or auto-detected) factor.
+        configuredFactor = itemConfig.factor if itemConfig is not None else None
+        if itemConfig is not None and self.__coordinateDecimalPlaces is not None and itemName in COORDINATE_ITEMS:
+            configuredFactor = 10**self.__coordinateDecimalPlaces
+        if configuredFactor is not None:
+            factor = configuredFactor
             encoderList = [("FixedPoint", factor)] + itemConfig.integer_chain
             return self.__encodeFixedPointChainOrFallback(
                 maskedColDataList,

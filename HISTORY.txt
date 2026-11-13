@@ -123,3 +123,8 @@
                          for large values (e.g. _entity.formula_weight in 1ffk now
                          gets srcType float64; previously decoded as float32 and
                          rounded, e.g. 946035.562 -> 946035.5625).
+                         coordinateDecimalPlaces also applies to _atom_site.B_iso_or_equiv,
+                         _ihm_starting_model_coord.B_iso_or_equiv and the
+                         _atom_site_anisotrop.U matrix (config.ATOMIC_DISPLACEMENT_ITEMS);
+                         without it they keep their defaults (B detected from the data, U 4
+                         decimal places).
