@@ -7,6 +7,10 @@
 import unittest
 
 from mmcif.io.config import (
+    ATOMIC_DISPLACEMENT_ITEMS,
+    CARTESIAN_COORDINATE_ITEMS,
+    COORDINATE_ITEMS,
+    DEFAULT_COORDINATE_DECIMAL_PLACES,
     DEFAULT_FIXED_POINT_INTEGER_CHAIN,
     DEFAULT_INTEGER_CHAIN,
     FIXED_POINT_CANDIDATE_INTEGER_CHAINS,
@@ -33,6 +37,26 @@ class BinaryCifConfigTests(unittest.TestCase):
         for item_name in FORCED_FLOAT_ITEMS:
             with self.subTest(item_name=item_name):
                 self.assertEqual(get_forced_type(item_name), "float")
+
+    def testCoordinateItemsUseDefaultPrecision(self):
+        self.assertIn("_atom_site.Cartn_x", CARTESIAN_COORDINATE_ITEMS)
+        self.assertEqual(DEFAULT_COORDINATE_DECIMAL_PLACES, 3)
+        for item_name in CARTESIAN_COORDINATE_ITEMS:
+            with self.subTest(item_name=item_name):
+                self.assertEqual(FORCED_FLOAT_ITEMS[item_name].factor, 1000)
+                self.assertEqual(FORCED_FLOAT_ITEMS[item_name].integer_chain, ["Delta", "IntegerPacking", "ByteArray"])
+
+    def testCoordinateItemsIncludeAtomicDisplacementItems(self):
+        self.assertEqual(COORDINATE_ITEMS, CARTESIAN_COORDINATE_ITEMS + ATOMIC_DISPLACEMENT_ITEMS)
+        self.assertIn("_atom_site.B_iso_or_equiv", ATOMIC_DISPLACEMENT_ITEMS)
+        self.assertIn("_ihm_starting_model_coord.B_iso_or_equiv", ATOMIC_DISPLACEMENT_ITEMS)
+        self.assertIn("_atom_site_anisotrop.U[1][1]", ATOMIC_DISPLACEMENT_ITEMS)
+        # Without coordinateDecimalPlaces these keep their own configured precision
+        self.assertIsNone(FORCED_FLOAT_ITEMS["_atom_site.B_iso_or_equiv"].factor)
+        self.assertEqual(FORCED_FLOAT_ITEMS["_atom_site_anisotrop.U[1][1]"].factor, 10000)
+        for item_name in COORDINATE_ITEMS:
+            with self.subTest(item_name=item_name):
+                self.assertIn(item_name, FORCED_FLOAT_ITEMS)
 
     def testEncoderNamesAndFactorsAreValid(self):
         chains = list(FIXED_POINT_CANDIDATE_INTEGER_CHAINS) + [
